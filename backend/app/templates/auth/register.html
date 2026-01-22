@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация — Documatica{% endblock %}
+
+{% block body_class %}auth-page{% endblock %}
+
+{% block body %}
+<div class="auth-page-v12">
+  <div class="auth-card-v12">
+    <!-- Header -->
+    <div class="auth-header-v12">
+      <a href="/" class="auth-logo-v12">
+        <svg viewBox="0 0 64 64">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="logo-text">
+          <span class="logo-bold">docu</span><span class="logo-light">matica</span>
+        </span>
+      </a>
+      <h1 class="auth-title-v12">Регистрация</h1>
+      <p class="auth-subtitle-v12">Создайте аккаунт для работы с документами</p>
+    </div>
+    
+    <!-- Form -->
+    <form id="register-form" class="auth-form-v12">
+      <div class="auth-field-v12">
+        <label class="auth-label-v12">Имя</label>
+        <input type="text" class="auth-input-v12" name="name" required placeholder="Ваше имя">
+      </div>
+      
+      <div class="auth-field-v12">
+        <label class="auth-label-v12">Email</label>
+        <input type="email" class="auth-input-v12" name="email" required placeholder="email@company.com">
+      </div>
+      
+      <div class="auth-field-v12">
+        <label class="auth-label-v12">Пароль</label>
+        <input type="password" class="auth-input-v12" name="password" required placeholder="Минимум 6 символов" minlength="6">
+      </div>
+      
+      <div class="auth-field-v12">
+        <label class="auth-label-v12">Подтверждение пароля</label>
+        <input type="password" class="auth-input-v12" name="password_confirm" required placeholder="Повторите пароль">
+      </div>
+      
+      <label class="auth-checkbox-v12">
+        <input type="checkbox" id="agree" required>
+        <span>Согласен с <a href="/terms/">условиями использования</a></span>
+      </label>
+      
+      <button type="submit" class="auth-btn-v12">
+        Создать аккаунт
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </form>
+    
+    <!-- Footer -->
+    <div class="auth-footer-v12">
+      <p>Уже есть аккаунт? <a href="/login/">Войти</a></p>
+    </div>
+    
+    <!-- System Status -->
+    <div class="auth-status-v12">
+      <div class="status-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </div>
+      <span class="status-text">256-bit Encryption</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Проверяем, авторизован ли пользователь
+(function() {
+  const token = localStorage.getItem('access_token') || getCookie('access_token');
+  if (token) {
+    // Проверяем валидность токена
+    fetch('/api/v1/auth/me', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    }).then(response => {
+      if (response.ok) {
+        // Токен валиден - редиректим на дашборд
+        window.location.href = '/dashboard/';
+      }
+    }).catch(() => {});
+  }
+  
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
+})();
+
+document.getElementById('register-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  
+  if (formData.get('password') !== formData.get('password_confirm')) {
+    alert('Пароли не совпадают');
+    return;
+  }
+  
+  const data = {
+    name: formData.get('name'),
+    email: formData.get('email'),
+    password: formData.get('password')
+  };
+  
+  try {
+    const response = await fetch('/api/v1/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    if (response.ok) {
+      window.location.href = '/dashboard/';
+    } else {
+      const error = await response.json();
+      alert(error.detail || 'Ошибка регистрации');
+    }
+  } catch (error) {
+    console.error('Register error:', error);
+    alert('Ошибка регистрации');
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,313 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+  <h6 class="fw-semibold mb-0">Редактировать организацию</h6>
+</div>
+
+<div class="card radius-8 border-0 shadow-sm">
+  <div class="card-body p-24">
+    <div id="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-secondary-light">Загрузка...</p>
+    </div>
+    
+    <form id="org-form" style="display: none;">
+      <input type="hidden" name="id" value="{{ org_id }}">
+      
+      <!-- Логотип -->
+      <div class="row mb-24">
+        <div class="col-12">
+          <label class="form-label">Логотип организации</label>
+          <div class="d-flex align-items-start gap-16">
+            <div id="logo-preview" class="border rounded-2 p-16" style="width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; background: #f8fafc;">
+              <iconify-icon icon="mdi:image-outline" style="font-size: 48px; color: #cbd5e1;"></iconify-icon>
+            </div>
+            <div class="flex-grow-1">
+              <input type="file" class="form-control mb-8" id="logo-file" accept="image/*">
+              <input type="hidden" name="logo_url" id="logo-url">
+              <small class="text-secondary-light d-block">Рекомендуемый размер: 200x200px. Форматы: PNG, JPG, SVG</small>
+              <button type="button" class="btn btn-sm btn-outline-danger-600 mt-8" id="remove-logo-btn" style="display: none;">
+                <iconify-icon icon="mdi:delete"></iconify-icon>
+                Удалить
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-md-6">
+          <label class="form-label">ИНН <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <input type="text" class="form-control" name="inn" required placeholder="Введите ИНН">
+            <button type="button" class="btn btn-primary-600" id="search-btn">
+              <iconify-icon icon="mdi:magnify"></iconify-icon>
+              Найти
+            </button>
+          </div>
+          <small class="text-secondary-light">Введите ИНН и нажмите "Найти" для автозаполнения</small>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">КПП</label>
+          <input type="text" class="form-control" name="kpp" placeholder="КПП (для ООО)">
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-12">
+          <label class="form-label">Наименование <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="name" required placeholder="Полное наименование">
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-12">
+          <label class="form-label">Юридический адрес</label>
+          <input type="text" class="form-control" name="address" placeholder="Адрес регистрации">
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-md-6">
+          <label class="form-label">ОГРН / ОГРНИП</label>
+          <input type="text" class="form-control" name="ogrn" placeholder="ОГРН">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Руководитель</label>
+          <input type="text" class="form-control" name="director" placeholder="ФИО руководителя">
+        </div>
+      </div>
+      
+      <h6 class="fw-semibold mb-16">Банковские реквизиты</h6>
+      
+      <div class="row mb-24">
+        <div class="col-md-6">
+          <label class="form-label">БИК</label>
+          <div class="input-group">
+            <input type="text" class="form-control" name="bank_bik" placeholder="БИК банка (9 цифр)" maxlength="9">
+            <button type="button" class="btn btn-outline-primary-600" id="search-bank-btn">
+              <iconify-icon icon="mdi:magnify"></iconify-icon>
+            </button>
+          </div>
+          <small class="text-secondary-light">Введите БИК для автозаполнения банка</small>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Корр. счет</label>
+          <input type="text" class="form-control" name="bank_corr_account" placeholder="Корреспондентский счет">
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-md-6">
+          <label class="form-label">Наименование банка</label>
+          <input type="text" class="form-control" name="bank_name" placeholder="Наименование банка">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Расчетный счет</label>
+          <input type="text" class="form-control" name="bank_account" placeholder="Номер счета">
+        </div>
+      </div>
+      
+      <div class="d-flex gap-3">
+        <button type="submit" class="btn-primary-v12">
+          <iconify-icon icon="mdi:check" class="me-1"></iconify-icon>
+          Сохранить
+        </button>
+        <a href="/dashboard/organizations/" class="btn-outline-v12">
+          Отмена
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const orgId = '{{ org_id }}';
+
+// Logo upload handling
+document.getElementById('logo-file').addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  try {
+    const response = await fetch('/api/v1/upload/logo', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById('logo-url').value = data.url;
+      
+      // Show preview
+      const preview = document.getElementById('logo-preview');
+      preview.innerHTML = `<img src="${data.url}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+      document.getElementById('remove-logo-btn').style.display = 'inline-block';
+    } else {
+      alert('Ошибка загрузки логотипа');
+    }
+  } catch (error) {
+    console.error('Error uploading logo:', error);
+    alert('Ошибка загрузки файла');
+  }
+});
+
+// Remove logo
+document.getElementById('remove-logo-btn').addEventListener('click', function() {
+  document.getElementById('logo-file').value = '';
+  document.getElementById('logo-url').value = '';
+  document.getElementById('logo-preview').innerHTML = '<iconify-icon icon="mdi:image-outline" style="font-size: 48px; color: #cbd5e1;"></iconify-icon>';
+  this.style.display = 'none';
+});
+
+// Load organization data
+async function loadOrganization() {
+  try {
+    const response = await fetch(`/api/v1/organizations/${orgId}`, {
+      credentials: 'include'
+    });
+    if (response.ok) {
+      const org = await response.json();
+      // Fill form fields
+      document.querySelector('[name="inn"]').value = org.inn || '';
+      document.querySelector('[name="kpp"]').value = org.kpp || '';
+      document.querySelector('[name="name"]').value = org.name || '';
+      document.querySelector('[name="address"]').value = org.address || '';
+      document.querySelector('[name="ogrn"]').value = org.ogrn || '';
+      document.querySelector('[name="director"]').value = org.director || '';
+      document.querySelector('[name="bank_bik"]').value = org.bank_bik || '';
+      document.querySelector('[name="bank_name"]').value = org.bank_name || '';
+      document.querySelector('[name="bank_account"]').value = org.bank_account || '';
+      document.querySelector('[name="bank_corr_account"]').value = org.bank_corr_account || '';
+      
+      // Load logo if exists
+      if (org.logo_url) {
+        document.getElementById('logo-url').value = org.logo_url;
+        document.getElementById('logo-preview').innerHTML = `<img src="${org.logo_url}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+        document.getElementById('remove-logo-btn').style.display = 'inline-block';
+      }
+      
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('org-form').style.display = 'block';
+    } else {
+      alert('Организация не найдена');
+      window.location.href = '/dashboard/organizations/';
+    }
+  } catch (error) {
+    console.error('Error loading organization:', error);
+    alert('Ошибка загрузки: ' + error.message);
+  }
+}
+
+loadOrganization();
+
+// Search by INN
+document.getElementById('search-btn').addEventListener('click', async function() {
+  const inn = document.querySelector('[name="inn"]').value;
+  if (!inn) return;
+  
+  this.disabled = true;
+  this.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+  
+  try {
+    const response = await fetch(`/api/v1/dadata/company?inn=${inn}`, {
+      credentials: 'include'
+    });
+    if (response.ok) {
+      const data = await response.json();
+      document.querySelector('[name="name"]').value = data.name || '';
+      document.querySelector('[name="kpp"]').value = data.kpp || '';
+      document.querySelector('[name="address"]').value = data.address || '';
+      document.querySelector('[name="ogrn"]').value = data.ogrn || '';
+      document.querySelector('[name="director"]').value = data.director_name || '';
+    } else {
+      alert('Компания не найдена');
+    }
+  } catch (error) {
+    console.error('Error searching company:', error);
+    alert('Ошибка поиска');
+  } finally {
+    this.disabled = false;
+    this.innerHTML = '<iconify-icon icon="mdi:magnify"></iconify-icon> Найти';
+  }
+});
+
+// Search bank by BIK
+document.getElementById('search-bank-btn').addEventListener('click', async function() {
+  const bik = document.querySelector('[name="bank_bik"]').value;
+  if (!bik || bik.length !== 9) {
+    alert('БИК должен содержать 9 цифр');
+    return;
+  }
+  
+  this.disabled = true;
+  this.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+  
+  try {
+    const response = await fetch(`/api/v1/dadata/bank?bik=${bik}`, {
+      credentials: 'include'
+    });
+    if (response.ok) {
+      const data = await response.json();
+      document.querySelector('[name="bank_name"]').value = data.name || '';
+      document.querySelector('[name="bank_corr_account"]').value = data.correspondent_account || '';
+    } else {
+      alert('Банк не найден');
+    }
+  } catch (error) {
+    console.error('Error searching bank:', error);
+    alert('Ошибка поиска банка');
+  } finally {
+    this.disabled = false;
+    this.innerHTML = '<iconify-icon icon="mdi:magnify"></iconify-icon>';
+  }
+});
+
+// Auto-search bank when BIK is 9 digits
+document.querySelector('[name="bank_bik"]').addEventListener('input', function() {
+  if (this.value.length === 9) {
+    document.getElementById('search-bank-btn').click();
+  }
+});
+
+// Submit form
+document.getElementById('org-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+  delete data.id; // Remove id from body, it's in URL
+  
+  const submitBtn = this.querySelector('[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Сохранение...';
+  
+  try {
+    const response = await fetch(`/api/v1/organizations/${orgId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data)
+    });
+    
+    if (response.ok) {
+      window.location.href = '/dashboard/organizations/';
+    } else {
+      const err = await response.json();
+      alert(err.detail || 'Ошибка сохранения');
+    }
+  } catch (error) {
+    console.error('Error saving organization:', error);
+    alert('Ошибка сохранения: ' + error.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<iconify-icon icon="mdi:content-save" class="me-1"></iconify-icon>Сохранить';
+  }
+});
+</script>
+{% endblock %}

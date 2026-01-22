@@ -1,0 +1,3536 @@
+﻿<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="icon" type="image/png" href="/static/images/favicon.png" sizes="16x16">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- remix icon font css -->
+  <link rel="stylesheet" href="/static/css/remixicon.css">
+  <!-- Iconify for v12 icons -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <!-- Date picker css -->
+  <link rel="stylesheet" href="/static/css/lib/flatpickr.min.css">
+  <!-- Documatica v12.0 Design System (ONLY v12, no old styles) -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.9">
+  <style>
+    /* ========================================
+       Constructor v12.0 Style Overrides
+       FULL SPEC IMPLEMENTATION
+       ======================================== */
+    
+    /* Page Background with Blue Dots Pattern - like homepage */
+    body.constructor-page-v12 {
+      background-color: #f8fafc !important;
+      background-image: radial-gradient(circle, #3b82f6 1px, transparent 1px) !important;
+      background-size: 32px 32px !important;
+      background-attachment: fixed !important;
+    }
+    
+    /* Main Form Container - Cards with rounded corners */
+    .card.radius-16,
+    .card {
+      background: white !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 2rem !important;
+      overflow: hidden !important;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+      margin-bottom: 24px !important;
+    }
+    
+    /* Card Header - Technical Label Style */
+    .card-header {
+      padding: 24px 32px !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+      background: transparent !important;
+    }
+    
+    .card-header h6,
+    .card-header .mb-0 {
+      font-size: 10px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.3em !important;
+      color: #94a3b8 !important;
+      margin: 0 !important;
+    }
+    
+    /* Card Body */
+    .card-body {
+      padding: 32px !important;
+    }
+    
+    /* Row and Grid fixes - moved to input-group section */
+    .row.g-8 {
+      --bs-gutter-x: 8px !important;
+    }
+    
+    .gap-28 {
+      gap: 16px !important;
+    }
+    
+    /* Form Labels - v12 Technical Style */
+    .form-label,
+    label.form-label {
+      display: block !important;
+      font-size: 9px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.15em !important;
+      color: #94a3b8 !important;
+      margin-left: 4px !important;
+      margin-bottom: 8px !important;
+      min-height: auto !important;
+    }
+    
+    .form-label .text-danger,
+    .form-label span.text-danger {
+      color: #ef4444 !important;
+    }
+    
+    /* Form Inputs - v12 Spec */
+    .form-control,
+    input.form-control,
+    textarea.form-control {
+      width: 100% !important;
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 1rem !important;
+      padding: 14px 18px !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      transition: all 0.3s ease !important;
+      height: auto !important;
+    }
+    
+    .form-control::placeholder {
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      color: #94a3b8 !important;
+      opacity: 0.6 !important;
+    }
+    
+    .form-control:focus {
+      outline: none !important;
+      background: white !important;
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+    }
+    
+    /* Select Dropdown - Custom Arrow */
+    .form-select,
+    select.form-select {
+      width: 100% !important;
+      background-color: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 1rem !important;
+      padding: 14px 44px 14px 18px !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      cursor: pointer !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 14px center !important;
+      background-size: 18px !important;
+      transition: all 0.3s ease !important;
+      height: auto !important;
+    }
+    
+    .form-select:focus {
+      outline: none !important;
+      background-color: white !important;
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+    }
+    
+    /* Input Group - Button INSIDE input */
+    .input-group {
+      position: relative !important;
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      align-items: stretch !important;
+    }
+    
+    .input-group .form-control {
+      border-radius: 1rem !important;
+      padding-right: 70px !important;
+      width: 100% !important;
+      flex: 1 1 auto !important;
+      position: relative !important;
+    }
+    
+    .input-group .btn,
+    .input-group button {
+      position: absolute !important;
+      right: 4px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      background: #e2e8f0 !important;
+      border: none !important;
+      border-radius: 0.75rem !important;
+      padding: 8px 14px !important;
+      font-size: 10px !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      color: #64748b !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.3s ease !important;
+      z-index: 2 !important;
+      height: auto !important;
+      width: auto !important;
+      min-width: auto !important;
+    }
+    
+    .input-group .btn:hover,
+    .input-group button:hover {
+      background: #3b82f6 !important;
+      color: white !important;
+    }
+    
+    /* Fix row gaps to prevent slipping */
+    .row.g-16 {
+      --bs-gutter-x: 16px !important;
+      --bs-gutter-y: 24px !important;
+      margin-bottom: 0 !important;
+    }
+    
+    .row.g-16 > [class*="col"] {
+      margin-bottom: 0 !important;
+    }
+    
+    /* Radio Buttons - v12 Spec with Animation */
+    .form-check {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 4px 0 !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      margin: 0 !important;
+    }
+    
+    .form-check:hover {
+      background: transparent !important;
+    }
+    
+    .form-check-input {
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+      margin: 0 !important;
+      border: 2px solid #cbd5e1 !important;
+      background: white !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      cursor: pointer !important;
+      position: relative !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      flex-shrink: 0 !important;
+    }
+    
+    .form-check-input[type="radio"] {
+      border-radius: 50% !important;
+    }
+    
+    .form-check-input[type="radio"]::after {
+      content: '' !important;
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 8px !important;
+      height: 8px !important;
+      border-radius: 50% !important;
+      background: #3b82f6 !important;
+      transform: translate(-50%, -50%) scale(0) !important;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .form-check-input[type="radio"]:checked {
+      border-color: #3b82f6 !important;
+      background: white !important;
+    }
+    
+    .form-check-input[type="radio"]:checked::after {
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+    
+    /* Checkbox - v12 Spec */
+    .form-check-input[type="checkbox"] {
+      border-radius: 6px !important;
+      width: 20px !important;
+      height: 20px !important;
+      min-width: 20px !important;
+    }
+    
+    .form-check-input[type="checkbox"]:checked {
+      background-color: #3b82f6 !important;
+      border-color: #3b82f6 !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7'%3E%3C/path%3E%3C/svg%3E") !important;
+      background-size: 12px !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+    }
+    
+    .form-check-label {
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: #475569 !important;
+      cursor: pointer !important;
+      line-height: 1.4 !important;
+    }
+    
+    /* Product Rows - v12 style */
+    .product-row {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 1.5rem !important;
+      padding: 24px !important;
+      margin-bottom: 16px !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .product-row:hover {
+      background: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+    }
+    
+    /* Add Product Button - v12 style */
+    .add-product-btn {
+      width: 100% !important;
+      background: transparent !important;
+      border: 2px dashed #e2e8f0 !important;
+      border-radius: 1.5rem !important;
+      padding: 20px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      color: #94a3b8 !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .add-product-btn:hover {
+      background: #f8fafc !important;
+      border-color: #3b82f6 !important;
+      color: #3b82f6 !important;
+    }
+    
+    /* Section dividers */
+    .border-top {
+      border-top: 1px solid #f1f5f9 !important;
+    }
+    
+    /* ========================================
+       Button Systems v12.0
+       ======================================== */
+    
+    /* 7.1 Primary Button (Основное действие) */
+    .btn-primary,
+    .btn-primary-600 {
+      background: #3b82f6 !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 1rem !important;
+      padding: 16px 40px !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 10px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.2em !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .btn-primary:hover,
+    .btn-primary-600:hover {
+      background: #2563eb !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.3) !important;
+    }
+    
+    /* 7.2 Massive CTA Button */
+    .btn-massive-cta {
+      background: #3b82f6 !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 2.5rem !important;
+      padding: 32px 64px !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 12px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.3em !important;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    }
+    
+    .btn-massive-cta:hover {
+      background: #2563eb !important;
+      transform: translateY(-4px) scale(1.02) !important;
+      box-shadow: 0 30px 60px -15px rgba(59, 130, 246, 0.4) !important;
+    }
+    
+    /* 7.3 AI Action Button (Smart Gold) */
+    .btn-ai-action {
+      background: #FBBF24 !important;
+      color: #0f172a !important;
+      border: none !important;
+      border-radius: 1rem !important;
+      padding: 16px 32px !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 10px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.1em !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .btn-ai-action:hover {
+      background: #f59e0b !important;
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.4) !important;
+    }
+    
+    /* 7.4 Outline / Ghost Button */
+    .btn-outline-primary-600 {
+      background: transparent !important;
+      color: #3b82f6 !important;
+      border: 2px solid #3b82f6 !important;
+      border-radius: 1rem !important;
+      padding: 14px 24px !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 10px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.15em !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .btn-outline-primary-600:hover {
+      background: #3b82f6 !important;
+      color: white !important;
+    }
+    
+    .btn-outline-secondary-600,
+    .btn-outline-neutral-600 {
+      background: transparent !important;
+      color: #94a3b8 !important;
+      border: 2px solid #e2e8f0 !important;
+      border-radius: 1rem !important;
+      padding: 14px 24px !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 10px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.15em !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .btn-outline-secondary-600:hover,
+    .btn-outline-neutral-600:hover {
+      background: #f8fafc !important;
+      color: #64748b !important;
+      border-color: #cbd5e1 !important;
+    }
+    
+    /* Preview Panel */
+    .sticky-preview {
+      position: sticky !important;
+      top: 100px !important;
+      background: white !important;
+      border: 1px solid #f1f5f9 !important;
+      border-radius: 2rem !important;
+      overflow: hidden !important;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.05) !important;
+    }
+    
+    /* Modal - v12 style */
+    .modal-content {
+      border-radius: 2rem !important;
+      border: 1px solid #f1f5f9 !important;
+      overflow: hidden !important;
+    }
+    
+    .modal-header {
+      padding: 20px 28px !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+      background: #f8fafc !important;
+    }
+    
+    .modal-title {
+      font-size: 12px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.15em !important;
+      color: #0f172a !important;
+    }
+    
+    .modal-body {
+      padding: 28px !important;
+    }
+    
+    .modal-footer {
+      padding: 20px 28px !important;
+      border-top: 1px solid #f1f5f9 !important;
+      background: #f8fafc !important;
+    }
+    
+    /* Organization/Contractor items in modals */
+    .organization-item,
+    .contractor-item {
+      background: #f8fafc !important;
+      border: 2px solid #f1f5f9 !important;
+      border-radius: 1.5rem !important;
+      padding: 20px !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .organization-item:hover,
+    .contractor-item:hover {
+      background: #f1f5f9 !important;
+      border-color: #3b82f6 !important;
+    }
+    
+    .organization-item.selected,
+    .contractor-item.selected {
+      background: #eff6ff !important;
+      border-color: #3b82f6 !important;
+    }
+    
+    /* Remove button v12 */
+    .btn.remove-product,
+    .product-row .btn.remove-product {
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+      background: #fef2f2 !important;
+      border: none !important;
+      border-radius: 12px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #ef4444 !important;
+      padding: 0 !important;
+      transition: all 0.2s ease !important;
+    }
+    
+    .btn.remove-product:hover,
+    .product-row .btn.remove-product:hover {
+      background: #fee2e2 !important;
+    }
+    
+    /* UPD Preview styling */
+    .upd-preview {
+      background: white !important;
+      border: 1px solid #e5e7eb !important;
+      font-size: 11px !important;
+      border-radius: 12px !important;
+    }
+    
+    .upd-preview table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .upd-preview th, .upd-preview td {
+      border: 1px solid #000;
+      padding: 4px 6px;
+      vertical-align: top;
+    }
+    
+    .upd-preview .header-cell {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    
+    .upd-preview .small-text {
+      font-size: 9px;
+      color: #666;
+    }
+    
+    /* Row gaps adjustment */
+    .row.g-16 > [class*="col"] {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .row.g-16 > [class*="col"] > .form-label {
+      min-height: auto !important;
+      display: block !important;
+      margin-bottom: 8px !important;
+    }
+    
+    .row.g-16 > [class*="col"] > .form-control,
+    .row.g-16 > [class*="col"] > .form-select,
+    .row.g-16 > [class*="col"] > .input-group {
+      margin-top: auto;
+    }
+    
+    /* Form check in flex containers */
+    .d-flex.flex-wrap.gap-28 > .form-check {
+      margin: 0 !important;
+    }
+    
+    /* Footer for form */
+    .card-footer,
+    .form-footer {
+      padding: 28px !important;
+      border-top: 1px solid #f1f5f9 !important;
+      background: transparent !important;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .spin {
+      animation: spin 0.5s linear infinite;
+    }
+    
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      .upd-preview {
+        border: none;
+        box-shadow: none;
+      }
+    }
+    
+    /* Force layout reset - sidebar fixed, main with margin */
+    body.constructor-page-v12 {
+      margin: 0 !important;
+      padding: 0 !important;
+      min-height: 100vh !important;
+    }
+    
+    /* Sidebar fixed on left */
+    body.constructor-page-v12 aside.sidebar-v12 {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 320px !important;
+      height: 100vh !important;
+      z-index: 50 !important;
+      overflow-y: auto !important;
+    }
+    
+    /* Main content with left margin */
+    body.constructor-page-v12 .dashboard-main-v12 {
+      margin-left: 320px !important;
+      min-height: 100vh !important;
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+      position: relative !important;
+    }
+    
+    /* Header at top of main */
+    body.constructor-page-v12 .dashboard-header-v12 {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+    
+    /* Footer - fix styles inside dashboard */
+    body.constructor-page-v12 .footer-v12 {
+      margin-left: 0 !important;
+      width: 100% !important;
+      padding: 48px 0 24px !important;
+      margin-top: 48px !important;
+    }
+    
+    body.constructor-page-v12 .footer-v12 .footer-nav-v12 h4 {
+      font-size: 9px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.2em !important;
+      color: #0f172a !important;
+      margin-bottom: 16px !important;
+    }
+    
+    body.constructor-page-v12 .footer-v12 .footer-nav-v12 ul {
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    body.constructor-page-v12 .footer-v12 .footer-nav-v12 li {
+      margin-bottom: 10px !important;
+    }
+    
+    body.constructor-page-v12 .footer-v12 .footer-nav-v12 a {
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: #64748b !important;
+      text-decoration: none !important;
+    }
+    
+    body.constructor-page-v12 .footer-v12 .footer-nav-v12 a:hover {
+      color: #3b82f6 !important;
+    }
+    
+    @media (max-width: 1023px) {
+      body.constructor-page-v12 aside.sidebar-v12 {
+        position: fixed !important;
+        transform: translateX(-100%) !important;
+        z-index: 1000 !important;
+        height: 100vh !important;
+      }
+      body.constructor-page-v12.sidebar-open aside.sidebar-v12 {
+        transform: translateX(0) !important;
+      }
+      body.constructor-page-v12 .dashboard-main-v12 {
+        margin-left: 0 !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="constructor-page-v12">
+
+<!-- Sidebar v12 -->
+{% include 'components/sidebar_v12.html' %}
+
+<!-- Sidebar Overlay for mobile -->
+<div class="sidebar-overlay-v12" onclick="document.body.classList.remove('sidebar-open')"></div>
+
+<main class="dashboard-main-v12">
+  <!-- Header v12 -->
+  {% include 'components/header_dashboard_v12.html' %}
+
+  <div class="dashboard-content-v12">
+    <!-- Page Title -->
+    <div class="page-title-v12">
+      <h1>Создать УПД</h1>
+      <p>Универсальный передаточный документ</p>
+    </div>
+
+    <form id="upd-form">
+      <div class="row gy-4">
+        <!-- Left Column - Form -->
+        <div class="col-xxl-7 col-xl-6">
+          <!-- Document Info -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom">
+              <h6 class="mb-0">Параметры документа</h6>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <!-- Статус УПД - радиобаттоны -->
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Статус УПД</label>
+                  <div class="d-flex align-items-center flex-wrap gap-28">
+                    <div class="form-check checked-primary d-flex align-items-center gap-2">
+                      <input class="form-check-input" type="radio" name="upd-status" id="upd-status-1" value="1" checked>
+                      <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="upd-status-1">1 - счет-фактура и передаточный документ</label>
+                    </div>
+                    <div class="form-check checked-primary d-flex align-items-center gap-2">
+                      <input class="form-check-input" type="radio" name="upd-status" id="upd-status-2" value="2">
+                      <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="upd-status-2">2 - передаточный документ (акт)</label>
+                    </div>
+                  </div>
+                </div>
+                <!-- Номер и дата -->
+                <div class="col-md-4">
+                  <label class="form-label fw-medium mb-8">Номер УПД <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="upd-number" placeholder="Авто" required>
+                    <button class="btn btn-outline-secondary-600" type="button" id="auto-number-btn" title="Автонумерация">
+                      Авто
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-medium mb-8">Дата документа <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control date-picker" id="upd-date" placeholder="Выберите дату" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-medium mb-8">Исправление №</label>
+                  <div class="row g-8">
+                    <div class="col-6">
+                      <input type="text" class="form-control" id="correction-number" placeholder="--">
+                    </div>
+                    <div class="col-6">
+                      <input type="text" class="form-control date-picker" id="correction-date" placeholder="от">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seller Info -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
+              <h6 class="mb-0">Продавец</h6>
+              <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectCompanyModal">
+                Выбрать из списка
+              </button>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Наименование <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="seller-name" placeholder='ООО "Название"' required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-medium mb-8">ИНН <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="seller-inn" placeholder="7707123456" required maxlength="12">
+                    <button class="btn btn-outline-primary-600 dadata-search-btn" type="button" id="seller-inn-search" title="Найти по ИНН">
+                      <iconify-icon icon="mdi:magnify" class="text-lg"></iconify-icon>
+                    </button>
+                  </div>
+                  <small class="text-muted d-none" id="seller-inn-loading">Поиск...</small>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-medium mb-8">КПП</label>
+                  <input type="text" class="form-control" id="seller-kpp" placeholder="770701001" maxlength="9">
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Адрес <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="seller-address" placeholder="123456, г. Москва, ул. Примерная, д. 1" required>
+                </div>
+                <!-- Кнопка добавить в организации (показывается при ручном вводе) -->
+                <div class="col-12" id="add-seller-to-org" style="display: none;">
+                  <button type="button" class="btn btn-sm btn-outline-success-600" id="save-seller-btn">
+                    Добавить в мои организации
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Грузоотправитель -->
+              <div class="mt-24 pt-16 border-top">
+                <label class="form-label fw-medium mb-8">Грузоотправитель и его адрес</label>
+                <div class="d-flex align-items-center flex-wrap gap-28 mb-12">
+                  <div class="form-check checked-primary d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="consignor-type" id="consignor-none" value="none" checked>
+                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignor-none">Не заполнять</label>
+                  </div>
+                  <div class="form-check checked-primary d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="consignor-type" id="consignor-same" value="same">
+                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignor-same">Совпадает с продавцом</label>
+                  </div>
+                  <div class="form-check checked-primary d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="consignor-type" id="consignor-manual" value="manual">
+                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignor-manual">Ручной ввод</label>
+                  </div>
+                </div>
+                <input type="text" class="form-control" id="consignor-address" placeholder="Грузоотправитель, адрес" disabled>
+              </div>
+              
+              <!-- Настройки НДС по умолчанию -->
+              <div class="mt-24 pt-16 border-top">
+                <label class="form-label fw-medium mb-12">Настройки НДС и страна происхождения (по умолчанию для товаров)</label>
+                <div class="row g-16">
+                  <div class="col-md-3">
+                    <label class="form-label text-sm mb-4">Ставка НДС</label>
+                    <select class="form-select" id="default-vat">
+                      <option value="22">22%</option>
+                      <option value="20" selected>20%</option>
+                      <option value="18">18%</option>
+                      <option value="10">10%</option>
+                      <option value="7">7%</option>
+                      <option value="5">5%</option>
+                      <option value="0">0%</option>
+                      <option value="none">Без НДС</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label text-sm mb-4">НДС</label>
+                    <select class="form-select" id="default-vat-type">
+                      <option value="on-top" selected>Сверху</option>
+                      <option value="included">Включен в цену</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label text-sm mb-4">Страна</label>
+                    <input type="text" class="form-control" id="default-country" value="Россия">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label text-sm mb-4">Код страны</label>
+                    <input type="text" class="form-control" id="default-country-code" value="643">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Buyer Info -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
+              <h6 class="mb-0">Покупатель</h6>
+              <div class="d-flex gap-8">
+                <div class="position-relative">
+                  <input type="text" class="form-control form-control-sm ps-36" placeholder="Поиск по ИНН" id="search-inn" style="width: 160px;">
+                  <iconify-icon icon="mdi:magnify" class="position-absolute top-50 start-0 translate-middle-y ms-12 text-secondary-light"></iconify-icon>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectContractorModal">
+                  Из списка
+                </button>
+              </div>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Наименование <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="buyer-name" placeholder='ООО "Контрагент"' required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-medium mb-8">ИНН <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="buyer-inn" placeholder="7708654321" required maxlength="12">
+                    <button class="btn btn-outline-primary-600 dadata-search-btn" type="button" id="buyer-inn-search" title="Найти по ИНН">
+                      <iconify-icon icon="mdi:magnify" class="text-lg"></iconify-icon>
+                    </button>
+                  </div>
+                  <small class="text-muted d-none" id="buyer-inn-loading">Поиск...</small>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-medium mb-8">КПП</label>
+                  <input type="text" class="form-control" id="buyer-kpp" placeholder="770801001" maxlength="9">
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Адрес <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="buyer-address" placeholder="654321, г. Санкт-Петербург, пр. Невский, д. 100" required>
+                </div>
+                <!-- Кнопка добавить в клиенты (показывается при ручном вводе) -->
+                <div class="col-12" id="add-buyer-to-clients" style="display: none;">
+                  <button type="button" class="btn btn-sm btn-outline-success-600" id="save-buyer-btn">
+                    Добавить в мои клиенты
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Валюта и идентификатор госконтракта -->
+              <div class="mt-24 pt-16 border-top">
+                <div class="row g-16">
+                  <div class="col-md-6">
+                    <label class="form-label fw-medium mb-8">Валюта: наименование, код</label>
+                    <div class="row g-8">
+                      <div class="col-8">
+                        <input type="text" class="form-control" id="currency-name" value="Российский рубль" placeholder="Наименование валюты">
+                      </div>
+                      <div class="col-4">
+                        <input type="text" class="form-control" id="currency-code" value="643" placeholder="Код">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-medium mb-8">Идентификатор гос. контракта</label>
+                    <input type="text" class="form-control" id="gov-contract-id" placeholder="При наличии">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Грузополучатель -->
+              <div class="mt-24 pt-16 border-top">
+                <label class="form-label fw-medium mb-8">Грузополучатель и его адрес</label>
+                <div class="d-flex align-items-center flex-wrap gap-28 mb-12">
+                  <div class="form-check checked-primary d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="consignee-type" id="consignee-none" value="none" checked>
+                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignee-none">Не заполнять</label>
+                  </div>
+                  <div class="form-check checked-primary d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="consignee-type" id="consignee-same" value="same">
+                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignee-same">Совпадает с покупателем</label>
+                  </div>
+                  <div class="form-check checked-primary d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="consignee-type" id="consignee-manual" value="manual">
+                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignee-manual">Ручной ввод</label>
+                  </div>
+                </div>
+                <input type="text" class="form-control" id="consignee-address" placeholder="Грузополучатель, адрес" disabled>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Payment and Shipping Documents -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom">
+              <h6 class="mb-0">Дополнительные сведения</h6>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">К платежно-расчетному документу №</label>
+                  <input type="text" class="form-control" id="payment-document" placeholder="№ и дата платежного документа">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Документ об отгрузке</label>
+                  <input type="text" class="form-control" id="shipping-document" placeholder="№ и дата документа об отгрузке">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Products/Services -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom">
+              <h6 class="mb-0 d-flex align-items-center gap-8">
+                <iconify-icon icon="mdi:package-variant" class="text-info-main"></iconify-icon>
+                Товары и услуги
+              </h6>
+            </div>
+            <div class="card-body p-24">
+              <div id="products-container">
+                <!-- Product Row 1 -->
+                <div class="product-row card border radius-12 p-16 mb-16" data-row="1">
+                  <div class="row g-12 align-items-end">
+                    <div class="col">
+                      <label class="form-label text-sm mb-4">Наименование <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control product-name" placeholder="Название товара или услуги" required>
+                    </div>
+                    <div class="col-auto" style="width: 100px;">
+                      <label class="form-label text-sm mb-4">Кол-во</label>
+                      <input type="number" class="form-control product-qty" value="1" min="0.01" step="0.01">
+                    </div>
+                    <div class="col-auto" style="width: 90px;">
+                      <label class="form-label text-sm mb-4">Ед. изм.</label>
+                      <select class="form-select product-unit">
+                        <option value="шт">шт</option>
+                        <option value="усл">усл</option>
+                        <option value="ч">ч</option>
+                        <option value="кг">кг</option>
+                        <option value="л">л</option>
+                        <option value="м">м</option>
+                        <option value="м2">м2</option>
+                        <option value="м3">м3</option>
+                      </select>
+                    </div>
+                    <div class="col-auto" style="width: 120px;">
+                      <label class="form-label text-sm mb-4">Цена</label>
+                      <input type="number" class="form-control product-price" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="col-auto">
+                      <button type="button" class="btn btn-outline-danger remove-product" title="Удалить">
+                        <iconify-icon icon="mdi:trash-can-outline"></iconify-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add Product Buttons -->
+              <div class="d-flex gap-12 mb-16">
+                <button type="button" class="add-product-btn flex-grow-1 py-16 radius-12 d-flex align-items-center justify-content-center gap-8 text-secondary-light" id="add-product">
+                  <iconify-icon icon="mdi:plus-circle" class="text-xl"></iconify-icon>
+                  Добавить вручную
+                </button>
+                <button type="button" class="add-product-btn flex-grow-1 py-16 radius-12 d-flex align-items-center justify-content-center gap-8 text-secondary-light" data-bs-toggle="modal" data-bs-target="#selectProductModal">
+                  <iconify-icon icon="mdi:package-variant" class="text-xl"></iconify-icon>
+                  Выбрать из справочника
+                </button>
+              </div>
+
+              <!-- Totals -->
+              <div class="mt-24 pt-24 border-top">
+                <div class="row justify-content-end">
+                  <div class="col-md-6">
+                    <div class="d-flex justify-content-between mb-12">
+                      <span class="text-secondary-light">Итого без НДС:</span>
+                      <span class="fw-medium" id="total-without-vat">0 ₽</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-12">
+                      <span class="text-secondary-light">НДС:</span>
+                      <span class="fw-medium" id="total-vat">0 ₽</span>
+                    </div>
+                    <div class="d-flex justify-content-between pt-12 border-top">
+                      <span class="fw-semibold text-lg">Итого с НДС:</span>
+                      <span class="fw-bold text-lg text-primary-600" id="total-with-vat">0 ₽</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Info - Подписант со стороны продавца -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom">
+              <h6 class="mb-0">Подписант со стороны продавца</h6>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <!-- Основание передачи -->
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Основание передачи (сдачи) / получения (приемки)</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="transfer-basis" placeholder="Договор № от дд.мм.гггг">
+                    <button class="btn btn-outline-secondary-600 d-none" type="button" id="add-contract-btn" title="Добавить в договоры">
+                      <iconify-icon icon="mdi:plus"></iconify-icon>
+                    </button>
+                  </div>
+                </div>
+                <!-- Данные о транспортировке -->
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Данные о транспортировке и грузе</label>
+                  <input type="text" class="form-control" id="transport-info" placeholder="Транспортная накладная, поручение экспедитору, экспедиторская / складская расписка и т.п.">
+                </div>
+                <!-- Товар передал -->
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Товар (груз) передал / услуги, результаты работ, права сдал</label>
+                  <div class="row g-12">
+                    <div class="col-md-4">
+                      <input type="text" class="form-control" id="released-position" placeholder="Должность">
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="released-by" placeholder="ФИО">
+                        <button class="btn btn-outline-primary-600" type="button" id="select-released-org" title="Выбрать из организации">
+                          <iconify-icon icon="mdi:account-box"></iconify-icon>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control date-picker" id="shipping-date" placeholder="Дата отгрузки">
+                        <button class="btn btn-outline-secondary-600" type="button" id="set-today-shipping" title="Текущая дата">
+                          Сегодня
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Иные сведения об отгрузке -->
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Иные сведения об отгрузке, передаче</label>
+                  <input type="text" class="form-control" id="other-shipping-info" placeholder="Ссылки на неотъемлемые приложения, сопутствующие документы, иные документы и т.п.">
+                </div>
+                <!-- Ответственный за правильность оформления -->
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Ответственный за правильность оформления факта хоз. жизни</label>
+                  <div class="row g-12">
+                    <div class="col-md-4">
+                      <input type="text" class="form-control" id="responsible-position" placeholder="Должность">
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="responsible-name" placeholder="ФИО">
+                        <button class="btn btn-outline-primary-600" type="button" id="select-responsible-org" title="Выбрать из организации">
+                          <iconify-icon icon="mdi:account-box"></iconify-icon>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" class="form-control" id="economic-entity" placeholder="В т.ч. комиссионера / агента (может не заполняться)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Подписант со стороны покупателя -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom">
+              <h6 class="mb-0">Подписант со стороны покупателя</h6>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <!-- Товар получил -->
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Товар (груз) получил / услуги, результаты работ, права принял</label>
+                  <div class="row g-12">
+                    <div class="col-md-4">
+                      <input type="text" class="form-control" id="received-position" placeholder="Должность">
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="received-by" placeholder="ФИО">
+                        <button class="btn btn-outline-primary-600" type="button" id="select-received-contractor" title="Выбрать из контрагентов">
+                          <iconify-icon icon="mdi:account-box"></iconify-icon>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control date-picker" id="receiving-date" placeholder="Дата получения">
+                        <button class="btn btn-outline-secondary-600" type="button" id="set-today-receiving" title="Текущая дата">
+                          Сегодня
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Иные сведения о получении -->
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Иные сведения о получении, приемке</label>
+                  <input type="text" class="form-control" id="other-receiving-info" placeholder="Информация о наличии/отсутствии претензии; ссылки на неотъемлемые приложения, и другие документы и т.п.">
+                </div>
+                <!-- Ответственный за правильность оформления (покупатель) -->
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Ответственный за правильность оформления факта хоз. жизни</label>
+                  <div class="row g-12">
+                    <div class="col-md-4">
+                      <input type="text" class="form-control" id="buyer-responsible-position" placeholder="Должность">
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="buyer-responsible-name" placeholder="ФИО">
+                        <button class="btn btn-outline-primary-600" type="button" id="select-buyer-responsible" title="Выбрать из контрагентов">
+                          <iconify-icon icon="mdi:account-box"></iconify-icon>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="buyer-economic-entity" placeholder="Может не заполняться при М.П.">
+                        <button class="btn btn-outline-primary-600" type="button" id="select-buyer-entity" title="Выбрать организацию">
+                          <iconify-icon icon="mdi:domain"></iconify-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="card radius-16">
+            <div class="card-body p-24">
+              <div class="d-flex flex-wrap gap-12 justify-content-center">
+                <button type="button" class="btn btn-outline-neutral-600 px-24" id="save-draft">
+                  Сохранить черновик
+                </button>
+                <button type="button" class="btn btn-outline-neutral-600 px-24" id="save-template">
+                  Сохранить как шаблон
+                </button>
+                <button type="button" class="btn btn-outline-primary-600 px-24" id="preview-btn" data-bs-toggle="modal" data-bs-target="#previewModal">
+                  Предпросмотр
+                </button>
+                <button type="submit" class="btn btn-primary-600 px-32">
+                  Скачать PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Preview -->
+        <div class="col-xxl-5 col-xl-6 d-none d-xl-block">
+          <div class="sticky-preview">
+            <div class="card radius-16">
+              <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
+                <h6 class="mb-0">Предпросмотр УПД</h6>
+                <button type="button" class="btn btn-sm btn-outline-primary-600" id="refresh-preview">
+                  Обновить
+                </button>
+              </div>
+              <div class="card-body p-0 bg-white" style="overflow: hidden; min-height: 400px;">
+                <iframe id="sidebar-preview-iframe" style="width: 1150px; height: 850px; border: none; transform-origin: top left; background: white;" scrolling="no"></iframe>
+              </div>
+            </div>
+            
+            <!-- AI Analysis Block -->
+            <div class="card radius-16 mt-24">
+              <div class="card-header py-16 px-24 d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+                <div class="d-flex align-items-center gap-12">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
+                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                    <circle cx="7.5" cy="14.5" r="1.5"/>
+                    <circle cx="16.5" cy="14.5" r="1.5"/>
+                  </svg>
+                  <span class="text-white fw-bold text-uppercase" style="font-size: 12px; letter-spacing: 0.05em;">ИИ Анализ документа</span>
+                </div>
+                <div class="d-flex align-items-center gap-8">
+                  <button type="button" class="btn btn-sm d-none align-items-center gap-8" id="clear-highlights-btn" style="background: transparent; color: #94a3b8; border: 1px solid #475569; font-weight: 600; font-size: 10px; text-transform: uppercase;">
+                    Сбросить подсветку
+                  </button>
+                  <button type="button" class="btn btn-sm d-flex align-items-center gap-8" id="ai-analyze-btn" style="background: #fbbf24; color: #0f172a; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="11" cy="11" r="8"/>
+                      <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    Анализировать
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" id="ai-analysis-result" style="min-height: 100px;">
+                <div class="text-center py-24 text-secondary-light">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mb-12 mx-auto d-block" style="opacity: 0.5;">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 11 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                  </svg>
+                  <p class="mb-4 fw-semibold text-secondary-light">Нажмите "Анализировать" для проверки документа</p>
+                  <small class="text-secondary-light">ИИ проверит документ на ошибки с точки зрения бухгалтера и юриста</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer inside main -->
+  {% include 'components/footer.html' %}
+  
+</main>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+  <div class="modal-dialog" style="max-width: 98vw; width: 1200px; margin: 20px auto;">
+    <div class="modal-content radius-16" style="overflow: hidden;">
+      <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
+        <h5 class="modal-title">Предпросмотр УПД</h5>
+        <div class="d-flex gap-12 align-items-center">
+          <button type="button" class="btn btn-sm btn-primary-600" id="modal-download-pdf">
+            Скачать PDF
+          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+      </div>
+      <div class="modal-body p-0 bg-white" style="overflow: hidden;">
+        <iframe id="preview-iframe" style="width: 100%; height: 850px; border: none; display: block;" scrolling="no"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Select Company (Organization) Modal -->
+<div class="modal fade" id="selectCompanyModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content radius-16">
+      <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
+        <h5 class="modal-title">Выберите организацию</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-24">
+        <div class="mb-16">
+          <input type="text" class="form-control" id="search-organization" placeholder="Поиск по названию или ИНН...">
+        </div>
+        <div id="organizations-modal-list">
+          <div class="text-center py-24 text-secondary-light">
+            <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
+            <p class="mt-8">Загрузка организаций...</p>
+          </div>
+        </div>
+        <div id="no-organizations-message" style="display: none;" class="text-center py-24">
+          <iconify-icon icon="mdi:domain" class="text-secondary-light text-4xl"></iconify-icon>
+          <p class="mt-8 text-secondary-light">Организации не найдены</p>
+          <a href="/organizations" class="btn btn-sm btn-primary-600 mt-8">Добавить организацию</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="/organizations" class="btn btn-outline-primary-600">
+          <iconify-icon icon="mdi:plus"></iconify-icon>
+          Добавить новую
+        </a>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Select Contractor Modal -->
+<div class="modal fade" id="selectContractorModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content radius-16">
+      <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
+        <h5 class="modal-title">Выберите контрагента</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-24">
+        <div class="mb-16">
+          <input type="text" class="form-control" id="search-contractor" placeholder="Поиск по названию или ИНН...">
+        </div>
+        <div id="contractors-modal-list">
+          <div class="text-center py-24 text-secondary-light">
+            <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
+            <p class="mt-8">Загрузка контрагентов...</p>
+          </div>
+        </div>
+        <div id="no-contractors-message" style="display: none;" class="text-center py-24">
+          <iconify-icon icon="mdi:account-group" class="text-secondary-light text-4xl"></iconify-icon>
+          <p class="mt-8 text-secondary-light">Контрагенты не найдены</p>
+          <a href="/contractors" class="btn btn-sm btn-primary-600 mt-8">Добавить контрагента</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="/contractors" class="btn btn-outline-primary-600">
+          <iconify-icon icon="mdi:plus"></iconify-icon>
+          Добавить нового
+        </a>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Select Product Modal -->
+<div class="modal fade" id="selectProductModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content radius-16">
+      <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
+        <h5 class="modal-title">Выберите товар или услугу</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-24">
+        <div class="mb-16">
+          <input type="text" class="form-control" id="search-product-modal" placeholder="Поиск по названию или артикулу...">
+        </div>
+        <div id="products-modal-list">
+          <div class="text-center py-24 text-secondary-light">
+            <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
+            <p class="mt-8">Загрузка товаров...</p>
+          </div>
+        </div>
+        <div id="no-products-message" style="display: none;" class="text-center py-24">
+          <iconify-icon icon="mdi:package-variant" class="text-secondary-light text-4xl"></iconify-icon>
+          <p class="mt-8 text-secondary-light">Товары не найдены</p>
+          <a href="/products" class="btn btn-sm btn-primary-600 mt-8">Добавить товар</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="/products" class="btn btn-outline-primary-600">
+          <iconify-icon icon="mdi:plus"></iconify-icon>
+          В справочник
+        </a>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Required Modal -->
+<div class="modal fade" id="authRequiredModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content radius-16">
+      <div class="modal-header bg-primary-50 py-16 px-24 border-bottom">
+        <h5 class="modal-title">Документ сохранен</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-24 text-center">
+        <div class="mb-24">
+          <span class="w-80-px h-80-px bg-success-100 rounded-circle d-flex justify-content-center align-items-center mx-auto mb-16">
+            <iconify-icon icon="mdi:check-circle" class="text-success-600 text-4xl"></iconify-icon>
+          </span>
+          <h5 class="fw-semibold mb-8">Ваш УПД сохранен</h5>
+          <p class="text-secondary-light mb-0">
+            Для скачивания документа необходимо войти в аккаунт или зарегистрироваться.<br>
+            <strong>Ваш документ уже ждет вас в личном кабинете!</strong>
+          </p>
+        </div>
+        <div class="d-flex flex-column gap-12">
+          <a href="/login" class="btn btn-primary-600 radius-8 px-24 py-12">
+            Войти в аккаунт
+          </a>
+          <a href="/register" class="btn btn-outline-primary-600 radius-8 px-24 py-12">
+            Зарегистрироваться
+          </a>
+        </div>
+        <p class="text-sm text-secondary-light mt-16 mb-0">
+          После входа вы сможете скачать документ в любом формате
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery library js -->
+<script src="/static/js/lib/jquery-3.7.1.min.js"></script>
+<!-- Bootstrap js -->
+<script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+<!-- Iconify Font js -->
+<script src="/static/js/lib/iconify-icon.min.js"></script>
+<!-- Date picker js -->
+<script src="/static/js/flatpickr.js"></script>
+<!-- jQuery UI js -->
+<script src="/static/js/lib/jquery-ui.min.js"></script>
+<!-- main js -->
+<script src="/static/js/app.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Initialize date picker
+    flatpickr('.date-picker', {
+        dateFormat: 'd.m.Y',
+        defaultDate: new Date(),
+        locale: {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                longhand: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+            },
+            months: {
+                shorthand: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                longhand: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+            }
+        }
+    });
+    
+    // API URL
+    const API_URL = '/api/v1';
+    
+    // Настраиваем интерфейс для авторизованного пользователя
+    (function() {
+        const token = localStorage.getItem('documatica_token');
+        const user = JSON.parse(localStorage.getItem('documatica_user') || '{}');
+        
+        // Сайдбар показываем всегда, авторизация проверяется только при генерации PDF
+        
+        if (token && user) {
+            // Пользователь авторизован - показываем его данные
+            if (user.name) {
+                const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                $('#user-initials').text(initials);
+                $('#user-name').text(user.name);
+            }
+            if (user.email) {
+                $('#user-email').text(user.email);
+            }
+        } else {
+            // Не авторизован - показываем гостевые инициалы
+            $('#user-initials').text('Г');
+            $('#user-name').text('Гость');
+            $('#user-email').text('Войдите для сохранения');
+        }
+        
+        // Обработчик выхода
+        $('#logout-btn').on('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('documatica_token');
+            localStorage.removeItem('documatica_user');
+            window.location.href = '/';
+        });
+    })();
+    
+    // ID редактируемого документа (если есть)
+    const editDocumentId = '{{ edit_document_id | default("") }}';
+    
+    // Загрузка данных редактируемого документа
+    if (editDocumentId) {
+        (async function() {
+            try {
+                const response = await fetch(`/api/v1/documents/saved/${editDocumentId}/form-data`, { credentials: 'include' });
+                if (response.ok) {
+                    const formData = await response.json();
+                    setTimeout(function() {
+                        loadFormDataForEdit(formData);
+                        showNotification('success', 'Документ загружен для редактирования');
+                    }, 500);
+                } else {
+                    showNotification('danger', 'Не удалось загрузить данные документа');
+                }
+            } catch (error) {
+                console.error('Error loading document:', error);
+                showNotification('danger', 'Ошибка загрузки документа');
+            }
+        })();
+    }
+    
+    // Check if we need to load a template
+    const urlParams = new URLSearchParams(window.location.search);
+    const templateId = urlParams.get('template');
+    if (templateId && templateId !== 'true') {
+        // Загрузка шаблона с сервера по ID
+        (async function() {
+            try {
+                const response = await fetch(`/api/v1/templates/${templateId}`, { credentials: 'include' });
+                if (response.ok) {
+                    const template = await response.json();
+                    setTimeout(function() {
+                        loadTemplateData(template.data);
+                        showNotification('success', 'Шаблон загружен! Измените данные и создайте документ.');
+                    }, 500);
+                } else {
+                    showNotification('danger', 'Не удалось загрузить шаблон');
+                }
+            } catch (error) {
+                console.error('Error loading template:', error);
+                showNotification('danger', 'Ошибка загрузки шаблона');
+            }
+        })();
+    } else if (templateId === 'true') {
+        // Старый способ через localStorage (для обратной совместимости)
+        const templateData = localStorage.getItem('upd_use_template');
+        if (templateData) {
+            setTimeout(function() {
+                loadTemplateData(JSON.parse(templateData));
+                localStorage.removeItem('upd_use_template');
+                showNotification('success', 'Шаблон загружен! Измените данные и создайте документ.');
+            }, 500);
+        }
+    }
+    
+    // Check if we need to load a draft
+    if (urlParams.get('draft') === 'true') {
+        const draftData = localStorage.getItem('upd_draft');
+        if (draftData) {
+            setTimeout(function() {
+                loadTemplateData(JSON.parse(draftData));
+                showNotification('success', 'Черновик загружен!');
+            }, 500);
+        }
+    }
+    
+    // Storage for loaded data
+    let organizationsList = [];
+    let contractorsList = [];
+    
+    // ============== DADATA АВТОЗАПОЛНЕНИЕ ==============
+    
+    // Поиск компании по ИНН через Dadata
+    async function searchCompanyByInn(inn, targetType) {
+        if (!inn || inn.length < 10) {
+            showNotification('error', 'ИНН должен содержать минимум 10 символов');
+            return null;
+        }
+        
+        const loadingEl = $(`#${targetType}-inn-loading`);
+        const searchBtn = $(`#${targetType}-inn-search`);
+        
+        try {
+            loadingEl.removeClass('d-none');
+            searchBtn.prop('disabled', true);
+            
+            const response = await fetch(`${API_URL}/dadata/company/by-inn`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ inn: inn.trim(), branch_type: 'MAIN' })
+            });
+            
+            if (!response.ok) {
+                if (response.status === 404) {
+                    showNotification('warning', 'Компания с таким ИНН не найдена');
+                    return null;
+                }
+                throw new Error('Ошибка при поиске');
+            }
+            
+            const company = await response.json();
+            return company;
+            
+        } catch (error) {
+            console.error('Dadata search error:', error);
+            showNotification('error', 'Ошибка при поиске компании');
+            return null;
+        } finally {
+            loadingEl.addClass('d-none');
+            searchBtn.prop('disabled', false);
+        }
+    }
+    
+    // Заполнение полей продавца
+    function fillSellerFields(company) {
+        if (!company) return;
+        
+        $('#seller-name').val(company.name || '');
+        $('#seller-inn').val(company.inn || '');
+        $('#seller-kpp').val(company.kpp || '');
+        $('#seller-address').val(company.address_full || company.address || '');
+        
+        // Подсветка заполненных полей
+        $('#seller-name, #seller-inn, #seller-kpp, #seller-address').addClass('bg-success-100');
+        setTimeout(() => {
+            $('#seller-name, #seller-inn, #seller-kpp, #seller-address').removeClass('bg-success-100');
+        }, 2000);
+        
+        showNotification('success', `Данные компании "${company.name}" загружены`);
+    }
+    
+    // Заполнение полей покупателя
+    function fillBuyerFields(company) {
+        if (!company) return;
+        
+        $('#buyer-name').val(company.name || '');
+        $('#buyer-inn').val(company.inn || '');
+        $('#buyer-kpp').val(company.kpp || '');
+        $('#buyer-address').val(company.address_full || company.address || '');
+        
+        // Подсветка заполненных полей
+        $('#buyer-name, #buyer-inn, #buyer-kpp, #buyer-address').addClass('bg-success-100');
+        setTimeout(() => {
+            $('#buyer-name, #buyer-inn, #buyer-kpp, #buyer-address').removeClass('bg-success-100');
+        }, 2000);
+        
+        showNotification('success', `Данные компании "${company.name}" загружены`);
+    }
+    
+    // Обработчики кнопок поиска по ИНН
+    $('#seller-inn-search').on('click', async function() {
+        const inn = $('#seller-inn').val();
+        const company = await searchCompanyByInn(inn, 'seller');
+        if (company) {
+            fillSellerFields(company);
+        }
+    });
+    
+    $('#buyer-inn-search').on('click', async function() {
+        const inn = $('#buyer-inn').val();
+        const company = await searchCompanyByInn(inn, 'buyer');
+        if (company) {
+            fillBuyerFields(company);
+        }
+    });
+    
+    // Автопоиск при вводе полного ИНН (10 или 12 символов) и нажатии Enter
+    $('#seller-inn').on('keypress', async function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            const inn = $(this).val();
+            if (inn.length >= 10) {
+                const company = await searchCompanyByInn(inn, 'seller');
+                if (company) {
+                    fillSellerFields(company);
+                }
+            }
+        }
+    });
+    
+    $('#buyer-inn').on('keypress', async function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            const inn = $(this).val();
+            if (inn.length >= 10) {
+                const company = await searchCompanyByInn(inn, 'buyer');
+                if (company) {
+                    fillBuyerFields(company);
+                }
+            }
+        }
+    });
+    
+    // ============== КОНЕЦ DADATA ==============
+    
+    // Load organizations for modal
+    async function loadOrganizationsModal(searchTerm = '') {
+        try {
+            const response = await fetch(`${API_URL}/organizations`);
+            organizationsList = await response.json();
+            // Sync to localStorage
+            localStorage.setItem('organizations', JSON.stringify(organizationsList));
+        } catch (error) {
+            console.log('API unavailable, using localStorage');
+            organizationsList = JSON.parse(localStorage.getItem('organizations') || '[]');
+        }
+        
+        renderOrganizationsModal(searchTerm);
+    }
+    
+    // Render organizations in modal
+    function renderOrganizationsModal(searchTerm = '') {
+        const container = $('#organizations-modal-list');
+        const noMessage = $('#no-organizations-message');
+        
+        let filtered = organizationsList;
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            filtered = organizationsList.filter(o => 
+                o.name.toLowerCase().includes(term) || 
+                o.inn.includes(term)
+            );
+        }
+        
+        if (filtered.length === 0) {
+            container.hide();
+            noMessage.show();
+            return;
+        }
+        
+        noMessage.hide();
+        container.show();
+        
+        let html = '';
+        filtered.forEach(org => {
+            const typeLabel = org.org_type === 'ip' ? 'ИП' : 'Юр. лицо';
+            const typeBadgeClass = org.org_type === 'ip' ? 'bg-info-100 text-info-600' : 'bg-primary-100 text-primary-600';
+            html += `
+                <div class="card border mb-12 organization-item" data-id="${org.id}" style="cursor: pointer;">
+                    <div class="card-body p-16">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <span class="badge ${typeBadgeClass} mb-8">${typeLabel}</span>
+                                <h6 class="mb-4">${org.name}</h6>
+                                <p class="text-secondary-light small mb-0">ИНН: ${org.inn}${org.kpp ? ', КПП: ' + org.kpp : ''}</p>
+                                ${org.address ? `<p class="text-secondary-light small mb-0">${org.address}</p>` : ''}
+                            </div>
+                            <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        container.html(html);
+    }
+    
+    // Load contractors for modal
+    async function loadContractorsModal(searchTerm = '') {
+        try {
+            const response = await fetch(`${API_URL}/contractors`);
+            contractorsList = await response.json();
+            // Sync to localStorage
+            localStorage.setItem('contractors', JSON.stringify(contractorsList));
+        } catch (error) {
+            console.log('API unavailable, using localStorage');
+            contractorsList = JSON.parse(localStorage.getItem('contractors') || '[]');
+        }
+        
+        renderContractorsModal(searchTerm);
+    }
+    
+    // Render contractors in modal
+    function renderContractorsModal(searchTerm = '') {
+        const container = $('#contractors-modal-list');
+        const noMessage = $('#no-contractors-message');
+        
+        let filtered = contractorsList;
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            filtered = contractorsList.filter(c => 
+                c.name.toLowerCase().includes(term) || 
+                c.inn.includes(term)
+            );
+        }
+        
+        if (filtered.length === 0) {
+            container.hide();
+            noMessage.show();
+            return;
+        }
+        
+        noMessage.hide();
+        container.show();
+        
+        let html = '';
+        filtered.forEach(contractor => {
+            const typeLabel = contractor.org_type === 'ip' ? 'ИП' : 'Юр. лицо';
+            const typeBadgeClass = contractor.org_type === 'ip' ? 'bg-info-100 text-info-600' : 'bg-success-100 text-success-600';
+            html += `
+                <div class="card border mb-12 contractor-item" data-id="${contractor.id}" style="cursor: pointer;">
+                    <div class="card-body p-16">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <span class="badge ${typeBadgeClass} mb-8">${typeLabel}</span>
+                                <h6 class="mb-4">${contractor.name}</h6>
+                                <p class="text-secondary-light small mb-0">ИНН: ${contractor.inn}${contractor.kpp ? ', КПП: ' + contractor.kpp : ''}</p>
+                                ${contractor.address ? `<p class="text-secondary-light small mb-0">${contractor.address}</p>` : ''}
+                            </div>
+                            <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        container.html(html);
+    }
+    
+    // Select organization from modal
+    $(document).on('click', '.organization-item', function() {
+        const id = $(this).data('id');
+        const org = organizationsList.find(o => o.id === id);
+        if (org) {
+            // Fill seller fields
+            $('#seller-name').val(org.name);
+            $('#seller-inn').val(org.inn);
+            $('#seller-kpp').val(org.kpp || '');
+            $('#seller-address').val(org.address || '');
+            
+            // Fill seller signer fields if available
+            if (org.director_name) {
+                $('#released-position').val('Генеральный директор');
+                $('#released-by').val(org.director_name);
+            }
+            if (org.responsible_name) {
+                $('#responsible-position').val(org.responsible_position || '');
+                $('#responsible-name').val(org.responsible_name);
+            }
+            if (org.transfer_name) {
+                // Can be used for transfer person
+            }
+            if (org.economic_entity) {
+                $('#economic-entity').val(org.economic_entity);
+            } else {
+                $('#economic-entity').val(org.name + ', ИНН ' + org.inn);
+            }
+            
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('selectCompanyModal')).hide();
+            
+            // Hide "add to organizations" button since selected from list
+            $('#add-seller-to-org').hide();
+            
+            // Update preview
+            updatePreview();
+        }
+    });
+    
+    // Select contractor from modal
+    $(document).on('click', '.contractor-item', function() {
+        const id = $(this).data('id');
+        const contractor = contractorsList.find(c => c.id === id);
+        if (contractor) {
+            // Fill buyer fields
+            $('#buyer-name').val(contractor.name);
+            $('#buyer-inn').val(contractor.inn);
+            $('#buyer-kpp').val(contractor.kpp || '');
+            $('#buyer-address').val(contractor.address || '');
+            
+            // Fill buyer signer fields if available
+            if (contractor.receiver_name) {
+                $('#received-position').val(contractor.receiver_position || '');
+                $('#received-by').val(contractor.receiver_name);
+            }
+            if (contractor.responsible_name) {
+                $('#buyer-responsible-position').val(contractor.responsible_position || '');
+                $('#buyer-responsible-name').val(contractor.responsible_name);
+            }
+            if (contractor.economic_entity) {
+                $('#buyer-economic-entity').val(contractor.economic_entity);
+            } else {
+                $('#buyer-economic-entity').val(contractor.name + ', ИНН ' + contractor.inn);
+            }
+            
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('selectContractorModal')).hide();
+            
+            // Hide "add to clients" button since selected from list
+            $('#add-buyer-to-clients').hide();
+            
+            // Update preview
+            updatePreview();
+        }
+    });
+    
+    // Products list for modal
+    let productsList = [];
+    
+    // Load products for modal
+    async function loadProductsModal(searchTerm = '') {
+        try {
+            const response = await fetch(`${API_URL}/products`);
+            productsList = await response.json();
+        } catch (error) {
+            console.log('API unavailable, using localStorage');
+            productsList = JSON.parse(localStorage.getItem('products') || '[]');
+        }
+        
+        renderProductsModal(searchTerm);
+    }
+    
+    // Render products in modal
+    function renderProductsModal(searchTerm = '') {
+        const container = $('#products-modal-list');
+        const noMessage = $('#no-products-message');
+        
+        let filtered = productsList;
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            filtered = productsList.filter(p => 
+                p.name.toLowerCase().includes(term) || 
+                (p.sku && p.sku.toLowerCase().includes(term))
+            );
+        }
+        
+        if (filtered.length === 0) {
+            container.hide();
+            noMessage.show();
+            return;
+        }
+        
+        noMessage.hide();
+        container.show();
+        
+        let html = '';
+        filtered.forEach(product => {
+            const typeLabel = product.type === 'service' ? 'Услуга' : 'Товар';
+            const typeBadgeClass = product.type === 'service' ? 'bg-success-100 text-success-600' : 'bg-info-100 text-info-600';
+            const price = product.price ? parseFloat(product.price).toLocaleString('ru-RU', {minimumFractionDigits: 2}) : '0,00';
+            html += `
+                <div class="card border mb-12 product-item" data-id="${product.id}" style="cursor: pointer;">
+                    <div class="card-body p-16">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <span class="badge ${typeBadgeClass} mb-8">${typeLabel}</span>
+                                <h6 class="mb-4">${product.name}</h6>
+                                <p class="text-secondary-light small mb-0">
+                                    ${product.sku ? 'Арт: ' + product.sku + ' | ' : ''}
+                                    Ед: ${product.unit} | Цена: ${price} руб.
+                                </p>
+                            </div>
+                            <iconify-icon icon="mdi:plus-circle" class="text-xl text-primary-600"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        container.html(html);
+    }
+    
+    // Select product from modal - add to products list
+    $(document).on('click', '.product-item', function() {
+        const id = $(this).data('id');
+        const product = productsList.find(p => p.id === id);
+        if (product) {
+            addProductFromCatalog(product);
+        }
+    });
+    
+    // Add product from catalog to form
+    function addProductFromCatalog(product) {
+        productRowCount++;
+        
+        const newRow = `
+            <div class="product-row card border radius-12 p-16 mb-16" data-row="${productRowCount}">
+                <div class="row g-12 align-items-end">
+                    <div class="col">
+                        <label class="form-label text-sm mb-4">Наименование <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control product-name" value="${product.name}" required>
+                    </div>
+                    <div class="col-auto" style="width: 100px;">
+                        <label class="form-label text-sm mb-4">Кол-во</label>
+                        <input type="number" class="form-control product-qty" value="${product.qty || 1}" min="0.01" step="0.01">
+                    </div>
+                    <div class="col-auto" style="width: 90px;">
+                        <label class="form-label text-sm mb-4">Ед. изм.</label>
+                        <select class="form-select product-unit">
+                            <option value="шт" ${product.unit === 'шт' ? 'selected' : ''}>шт</option>
+                            <option value="усл" ${product.unit === 'усл' ? 'selected' : ''}>усл</option>
+                            <option value="ч" ${product.unit === 'ч' ? 'selected' : ''}>ч</option>
+                            <option value="кг" ${product.unit === 'кг' ? 'selected' : ''}>кг</option>
+                            <option value="л" ${product.unit === 'л' ? 'selected' : ''}>л</option>
+                            <option value="м" ${product.unit === 'м' ? 'selected' : ''}>м</option>
+                            <option value="м2" ${product.unit === 'м2' ? 'selected' : ''}>м2</option>
+                            <option value="м3" ${product.unit === 'м3' ? 'selected' : ''}>м3</option>
+                        </select>
+                    </div>
+                    <div class="col-auto" style="width: 120px;">
+                        <label class="form-label text-sm mb-4">Цена</label>
+                        <input type="number" class="form-control product-price" value="${product.price || 0}" min="0" step="0.01">
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-danger remove-product" title="Удалить">
+                            <iconify-icon icon="mdi:trash-can-outline"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('#products-container').append(newRow);
+        calculateTotals();
+        updatePreview();
+        
+        // Don't close modal - allow adding multiple products
+    }
+    
+    // Load organizations when modal opens
+    $('#selectCompanyModal').on('shown.bs.modal', function() {
+        loadOrganizationsModal();
+        $('#search-organization').val('').focus();
+    });
+    
+    // Load contractors when modal opens
+    $('#selectContractorModal').on('shown.bs.modal', function() {
+        loadContractorsModal();
+        $('#search-contractor').val('').focus();
+    });
+    
+    // Load products when modal opens
+    $('#selectProductModal').on('shown.bs.modal', function() {
+        loadProductsModal();
+        $('#search-product-modal').val('').focus();
+    });
+    
+    // Search in organization modal
+    $('#search-organization').on('input', function() {
+        renderOrganizationsModal($(this).val());
+    });
+    
+    // Search in contractor modal
+    $('#search-contractor').on('input', function() {
+        renderContractorsModal($(this).val());
+    });
+    
+    // Search in product modal
+    $('#search-product-modal').on('input', function() {
+        renderProductsModal($(this).val());
+    });
+    
+    // Check for pre-selected organization/contractor from other pages
+    const selectedOrganization = sessionStorage.getItem('selectedOrganization');
+    if (selectedOrganization) {
+        const org = JSON.parse(selectedOrganization);
+        $('#seller-name').val(org.name);
+        $('#seller-inn').val(org.inn);
+        $('#seller-kpp').val(org.kpp || '');
+        $('#seller-address').val(org.address || '');
+        if (org.director_name) {
+            $('#released-position').val('Генеральный директор');
+            $('#released-by').val(org.director_name);
+        }
+        if (org.economic_entity) {
+            $('#economic-entity').val(org.economic_entity);
+        } else {
+            $('#economic-entity').val(org.name + ', ИНН ' + org.inn);
+        }
+        
+        // Установка НДС из организации
+        if (org.vat_type) {
+            if (org.vat_type === 'without' || org.vat_type === 'none') {
+                $('#default-vat').val('none');
+                // Без НДС - статус 2 (только передаточный документ)
+                $('input[name="upd-status"][value="2"]').prop('checked', true);
+            } else {
+                $('#default-vat').val(org.vat_type);
+                // Есть НДС - статус 1 (счет-фактура и передаточный документ)
+                $('input[name="upd-status"][value="1"]').prop('checked', true);
+            }
+        }
+        
+        sessionStorage.removeItem('selectedOrganization');
+    }
+    
+    const selectedContractor = sessionStorage.getItem('selectedContractor');
+    if (selectedContractor) {
+        const contractor = JSON.parse(selectedContractor);
+        $('#buyer-name').val(contractor.name);
+        $('#buyer-inn').val(contractor.inn);
+        $('#buyer-kpp').val(contractor.kpp || '');
+        $('#buyer-address').val(contractor.address || '');
+        if (contractor.receiver_name) {
+            $('#received-position').val(contractor.receiver_position || '');
+            $('#received-by').val(contractor.receiver_name);
+        }
+        if (contractor.economic_entity) {
+            $('#buyer-economic-entity').val(contractor.economic_entity);
+        } else {
+            $('#buyer-economic-entity').val(contractor.name + ', ИНН ' + contractor.inn);
+        }
+        sessionStorage.removeItem('selectedContractor');
+    }
+    
+    // Пересчет при изменении настроек НДС
+    $('#default-vat, #default-vat-type').on('change', function() {
+        calculateTotals();
+        updatePreview();
+    });
+    
+    // Auto-numbering
+    let autoNumberCounter = 1;
+    $('#auto-number-btn').on('click', function() {
+        const today = new Date();
+        const dateStr = today.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\./g, '');
+        $('#upd-number').val(`${autoNumberCounter}-${dateStr}`);
+        autoNumberCounter++;
+    });
+    
+    // Show "Add to organizations" button on manual input
+    $('#seller-name, #seller-inn').on('input', function() {
+        const name = $('#seller-name').val().trim();
+        const inn = $('#seller-inn').val().trim();
+        if (name && inn && inn.length >= 10) {
+            $('#add-seller-to-org').show();
+        } else {
+            $('#add-seller-to-org').hide();
+        }
+    });
+    
+    // Save seller to organizations
+    $('#save-seller-btn').on('click', async function() {
+        const data = {
+            org_type: $('#seller-inn').val().length === 12 ? 'ip' : 'ooo',
+            name: $('#seller-name').val(),
+            inn: $('#seller-inn').val(),
+            kpp: $('#seller-kpp').val() || null,
+            address: $('#seller-address').val()
+        };
+        
+        try {
+            const response = await fetch('/api/v1/organizations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error('API error');
+        } catch (error) {
+            // Fallback to localStorage
+            const orgs = JSON.parse(localStorage.getItem('organizations') || '[]');
+            data.id = 'org_' + Date.now();
+            orgs.push(data);
+            localStorage.setItem('organizations', JSON.stringify(orgs));
+        }
+        
+        const toast = $('<div class="position-fixed top-0 end-0 m-24 p-16 bg-success-100 text-success-main shadow-lg" style="z-index: 9999;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="mdi:check-circle" class="text-xl"></iconify-icon><span>Организация добавлена!</span></div></div>');
+        $('body').append(toast);
+        setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 2000);
+        $('#add-seller-to-org').hide();
+    });
+    
+    // Show "Add to clients" button on manual buyer input
+    $('#buyer-name, #buyer-inn').on('input', function() {
+        const name = $('#buyer-name').val().trim();
+        const inn = $('#buyer-inn').val().trim();
+        if (name && inn && inn.length >= 10) {
+            $('#add-buyer-to-clients').show();
+        } else {
+            $('#add-buyer-to-clients').hide();
+        }
+    });
+    
+    // Save buyer to clients
+    $('#save-buyer-btn').on('click', async function() {
+        const data = {
+            org_type: $('#buyer-inn').val().length === 12 ? 'ip' : 'ooo',
+            name: $('#buyer-name').val(),
+            inn: $('#buyer-inn').val(),
+            kpp: $('#buyer-kpp').val() || null,
+            address: $('#buyer-address').val()
+        };
+        
+        try {
+            const response = await fetch('/api/v1/contractors', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error('API error');
+        } catch (error) {
+            // Fallback to localStorage
+            const contractors = JSON.parse(localStorage.getItem('contractors') || '[]');
+            data.id = 'contractor_' + Date.now();
+            contractors.push(data);
+            localStorage.setItem('contractors', JSON.stringify(contractors));
+        }
+        
+        const toast = $('<div class="position-fixed top-0 end-0 m-24 p-16 bg-success-100 text-success-main shadow-lg" style="z-index: 9999;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="mdi:check-circle" class="text-xl"></iconify-icon><span>Контрагент добавлен!</span></div></div>');
+        $('body').append(toast);
+        setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 2000);
+        $('#add-buyer-to-clients').hide();
+    });
+    
+    // Show "Add to contracts" button when transfer-basis is filled
+    $('#transfer-basis').on('input', function() {
+        const value = $(this).val().trim();
+        if (value.length > 5) {
+            $('#add-contract-btn').removeClass('d-none');
+        } else {
+            $('#add-contract-btn').addClass('d-none');
+        }
+    });
+    
+    // Add contract to list
+    $('#add-contract-btn').on('click', function() {
+        const contract = {
+            name: $('#transfer-basis').val(),
+            buyer_inn: $('#buyer-inn').val(),
+            buyer_name: $('#buyer-name').val()
+        };
+        // TODO: Save to API/localStorage
+        const toast = $('<div class="position-fixed top-0 end-0 m-24 p-16 bg-success-100 text-success-main shadow-lg" style="z-index: 9999;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="mdi:check-circle" class="text-xl"></iconify-icon><span>Договор добавлен!</span></div></div>');
+        $('body').append(toast);
+        setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 2000);
+        $('#add-contract-btn').addClass('d-none');
+    });
+    
+    // Set today's date for receiving
+    $('#set-today-receiving').on('click', function() {
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        $('#receiving-date').val(formattedDate);
+        updatePreview();
+    });
+    
+    // Set today's date for shipping
+    $('#set-today-shipping').on('click', function() {
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        $('#shipping-date').val(formattedDate);
+        updatePreview();
+    });
+    
+    // Consignor (грузоотправитель) radio handlers
+    $('input[name="consignor-type"]').on('change', function() {
+        const value = $(this).val();
+        const input = $('#consignor-address');
+        
+        if (value === 'none') {
+            input.val('').prop('disabled', true);
+        } else if (value === 'same') {
+            input.val($('#seller-name').val() + ', ' + $('#seller-address').val());
+            input.prop('disabled', true);
+        } else if (value === 'manual') {
+            input.val('').prop('disabled', false).focus();
+        }
+        updatePreview();
+    });
+    
+    // Consignee (грузополучатель) radio handlers
+    $('input[name="consignee-type"]').on('change', function() {
+        const value = $(this).val();
+        const input = $('#consignee-address');
+        
+        if (value === 'none') {
+            input.val('').prop('disabled', true);
+        } else if (value === 'same') {
+            input.val($('#buyer-name').val() + ', ' + $('#buyer-address').val());
+            input.prop('disabled', true);
+        } else if (value === 'manual') {
+            input.val('').prop('disabled', false).focus();
+        }
+        updatePreview();
+    });
+    
+    // Update consignor if seller changes (when "same" selected)
+    $('#seller-name, #seller-address').on('input', function() {
+        if ($('#consignor-same').is(':checked')) {
+            $('#consignor-address').val($('#seller-name').val() + ', ' + $('#seller-address').val());
+        }
+    });
+    
+    // Update consignee if buyer changes (when "same" selected)
+    $('#buyer-name, #buyer-address').on('input', function() {
+        if ($('#consignee-same').is(':checked')) {
+            $('#consignee-address').val($('#buyer-name').val() + ', ' + $('#buyer-address').val());
+        }
+    });
+
+    // Product row counter
+    let productRowCount = 1;
+
+    // Add new product row
+    $('#add-product').on('click', function() {
+        productRowCount++;
+        
+        const newRow = `
+            <div class="product-row card border radius-12 p-16 mb-16" data-row="${productRowCount}">
+                <div class="row g-12 align-items-end">
+                    <div class="col">
+                        <label class="form-label text-sm mb-4">Наименование <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control product-name" placeholder="Название товара или услуги" required>
+                    </div>
+                    <div class="col-auto" style="width: 100px;">
+                        <label class="form-label text-sm mb-4">Кол-во</label>
+                        <input type="number" class="form-control product-qty" value="1" min="0.01" step="0.01">
+                    </div>
+                    <div class="col-auto" style="width: 90px;">
+                        <label class="form-label text-sm mb-4">Ед. изм.</label>
+                        <select class="form-select product-unit">
+                            <option value="шт">шт</option>
+                            <option value="усл">усл</option>
+                            <option value="ч">ч</option>
+                            <option value="кг">кг</option>
+                            <option value="л">л</option>
+                            <option value="м">м</option>
+                            <option value="м2">м2</option>
+                            <option value="м3">м3</option>
+                        </select>
+                    </div>
+                    <div class="col-auto" style="width: 120px;">
+                        <label class="form-label text-sm mb-4">Цена</label>
+                        <input type="number" class="form-control product-price" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-danger remove-product" title="Удалить">
+                            <iconify-icon icon="mdi:trash-can-outline"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('#products-container').append(newRow);
+        updatePreview();
+    });
+
+    // Remove product row
+    $(document).on('click', '.remove-product', function() {
+        if ($('.product-row').length > 1) {
+            $(this).closest('.product-row').remove();
+            calculateTotals();
+            updatePreview();
+        } else {
+            alert('Должна остаться хотя бы одна позиция');
+        }
+    });
+
+    // Calculate totals on input change
+    $(document).on('input change', '.product-qty, .product-price, .product-vat', function() {
+        calculateTotals();
+        updatePreview();
+    });
+
+    // Calculate totals
+    function calculateTotals() {
+        let totalWithoutVat = 0;
+        let totalVat = 0;
+        
+        // Берем НДС из настроек по умолчанию
+        const vatRate = $('#default-vat').val();
+        const vatType = $('#default-vat-type').val() || 'on-top';
+
+        $('.product-row').each(function() {
+            const qty = parseFloat($(this).find('.product-qty').val()) || 0;
+            const price = parseFloat($(this).find('.product-price').val()) || 0;
+            
+            let subtotal, vat, total;
+            
+            if (vatRate !== 'none') {
+                const vatPercent = parseFloat(vatRate) / 100;
+                
+                if (vatType === 'included') {
+                    // НДС включен в цену
+                    total = qty * price;
+                    subtotal = total / (1 + vatPercent);
+                    vat = total - subtotal;
+                } else {
+                    // НДС сверху
+                    subtotal = qty * price;
+                    vat = subtotal * vatPercent;
+                    total = subtotal + vat;
+                }
+            } else {
+                subtotal = qty * price;
+                vat = 0;
+                total = subtotal;
+            }
+            
+            $(this).find('.product-total').text(formatCurrency(total));
+            
+            totalWithoutVat += subtotal;
+            totalVat += vat;
+        });
+
+        $('#total-without-vat').text(formatCurrency(totalWithoutVat));
+        $('#total-vat').text(formatCurrency(totalVat));
+        $('#total-with-vat').text(formatCurrency(totalWithoutVat + totalVat));
+    }
+
+    // Format currency
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('ru-RU', {
+            style: 'currency',
+            currency: 'RUB',
+            minimumFractionDigits: 2
+        }).format(amount);
+    }
+
+    // Update preview - теперь загружает реальную форму через API
+    let previewDebounceTimer = null;
+    function updatePreview() {
+        // Debounce - обновляем не чаще чем раз в 1 секунду
+        clearTimeout(previewDebounceTimer);
+        previewDebounceTimer = setTimeout(() => {
+            if (typeof loadSidebarPreview === 'function') {
+                loadSidebarPreview();
+            }
+        }, 1000);
+    }
+
+    // Live update preview on any input change
+    $(document).on('input change', 'input, select, textarea', function() {
+        updatePreview();
+    });
+
+    // Select company from modal
+    $('.select-company').on('click', function() {
+        $('#seller-name').val($(this).data('name'));
+        $('#seller-inn').val($(this).data('inn'));
+        $('#seller-kpp').val($(this).data('kpp'));
+        $('#seller-address').val($(this).data('address'));
+        $('#selectCompanyModal').modal('hide');
+        updatePreview();
+    });
+
+    // Select contractor from modal
+    $('.select-contractor').on('click', function() {
+        $('#buyer-name').val($(this).data('name'));
+        $('#buyer-inn').val($(this).data('inn'));
+        $('#buyer-kpp').val($(this).data('kpp'));
+        $('#buyer-address').val($(this).data('address'));
+        $('#selectContractorModal').modal('hide');
+        updatePreview();
+    });
+
+    // Проверка авторизации пользователя
+    function isUserAuthenticated() {
+        const token = localStorage.getItem('documatica_token');
+        return !!token;
+    }
+
+    // Сохранение документа как pending для неавторизованного пользователя
+    function savePendingDocument(requestData) {
+        localStorage.setItem('documatica_pending_document', JSON.stringify(requestData));
+    }
+
+    // Form submit - генерация PDF через API
+    $('#upd-form').on('submit', async function(e) {
+        e.preventDefault();
+        
+        // Validate form
+        if (!this.checkValidity()) {
+            this.reportValidity();
+            return;
+        }
+        
+        // Собираем данные формы
+        const requestData = collectFormDataForSubmit();
+        
+        // Проверяем авторизацию
+        if (!isUserAuthenticated()) {
+            // Сохраняем документ в localStorage для восстановления после авторизации
+            savePendingDocument(requestData);
+            // Показываем модалку авторизации
+            $('#authRequiredModal').modal('show');
+            return;
+        }
+        
+        // Пользователь авторизован - генерируем PDF
+        await generateAndDownloadPDF(requestData);
+    });
+    
+    // Функция генерации и скачивания PDF (для авторизованных)
+    async function generateAndDownloadPDF(requestData) {
+        const submitBtn = $('#upd-form').find('button[type="submit"]');
+        const originalText = submitBtn.html();
+        submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-8"></span>Генерация...');
+        
+        try {
+            const API_URL = '';
+            const token = localStorage.getItem('documatica_token');
+            const response = await fetch(`${API_URL}/api/v1/documents/upd/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : ''
+                },
+                body: JSON.stringify(requestData)
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                // Обработка разных форматов ошибок
+                let errorMessage = 'Ошибка генерации';
+                if (typeof error.detail === 'string') {
+                    errorMessage = error.detail;
+                } else if (Array.isArray(error.detail)) {
+                    // Pydantic validation errors
+                    errorMessage = error.detail.map(e => {
+                        const field = e.loc ? e.loc.join(' -> ') : 'поле';
+                        return `${field}: ${e.msg}`;
+                    }).join('; ');
+                } else if (error.detail) {
+                    errorMessage = JSON.stringify(error.detail);
+                }
+                throw new Error(errorMessage);
+            }
+            
+            // Проверяем тип ответа
+            const contentType = response.headers.get('content-type');
+            
+            if (contentType && contentType.includes('text/html')) {
+                // Сервер вернул HTML (WeasyPrint недоступен) - открываем в новом окне для печати
+                const html = await response.text();
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(html);
+                printWindow.document.close();
+                
+                // Автоматически открываем диалог печати после загрузки
+                printWindow.onload = function() {
+                    setTimeout(function() {
+                        printWindow.print();
+                    }, 500);
+                };
+                
+                showNotification('success', 'Для сохранения в PDF выберите "Сохранить как PDF" в диалоге печати');
+            } else {
+                // Скачиваем PDF
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `UPD_${requestData.document_number}_${requestData.document_date.replace(/-/g, '')}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+                showNotification('success', 'УПД успешно сгенерирован и скачан!');
+            }
+            
+            // Сохраняем документ в личном кабинете
+            try {
+                const saveResponse = await fetch(`${API_URL}/api/v1/documents/upd/save`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? `Bearer ${token}` : ''
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (saveResponse.ok) {
+                    const saveResult = await saveResponse.json();
+                    console.log('Документ сохранён:', saveResult.document_id);
+                }
+            } catch (saveError) {
+                console.log('Не удалось сохранить документ:', saveError);
+            }
+            
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification('danger', 'Ошибка: ' + error.message);
+        } finally {
+            submitBtn.prop('disabled', false).html(originalText);
+        }
+    }
+    
+    // Собираем данные формы (вынесено в отдельную функцию)
+    function collectFormDataForSubmit() {
+        const items = [];
+        let rowNum = 1;
+        
+        // Берем НДС и страну из настроек по умолчанию
+        const vatRate = $('#default-vat').val();
+        const vatType = $('#default-vat-type').val();
+        const defaultCountry = $('#default-country').val() || 'Россия';
+        const defaultCountryCode = $('#default-country-code').val() || '643';
+        
+        $('.product-row').each(function() {
+            const qty = parseFloat($(this).find('.product-qty').val()) || 0;
+            const price = parseFloat($(this).find('.product-price').val()) || 0;
+            let amountWithoutVat, vatAmount, amountWithVat;
+            
+            let vatMultiplier = 0;
+            let vatRateStr = 'без НДС';
+            if (vatRate === '22') { vatMultiplier = 0.22; vatRateStr = '22%'; }
+            else if (vatRate === '20') { vatMultiplier = 0.20; vatRateStr = '20%'; }
+            else if (vatRate === '18') { vatMultiplier = 0.18; vatRateStr = '18%'; }
+            else if (vatRate === '10') { vatMultiplier = 0.10; vatRateStr = '10%'; }
+            else if (vatRate === '7') { vatMultiplier = 0.07; vatRateStr = '7%'; }
+            else if (vatRate === '5') { vatMultiplier = 0.05; vatRateStr = '5%'; }
+            else if (vatRate === '0') { vatMultiplier = 0; vatRateStr = '0%'; }
+            
+            if (vatType === 'included' && vatRate !== 'none') {
+                // НДС включен в цену
+                amountWithVat = qty * price;
+                amountWithoutVat = amountWithVat / (1 + vatMultiplier);
+                vatAmount = amountWithVat - amountWithoutVat;
+            } else {
+                // НДС сверху
+                amountWithoutVat = qty * price;
+                vatAmount = amountWithoutVat * vatMultiplier;
+                amountWithVat = amountWithoutVat + vatAmount;
+            }
+            
+            items.push({
+                row_number: rowNum++,
+                name: $(this).find('.product-name').val() || 'Товар',
+                unit_code: null,
+                unit_name: $(this).find('.product-unit').val() || 'шт',
+                quantity: qty,
+                price: price,
+                amount_without_vat: amountWithoutVat,
+                vat_rate: vatRateStr,
+                vat_amount: vatAmount,
+                amount_with_vat: amountWithVat,
+                country_code: defaultCountryCode,
+                country_name: defaultCountry
+            });
+        });
+        
+        // Считаем итоги
+        let totalWithoutVat = 0, totalVat = 0, totalWithVat = 0;
+        items.forEach(item => {
+            totalWithoutVat += item.amount_without_vat;
+            totalVat += item.vat_amount;
+            totalWithVat += item.amount_with_vat;
+        });
+        
+        // Формируем запрос к API
+        return {
+            document_number: $('#upd-number').val(),
+            document_date: convertDateToISO($('#upd-date').val()),
+            status: parseInt($('input[name="upd-status"]:checked').val()) || 1,
+            seller: {
+                name: $('#seller-name').val(),
+                inn: $('#seller-inn').val(),
+                kpp: $('#seller-kpp').val() || null,
+                address: $('#seller-address').val()
+            },
+            buyer: {
+                name: $('#buyer-name').val(),
+                inn: $('#buyer-inn').val(),
+                kpp: $('#buyer-kpp').val() || null,
+                address: $('#buyer-address').val()
+            },
+            items: items,
+            total_amount_without_vat: totalWithoutVat,
+            total_vat_amount: totalVat,
+            total_amount_with_vat: totalWithVat,
+            currency_code: '643',
+            currency_name: 'Российский рубль',
+            contract_info: $('#transfer-basis').val() || null,
+            transport_info: $('#transport-info').val() || null,
+            seller_signer: $('#released-by').val() ? {
+                position: '',
+                full_name: $('#released-by').val(),
+                basis: 'Устав'
+            } : null,
+            buyer_signer: $('#received-by').val() ? {
+                position: '',
+                full_name: $('#received-by').val(),
+                basis: 'Устав'
+            } : null
+        };
+    }
+    
+    // Конвертация даты DD.MM.YYYY в YYYY-MM-DD
+    function convertDateToISO(dateStr) {
+        if (!dateStr) return new Date().toISOString().split('T')[0];
+        const parts = dateStr.split('.');
+        if (parts.length === 3) {
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+        return dateStr;
+    }
+    
+    // Показать уведомление
+    function showNotification(type, message) {
+        const bgClass = type === 'success' ? 'bg-success-100 text-success-main' : 'bg-danger-100 text-danger-main';
+        const icon = type === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle';
+        const toast = $(`<div class="position-fixed top-0 end-0 m-24 p-16 ${bgClass} shadow-lg" style="z-index: 9999; max-width: 400px;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="${icon}" class="text-xl"></iconify-icon><span>${message}</span></div></div>`);
+        $('body').append(toast);
+        setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 4000);
+    }
+    
+    // Функция загрузки данных шаблона в форму
+    function loadTemplateData(data) {
+        if (!data) return;
+        
+        // Конвертация даты YYYY-MM-DD в DD.MM.YYYY
+        function convertDateFromISO(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}.${parts[1]}.${parts[0]}`;
+            }
+            return dateStr;
+        }
+        
+        // Document info - не заполняем номер и дату, чтобы были новые
+        // $('#upd-number').val(data.document_number || '');
+        // $('#upd-date').val(convertDateFromISO(data.document_date) || '');
+        if (data.status) {
+            $(`input[name="upd-status"][value="${data.status}"]`).prop('checked', true);
+        }
+        
+        // Seller info
+        if (data.seller) {
+            $('#seller-name').val(data.seller.name || '');
+            $('#seller-inn').val(data.seller.inn || '');
+            $('#seller-kpp').val(data.seller.kpp || '');
+            $('#seller-address').val(data.seller.address || '');
+        }
+        
+        // Buyer info
+        if (data.buyer) {
+            $('#buyer-name').val(data.buyer.name || '');
+            $('#buyer-inn').val(data.buyer.inn || '');
+            $('#buyer-kpp').val(data.buyer.kpp || '');
+            $('#buyer-address').val(data.buyer.address || '');
+        }
+        
+        // Currency
+        $('#currency-name').val(data.currency_name || 'Российский рубль');
+        $('#currency-code').val(data.currency_code || '643');
+        $('#gov-contract-id').val(data.gov_contract_id || '');
+        
+        // Documents
+        $('#payment-document').val(data.payment_document || '');
+        $('#shipping-document').val(data.shipping_document || '');
+        
+        // Contract info
+        $('#transfer-basis').val(data.contract_info || '');
+        $('#transport-info').val(data.transport_info || '');
+        $('#other-shipping-info').val(data.other_shipping_info || '');
+        $('#other-receiving-info').val(data.other_receiving_info || '');
+        
+        // Seller signer
+        if (data.seller_signer) {
+            $('#released-position').val(data.seller_signer.position || '');
+            $('#released-by').val(data.seller_signer.full_name || '');
+        }
+        if (data.seller_responsible) {
+            $('#responsible-position').val(data.seller_responsible.position || '');
+            $('#responsible-name').val(data.seller_responsible.full_name || '');
+        }
+        $('#economic-entity').val(data.economic_entity || '');
+        
+        // Buyer signer
+        if (data.buyer_signer) {
+            $('#received-position').val(data.buyer_signer.position || '');
+            $('#received-by').val(data.buyer_signer.full_name || '');
+        }
+        if (data.buyer_responsible) {
+            $('#buyer-responsible-position').val(data.buyer_responsible.position || '');
+            $('#buyer-responsible-name').val(data.buyer_responsible.full_name || '');
+        }
+        $('#buyer-economic-entity').val(data.buyer_economic_entity || '');
+        
+        // Products
+        if (data.items && data.items.length > 0) {
+            $('#products-container').empty();
+            productRowCount = 0;
+            
+            data.items.forEach((item, index) => {
+                productRowCount++;
+                const row = createProductRow(productRowCount, item);
+                $('#products-container').append(row);
+            });
+        }
+        
+        // Recalculate
+        calculateTotals();
+        updatePreview();
+    }
+    
+    // Функция загрузки данных для редактирования (заполняет все поля включая номер и дату)
+    function loadFormDataForEdit(data) {
+        if (!data) return;
+        
+        // Конвертация даты YYYY-MM-DD в DD.MM.YYYY
+        function convertDateFromISO(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}.${parts[1]}.${parts[0]}`;
+            }
+            return dateStr;
+        }
+        
+        // Document info - заполняем номер и дату
+        $('#upd-number').val(data.document_number || '');
+        $('#upd-date').val(convertDateFromISO(data.document_date) || '');
+        if (data.status) {
+            $(`input[name="upd-status"][value="${data.status}"]`).prop('checked', true);
+        }
+        
+        // Seller info
+        if (data.seller) {
+            $('#seller-name').val(data.seller.name || '');
+            $('#seller-inn').val(data.seller.inn || '');
+            $('#seller-kpp').val(data.seller.kpp || '');
+            $('#seller-address').val(data.seller.address || '');
+        }
+        
+        // Buyer info
+        if (data.buyer) {
+            $('#buyer-name').val(data.buyer.name || '');
+            $('#buyer-inn').val(data.buyer.inn || '');
+            $('#buyer-kpp').val(data.buyer.kpp || '');
+            $('#buyer-address').val(data.buyer.address || '');
+        }
+        
+        // Currency
+        $('#currency-name').val(data.currency_name || 'Российский рубль');
+        $('#currency-code').val(data.currency_code || '643');
+        $('#gov-contract-id').val(data.gov_contract_id || '');
+        
+        // Documents
+        $('#payment-document').val(data.payment_document || '');
+        $('#shipping-document').val(data.shipping_document || '');
+        
+        // Contract info
+        $('#transfer-basis').val(data.contract_info || '');
+        $('#transport-info').val(data.transport_info || '');
+        $('#other-shipping-info').val(data.other_shipping_info || '');
+        $('#other-receiving-info').val(data.other_receiving_info || '');
+        
+        // Seller signer
+        if (data.seller_signer) {
+            $('#released-position').val(data.seller_signer.position || '');
+            $('#released-by').val(data.seller_signer.full_name || '');
+        }
+        
+        // Buyer signer
+        if (data.buyer_signer) {
+            $('#received-position').val(data.buyer_signer.position || '');
+            $('#received-by').val(data.buyer_signer.full_name || '');
+        }
+        
+        // Products
+        if (data.items && data.items.length > 0) {
+            $('#products-container').empty();
+            productRowCount = 0;
+            
+            data.items.forEach((item, index) => {
+                productRowCount++;
+                const row = createProductRow(productRowCount, item);
+                $('#products-container').append(row);
+            });
+        }
+        
+        // Recalculate
+        calculateTotals();
+        updatePreview();
+    }
+    
+    // Создание строки товара
+    function createProductRow(rowNum, item = {}) {
+        return `
+            <div class="product-row card border radius-12 p-16 mb-16" data-row="${rowNum}">
+                <div class="row g-12 align-items-end">
+                    <div class="col">
+                        <label class="form-label text-sm mb-4">Наименование <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control product-name" value="${item.name || ''}" placeholder="Название товара или услуги" required>
+                    </div>
+                    <div class="col-auto" style="width: 100px;">
+                        <label class="form-label text-sm mb-4">Кол-во</label>
+                        <input type="number" class="form-control product-qty" value="${item.quantity || 1}" min="0.01" step="0.01">
+                    </div>
+                    <div class="col-auto" style="width: 90px;">
+                        <label class="form-label text-sm mb-4">Ед. изм.</label>
+                        <select class="form-select product-unit">
+                            <option value="шт" ${item.unit_name === 'шт' ? 'selected' : ''}>шт</option>
+                            <option value="усл" ${item.unit_name === 'усл' ? 'selected' : ''}>усл</option>
+                            <option value="ч" ${item.unit_name === 'ч' ? 'selected' : ''}>ч</option>
+                            <option value="кг" ${item.unit_name === 'кг' ? 'selected' : ''}>кг</option>
+                            <option value="л" ${item.unit_name === 'л' ? 'selected' : ''}>л</option>
+                            <option value="м" ${item.unit_name === 'м' ? 'selected' : ''}>м</option>
+                            <option value="м2" ${item.unit_name === 'м2' ? 'selected' : ''}>м2</option>
+                            <option value="м3" ${item.unit_name === 'м3' ? 'selected' : ''}>м3</option>
+                        </select>
+                    </div>
+                    <div class="col-auto" style="width: 120px;">
+                        <label class="form-label text-sm mb-4">Цена</label>
+                        <input type="number" class="form-control product-price" value="${item.price || 0}" min="0" step="0.01">
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-danger remove-product" title="Удалить">
+                            <iconify-icon icon="mdi:trash-can-outline"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Сохранить как шаблон
+    $('#save-template').on('click', async function() {
+        const formData = collectFormData();
+        
+        // Формируем название шаблона
+        const templateName = formData.seller.name + ' - ' + (formData.buyer.name || 'Шаблон');
+        
+        const btn = $(this);
+        btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span>Сохранение...');
+        
+        try {
+            const response = await fetch('/api/v1/templates/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
+                    name: templateName,
+                    doc_type: 'upd',
+                    data: formData
+                })
+            });
+            
+            if (response.ok) {
+                showNotification('success', 'Шаблон успешно сохранен!');
+            } else {
+                const err = await response.json();
+                showNotification('error', err.detail || 'Ошибка сохранения шаблона');
+            }
+        } catch (error) {
+            console.error('Error saving template:', error);
+            showNotification('error', 'Ошибка сохранения: ' + error.message);
+        } finally {
+            btn.prop('disabled', false).html('Сохранить как шаблон');
+        }
+    });
+    
+    // Сохранить черновик
+    $('#save-draft').on('click', function() {
+        const formData = collectFormData();
+        localStorage.setItem('upd_draft', JSON.stringify(formData));
+        showNotification('success', 'Черновик сохранен!');
+    });
+
+    // Initial calculations
+    calculateTotals();
+    updatePreview();
+    
+    // Функция для сбора данных формы
+    function collectFormData() {
+        const items = [];
+        let rowNum = 1;
+        
+        // Берем НДС и страну из настроек по умолчанию
+        const vatRate = $('#default-vat').val();
+        const vatType = $('#default-vat-type').val() || 'on-top';
+        const defaultCountry = $('#default-country').val() || 'Россия';
+        const defaultCountryCode = $('#default-country-code').val() || '643';
+        
+        $('.product-row').each(function() {
+            const qty = parseFloat($(this).find('.product-qty').val()) || 0;
+            const price = parseFloat($(this).find('.product-price').val()) || 0;
+            
+            let amountWithoutVat, vatAmount, amountWithVat;
+            let vatRateStr = 'Без НДС';
+            
+            if (vatRate !== 'none') {
+                vatRateStr = vatRate + '%';
+                const vatPercent = parseFloat(vatRate) / 100;
+                
+                if (vatType === 'included') {
+                    // НДС включен в цену
+                    amountWithVat = qty * price;
+                    amountWithoutVat = amountWithVat / (1 + vatPercent);
+                    vatAmount = amountWithVat - amountWithoutVat;
+                } else {
+                    // НДС сверху
+                    amountWithoutVat = qty * price;
+                    vatAmount = amountWithoutVat * vatPercent;
+                    amountWithVat = amountWithoutVat + vatAmount;
+                }
+            } else {
+                amountWithoutVat = qty * price;
+                vatAmount = 0;
+                amountWithVat = amountWithoutVat;
+            }
+            
+            items.push({
+                row_number: rowNum++,
+                name: $(this).find('.product-name').val() || 'Товар',
+                unit_code: '796',
+                unit_name: $(this).find('.product-unit').val() || 'шт',
+                quantity: qty,
+                price: price,
+                amount_without_vat: amountWithoutVat,
+                vat_rate: vatRateStr,
+                vat_amount: vatAmount,
+                amount_with_vat: amountWithVat,
+                country_code: defaultCountryCode,
+                country_name: defaultCountry
+            });
+        });
+        
+        let totalWithoutVat = 0, totalVat = 0, totalWithVat = 0;
+        items.forEach(item => {
+            totalWithoutVat += item.amount_without_vat;
+            totalVat += item.vat_amount;
+            totalWithVat += item.amount_with_vat;
+        });
+        
+        // Значения по умолчанию для обязательных полей
+        const sellerName = $('#seller-name').val() || 'Продавец';
+        const sellerInn = $('#seller-inn').val() || '0000000000';
+        const sellerAddress = $('#seller-address').val() || 'Адрес не указан';
+        const buyerName = $('#buyer-name').val() || 'Покупатель';
+        const buyerInn = $('#buyer-inn').val() || '0000000000';
+        const buyerAddress = $('#buyer-address').val() || 'Адрес не указан';
+        
+        // Грузоотправитель
+        let consignorValue = null;
+        const consignorType = $('input[name="consignor-type"]:checked').val();
+        if (consignorType === 'same') {
+            consignorValue = sellerName + ', ' + sellerAddress;
+        } else if (consignorType === 'manual') {
+            consignorValue = $('#consignor-address').val() || null;
+        }
+        
+        // Грузополучатель
+        let consigneeValue = null;
+        const consigneeType = $('input[name="consignee-type"]:checked').val();
+        if (consigneeType === 'same') {
+            consigneeValue = buyerName + ', ' + buyerAddress;
+        } else if (consigneeType === 'manual') {
+            consigneeValue = $('#consignee-address').val() || null;
+        }
+        
+        return {
+            document_number: $('#upd-number').val() || '1',
+            document_date: convertDateToISO($('#upd-date').val()),
+            status: parseInt($('input[name="upd-status"]:checked').val()) || 1,
+            correction_number: $('#correction-number').val() || null,
+            correction_date: $('#correction-date').val() ? convertDateToISO($('#correction-date').val()) : null,
+            seller: {
+                name: sellerName,
+                inn: sellerInn,
+                kpp: $('#seller-kpp').val() || null,
+                address: sellerAddress
+            },
+            buyer: {
+                name: buyerName,
+                inn: buyerInn,
+                kpp: $('#buyer-kpp').val() || null,
+                address: buyerAddress
+            },
+            consignor: consignorValue,
+            consignee: consigneeValue,
+            payment_document: $('#payment-document').val() || null,
+            shipping_document: $('#shipping-document').val() || null,
+            items: items.length > 0 ? items : [{
+                row_number: 1,
+                name: 'Товар',
+                unit_code: '796',
+                unit_name: 'шт',
+                quantity: 1,
+                price: 0,
+                amount_without_vat: 0,
+                vat_rate: '20%',
+                vat_amount: 0,
+                amount_with_vat: 0,
+                country_code: '643',
+                country_name: 'Россия'
+            }],
+            total_amount_without_vat: totalWithoutVat,
+            total_vat_amount: totalVat,
+            total_amount_with_vat: totalWithVat,
+            currency_code: $('#currency-code').val() || '643',
+            currency_name: $('#currency-name').val() || 'Российский рубль',
+            gov_contract_id: $('#gov-contract-id').val() || null,
+            contract_info: $('#transfer-basis').val() || null,
+            transport_info: $('#transport-info').val() || null,
+            shipping_date: $('#shipping-date').val() ? convertDateToISO($('#shipping-date').val()) : null,
+            other_shipping_info: $('#other-shipping-info').val() || null,
+            seller_signer: $('#released-by').val() ? {
+                position: $('#released-position').val() || 'Директор',
+                full_name: $('#released-by').val(),
+                basis: 'Устав'
+            } : null,
+            seller_responsible: $('#responsible-name').val() ? {
+                position: $('#responsible-position').val() || null,
+                full_name: $('#responsible-name').val()
+            } : null,
+            economic_entity: $('#economic-entity').val() || null,
+            receiving_date: $('#receiving-date').val() ? convertDateToISO($('#receiving-date').val()) : null,
+            other_receiving_info: $('#other-receiving-info').val() || null,
+            buyer_signer: $('#received-by').val() ? {
+                position: $('#received-position').val() || 'Директор',
+                full_name: $('#received-by').val(),
+                basis: 'Устав'
+            } : null,
+            buyer_responsible: $('#buyer-responsible-name').val() ? {
+                position: $('#buyer-responsible-position').val() || null,
+                full_name: $('#buyer-responsible-name').val()
+            } : null,
+            buyer_economic_entity: $('#buyer-economic-entity').val() || null
+        };
+    }
+    
+    // Загрузка предпросмотра в iframe при открытии модалки
+    $('#previewModal').on('shown.bs.modal', async function() {
+        const iframe = document.getElementById('preview-iframe');
+        const requestData = collectFormData();
+        
+        try {
+            const API_URL = '';
+            const response = await fetch(`${API_URL}/api/v1/documents/upd/preview`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData)
+            });
+            
+            if (!response.ok) {
+                throw new Error('Ошибка генерации предпросмотра');
+            }
+            
+            const html = await response.text();
+            iframe.srcdoc = html;
+        } catch (error) {
+            iframe.srcdoc = '<html><body style="padding:20px;font-family:Arial;"><h3>Ошибка загрузки</h3><p>' + error.message + '</p></body></html>';
+        }
+    });
+    
+    // Скачать PDF из модалки
+    $('#modal-download-pdf').on('click', function() {
+        $('#upd-form').submit();
+        $('#previewModal').modal('hide');
+    });
+    
+    // Функция для загрузки предпросмотра в боковой iframe
+    async function loadSidebarPreview() {
+        const iframe = document.getElementById('sidebar-preview-iframe');
+        if (!iframe) return;
+        
+        const container = iframe.parentElement;
+        const requestData = collectFormData();
+        
+        try {
+            const API_URL = '';
+            const response = await fetch(`${API_URL}/api/v1/documents/upd/preview`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData)
+            });
+            
+            if (response.ok) {
+                const html = await response.text();
+                iframe.srcdoc = html;
+                
+                // Масштабирование под ширину контейнера
+                iframe.onload = function() {
+                    const containerWidth = container.clientWidth;
+                    const docWidth = 1150;
+                    const scale = containerWidth / docWidth;
+                    
+                    // Получаем реальную высоту документа
+                    let docHeight = 850; // минимум
+                    try {
+                        const doc = iframe.contentDocument || iframe.contentWindow.document;
+                        docHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight, 850);
+                    } catch(e) {}
+                    
+                    iframe.style.width = docWidth + 'px';
+                    iframe.style.height = docHeight + 'px';
+                    iframe.style.transform = 'scale(' + scale + ')';
+                    container.style.height = (docHeight * scale) + 'px';
+                };
+            }
+        } catch (error) {
+            console.log('Ошибка загрузки предпросмотра:', error);
+        }
+    }
+    
+    // Кнопка обновления предпросмотра
+    $('#refresh-preview').on('click', function() {
+        loadSidebarPreview();
+    });
+    
+    // ===== Clear Highlights =====
+    $('#clear-highlights-btn').on('click', function() {
+        clearPreviewHighlights();
+        $(this).removeClass('d-flex').addClass('d-none');
+    });
+    
+    // ===== AI Analysis =====
+    $('#ai-analyze-btn').on('click', async function() {
+        const btn = $(this);
+        const resultContainer = $('#ai-analysis-result');
+        
+        // Show loading state
+        btn.prop('disabled', true);
+        btn.html(`
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
+                <path d="M21 12a9 9 0 11-6.219-8.56"/>
+            </svg>
+            Анализ...
+        `);
+        
+        resultContainer.html(`
+            <div class="text-center py-32">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-16 mb-0 text-secondary-light">ИИ анализирует документ...</p>
+            </div>
+        `);
+        
+        // Collect form data
+        const formData = collectFormData();
+        
+        // Prepare request - используем правильную структуру из collectFormData
+        const analysisData = {
+            upd_status: String(formData.status || '1'),
+            upd_number: formData.document_number || '',
+            upd_date: formData.document_date || '',
+            correction_number: formData.correction_number,
+            correction_date: formData.correction_date,
+            seller_name: formData.seller?.name || '',
+            seller_inn: formData.seller?.inn || '',
+            seller_kpp: formData.seller?.kpp || '',
+            seller_address: formData.seller?.address || '',
+            buyer_name: formData.buyer?.name || '',
+            buyer_inn: formData.buyer?.inn || '',
+            buyer_kpp: formData.buyer?.kpp || '',
+            buyer_address: formData.buyer?.address || '',
+            shipper_name: formData.consignor || '',
+            consignee_name: formData.consignee || '',
+            items: formData.items || [],
+            total_amount: formData.total_amount_with_vat || 0,
+            total_vat: formData.total_vat_amount || 0
+        };
+        
+        console.log('AI Analysis: sending request...', analysisData);
+        
+        try {
+            const response = await fetch('/api/v1/ai/analyze-upd', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(analysisData)
+            });
+            
+            console.log('AI Analysis: response status', response.status);
+            
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.detail || 'Ошибка анализа');
+            }
+            
+            const result = await response.json();
+            console.log('AI Analysis: result', result);
+            renderAnalysisResult(result);
+            
+            // Apply highlights to preview iframe
+            applyHighlightsToPreview(result);
+            
+            // Show clear highlights button
+            $('#clear-highlights-btn').removeClass('d-none').addClass('d-flex');
+            
+        } catch (error) {
+            console.error('AI Analysis error:', error);
+            resultContainer.html(`
+                <div class="alert alert-danger mb-0">
+                    <strong>Ошибка:</strong> ${error.message}
+                </div>
+            `);
+        } finally {
+            btn.prop('disabled', false);
+            btn.html(`
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.3-4.3"/>
+                </svg>
+                Анализировать
+            `);
+        }
+    });
+    
+    function renderAnalysisResult(result) {
+        const container = $('#ai-analysis-result');
+        let html = '';
+        
+        // Errors
+        if (result.errors && result.errors.length > 0) {
+            html += `
+                <div class="alert alert-danger mb-16" style="border-left: 4px solid #dc2626;">
+                    <div class="fw-bold mb-8" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Критические ошибки (${result.errors.length})</div>
+                    <ul class="mb-0 ps-20">
+                        ${result.errors.map(e => `<li class="mb-4"><span class="badge bg-danger-100 text-danger-600 me-8">${e.field || 'Документ'}</span>${e.message}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Warnings
+        if (result.warnings && result.warnings.length > 0) {
+            html += `
+                <div class="alert alert-warning mb-16" style="border-left: 4px solid #f59e0b;">
+                    <div class="fw-bold mb-8" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Предупреждения (${result.warnings.length})</div>
+                    <ul class="mb-0 ps-20">
+                        ${result.warnings.map(w => `<li class="mb-4"><span class="badge bg-warning-100 text-warning-600 me-8">${w.field || 'Документ'}</span>${w.message}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Suggestions
+        if (result.suggestions && result.suggestions.length > 0) {
+            html += `
+                <div class="alert alert-info mb-16" style="border-left: 4px solid #3b82f6;">
+                    <div class="fw-bold mb-8" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Рекомендации (${result.suggestions.length})</div>
+                    <ul class="mb-0 ps-20">
+                        ${result.suggestions.map(s => `<li class="mb-4"><strong>${s.field || 'Общее'}:</strong> ${s.message}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Success case - no issues
+        if ((!result.errors || result.errors.length === 0) && 
+            (!result.warnings || result.warnings.length === 0) &&
+            (!result.suggestions || result.suggestions.length === 0)) {
+            html += `
+                <div class="alert alert-success mb-16" style="border-left: 4px solid #10b981;">
+                    <div class="fw-bold mb-8" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Проверка пройдена</div>
+                    <p class="mb-0">Документ заполнен корректно. Ошибок не обнаружено.</p>
+                </div>
+            `;
+        }
+        
+        // Summary
+        if (result.summary) {
+            html += `
+                <div class="bg-neutral-50 radius-8 p-16">
+                    <div class="fw-bold mb-8" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Заключение</div>
+                    <p class="mb-0 text-secondary-light">${result.summary}</p>
+                </div>
+            `;
+        }
+        
+        container.html(html);
+    }
+    
+    // Загрузка предпросмотра при загрузке страницы (с небольшой задержкой)
+    setTimeout(loadSidebarPreview, 500);
+    
+    // ========== Highlight Functions for Preview ==========
+    
+    function applyHighlightsToPreview(analysisResult) {
+        const iframe = document.getElementById('sidebar-preview-iframe');
+        if (!iframe || !iframe.contentDocument) {
+            console.log('Preview iframe not ready for highlighting');
+            return;
+        }
+        
+        const doc = iframe.contentDocument;
+        
+        // Inject highlight styles into iframe
+        const styleId = 'ai-highlight-styles';
+        if (!doc.getElementById(styleId)) {
+            const style = doc.createElement('style');
+            style.id = styleId;
+            style.textContent = `
+                .ai-highlight-error {
+                    background: rgba(220, 38, 38, 0.3) !important;
+                    outline: 2px solid #dc2626 !important;
+                    outline-offset: 1px;
+                    animation: pulse-error 2s infinite;
+                }
+                .ai-highlight-warning {
+                    background: rgba(245, 158, 11, 0.3) !important;
+                    outline: 2px solid #f59e0b !important;
+                    outline-offset: 1px;
+                    animation: pulse-warning 2s infinite;
+                }
+                @keyframes pulse-error {
+                    0%, 100% { background: rgba(220, 38, 38, 0.3); }
+                    50% { background: rgba(220, 38, 38, 0.5); }
+                }
+                @keyframes pulse-warning {
+                    0%, 100% { background: rgba(245, 158, 11, 0.3); }
+                    50% { background: rgba(245, 158, 11, 0.5); }
+                }
+            `;
+            doc.head.appendChild(style);
+        }
+        
+        // Clear previous highlights
+        doc.querySelectorAll('.ai-highlight-error, .ai-highlight-warning').forEach(el => {
+            el.classList.remove('ai-highlight-error', 'ai-highlight-warning');
+        });
+        
+        const cells = doc.querySelectorAll('td, th');
+        
+        // Field mapping - keywords that might appear in issues
+        const fieldMappings = {
+            'инн': ['инн'],
+            'кпп': ['кпп'],
+            'номер': ['номер', '№'],
+            'дата': ['дата'],
+            'название': ['название', 'наименование'],
+            'наименование': ['наименование', 'название'],
+            'адрес': ['адрес'],
+            'бик': ['бик'],
+            'счет': ['счет', 'счёт'],
+            'количество': ['количество', 'кол-во', 'кол.'],
+            'цена': ['цена'],
+            'сумма': ['сумма', 'итого'],
+            'ндс': ['ндс', 'налог'],
+            'грузоотправитель': ['грузоотправитель'],
+            'грузополучатель': ['грузополучатель'],
+            'продавец': ['продавец'],
+            'покупатель': ['покупатель'],
+            'огрн': ['огрн'],
+            'окпо': ['окпо'],
+            'договор': ['договор'],
+            'платеж': ['платеж', 'платёж']
+        };
+        
+        // Process errors
+        if (analysisResult.errors && analysisResult.errors.length > 0) {
+            analysisResult.errors.forEach(error => {
+                const errorText = (typeof error === 'string' ? error : (error.message || '')).toLowerCase();
+                const fieldName = (typeof error === 'object' ? error.field : '').toLowerCase();
+                highlightMatchingCells(cells, errorText, fieldName, fieldMappings, 'ai-highlight-error');
+            });
+        }
+        
+        // Process warnings
+        if (analysisResult.warnings && analysisResult.warnings.length > 0) {
+            analysisResult.warnings.forEach(warning => {
+                const warningText = (typeof warning === 'string' ? warning : (warning.message || '')).toLowerCase();
+                const fieldName = (typeof warning === 'object' ? warning.field : '').toLowerCase();
+                highlightMatchingCells(cells, warningText, fieldName, fieldMappings, 'ai-highlight-warning');
+            });
+        }
+    }
+    
+    function highlightMatchingCells(cells, issueText, fieldName, fieldMappings, highlightClass) {
+        // First try to highlight by field name
+        if (fieldName) {
+            const fieldLower = fieldName.toLowerCase();
+            cells.forEach(cell => {
+                const cellText = cell.innerText.toLowerCase();
+                if (cellText.includes(fieldLower)) {
+                    if (highlightClass === 'ai-highlight-warning' && cell.classList.contains('ai-highlight-error')) {
+                        return;
+                    }
+                    cell.classList.add(highlightClass);
+                }
+            });
+        }
+        
+        // Then try to match by keywords in issue text
+        for (const [keyword, patterns] of Object.entries(fieldMappings)) {
+            if (issueText.includes(keyword)) {
+                cells.forEach(cell => {
+                    const cellText = cell.innerText.toLowerCase();
+                    if (patterns.some(p => cellText.includes(p))) {
+                        if (highlightClass === 'ai-highlight-warning' && cell.classList.contains('ai-highlight-error')) {
+                            return;
+                        }
+                        cell.classList.add(highlightClass);
+                    }
+                });
+            }
+        }
+        
+        // Highlight empty/suspicious values
+        if (issueText.includes('не заполнен') || issueText.includes('пуст') || issueText.includes('отсутствует')) {
+            cells.forEach(cell => {
+                const cellText = cell.innerText.trim();
+                if (cellText === '' || cellText === '-' || cellText === '—') {
+                    const parentRow = cell.parentElement;
+                    if (parentRow) {
+                        const rowText = parentRow.innerText.toLowerCase();
+                        for (const keyword of Object.keys(fieldMappings)) {
+                            if (issueText.includes(keyword) && rowText.includes(keyword)) {
+                                if (highlightClass === 'ai-highlight-warning' && cell.classList.contains('ai-highlight-error')) {
+                                    return;
+                                }
+                                cell.classList.add(highlightClass);
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+    
+    function clearPreviewHighlights() {
+        const iframe = document.getElementById('sidebar-preview-iframe');
+        if (!iframe || !iframe.contentDocument) return;
+        
+        iframe.contentDocument.querySelectorAll('.ai-highlight-error, .ai-highlight-warning').forEach(el => {
+            el.classList.remove('ai-highlight-error', 'ai-highlight-warning');
+        });
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Админ-панель{% endblock %} - Documatica</title>
+  <link rel="icon" type="image/png" href="/static/images/favicon.png" sizes="16x16">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Iconify for icons -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- Admin-only CSS (изолированные стили, не влияют на основной сайт) -->
+  <link rel="stylesheet" href="/static/css/admin.css?v=1.2">
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body class="admin-body">
+  <!-- Mobile Menu Button -->
+  <button class="admin-mobile-menu-btn" onclick="document.body.classList.toggle('admin-sidebar-open')">
+    <iconify-icon icon="ri:menu-line" width="24"></iconify-icon>
+  </button>
+  
+  <!-- Overlay -->
+  <div class="admin-sidebar-overlay" onclick="document.body.classList.remove('admin-sidebar-open')"></div>
+  
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <!-- Logo -->
+    <a href="/admin/" class="admin-sidebar-logo">
+      <svg viewBox="0 0 64 64" width="36" height="36">
+        <path d="M12 16H48V48H12V16Z" fill="#ef4444" fill-opacity="0.2"/>
+        <path d="M18 24H46M18 32H46M18 40H34" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="48" cy="40" r="5" fill="#ef4444"/>
+      </svg>
+      <span class="admin-sidebar-logo-text">Admin<span>Panel</span></span>
+    </a>
+    
+    <!-- Navigation -->
+    <nav>
+      <div class="admin-sidebar-section">
+        <div class="admin-sidebar-section-title">Управление</div>
+        
+        {% for item in menu_items %}
+        <a href="{{ item.url }}" class="admin-menu-item {% if active_menu == item.id %}active{% endif %}">
+          <iconify-icon icon="{{ item.icon }}" width="20"></iconify-icon>
+          <span>{{ item.title }}</span>
+        </a>
+        {% endfor %}
+      </div>
+      
+      <div class="admin-sidebar-section">
+        <div class="admin-sidebar-section-title">Ссылки</div>
+        
+        <a href="/" class="admin-menu-item" target="_blank">
+          <iconify-icon icon="ri:external-link-line" width="20"></iconify-icon>
+          <span>Открыть сайт</span>
+        </a>
+        
+        <a href="/dashboard/" class="admin-menu-item" target="_blank">
+          <iconify-icon icon="ri:dashboard-line" width="20"></iconify-icon>
+          <span>Dashboard</span>
+        </a>
+        
+        <a href="/admin/logout/" class="admin-menu-item">
+          <iconify-icon icon="ri:logout-box-line" width="20"></iconify-icon>
+          <span>Выход</span>
+        </a>
+      </div>
+    </nav>
+    
+    <!-- Admin Info -->
+    <div class="admin-sidebar-footer">
+      <div class="admin-user-badge">
+        <iconify-icon icon="ri:shield-user-line" width="14"></iconify-icon>
+        {{ admin_username }}
+      </div>
+    </div>
+  </aside>
+  
+  <!-- Main Content -->
+  <main class="admin-main">
+    <!-- Header -->
+    <header class="admin-header">
+      <h1 class="admin-page-title">{% block page_title %}{{ title }}{% endblock %}</h1>
+      <div>
+        {% block header_actions %}{% endblock %}
+      </div>
+    </header>
+    
+    <!-- Page Content -->
+    <div class="admin-content">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+  
+  {% block extra_js %}{% endblock %}
+</body>
+
+</html>

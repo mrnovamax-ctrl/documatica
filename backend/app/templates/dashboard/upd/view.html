@@ -1,0 +1,912 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block title %}Просмотр УПД — Documatica{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<header class="dashboard-header-v12">
+  <div class="dashboard-header-left-v12">
+    <a href="/dashboard/documents/" class="back-link-v12" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--docu-body); text-decoration: none; font-size: 0.875rem; margin-bottom: 0.5rem;">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Назад к документам
+    </a>
+    <h1 class="dashboard-title-v12" id="page-title">Загрузка...</h1>
+    <p class="dashboard-subtitle-v12" id="page-subtitle" style="color: var(--docu-muted); font-size: 0.875rem;"></p>
+  </div>
+  <div class="dashboard-header-right-v12" style="display: flex; gap: 0.75rem;">
+    <a href="/dashboard/upd/edit/{{ document_id }}/" class="btn-outline-v12" id="btn-edit">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
+      Редактировать
+    </a>
+    <button type="button" class="btn-primary-v12" id="btn-download">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      Скачать PDF
+    </button>
+    <button type="button" class="btn-outline-v12" id="btn-print" style="padding: 0.75rem;">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+        <rect x="6" y="14" width="12" height="8"></rect>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- Document Info Cards -->
+<div class="stats-grid-v12" id="doc-info-cards" style="margin-bottom: 1.5rem;">
+  <div class="stat-card-v12">
+    <div class="stat-label-v12">Номер документа</div>
+    <div class="stat-value-v12" id="doc-number">—</div>
+  </div>
+  <div class="stat-card-v12">
+    <div class="stat-label-v12">Дата документа</div>
+    <div class="stat-value-v12" id="doc-date">—</div>
+  </div>
+  <div class="stat-card-v12">
+    <div class="stat-label-v12">Сумма</div>
+    <div class="stat-value-v12" id="doc-amount">—</div>
+  </div>
+  <div class="stat-card-v12">
+    <div class="stat-label-v12">Статус</div>
+    <div class="stat-value-v12">
+      <span class="status-indicator-v12" id="doc-status">
+        <span class="dot success"></span>
+        Создан
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Parties Info -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+  <div class="section-card-v12">
+    <div class="section-header-v12">
+      <h2 class="section-title-v12">Продавец</h2>
+    </div>
+    <div class="section-body-v12">
+      <div class="info-row-v12" style="margin-bottom: 0.75rem;">
+        <span class="info-label-v12" style="color: var(--docu-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Наименование</span>
+        <span class="info-value-v12" id="seller-name" style="font-weight: 600;">—</span>
+      </div>
+      <div class="info-row-v12" style="margin-bottom: 0.75rem;">
+        <span class="info-label-v12" style="color: var(--docu-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">ИНН</span>
+        <span class="info-value-v12" id="seller-inn" style="font-weight: 600;">—</span>
+      </div>
+      <div class="info-row-v12">
+        <span class="info-label-v12" style="color: var(--docu-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Адрес</span>
+        <span class="info-value-v12" id="seller-address" style="font-weight: 600;">—</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section-card-v12">
+    <div class="section-header-v12">
+      <h2 class="section-title-v12">Покупатель</h2>
+    </div>
+    <div class="section-body-v12">
+      <div class="info-row-v12" style="margin-bottom: 0.75rem;">
+        <span class="info-label-v12" style="color: var(--docu-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Наименование</span>
+        <span class="info-value-v12" id="buyer-name" style="font-weight: 600;">—</span>
+      </div>
+      <div class="info-row-v12" style="margin-bottom: 0.75rem;">
+        <span class="info-label-v12" style="color: var(--docu-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">ИНН</span>
+        <span class="info-value-v12" id="buyer-inn" style="font-weight: 600;">—</span>
+      </div>
+      <div class="info-row-v12">
+        <span class="info-label-v12" style="color: var(--docu-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Адрес</span>
+        <span class="info-value-v12" id="buyer-address" style="font-weight: 600;">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Document Preview -->
+<div class="section-card-v12">
+  <div class="section-header-v12" style="display: flex; justify-content: space-between; align-items: center;">
+    <h2 class="section-title-v12">Предпросмотр документа</h2>
+    <div style="display: flex; gap: 0.5rem;">
+      <button type="button" class="btn-sm-v12" id="btn-zoom-out" style="padding: 0.5rem; background: var(--docu-base); border: none; border-radius: 0.5rem; cursor: pointer;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+      </button>
+      <button type="button" class="btn-sm-v12" id="btn-zoom-in" style="padding: 0.5rem; background: var(--docu-base); border: none; border-radius: 0.5rem; cursor: pointer;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          <line x1="11" y1="8" x2="11" y2="14"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="section-body-v12" style="padding: 0; overflow: hidden;">
+    <div id="document-preview" style="background: #f8fafc; min-height: 600px; display: flex; justify-content: center; padding: 2rem; overflow: auto;">
+      <div id="preview-container" style="transform-origin: top center; transition: transform 0.2s;">
+        <div style="text-align: center; color: var(--docu-muted); padding: 4rem;">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 1rem;">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+          <p>Загрузка документа...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI Analysis Block -->
+<div class="section-card-v12" id="ai-analysis-card" style="margin-top: 1.5rem; border: 2px solid #FBBF24; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);">
+  <div class="section-header-v12" style="border-bottom: 1px solid #fde68a;">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #FBBF24 0%, #f59e0b 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2">
+          <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+          <circle cx="8" cy="14" r="1.5"/>
+          <circle cx="16" cy="14" r="1.5"/>
+          <path d="M9 18h6"/>
+        </svg>
+      </div>
+      <div>
+        <h2 class="section-title-v12" style="margin: 0; color: #92400e;">ИИ Анализ документа</h2>
+        <p style="margin: 0; font-size: 0.75rem; color: #b45309;">Проверка бухгалтером и юристом на основе ИИ</p>
+      </div>
+    </div>
+  </div>
+  <div class="section-body-v12">
+    <div id="ai-analysis-placeholder" style="text-align: center; padding: 2rem;">
+      <p style="color: #92400e; margin-bottom: 1.5rem; font-size: 0.95rem;">
+        ИИ проанализирует документ на наличие ошибок, несоответствий и потенциальных проблем с точки зрения бухгалтера и юриста.
+      </p>
+      <button type="button" id="btn-ai-analyze" style="
+        background: linear-gradient(135deg, #FBBF24 0%, #f59e0b 100%);
+        color: #78350f;
+        border: none;
+        padding: 0.875rem 2rem;
+        border-radius: 1rem;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+      " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(251,191,36,0.4)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 15px rgba(251,191,36,0.3)';">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4M12 8h.01"/>
+        </svg>
+        Анализировать документ
+      </button>
+    </div>
+    
+    <div id="ai-analysis-loading" style="display: none; text-align: center; padding: 3rem;">
+      <div style="
+        width: 48px;
+        height: 48px;
+        border: 4px solid #fde68a;
+        border-top-color: #f59e0b;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1.5rem;
+      "></div>
+      <p style="color: #92400e; font-weight: 600;">ИИ анализирует документ...</p>
+      <p style="color: #b45309; font-size: 0.875rem;">Это может занять несколько секунд</p>
+    </div>
+    
+    <div id="ai-analysis-result" style="display: none;">
+      <!-- Results will be inserted here -->
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.ai-issue-card {
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.ai-issue-card.error {
+  background: #fef2f2;
+  border-left: 4px solid #dc2626;
+}
+
+.ai-issue-card.warning {
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+}
+
+.ai-issue-card.suggestion {
+  background: #f0f9ff;
+  border-left: 4px solid #3b82f6;
+}
+
+.ai-issue-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-issue-card.error .ai-issue-icon {
+  background: #dc2626;
+  color: white;
+}
+
+.ai-issue-card.warning .ai-issue-icon {
+  background: #f59e0b;
+  color: white;
+}
+
+.ai-issue-card.suggestion .ai-issue-icon {
+  background: #3b82f6;
+  color: white;
+}
+
+.ai-issue-text {
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.ai-issue-card.error .ai-issue-text {
+  color: #991b1b;
+}
+
+.ai-issue-card.warning .ai-issue-text {
+  color: #92400e;
+}
+
+.ai-issue-card.suggestion .ai-issue-text {
+  color: #1e40af;
+}
+
+.ai-summary-box {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.ai-summary-title {
+  font-weight: 700;
+  color: #065f46;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ai-summary-text {
+  color: #047857;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Highlight styles for preview */
+.ai-highlight-error {
+  background: rgba(220, 38, 38, 0.25) !important;
+  outline: 2px solid #dc2626 !important;
+  outline-offset: 2px;
+  animation: pulse-error 2s infinite;
+}
+
+.ai-highlight-warning {
+  background: rgba(245, 158, 11, 0.25) !important;
+  outline: 2px solid #f59e0b !important;
+  outline-offset: 2px;
+  animation: pulse-warning 2s infinite;
+}
+
+@keyframes pulse-error {
+  0%, 100% { background: rgba(220, 38, 38, 0.25); }
+  50% { background: rgba(220, 38, 38, 0.4); }
+}
+
+@keyframes pulse-warning {
+  0%, 100% { background: rgba(245, 158, 11, 0.25); }
+  50% { background: rgba(245, 158, 11, 0.4); }
+}
+</style>
+
+<!-- Delete Button -->
+<div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--docu-base);">
+  <button type="button" class="btn-danger-v12" id="btn-delete" style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 0.75rem 1.5rem; border-radius: 1rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="3 6 5 6 21 6"></polyline>
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+    </svg>
+    Удалить документ
+  </button>
+</div>
+
+<script>
+const documentId = '{{ document_id }}';
+const token = localStorage.getItem('access_token') || getCookie('access_token');
+let currentZoom = 1;
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function formatMoney(amount) {
+  return new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount || 0);
+}
+
+async function loadDocument() {
+  try {
+    // Load metadata
+    const metaResponse = await fetch(`/api/v1/documents/saved/${documentId}`, {
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+      credentials: 'include'
+    });
+    
+    if (!metaResponse.ok) {
+      throw new Error('Документ не найден');
+    }
+    
+    const meta = await metaResponse.json();
+    
+    // Update page title
+    document.getElementById('page-title').textContent = `УПД № ${meta.document_number || 'б/н'}`;
+    document.getElementById('page-subtitle').textContent = `Создан ${formatDate(meta.created_at)}`;
+    
+    // Update info cards
+    document.getElementById('doc-number').textContent = meta.document_number || '—';
+    document.getElementById('doc-date').textContent = formatDate(meta.document_date);
+    document.getElementById('doc-amount').textContent = formatMoney(meta.total_amount) + ' р.';
+    
+    // Load form data for seller/buyer info
+    const formResponse = await fetch(`/api/v1/documents/saved/${documentId}/form-data`, {
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+      credentials: 'include'
+    });
+    
+    if (formResponse.ok) {
+      const formData = await formResponse.json();
+      
+      // Store for AI analysis
+      documentFormData = formData;
+      
+      // Seller info
+      if (formData.seller) {
+        document.getElementById('seller-name').textContent = formData.seller.name || '—';
+        document.getElementById('seller-inn').textContent = formData.seller.inn || '—';
+        document.getElementById('seller-address').textContent = formData.seller.address || '—';
+      }
+      
+      // Buyer info
+      if (formData.buyer) {
+        document.getElementById('buyer-name').textContent = formData.buyer.name || '—';
+        document.getElementById('buyer-inn').textContent = formData.buyer.inn || '—';
+        document.getElementById('buyer-address').textContent = formData.buyer.address || '—';
+      }
+    }
+    
+    // Load HTML preview
+    const htmlResponse = await fetch(`/api/v1/documents/saved/${documentId}/html`, {
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+      credentials: 'include'
+    });
+    
+    if (htmlResponse.ok) {
+      const htmlContent = await htmlResponse.text();
+      document.getElementById('preview-container').innerHTML = htmlContent;
+    }
+    
+  } catch (error) {
+    console.error('Error loading document:', error);
+    document.getElementById('page-title').textContent = 'Ошибка загрузки';
+    document.getElementById('preview-container').innerHTML = `
+      <div style="text-align: center; color: #dc2626; padding: 4rem;">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 1rem;">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <p>${error.message}</p>
+      </div>
+    `;
+  }
+}
+
+// Download PDF
+document.getElementById('btn-download').addEventListener('click', async function() {
+  window.open(`/api/v1/documents/saved/${documentId}/pdf`, '_blank');
+});
+
+// Print
+document.getElementById('btn-print').addEventListener('click', function() {
+  const content = document.getElementById('preview-container').innerHTML;
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>УПД</title>
+      <style>
+        body { font-family: Arial, sans-serif; }
+        @media print { body { margin: 0; } }
+      </style>
+    </head>
+    <body>${content}</body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.print();
+});
+
+// Zoom controls
+document.getElementById('btn-zoom-in').addEventListener('click', function() {
+  currentZoom = Math.min(currentZoom + 0.1, 2);
+  document.getElementById('preview-container').style.transform = `scale(${currentZoom})`;
+});
+
+document.getElementById('btn-zoom-out').addEventListener('click', function() {
+  currentZoom = Math.max(currentZoom - 0.1, 0.5);
+  document.getElementById('preview-container').style.transform = `scale(${currentZoom})`;
+});
+
+// Delete document
+document.getElementById('btn-delete').addEventListener('click', async function() {
+  if (!confirm('Вы уверены, что хотите удалить этот документ?')) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/v1/documents/saved/${documentId}`, {
+      method: 'DELETE',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+      credentials: 'include'
+    });
+    
+    if (response.ok) {
+      window.location.href = '/dashboard/documents/';
+    } else {
+      alert('Ошибка удаления документа');
+    }
+  } catch (error) {
+    alert('Ошибка: ' + error.message);
+  }
+});
+
+// Load document on page load
+loadDocument();
+
+// Store document data for AI analysis
+let documentFormData = null;
+
+// AI Analysis functionality
+document.getElementById('btn-ai-analyze').addEventListener('click', async function() {
+  const btn = this;
+  const placeholder = document.getElementById('ai-analysis-placeholder');
+  const loading = document.getElementById('ai-analysis-loading');
+  const result = document.getElementById('ai-analysis-result');
+  
+  // Show loading
+  placeholder.style.display = 'none';
+  loading.style.display = 'block';
+  result.style.display = 'none';
+  
+  // Clear previous highlights
+  clearHighlights();
+  
+  try {
+    // Load form data if not already loaded
+    if (!documentFormData) {
+      const formResponse = await fetch(`/api/v1/documents/saved/${documentId}/form-data`, {
+        headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+        credentials: 'include'
+      });
+      
+      if (formResponse.ok) {
+        documentFormData = await formResponse.json();
+      }
+    }
+    
+    // Prepare analysis data
+    const analysisData = {
+      status: documentFormData?.status || '1',
+      document_number: documentFormData?.document_number || '',
+      document_date: documentFormData?.document_date || '',
+      seller: documentFormData?.seller || {},
+      buyer: documentFormData?.buyer || {},
+      items: documentFormData?.items || [],
+      payment_document: documentFormData?.payment_document || '',
+      contract_info: documentFormData?.contract_info || '',
+      cargo_sender: documentFormData?.cargo_sender || '',
+      cargo_receiver: documentFormData?.cargo_receiver || '',
+      currency: documentFormData?.currency || { code: '643', name: 'Российский рубль' }
+    };
+    
+    // Call AI API
+    console.log('Sending AI analysis request:', JSON.stringify(analysisData, null, 2));
+    const response = await fetch('/api/v1/ai/analyze-upd', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+      },
+      credentials: 'include',
+      body: JSON.stringify(analysisData)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('AI API error response:', errorData);
+      // Handle Pydantic validation errors (detail is array) or simple string errors
+      let errorMessage = 'Ошибка при анализе документа';
+      if (typeof errorData.detail === 'string') {
+        errorMessage = errorData.detail;
+      } else if (Array.isArray(errorData.detail)) {
+        errorMessage = errorData.detail.map(e => e.msg || e.message || JSON.stringify(e)).join('; ');
+      } else if (errorData.detail) {
+        errorMessage = JSON.stringify(errorData.detail);
+      }
+      throw new Error(errorMessage);
+    }
+    
+    const analysisResult = await response.json();
+    
+    // Render results
+    renderAnalysisResult(analysisResult);
+    
+    // Apply highlights to preview
+    applyHighlights(analysisResult);
+    
+    loading.style.display = 'none';
+    result.style.display = 'block';
+    
+  } catch (error) {
+    console.error('AI Analysis error:', error);
+    loading.style.display = 'none';
+    result.style.display = 'block';
+    result.innerHTML = `
+      <div style="text-align: center; padding: 2rem; background: #fef2f2; border-radius: 1rem;">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#dc2626" stroke-width="1.5" style="margin-bottom: 1rem;">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        <p style="color: #dc2626; font-weight: 600; margin-bottom: 0.5rem;">Ошибка анализа</p>
+        <p style="color: #991b1b; font-size: 0.875rem;">${error.message}</p>
+        <button type="button" onclick="document.getElementById('ai-analysis-placeholder').style.display='block'; document.getElementById('ai-analysis-result').style.display='none';" style="
+          margin-top: 1rem;
+          background: #dc2626;
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          font-weight: 600;
+          cursor: pointer;
+        ">Попробовать снова</button>
+      </div>
+    `;
+  }
+});
+
+function renderAnalysisResult(data) {
+  const container = document.getElementById('ai-analysis-result');
+  let html = '';
+  
+  // Count issues
+  const errorCount = (data.errors || []).length;
+  const warningCount = (data.warnings || []).length;
+  const suggestionCount = (data.suggestions || []).length;
+  
+  // Header with counts
+  html += `
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+      <div style="background: ${errorCount > 0 ? '#fef2f2' : '#f0fdf4'}; padding: 0.75rem 1rem; border-radius: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.25rem; font-weight: 800; color: ${errorCount > 0 ? '#dc2626' : '#16a34a'};">${errorCount}</span>
+        <span style="font-size: 0.75rem; color: ${errorCount > 0 ? '#991b1b' : '#166534'};">Ошибок</span>
+      </div>
+      <div style="background: ${warningCount > 0 ? '#fffbeb' : '#f0fdf4'}; padding: 0.75rem 1rem; border-radius: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.25rem; font-weight: 800; color: ${warningCount > 0 ? '#f59e0b' : '#16a34a'};">${warningCount}</span>
+        <span style="font-size: 0.75rem; color: ${warningCount > 0 ? '#92400e' : '#166534'};">Предупреждений</span>
+      </div>
+      <div style="background: #f0f9ff; padding: 0.75rem 1rem; border-radius: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.25rem; font-weight: 800; color: #3b82f6;">${suggestionCount}</span>
+        <span style="font-size: 0.75rem; color: #1e40af;">Рекомендаций</span>
+      </div>
+    </div>
+  `;
+  
+  // Errors
+  if (data.errors && data.errors.length > 0) {
+    html += '<div style="margin-bottom: 1.5rem;">';
+    html += '<h4 style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #dc2626; margin-bottom: 0.75rem;">Критические ошибки</h4>';
+    data.errors.forEach(error => {
+      const errorText = typeof error === 'string' ? error : (error.message || JSON.stringify(error));
+      const fieldName = typeof error === 'object' ? error.field : '';
+      html += `
+        <div class="ai-issue-card error">
+          <div class="ai-issue-icon">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </div>
+          <div class="ai-issue-text">${fieldName ? '<strong>' + escapeHtml(fieldName) + ':</strong> ' : ''}${escapeHtml(errorText)}</div>
+        </div>
+      `;
+    });
+    html += '</div>';
+  }
+  
+  // Warnings
+  if (data.warnings && data.warnings.length > 0) {
+    html += '<div style="margin-bottom: 1.5rem;">';
+    html += '<h4 style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #f59e0b; margin-bottom: 0.75rem;">Предупреждения</h4>';
+    data.warnings.forEach(warning => {
+      const warningText = typeof warning === 'string' ? warning : (warning.message || JSON.stringify(warning));
+      const fieldName = typeof warning === 'object' ? warning.field : '';
+      html += `
+        <div class="ai-issue-card warning">
+          <div class="ai-issue-icon">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 9v4M12 17h.01"/>
+            </svg>
+          </div>
+          <div class="ai-issue-text">${fieldName ? '<strong>' + escapeHtml(fieldName) + ':</strong> ' : ''}${escapeHtml(warningText)}</div>
+        </div>
+      `;
+    });
+    html += '</div>';
+  }
+  
+  // Suggestions
+  if (data.suggestions && data.suggestions.length > 0) {
+    html += '<div style="margin-bottom: 1.5rem;">';
+    html += '<h4 style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #3b82f6; margin-bottom: 0.75rem;">Рекомендации</h4>';
+    data.suggestions.forEach(suggestion => {
+      const suggestionText = typeof suggestion === 'string' ? suggestion : (suggestion.message || JSON.stringify(suggestion));
+      const fieldName = typeof suggestion === 'object' ? suggestion.field : '';
+      html += `
+        <div class="ai-issue-card suggestion">
+          <div class="ai-issue-icon">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </div>
+          <div class="ai-issue-text">${fieldName ? '<strong>' + escapeHtml(fieldName) + ':</strong> ' : ''}${escapeHtml(suggestionText)}</div>
+        </div>
+      `;
+    });
+    html += '</div>';
+  }
+  
+  // Summary
+  if (data.summary) {
+    html += `
+      <div class="ai-summary-box">
+        <div class="ai-summary-title">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          Общее заключение
+        </div>
+        <div class="ai-summary-text">${escapeHtml(data.summary)}</div>
+      </div>
+    `;
+  }
+  
+  // Analyze again button
+  html += `
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <button type="button" onclick="document.getElementById('ai-analysis-placeholder').style.display='block'; document.getElementById('ai-analysis-result').style.display='none'; clearHighlights();" style="
+        background: transparent;
+        color: #92400e;
+        border: 2px solid #fde68a;
+        padding: 0.625rem 1.25rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      " onmouseover="this.style.background='#fef3c7'" onmouseout="this.style.background='transparent'">
+        Анализировать заново
+      </button>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Highlight functionality for preview
+function applyHighlights(analysisResult) {
+  const previewContainer = document.getElementById('preview-container');
+  if (!previewContainer) return;
+  
+  // Inject highlight styles
+  const styleId = 'ai-highlight-styles';
+  if (!previewContainer.querySelector('#' + styleId)) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      .ai-highlight-error {
+        background: rgba(220, 38, 38, 0.25) !important;
+        outline: 2px solid #dc2626 !important;
+        outline-offset: 1px;
+        position: relative;
+      }
+      .ai-highlight-warning {
+        background: rgba(245, 158, 11, 0.25) !important;
+        outline: 2px solid #f59e0b !important;
+        outline-offset: 1px;
+      }
+      .ai-highlight-error::after, .ai-highlight-warning::after {
+        content: "!";
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        font-size: 10px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+      .ai-highlight-error::after { background: #dc2626; }
+      .ai-highlight-warning::after { background: #f59e0b; }
+    `;
+    previewContainer.appendChild(style);
+  }
+  
+  // Map of keywords to look for in errors/warnings
+  const fieldMappings = {
+    'ИНН': ['inn'],
+    'КПП': ['kpp'],
+    'номер документа': ['document_number', 'doc-num'],
+    'дата': ['document_date', 'date'],
+    'название': ['name', 'org-name'],
+    'наименование': ['name', 'product-name'],
+    'адрес': ['address'],
+    'БИК': ['bik'],
+    'счет': ['account', 'bank'],
+    'количество': ['quantity', 'qty'],
+    'цена': ['price'],
+    'сумма': ['amount', 'total'],
+    'НДС': ['nds', 'vat'],
+    'грузоотправитель': ['cargo-sender'],
+    'грузополучатель': ['cargo-receiver'],
+    'продавец': ['seller'],
+    'покупатель': ['buyer'],
+    'ОГРН': ['ogrn'],
+    'ОКПО': ['okpo'],
+    'договор': ['contract'],
+    'платежный': ['payment']
+  };
+  
+  // Check all text content in preview for matches
+  const allText = previewContainer.innerText.toLowerCase();
+  const tables = previewContainer.querySelectorAll('table');
+  const cells = previewContainer.querySelectorAll('td, th');
+  
+  // Process errors (high priority)
+  if (analysisResult.errors && analysisResult.errors.length > 0) {
+    analysisResult.errors.forEach(error => {
+      const errorText = typeof error === 'string' ? error : (error.message || '');
+      const fieldName = typeof error === 'object' ? (error.field || '') : '';
+      highlightMatchingCells(cells, errorText.toLowerCase(), fieldName.toLowerCase(), fieldMappings, 'ai-highlight-error');
+    });
+  }
+  
+  // Process warnings (lower priority)
+  if (analysisResult.warnings && analysisResult.warnings.length > 0) {
+    analysisResult.warnings.forEach(warning => {
+      const warningText = typeof warning === 'string' ? warning : (warning.message || '');
+      const fieldName = typeof warning === 'object' ? (warning.field || '') : '';
+      highlightMatchingCells(cells, warningText.toLowerCase(), fieldName.toLowerCase(), fieldMappings, 'ai-highlight-warning');
+    });
+  }
+}
+
+function highlightMatchingCells(cells, issueText, fieldName, fieldMappings, highlightClass) {
+  // First try to highlight by field name
+  if (fieldName) {
+    cells.forEach(cell => {
+      const cellText = cell.innerText.toLowerCase();
+      if (cellText.includes(fieldName)) {
+        if (highlightClass === 'ai-highlight-warning' && cell.classList.contains('ai-highlight-error')) {
+          return;
+        }
+        cell.classList.add(highlightClass);
+      }
+    });
+  }
+  
+  // Then try to match by keywords in issue text
+  for (const [keyword, patterns] of Object.entries(fieldMappings)) {
+    if (issueText.includes(keyword.toLowerCase())) {
+      cells.forEach(cell => {
+        const cellText = cell.innerText.toLowerCase();
+        if (patterns.some(p => cellText.includes(p)) || cellText.includes(keyword.toLowerCase())) {
+          if (highlightClass === 'ai-highlight-warning' && cell.classList.contains('ai-highlight-error')) {
+            return;
+          }
+          cell.classList.add(highlightClass);
+        }
+      });
+    }
+  }
+  
+  // Highlight empty/suspicious values
+  if (issueText.includes('не заполнен') || issueText.includes('пуст') || issueText.includes('отсутствует')) {
+    cells.forEach(cell => {
+      const cellText = cell.innerText.trim();
+      if (cellText === '' || cellText === '-' || cellText === '—') {
+        const parentRow = cell.parentElement;
+        if (parentRow) {
+          const rowText = parentRow.innerText.toLowerCase();
+          for (const keyword of Object.keys(fieldMappings)) {
+            if (issueText.includes(keyword.toLowerCase()) && rowText.includes(keyword.toLowerCase())) {
+              if (highlightClass === 'ai-highlight-warning' && cell.classList.contains('ai-highlight-error')) {
+                return;
+              }
+              cell.classList.add(highlightClass);
+              break;
+            }
+          }
+        }
+      }
+    });
+  }
+}
+
+function clearHighlights() {
+  const previewContainer = document.getElementById('preview-container');
+  if (!previewContainer) return;
+  
+  previewContainer.querySelectorAll('.ai-highlight-error, .ai-highlight-warning').forEach(el => {
+    el.classList.remove('ai-highlight-error', 'ai-highlight-warning');
+  });
+}
+</script>
+{% endblock %}

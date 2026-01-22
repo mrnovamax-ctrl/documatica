@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Очистка сессии — Documatica{% endblock %}
+
+{% block body_class %}auth-page{% endblock %}
+
+{% block body %}
+<div class="auth-page-v12">
+  <div class="auth-card-v12" style="max-width: 500px;">
+    <div class="auth-header-v12">
+      <a href="/" class="auth-logo-v12">
+        <svg viewBox="0 0 64 64">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="logo-text">
+          <span class="logo-bold">docu</span><span class="logo-light">matica</span>
+        </span>
+      </a>
+      <h1 class="auth-title-v12">Очистка сессии</h1>
+      <p class="auth-subtitle-v12">Все токены и данные авторизации будут удалены</p>
+    </div>
+    
+    <div style="text-align: center; padding: 2rem 0;">
+      <div id="status" style="margin-bottom: 1.5rem; font-size: 14px; color: #64748b;">
+        Очистка данных...
+      </div>
+      
+      <button onclick="location.href='/login/'" class="auth-btn-v12" style="margin-top: 1rem;">
+        Перейти к входу
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+      
+      <a href="/" style="display: block; margin-top: 1rem; color: #64748b; text-decoration: none; font-size: 14px;">
+        На главную
+      </a>
+    </div>
+    
+    <div class="auth-status-v12">
+      <div class="status-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <span class="status-text">Сессия очищена</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Очищаем localStorage
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('documatica_token');
+  localStorage.removeItem('documatica_user');
+  
+  // Очищаем все cookies
+  document.cookie.split(";").forEach(function(c) { 
+    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+  });
+  
+  // Очищаем sessionStorage
+  sessionStorage.clear();
+  
+  document.getElementById('status').innerHTML = '<span style="color: #10b981; font-weight: 600;">✓ Все данные успешно удалены</span>';
+})();
+</script>
+{% endblock %}

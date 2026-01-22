@@ -1,0 +1,231 @@
+{% extends "base_public.html" %}
+
+{% block title %}{{ title }} - Documatica{% endblock %}
+{% block meta_description %}{{ description }}{% endblock %}
+
+{% block extra_head %}
+<!-- Article Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ article.title }}",
+  "description": "{{ article.excerpt }}",
+  "image": "{{ article.image or '/static/images/og-default.jpg' }}",
+  "datePublished": "{{ article.created_at }}",
+  "dateModified": "{{ article.updated_at or article.created_at }}",
+  "author": {
+    "@type": "Organization",
+    "name": "Documatica"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Documatica",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/static/images/logo.png"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Article Header -->
+<section style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 120px 0 60px;">
+  <div class="container">
+    <!-- Breadcrumbs -->
+    <nav style="margin-bottom: 32px;">
+      <ol style="display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0;">
+        {% for crumb in breadcrumbs if crumb %}
+        <li style="display: flex; align-items: center; gap: 8px;">
+          {% if not loop.first %}
+          <span style="color: #64748b;">/</span>
+          {% endif %}
+          {% if crumb.url %}
+          <a href="{{ crumb.url }}" style="color: #94a3b8; text-decoration: none; font-size: 14px;">{{ crumb.title }}</a>
+          {% else %}
+          <span style="color: #3b82f6; font-size: 14px; font-weight: 600;">{{ crumb.title[:50] }}{% if crumb.title|length > 50 %}...{% endif %}</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+    </nav>
+    
+    <!-- Category & Meta -->
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 24px;">
+      {% if category %}
+      <a href="/news/?category={{ category.slug }}" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; text-decoration: none;">
+        {{ category.name }}
+      </a>
+      {% endif %}
+      <span style="color: #64748b; font-size: 14px;">
+        {{ article.created_at[:10] }}
+      </span>
+      <span style="color: #64748b; font-size: 14px;">
+        {{ article.views }} просмотров
+      </span>
+    </div>
+    
+    <!-- Title -->
+    <h1 style="font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 900; color: white; margin: 0; line-height: 1.3; max-width: 900px;">
+      {{ article.title }}
+    </h1>
+  </div>
+</section>
+
+<!-- Article Content -->
+<section style="padding: 60px 0; background: #f8fafc;">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: start;">
+      <!-- Main Content -->
+      <article style="background: white; border-radius: 2rem; padding: 48px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+        <!-- Featured Image -->
+        {% if article.image %}
+        <div style="margin: -48px -48px 40px; border-radius: 2rem 2rem 0 0; overflow: hidden;">
+          <img src="{{ article.image }}" alt="{{ article.title }}" style="width: 100%; height: auto; display: block;">
+        </div>
+        {% endif %}
+        
+        <!-- Excerpt -->
+        <p style="font-size: 1.25rem; color: #64748b; line-height: 1.7; margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid #f1f5f9;">
+          {{ article.excerpt }}
+        </p>
+        
+        <!-- Content -->
+        <div class="article-content" style="font-size: 16px; line-height: 1.8; color: #334155;">
+          {{ article.content | safe }}
+        </div>
+        
+        <!-- Share -->
+        <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #f1f5f9;">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 16px;">
+            Поделиться статьей
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <a href="https://t.me/share/url?url={{ request.url }}&text={{ article.title }}" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #f1f5f9; border-radius: 12px; color: #64748b; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#3b82f6'; this.style.color='white';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b';">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+            </a>
+            <a href="https://vk.com/share.php?url={{ request.url }}" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #f1f5f9; border-radius: 12px; color: #64748b; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#3b82f6'; this.style.color='white';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b';">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.08 14.27h-1.46c-.55 0-.72-.44-1.71-1.45-1-1-1.44-1.14-1.69-1.14-.35 0-.45.1-.45.58v1.34c0 .41-.13.67-1.24.67-1.83 0-3.87-1.11-5.3-3.17-2.15-3.02-2.74-5.29-2.74-5.75 0-.25.1-.48.58-.48h1.46c.43 0 .6.2.77.67.84 2.43 2.26 4.56 2.85 4.56.22 0 .32-.1.32-.65V8.86c-.07-1.16-.67-1.26-.67-1.67 0-.2.16-.41.43-.41h2.3c.37 0 .5.2.5.63v3.39c0 .36.16.49.26.49.22 0 .4-.13.8-.53 1.24-1.38 2.13-3.52 2.13-3.52.12-.25.32-.48.75-.48h1.46c.44 0 .54.23.44.54-.18.85-1.93 3.31-1.93 3.31-.15.25-.21.36 0 .63.15.21.64.63 1.02 1.02.7.72 1.22 1.32 1.36 1.74.15.41-.05.63-.49.63z"/></svg>
+            </a>
+            <button onclick="navigator.clipboard.writeText(window.location.href); this.innerHTML='<svg width=20 height=20 viewBox=&quot;0 0 24 24&quot; fill=none stroke=currentColor stroke-width=2><path d=&quot;M20 6L9 17l-5-5&quot;/></svg>'; setTimeout(() => this.innerHTML='<svg width=20 height=20 viewBox=&quot;0 0 24 24&quot; fill=none stroke=currentColor stroke-width=2><path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/><path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/></svg>', 2000)" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #f1f5f9; border: none; border-radius: 12px; color: #64748b; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#3b82f6'; this.style.color='white';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b';">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+      
+      <!-- Sidebar -->
+      <aside style="position: sticky; top: 100px;">
+        <!-- CTA Card -->
+        <div style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 2rem; padding: 32px; margin-bottom: 24px; color: white;">
+          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.8; margin-bottom: 12px;">
+            Documatica
+          </div>
+          <h3 style="font-size: 20px; font-weight: 800; margin: 0 0 12px; line-height: 1.3;">
+            Создайте УПД за 2 минуты
+          </h3>
+          <p style="font-size: 14px; opacity: 0.9; margin-bottom: 20px; line-height: 1.5;">
+            Автозаполнение по ИНН, актуальная форма 2026 года
+          </p>
+          <a href="/dashboard/upd/create/" style="display: block; text-align: center; background: white; color: #3b82f6; padding: 14px 24px; border-radius: 1rem; font-weight: 700; font-size: 13px; text-decoration: none;">
+            Попробовать бесплатно
+          </a>
+        </div>
+        
+        <!-- Related Articles -->
+        {% if related %}
+        <div style="background: white; border-radius: 2rem; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+          <h3 style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 0 0 20px;">
+            Похожие статьи
+          </h3>
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            {% for item in related %}
+            <a href="/news/{{ item.slug }}/" style="display: block; text-decoration: none;">
+              <h4 style="font-size: 15px; font-weight: 600; color: #0f172a; margin: 0 0 6px; line-height: 1.4;">
+                {{ item.title }}
+              </h4>
+              <span style="font-size: 12px; color: #94a3b8;">{{ item.created_at[:10] }}</span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .article-content h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 40px 0 16px;
+    line-height: 1.3;
+  }
+  .article-content h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 32px 0 12px;
+  }
+  .article-content p {
+    margin: 0 0 20px;
+  }
+  .article-content ul, .article-content ol {
+    margin: 0 0 20px;
+    padding-left: 24px;
+  }
+  .article-content li {
+    margin-bottom: 8px;
+  }
+  .article-content strong {
+    font-weight: 600;
+    color: #0f172a;
+  }
+  .article-content a {
+    color: #3b82f6;
+    text-decoration: underline;
+  }
+  .article-content blockquote {
+    margin: 24px 0;
+    padding: 20px 24px;
+    background: #f8fafc;
+    border-left: 4px solid #3b82f6;
+    border-radius: 0 1rem 1rem 0;
+    font-style: italic;
+    color: #64748b;
+  }
+  .article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    margin: 24px 0;
+  }
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+  }
+  .article-content th, .article-content td {
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+  }
+  .article-content th {
+    background: #f8fafc;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 1024px) {
+    .container > div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+    }
+    aside {
+      position: static !important;
+    }
+  }
+</style>
+{% endblock %}

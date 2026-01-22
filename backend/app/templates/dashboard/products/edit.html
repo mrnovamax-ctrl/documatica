@@ -1,0 +1,143 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+  <h6 class="fw-semibold mb-0">Редактировать товар/услугу</h6>
+</div>
+
+<div class="card radius-8 border-0 shadow-sm">
+  <div class="card-body p-24">
+    <form id="product-form">
+      <div class="row mb-24">
+        <div class="col-12">
+          <label class="form-label">Наименование <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="name" id="name" required placeholder="Наименование товара или услуги">
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-md-4">
+          <label class="form-label">Единица измерения</label>
+          <select class="form-select" name="unit" id="unit">
+            <option value="шт">шт - штука</option>
+            <option value="усл">усл - услуга</option>
+            <option value="час">час - час</option>
+            <option value="кг">кг - килограмм</option>
+            <option value="м">м - метр</option>
+            <option value="м2">м2 - квадратный метр</option>
+            <option value="м3">м3 - кубический метр</option>
+            <option value="л">л - литр</option>
+            <option value="компл">компл - комплект</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Цена</label>
+          <input type="number" class="form-control" name="price" id="price" step="0.01" placeholder="0.00">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Ставка НДС</label>
+          <select class="form-select" name="vat_rate" id="vat_rate">
+            <option value="20">20%</option>
+            <option value="10">10%</option>
+            <option value="0">0%</option>
+            <option value="-1">Без НДС</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-12">
+          <label class="form-label">Описание</label>
+          <textarea class="form-control" name="description" id="description" rows="3" placeholder="Дополнительное описание"></textarea>
+        </div>
+      </div>
+      
+      <div class="d-flex gap-3">
+        <button type="submit" class="btn-primary-v12">
+          <iconify-icon icon="mdi:check" class="me-1"></iconify-icon>
+          Сохранить
+        </button>
+        <a href="/dashboard/products/" class="btn-outline-v12">
+          Отмена
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const productId = '{{ product_id }}';
+
+// Загрузка данных товара
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    const response = await fetch(`/api/v1/products/${productId}`, {
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      throw new Error('Товар не найден');
+    }
+    
+    const product = await response.json();
+    
+    // Заполнение формы
+    document.getElementById('name').value = product.name || '';
+    document.getElementById('unit').value = product.unit || 'шт';
+    document.getElementById('price').value = product.price || 0;
+    document.getElementById('vat_rate').value = product.vat_rate !== undefined ? product.vat_rate : 20;
+    document.getElementById('description').value = product.description || '';
+    
+  } catch (error) {
+    console.error('Ошибка загрузки товара:', error);
+    alert('Ошибка загрузки товара: ' + error.message);
+  }
+});
+
+// Обработка отправки формы
+document.getElementById('product-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  const data = {
+    type: 'product',
+    name: formData.get('name'),
+    unit: formData.get('unit'),
+    unit_code: '796',
+    price: parseFloat(formData.get('price')) || 0,
+    vat_rate: parseInt(formData.get('vat_rate')) || 20,
+    qty: 1,
+    country: 'Россия',
+    country_code: '643',
+    description: formData.get('description') || '',
+    sku: ''
+  };
+  
+  const submitBtn = this.querySelector('[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Сохранение...';
+  
+  try {
+    const response = await fetch(`/api/v1/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data)
+    });
+    
+    if (response.ok) {
+      window.location.href = '/dashboard/products/';
+    } else {
+      const err = await response.json();
+      alert(err.detail || 'Ошибка сохранения');
+    }
+  } catch (error) {
+    console.error('Ошибка сохранения:', error);
+    alert('Ошибка сохранения: ' + error.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<iconify-icon icon="mdi:content-save" class="me-1"></iconify-icon>Сохранить';
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: documatica-backend
+    expose:
+      - "8000"
+    volumes:
+      - ./backend:/app
+      - ./backend/static:/app/static
+    environment:
+      - DEBUG=0
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/documatica
+    depends_on:
+      - db
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: documatica-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=documatica
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: documatica-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx-ssr.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./backend/static:/app/static:ro
+      # SSL сертификаты (если есть)
+      # - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

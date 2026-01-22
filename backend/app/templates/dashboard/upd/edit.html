@@ -1,0 +1,188 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<div class="dashboard-main-body">
+  <h6 class="fw-semibold mb-24">Просмотр документа</h6>
+
+  <div class="row">
+    <!-- Информация о документе -->
+    <div class="col-lg-4">
+      <div class="card radius-16 mb-24">
+        <div class="card-header">
+          <h6 class="card-title mb-0">Информация</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-16">
+            <label class="text-secondary-light fw-medium mb-4 d-block">Номер документа</label>
+            <p class="fw-semibold mb-0" id="doc-number">-</p>
+          </div>
+          <div class="mb-16">
+            <label class="text-secondary-light fw-medium mb-4 d-block">Дата</label>
+            <p class="fw-semibold mb-0" id="doc-date">-</p>
+          </div>
+          <div class="mb-16">
+            <label class="text-secondary-light fw-medium mb-4 d-block">Продавец</label>
+            <p class="fw-semibold mb-0" id="doc-seller">-</p>
+          </div>
+          <div class="mb-16">
+            <label class="text-secondary-light fw-medium mb-4 d-block">Покупатель</label>
+            <p class="fw-semibold mb-0" id="doc-buyer">-</p>
+          </div>
+          <div class="mb-16">
+            <label class="text-secondary-light fw-medium mb-4 d-block">Сумма</label>
+            <p class="fw-semibold text-primary-600 mb-0" id="doc-total">-</p>
+          </div>
+          <div class="mb-24">
+            <label class="text-secondary-light fw-medium mb-4 d-block">Создан</label>
+            <p class="fw-semibold mb-0" id="doc-created">-</p>
+          </div>
+          
+          <div class="d-flex flex-column gap-8">
+            <button class="btn btn-primary-600 radius-8 w-100" id="btn-download-pdf">
+              <iconify-icon icon="mdi:file-pdf-box" class="text-xl me-8"></iconify-icon>
+              Скачать PDF
+            </button>
+            <button class="btn btn-outline-primary-600 radius-8 w-100" id="btn-print">
+              <iconify-icon icon="mdi:printer" class="text-xl me-8"></iconify-icon>
+              Печать
+            </button>
+            <a href="/dashboard/upd/create/" class="btn btn-outline-success-600 radius-8 w-100">
+              <iconify-icon icon="mdi:plus" class="text-xl me-8"></iconify-icon>
+              Создать новый
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Превью документа -->
+    <div class="col-lg-8">
+      <div class="card radius-16">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h6 class="card-title mb-0">Превью документа</h6>
+        </div>
+        <div class="card-body p-0">
+          <div id="preview-loading" class="text-center py-48">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Загрузка...</span>
+            </div>
+            <p class="mt-16 text-secondary-light">Загрузка документа...</p>
+          </div>
+          <iframe id="preview-frame" style="width: 100%; height: 800px; border: none; display: none;"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const documentId = '{{ document_id }}';
+
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    // Загружаем метаданные
+    const metaResponse = await fetch(`/api/v1/documents/saved/${documentId}`, { credentials: 'include' });
+    if (!metaResponse.ok) {
+      throw new Error('Документ не найден');
+    }
+    const meta = await metaResponse.json();
+    
+    // Заполняем информацию
+    document.getElementById('doc-number').textContent = meta.document_number || '-';
+    document.getElementById('doc-date').textContent = formatDate(meta.document_date);
+    document.getElementById('doc-seller').textContent = meta.seller_name || '-';
+    document.getElementById('doc-buyer').textContent = meta.buyer_name || '-';
+    document.getElementById('doc-total').textContent = formatCurrency(meta.total_amount || 0);
+    document.getElementById('doc-created').textContent = formatDateTime(meta.created_at);
+    
+    // Загружаем HTML превью
+    const htmlResponse = await fetch(`/api/v1/documents/saved/${documentId}/html`, { credentials: 'include' });
+    if (htmlResponse.ok) {
+      const html = await htmlResponse.text();
+      const iframe = document.getElementById('preview-frame');
+      iframe.srcdoc = html;
+      iframe.style.display = 'block';
+      document.getElementById('preview-loading').style.display = 'none';
+    }
+    
+  } catch (error) {
+    console.error('Error:', error);
+    document.getElementById('preview-loading').innerHTML = `
+      <iconify-icon icon="mdi:alert-circle" class="text-danger text-4xl"></iconify-icon>
+      <p class="mt-16 text-danger">Ошибка загрузки документа</p>
+    `;
+  }
+});
+
+// Скачать PDF
+document.getElementById('btn-download-pdf').addEventListener('click', async function() {
+  const btn = this;
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-8"></span>Генерация...';
+  
+  try {
+    const response = await fetch(`/api/v1/documents/saved/${documentId}/pdf`, { credentials: 'include' });
+    
+    if (!response.ok) {
+      throw new Error('Ошибка генерации PDF');
+    }
+    
+    const contentType = response.headers.get('content-type');
+    
+    if (contentType && contentType.includes('text/html')) {
+      // HTML для печати
+      const html = await response.text();
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(html);
+      printWindow.document.close();
+      printWindow.onload = function() {
+        setTimeout(() => printWindow.print(), 500);
+      };
+    } else {
+      // PDF blob
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `UPD_${documentId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    }
+    
+  } catch (error) {
+    alert('Ошибка: ' + error.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+});
+
+// Печать
+document.getElementById('btn-print').addEventListener('click', function() {
+  const iframe = document.getElementById('preview-frame');
+  if (iframe.contentWindow) {
+    iframe.contentWindow.print();
+  }
+});
+
+// Форматирование
+function formatDate(dateStr) {
+  if (!dateStr) return '-';
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('ru-RU');
+}
+
+function formatDateTime(dateStr) {
+  if (!dateStr) return '-';
+  const date = new Date(dateStr);
+  return date.toLocaleString('ru-RU');
+}
+
+function formatCurrency(amount) {
+  return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(amount);
+}
+</script>
+{% endblock %}

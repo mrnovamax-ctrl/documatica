@@ -1,0 +1,71 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Редактор контента{% endblock %}
+{% block page_title %}Редактор контента{% endblock %}
+
+{% block content %}
+<!-- Info Banner -->
+<div class="admin-info-banner">
+  <iconify-icon icon="ri:information-line" width="24"></iconify-icon>
+  <div>
+    <div class="admin-info-banner-title">YAML-контент для публичных страниц</div>
+    <div class="admin-info-banner-text">Редактируйте SEO-мета теги, заголовки, FAQ и CTA-блоки для лендингов</div>
+  </div>
+</div>
+
+<!-- Content List by Categories -->
+{% for category, files in categories.items() %}
+{% set category_names = {
+  'pages': 'Общие страницы',
+  'upd': 'УПД',
+  'schet': 'Счета',
+  'akt': 'Акты',
+  'dogovor': 'Договоры',
+  'other': 'Прочее'
+} %}
+{% set category_icons = {
+  'pages': 'ri:home-line',
+  'upd': 'ri:file-list-3-line',
+  'schet': 'ri:bill-line',
+  'akt': 'ri:file-check-line',
+  'dogovor': 'ri:file-paper-2-line',
+  'other': 'ri:folder-line'
+} %}
+<div style="margin-bottom: 40px;">
+  <div class="admin-category-title">
+    <iconify-icon icon="{{ category_icons.get(category, 'ri:folder-line') }}" width="18"></iconify-icon>
+    {{ category_names.get(category, category | upper) }}
+    <span class="admin-category-badge">{{ files | length }}</span>
+  </div>
+  
+  {% for file in files %}
+  <a href="{{ file.url }}" class="admin-content-item">
+    <div class="admin-content-item-info">
+      <div class="admin-content-item-icon">
+        <iconify-icon icon="{% if file.path == 'home' %}ri:home-smile-line{% elif 'index' in file.path %}ri:pages-line{% else %}ri:file-text-line{% endif %}" width="20"></iconify-icon>
+      </div>
+      <div>
+        <div class="admin-content-item-title">{{ file.title }}</div>
+        <div class="admin-content-item-path">{{ file.filename }} → {{ file.public_url }}</div>
+      </div>
+    </div>
+    <div class="admin-content-item-actions">
+      <span class="admin-content-item-link" onclick="event.preventDefault(); window.open('{{ file.public_url }}', '_blank');">
+        <iconify-icon icon="ri:external-link-line" width="14"></iconify-icon>
+        Открыть
+      </span>
+      <iconify-icon icon="ri:arrow-right-s-line" width="24" style="color: #cbd5e1;"></iconify-icon>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endfor %}
+
+{% if not categories %}
+<div class="admin-empty-state">
+  <iconify-icon icon="ri:file-unknow-line" width="64"></iconify-icon>
+  <div class="admin-empty-state-title">Файлы контента не найдены</div>
+  <div class="admin-empty-state-text">Создайте YAML-файлы в папке <code>backend/content/</code></div>
+</div>
+{% endif %}
+{% endblock %}

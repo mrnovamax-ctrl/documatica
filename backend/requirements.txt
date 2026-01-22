@@ -1,0 +1,48 @@
+# Documatica Backend Dependencies
+
+# FastAPI и сервер
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+
+# Pydantic
+pydantic[email]==2.6.1
+pydantic-settings==2.1.0
+
+# Шаблоны и PDF
+jinja2==3.1.3
+weasyprint==62.3
+pydyf==0.11.0
+
+# Excel
+openpyxl==3.1.2
+
+# Dadata API
+dadata==21.10.1
+
+# База данных
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+
+# Авторизация
+passlib==1.7.4
+bcrypt==4.1.2
+pyjwt==2.8.0
+python-jose[cryptography]==3.3.0
+
+# Email (опционально, встроено в Python)
+# aiosmtplib==3.0.0
+
+# Утилиты
+python-dotenv==1.0.1
+httpx==0.26.0
+
+# Для работы с датами
+python-dateutil==2.8.2
+
+# CORS и безопасность
+# python-jose[cryptography]==3.3.0
+# passlib[bcrypt]==1.7.4
+
+# Логирование
+loguru==0.7.2

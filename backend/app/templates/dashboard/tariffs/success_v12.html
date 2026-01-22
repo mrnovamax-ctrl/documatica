@@ -1,0 +1,127 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block title %}Оплата успешна{% endblock %}
+
+{% block content %}
+<style>
+  .success-container-v12 {
+    max-width: 500px;
+    margin: 80px auto;
+    text-align: center;
+  }
+  
+  .success-icon-v12 {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+  }
+  
+  .success-icon-v12 svg {
+    width: 48px;
+    height: 48px;
+    stroke: white;
+  }
+  
+  .success-title-v12 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #10b981;
+    margin-bottom: 16px;
+  }
+  
+  .success-text-v12 {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-bottom: 32px;
+  }
+  
+  .success-order-v12 {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 40px;
+  }
+  
+  .success-order-v12 strong {
+    color: #64748b;
+  }
+  
+  .success-actions-v12 {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+  
+  .success-btn-v12 {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 1rem;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .success-btn-v12.primary {
+    background: #3b82f6;
+    color: white;
+  }
+  
+  .success-btn-v12.primary:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+  }
+  
+  .success-btn-v12.outline {
+    border: 2px solid #e2e8f0;
+    color: #64748b;
+  }
+  
+  .success-btn-v12.outline:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+</style>
+
+<div class="success-container-v12">
+  <div class="success-icon-v12">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="3">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  </div>
+  
+  <h1 class="success-title-v12">Оплата прошла успешно</h1>
+  <p class="success-text-v12">Ваш платеж успешно обработан. Лимиты документов уже обновлены.</p>
+  
+  {% if order_id %}
+  <p class="success-order-v12">Номер заказа: <strong>{{ order_id[:8] }}...</strong></p>
+  {% endif %}
+  
+  <div class="success-actions-v12">
+    <a href="/dashboard/tariffs/" class="success-btn-v12 outline">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      К тарифам
+    </a>
+    <a href="/dashboard/upd/create/" class="success-btn-v12 primary">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="12" y1="18" x2="12" y2="12"></line>
+        <line x1="9" y1="15" x2="15" y2="15"></line>
+      </svg>
+      Создать документ
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Создать счёт на оплату - Documatica</title>
+  <link rel="icon" type="image/png" href="/static/images/favicon.png" sizes="16x16">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- remix icon font css -->
+  <link rel="stylesheet" href="/static/css/remixicon.css">
+  <!-- Iconify for v12 icons -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <!-- Date picker css -->
+  <link rel="stylesheet" href="/static/css/lib/flatpickr.min.css">
+  <!-- Documatica v12.0 Design System (ONLY v12, no old styles) -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.11">
+  <style>
+    /* Constructor page styles */
+    body.constructor-page-v12 {
+      background-color: #f8fafc !important;
+      background-image: radial-gradient(circle, #3b82f6 1px, transparent 1px) !important;
+      background-size: 32px 32px !important;
+      background-attachment: fixed !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      min-height: 100vh !important;
+    }
+    
+    /* Sidebar fixed on left */
+    body.constructor-page-v12 aside.sidebar-v12 {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 320px !important;
+      height: 100vh !important;
+      z-index: 50 !important;
+      overflow-y: auto !important;
+    }
+    
+    /* Main content with left margin */
+    body.constructor-page-v12 .dashboard-main-v12 {
+      margin-left: 320px !important;
+      min-height: 100vh !important;
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+      position: relative !important;
+    }
+    
+    /* Header at top of main */
+    body.constructor-page-v12 .dashboard-header-v12 {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+    
+    .card.radius-16, .card {
+      background: white !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 2rem !important;
+      overflow: hidden !important;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+      margin-bottom: 24px !important;
+    }
+    .card-header {
+      background: transparent !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+    }
+    .card-header h6 {
+      font-size: 10px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.4em !important;
+      color: #3b82f6 !important;
+    }
+    .form-control {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 1rem !important;
+      padding: 14px 18px !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      transition: all 0.2s ease !important;
+    }
+    .form-control:focus {
+      background: white !important;
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+    }
+    .form-label {
+      font-size: 9px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.3em !important;
+      color: #94a3b8 !important;
+    }
+    
+    @media (max-width: 1023px) {
+      body.constructor-page-v12 aside.sidebar-v12 {
+        position: fixed !important;
+        transform: translateX(-100%) !important;
+        z-index: 1000 !important;
+        height: 100vh !important;
+      }
+      body.constructor-page-v12.sidebar-open aside.sidebar-v12 {
+        transform: translateX(0) !important;
+      }
+      body.constructor-page-v12 .dashboard-main-v12 {
+        margin-left: 0 !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="constructor-page-v12">
+
+<!-- Sidebar v12 -->
+{% include 'components/sidebar_v12.html' %}
+
+<!-- Sidebar Overlay for mobile -->
+<div class="sidebar-overlay-v12" onclick="document.body.classList.remove('sidebar-open')"></div>
+
+<main class="dashboard-main-v12">
+  <!-- Header v12 -->
+  {% include 'components/header_dashboard_v12.html' %}
+
+  <div class="dashboard-content-v12">
+    <!-- Page Title -->
+    <div class="page-title-v12">
+      <h1>Создать счёт на оплату</h1>
+      <p>Заполните данные для формирования счёта</p>
+    </div>
+
+    <form id="invoice-form">
+      <div class="row gy-4">
+        <!-- Left Column - Form -->
+        <div class="col-xxl-7 col-xl-6">
+          
+          <!-- Document Info -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom">
+              <h6 class="mb-0">Реквизиты документа</h6>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Номер счёта <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="invoice_number" placeholder="Например: 124" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Дата счёта <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control date-picker" id="invoice_date" placeholder="Выберите дату" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Основание (договор, счёт)</label>
+                  <input type="text" class="form-control" id="contract_info" placeholder="Например: Договор №34 от 30.08.2025">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Supplier Info -->
+          <div class="card radius-16 mb-24">
+            <div class="constructor-card-header-v12">
+              <h6>Поставщик</h6>
+              <button type="button" class="constructor-card-action-btn-v12" data-bs-toggle="modal" data-bs-target="#selectOrganizationModal">
+                Выбрать из списка
+              </button>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Наименование <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="supplier_name" placeholder='ООО "Компания"' required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-medium mb-8">ИНН <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="supplier_inn" placeholder="7707123456" required maxlength="12">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-medium mb-8">КПП</label>
+                  <input type="text" class="form-control" id="supplier_kpp" placeholder="770701001" maxlength="9">
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Адрес <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="supplier_address" placeholder="123456, г. Москва, ул. Примерная, д. 1" required>
+                </div>
+              </div>
+              
+              <!-- Bank Details -->
+              <div class="mt-24 pt-16 border-top">
+                <label class="form-label fw-medium mb-16">Банковские реквизиты</label>
+                <div class="row g-16">
+                  <div class="col-md-6">
+                    <label class="form-label text-sm mb-4">Банк <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="supplier_bank_name" placeholder="ПАО Сбербанк" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-sm mb-4">БИК <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="supplier_bank_bik" placeholder="044525225" required maxlength="9">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-sm mb-4">Расчётный счёт <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="supplier_bank_account" placeholder="40702810000000000001" required maxlength="20">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-sm mb-4">Корр. счёт</label>
+                    <input type="text" class="form-control" id="supplier_bank_corr" placeholder="30101810400000000225" maxlength="20">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Signatures -->
+              <div class="mt-24 pt-16 border-top">
+                <label class="form-label fw-medium mb-16">Подписанты</label>
+                <div class="row g-16">
+                  <div class="col-md-6">
+                    <label class="form-label text-sm mb-4">Руководитель</label>
+                    <input type="text" class="form-control" id="supplier_director" placeholder="Иванов И.И.">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-sm mb-4">Главный бухгалтер</label>
+                    <input type="text" class="form-control" id="supplier_accountant" placeholder="Петрова П.П.">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Client Info -->
+          <div class="card radius-16 mb-24">
+            <div class="constructor-card-header-v12">
+              <h6>Покупатель (Плательщик)</h6>
+              <button type="button" class="constructor-card-action-btn-v12" data-bs-toggle="modal" data-bs-target="#selectContractorModal">
+                Выбрать из списка
+              </button>
+            </div>
+            <div class="card-body p-24">
+              <div class="row g-16">
+                <div class="col-md-6">
+                  <label class="form-label fw-medium mb-8">Наименование <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="client_name" placeholder='ООО "Контрагент"' required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-medium mb-8">ИНН <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="client_inn" placeholder="7707654321" required maxlength="12">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-medium mb-8">КПП</label>
+                  <input type="text" class="form-control" id="client_kpp" placeholder="770701001" maxlength="9">
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-medium mb-8">Адрес</label>
+                  <input type="text" class="form-control" id="client_address" placeholder="Адрес покупателя">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Products/Services -->
+          <div class="card radius-16 mb-24">
+            <div class="card-header py-16 px-24 border-bottom">
+              <h6 class="mb-0">Товары и услуги</h6>
+            </div>
+            <div class="card-body p-24">
+              <!-- Products Header -->
+              <div class="invoice-products-header-v12">
+                <span>Наименование</span>
+                <span>Кол-во</span>
+                <span>Ед.</span>
+                <span>Цена</span>
+                <span>Сумма</span>
+                <span></span>
+              </div>
+              
+              <!-- Products Container -->
+              <div id="products-container">
+                <!-- Products will be added here dynamically -->
+              </div>
+              
+              <!-- Add Product Button -->
+              <button type="button" class="invoice-add-btn-v12" id="add-product-btn">
+                <iconify-icon icon="mdi:plus" width="18"></iconify-icon>
+                Добавить товар или услугу
+              </button>
+              
+              <!-- Totals -->
+              <div class="invoice-totals-v12">
+                <div class="invoice-totals-row-v12">
+                  <span>Сумма без НДС:</span>
+                  <span id="total-without-vat">0.00 руб.</span>
+                </div>
+                <div class="invoice-totals-row-v12">
+                  <span>
+                    НДС 
+                    <select id="vat-rate" class="invoice-vat-select-v12">
+                      <option value="20">20%</option>
+                      <option value="10">10%</option>
+                      <option value="5">5%</option>
+                      <option value="0">Без НДС</option>
+                    </select>:
+                  </span>
+                  <span id="total-vat">0.00 руб.</span>
+                </div>
+                <div class="invoice-totals-row-v12 total">
+                  <span>Итого к оплате:</span>
+                  <span id="total-with-vat">0.00 руб.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex flex-wrap gap-16 mb-24">
+            <button type="submit" class="constructor-btn-primary-v12" id="generate-btn">
+              <iconify-icon icon="mdi:file-document-check" width="20"></iconify-icon>
+              Сформировать счёт
+            </button>
+            <button type="button" class="constructor-btn-secondary-v12" id="preview-btn">
+              <iconify-icon icon="mdi:eye" width="20"></iconify-icon>
+              Предпросмотр
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right Column - Preview -->
+        <div class="col-xxl-5 col-xl-6">
+          <div class="constructor-preview-v12">
+            <div class="constructor-preview-header-v12">
+              <h3>Предпросмотр</h3>
+              <button type="button" class="constructor-card-action-btn-v12" id="refresh-preview">
+                Обновить
+              </button>
+            </div>
+            <div class="constructor-preview-body-v12">
+              <div style="transform: scale(0.48); transform-origin: top left; width: 208%; height: 850px;">
+                <iframe id="preview-iframe" style="width: 100%; height: 1600px; border: none; background: white; border-radius: 8px;"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  {% include 'components/footer.html' %}
+</main>
+
+<!-- Select Organization Modal -->
+<div class="modal fade modal-v12" id="selectOrganizationModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Выберите организацию</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="organizations-list">
+        <div class="text-center py-4 text-secondary-light">Загрузка...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Select Contractor Modal -->
+<div class="modal fade modal-v12" id="selectContractorModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Выберите контрагента</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="contractors-list">
+        <div class="text-center py-4 text-secondary-light">Загрузка...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade modal-v12" id="previewModal" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Предпросмотр счёта</h5>
+        <div class="d-flex gap-12 align-items-center">
+          <button type="button" class="constructor-btn-primary-v12" id="modal-download-pdf" style="padding: 12px 20px;">
+            Скачать PDF
+          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+      </div>
+      <div class="modal-body p-0">
+        <iframe id="modal-preview-iframe" style="width: 100%; height: 700px; border: none;"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery -->
+<script src="/static/js/lib/jquery-3.7.1.min.js"></script>
+<!-- Bootstrap Bundle JS -->
+<script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+<!-- Flatpickr -->
+<script src="/static/js/flatpickr.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const token = localStorage.getItem('access_token') || getCookie('access_token');
+  
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
+  
+  // Initialize date picker
+  flatpickr('.date-picker', {
+    dateFormat: 'd.m.Y',
+    defaultDate: new Date(),
+    onChange: function() {
+      debouncedPreview();
+    }
+  });
+  
+  // Debounced preview function
+  let previewTimeout = null;
+  function debouncedPreview() {
+    if (previewTimeout) {
+      clearTimeout(previewTimeout);
+    }
+    previewTimeout = setTimeout(loadPreview, 500);
+  }
+  
+  // ========== Products Management ==========
+  let products = [];
+  let productIdCounter = 1;
+  
+  function addProduct(data = {}) {
+    const id = productIdCounter++;
+    products.push({
+      id: id,
+      name: data.name || '',
+      quantity: data.quantity || 1,
+      unit: data.unit || 'шт',
+      price: data.price || 0
+    });
+    renderProducts();
+  }
+  
+  function removeProduct(id) {
+    products = products.filter(p => p.id !== id);
+    renderProducts();
+    debouncedPreview();
+  }
+  
+  function updateProduct(id, field, value) {
+    const product = products.find(p => p.id === id);
+    if (product) {
+      product[field] = value;
+      if (field === 'quantity' || field === 'price') {
+        updateTotals();
+        // Update amount display
+        const row = document.querySelector(`[data-product-id="${id}"]`);
+        if (row) {
+          const amount = (parseFloat(product.quantity) || 0) * (parseFloat(product.price) || 0);
+          row.querySelector('.product-amount').textContent = amount.toFixed(2);
+        }
+      }
+      debouncedPreview();
+    }
+  }
+  
+  function renderProducts() {
+    const container = document.getElementById('products-container');
+    container.innerHTML = '';
+    
+    products.forEach(product => {
+      const amount = (parseFloat(product.quantity) || 0) * (parseFloat(product.price) || 0);
+      const row = document.createElement('div');
+      row.className = 'invoice-product-row-v12';
+      row.setAttribute('data-product-id', product.id);
+      row.innerHTML = `
+        <div>
+          <input type="text" class="form-control" placeholder="Наименование товара/услуги" 
+                 value="${product.name}" onchange="window.updateProduct(${product.id}, 'name', this.value)">
+        </div>
+        <div>
+          <input type="number" class="form-control text-center" value="${product.quantity}" min="1" step="1"
+                 onchange="window.updateProduct(${product.id}, 'quantity', this.value)" 
+                 oninput="window.updateProduct(${product.id}, 'quantity', this.value)">
+        </div>
+        <div>
+          <input type="text" class="form-control text-center" value="${product.unit}" 
+                 onchange="window.updateProduct(${product.id}, 'unit', this.value)">
+        </div>
+        <div>
+          <input type="number" class="form-control text-right" value="${product.price}" min="0" step="0.01"
+                 onchange="window.updateProduct(${product.id}, 'price', this.value)" 
+                 oninput="window.updateProduct(${product.id}, 'price', this.value)">
+        </div>
+        <div class="product-amount">${amount.toFixed(2)}</div>
+        <div>
+          <button type="button" class="invoice-remove-btn-v12" onclick="window.removeProduct(${product.id})">
+            <iconify-icon icon="mdi:close" width="18"></iconify-icon>
+          </button>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+    
+    updateTotals();
+  }
+  
+  function updateTotals() {
+    const vatRate = parseInt(document.getElementById('vat-rate').value) || 0;
+    let totalWithoutVat = 0;
+    
+    products.forEach(product => {
+      const amount = (parseFloat(product.quantity) || 0) * (parseFloat(product.price) || 0);
+      totalWithoutVat += amount;
+    });
+    
+    const vatAmount = vatRate > 0 ? totalWithoutVat * vatRate / 100 : 0;
+    const totalWithVat = totalWithoutVat + vatAmount;
+    
+    document.getElementById('total-without-vat').textContent = totalWithoutVat.toFixed(2) + ' руб.';
+    document.getElementById('total-vat').textContent = vatAmount.toFixed(2) + ' руб.';
+    document.getElementById('total-with-vat').textContent = totalWithVat.toFixed(2) + ' руб.';
+  }
+  
+  // Make functions global
+  window.updateProduct = updateProduct;
+  window.removeProduct = removeProduct;
+  
+  // Add product button
+  document.getElementById('add-product-btn').addEventListener('click', () => {
+    addProduct();
+    debouncedPreview();
+  });
+  
+  // VAT rate change
+  document.getElementById('vat-rate').addEventListener('change', () => {
+    updateTotals();
+    debouncedPreview();
+  });
+  
+  // Add initial empty product
+  addProduct();
+  
+  // Auto-update preview when form fields change
+  document.querySelectorAll('#invoice-form input:not([type="number"]), #invoice-form select').forEach(input => {
+    input.addEventListener('change', debouncedPreview);
+    input.addEventListener('input', debouncedPreview);
+  });
+  
+  // ========== Organization Selection ==========
+  document.getElementById('selectOrganizationModal').addEventListener('show.bs.modal', async () => {
+    try {
+      const response = await fetch('/api/v1/organizations', {
+        headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const organizations = await response.json();
+        const container = document.getElementById('organizations-list');
+        
+        if (organizations.length === 0) {
+          container.innerHTML = '<div class="text-center py-4 text-secondary-light">Нет сохранённых организаций</div>';
+        } else {
+          container.innerHTML = organizations.map(org => `
+            <div class="constructor-entity-card-v12 mb-12" data-org='${JSON.stringify(org).replace(/'/g, "&#39;")}'>
+              <div class="entity-name">${org.name}</div>
+              <div class="entity-info">ИНН: ${org.inn}${org.kpp ? ', КПП: ' + org.kpp : ''}</div>
+              <div class="entity-info mt-1">${org.address || ''}</div>
+            </div>
+          `).join('');
+          
+          container.querySelectorAll('.constructor-entity-card-v12').forEach(item => {
+            item.addEventListener('click', () => {
+              const org = JSON.parse(item.dataset.org.replace(/&#39;/g, "'"));
+              document.getElementById('supplier_name').value = org.name || '';
+              document.getElementById('supplier_inn').value = org.inn || '';
+              document.getElementById('supplier_kpp').value = org.kpp || '';
+              document.getElementById('supplier_address').value = org.address || '';
+              document.getElementById('supplier_bank_name').value = org.bank_name || '';
+              document.getElementById('supplier_bank_bik').value = org.bank_bik || '';
+              document.getElementById('supplier_bank_account').value = org.bank_account || '';
+              document.getElementById('supplier_bank_corr').value = org.bank_corr_account || '';
+              document.getElementById('supplier_director').value = org.director_name || '';
+              document.getElementById('supplier_accountant').value = org.accountant_name || '';
+              bootstrap.Modal.getInstance(document.getElementById('selectOrganizationModal')).hide();
+              debouncedPreview();
+            });
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error loading organizations:', error);
+    }
+  });
+  
+  // ========== Contractor Selection ==========
+  document.getElementById('selectContractorModal').addEventListener('show.bs.modal', async () => {
+    try {
+      const response = await fetch('/api/v1/contractors', {
+        headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const contractors = await response.json();
+        const container = document.getElementById('contractors-list');
+        
+        if (!contractors || contractors.length === 0) {
+          container.innerHTML = '<div class="text-center py-4 text-secondary-light">Нет сохранённых контрагентов</div>';
+        } else {
+          container.innerHTML = contractors.map(c => `
+            <div class="constructor-entity-card-v12 mb-12" data-contractor='${JSON.stringify(c).replace(/'/g, "&#39;")}'>
+              <div class="entity-name">${c.name}</div>
+              <div class="entity-info">ИНН: ${c.inn}${c.kpp ? ', КПП: ' + c.kpp : ''}</div>
+              <div class="entity-info mt-1">${c.address || ''}</div>
+            </div>
+          `).join('');
+          
+          container.querySelectorAll('.constructor-entity-card-v12').forEach(item => {
+            item.addEventListener('click', () => {
+              const c = JSON.parse(item.dataset.contractor.replace(/&#39;/g, "'"));
+              document.getElementById('client_name').value = c.name || '';
+              document.getElementById('client_inn').value = c.inn || '';
+              document.getElementById('client_kpp').value = c.kpp || '';
+              document.getElementById('client_address').value = c.address || '';
+              bootstrap.Modal.getInstance(document.getElementById('selectContractorModal')).hide();
+              debouncedPreview();
+            });
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error loading contractors:', error);
+    }
+  });
+  
+  // ========== Form Collection ==========
+  function collectFormData() {
+    const vatRate = parseInt(document.getElementById('vat-rate').value) || 0;
+    let totalWithoutVat = 0;
+    
+    const items = products.map(p => {
+      const amount = (parseFloat(p.quantity) || 0) * (parseFloat(p.price) || 0);
+      totalWithoutVat += amount;
+      return {
+        name: p.name,
+        quantity: parseFloat(p.quantity) || 1,
+        unit_name: p.unit,
+        price: parseFloat(p.price) || 0,
+        amount: amount
+      };
+    });
+    
+    const vatAmount = vatRate > 0 ? totalWithoutVat * vatRate / 100 : 0;
+    const totalWithVat = totalWithoutVat + vatAmount;
+    
+    return {
+      invoice_number: document.getElementById('invoice_number').value,
+      invoice_date: document.getElementById('invoice_date').value,
+      contract_info: document.getElementById('contract_info').value,
+      supplier: {
+        name: document.getElementById('supplier_name').value,
+        inn: document.getElementById('supplier_inn').value,
+        kpp: document.getElementById('supplier_kpp').value,
+        address: document.getElementById('supplier_address').value,
+        bank_name: document.getElementById('supplier_bank_name').value,
+        bank_bik: document.getElementById('supplier_bank_bik').value,
+        bank_account: document.getElementById('supplier_bank_account').value,
+        bank_corr_account: document.getElementById('supplier_bank_corr').value,
+        director_name: document.getElementById('supplier_director').value,
+        accountant_name: document.getElementById('supplier_accountant').value
+      },
+      client: {
+        name: document.getElementById('client_name').value,
+        inn: document.getElementById('client_inn').value,
+        kpp: document.getElementById('client_kpp').value,
+        address: document.getElementById('client_address').value
+      },
+      items: items,
+      vat_rate: vatRate > 0 ? vatRate + '%' : 'Без НДС',
+      vat_amount: vatAmount,
+      total_without_vat: totalWithoutVat,
+      total_with_vat: totalWithVat
+    };
+  }
+  
+  // ========== Preview ==========
+  async function loadPreview() {
+    const formData = collectFormData();
+    
+    try {
+      const response = await fetch('/api/v1/documents/invoice/preview', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      });
+      
+      if (response.ok) {
+        const html = await response.text();
+        document.getElementById('preview-iframe').srcdoc = html;
+      }
+    } catch (error) {
+      console.error('Preview error:', error);
+    }
+  }
+  
+  document.getElementById('refresh-preview').addEventListener('click', loadPreview);
+  
+  document.getElementById('preview-btn').addEventListener('click', async () => {
+    const formData = collectFormData();
+    
+    try {
+      const response = await fetch('/api/v1/documents/invoice/preview', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      });
+      
+      if (response.ok) {
+        const html = await response.text();
+        document.getElementById('modal-preview-iframe').srcdoc = html;
+        new bootstrap.Modal(document.getElementById('previewModal')).show();
+      }
+    } catch (error) {
+      console.error('Preview error:', error);
+    }
+  });
+  
+  // ========== Form Submit ==========
+  document.getElementById('invoice-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = collectFormData();
+    const btn = document.getElementById('generate-btn');
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Формирование...';
+    
+    try {
+      const response = await fetch('/api/v1/documents/invoice/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        if (result.document_id) {
+          window.location.href = '/dashboard/invoice/' + result.document_id + '/';
+        } else if (result.pdf_url) {
+          window.open(result.pdf_url, '_blank');
+        }
+      } else {
+        const error = await response.json();
+        alert('Ошибка: ' + (error.detail || 'Не удалось сформировать счёт'));
+      }
+    } catch (error) {
+      console.error('Generate error:', error);
+      alert('Ошибка при формировании счёта');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+    }
+  });
+  
+  // Load initial preview
+  setTimeout(loadPreview, 500);
+});
+</script>
+
+</body>
+</html>

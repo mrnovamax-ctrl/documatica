@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body_class %}auth-page{% endblock %}
+
+{% block body %}
+<div class="auth-page-v12">
+  <div class="auth-card-v12" style="text-align: center;">
+    <!-- Header -->
+    <div class="auth-header-v12">
+      <a href="/" class="auth-logo-v12">
+        <svg viewBox="0 0 64 64">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="logo-text">
+          <span class="logo-bold">docu</span><span class="logo-light">matica</span>
+        </span>
+      </a>
+    </div>
+    
+    <!-- Result -->
+    <div style="padding: 2rem 0;">
+      {% if success %}
+      <div style="margin-bottom: 1.5rem;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <h1 class="auth-title-v12" style="color: #22c55e;">Успешно!</h1>
+      {% else %}
+      <div style="margin-bottom: 1.5rem;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      <h1 class="auth-title-v12" style="color: #ef4444;">Ошибка</h1>
+      {% endif %}
+      
+      <p class="auth-subtitle-v12">{{ message }}</p>
+    </div>
+    
+    <!-- Actions -->
+    <div style="margin-top: 2rem;">
+      {% if success %}
+      <a href="/login/" class="auth-btn-v12" style="display: inline-flex; text-decoration: none;">
+        Войти в систему
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem;">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+      {% else %}
+      <a href="/register/" class="auth-btn-v12" style="display: inline-flex; text-decoration: none;">
+        Зарегистрироваться снова
+      </a>
+      {% endif %}
+    </div>
+    
+    <!-- Footer -->
+    <div class="auth-footer-v12" style="margin-top: 2rem;">
+      <a href="/">Вернуться на главную</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

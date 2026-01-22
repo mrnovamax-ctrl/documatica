@@ -1,0 +1,783 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block title %}Тарифы{% endblock %}
+
+{% block content %}
+<style>
+  /* Pricing v12 Styles */
+  .pricing-header-v12 {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  
+  .pricing-tag-v12 {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    color: #3b82f6;
+    margin-bottom: 16px;
+  }
+  
+  .pricing-title-v12 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    margin-bottom: 12px;
+  }
+  
+  .pricing-subtitle-v12 {
+    font-size: 1.1rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+  
+  /* Current Plan Status */
+  .current-plan-v12 {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: 2rem;
+    padding: 32px;
+    margin-bottom: 48px;
+  }
+  
+  .current-plan-header-v12 {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .current-plan-icon-v12 {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .current-plan-icon-v12 svg {
+    width: 28px;
+    height: 28px;
+    stroke: white;
+  }
+  
+  .current-plan-info-v12 h3 {
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #94a3b8;
+    margin-bottom: 4px;
+  }
+  
+  .current-plan-info-v12 p {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+  }
+  
+  .limits-grid-v12 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  
+  .limit-card-v12 {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.5rem;
+    padding: 24px;
+    text-align: center;
+  }
+  
+  .limit-card-v12 .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+  
+  .limit-card-v12 .value {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #3b82f6;
+  }
+  
+  .limit-card-v12.success .value {
+    color: #10b981;
+  }
+  
+  .limit-card-v12.warning .value {
+    color: #f59e0b;
+  }
+  
+  /* Pricing Grid */
+  .pricing-grid-v12 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  
+  .pricing-card-v12 {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 2.5rem;
+    padding: 40px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .pricing-card-v12:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+  }
+  
+  .pricing-card-v12.featured {
+    border: 2px solid #3b82f6;
+    background: linear-gradient(180deg, rgba(59, 130, 246, 0.05) 0%, white 100%);
+  }
+  
+  .pricing-badge-v12 {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #3b82f6;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  
+  .pricing-card-icon-v12 {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  
+  .pricing-card-icon-v12.free {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  }
+  
+  .pricing-card-icon-v12.pro {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  }
+  
+  .pricing-card-icon-v12.pack {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  }
+  
+  .pricing-card-icon-v12 svg {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .pricing-name-v12 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+  
+  .pricing-desc-v12 {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 24px;
+  }
+  
+  .pricing-price-v12 {
+    margin-bottom: 24px;
+  }
+  
+  .pricing-amount-v12 {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1;
+  }
+  
+  .pricing-period-v12 {
+    font-size: 14px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  
+  .pricing-features-v12 {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px 0;
+  }
+  
+  .pricing-features-v12 li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .pricing-features-v12 li:last-child {
+    border-bottom: none;
+  }
+  
+  .pricing-features-v12 li svg {
+    width: 18px;
+    height: 18px;
+    stroke: #10b981;
+    flex-shrink: 0;
+  }
+  
+  .pricing-features-v12 li.disabled {
+    color: #cbd5e1;
+  }
+  
+  .pricing-features-v12 li.disabled svg {
+    stroke: #cbd5e1;
+  }
+  
+  .pricing-btn-v12 {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 1rem;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .pricing-btn-v12.outline {
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    color: #64748b;
+  }
+  
+  .pricing-btn-v12.outline:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+  
+  .pricing-btn-v12.primary {
+    background: #3b82f6;
+    color: white;
+  }
+  
+  .pricing-btn-v12.primary:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+  }
+  
+  .pricing-btn-v12.warning {
+    background: #fbbf24;
+    color: #0f172a;
+  }
+  
+  .pricing-btn-v12.warning:hover {
+    background: #f59e0b;
+    transform: translateY(-2px);
+  }
+  
+  /* Package Selector */
+  .package-selector-v12 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  
+  .package-option-v12 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .package-option-v12:hover {
+    border-color: #3b82f6;
+  }
+  
+  .package-option-v12.selected {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.05);
+  }
+  
+  .package-option-v12 .count {
+    font-weight: 700;
+    color: #0f172a;
+  }
+  
+  .package-option-v12 .discount {
+    font-size: 10px;
+    font-weight: 700;
+    background: #10b981;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-left: 8px;
+  }
+  
+  .package-option-v12 .price {
+    font-weight: 800;
+    color: #3b82f6;
+  }
+  
+  /* Payment History */
+  .history-section-v12 {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 2rem;
+    overflow: hidden;
+  }
+  
+  .history-header-v12 {
+    padding: 24px 32px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .history-header-v12 h3 {
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #64748b;
+    margin: 0;
+  }
+  
+  .history-table-v12 {
+    width: 100%;
+  }
+  
+  .history-table-v12 th {
+    padding: 16px 32px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #94a3b8;
+    background: #f8fafc;
+  }
+  
+  .history-table-v12 td {
+    padding: 20px 32px;
+    font-size: 14px;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .history-table-v12 tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .status-badge-v12 {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  
+  .status-badge-v12.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+  }
+  
+  .status-badge-v12.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+  }
+  
+  .status-badge-v12.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+  
+  .empty-state-v12 {
+    padding: 48px;
+    text-align: center;
+    color: #94a3b8;
+  }
+  
+  .empty-state-v12 svg {
+    width: 48px;
+    height: 48px;
+    stroke: #cbd5e1;
+    margin-bottom: 16px;
+  }
+  
+  @media (max-width: 1024px) {
+    .pricing-grid-v12 {
+      grid-template-columns: 1fr;
+    }
+    .limits-grid-v12 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="pricing-header-v12">
+  <span class="pricing-tag-v12">Тарифы</span>
+  <h1 class="pricing-title-v12">Простые и понятные цены</h1>
+  <p class="pricing-subtitle-v12">Платите только за то, что используете</p>
+</div>
+
+<!-- Current Plan Status -->
+<div class="current-plan-v12" id="current-plan-section">
+  <div class="current-plan-header-v12">
+    <div class="current-plan-icon-v12">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+      </svg>
+    </div>
+    <div class="current-plan-info-v12">
+      <h3>Ваш текущий тариф</h3>
+      <p id="current-plan-name">Загрузка...</p>
+    </div>
+  </div>
+  <div class="limits-grid-v12">
+    <div class="limit-card-v12">
+      <div class="label">Бесплатных осталось</div>
+      <div class="value" id="free-remaining">-</div>
+    </div>
+    <div class="limit-card-v12 success">
+      <div class="label">По подписке</div>
+      <div class="value" id="subscription-remaining">-</div>
+    </div>
+    <div class="limit-card-v12 warning">
+      <div class="label">Куплено</div>
+      <div class="value" id="purchased-remaining">-</div>
+    </div>
+  </div>
+</div>
+
+<!-- Pricing Cards -->
+<div class="pricing-grid-v12">
+  <!-- Free Plan -->
+  <div class="pricing-card-v12">
+    <div class="pricing-card-icon-v12 free">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="17 8 12 3 7 8"></polyline>
+        <line x1="12" y1="3" x2="12" y2="15"></line>
+      </svg>
+    </div>
+    <h3 class="pricing-name-v12">Бесплатный</h3>
+    <p class="pricing-desc-v12">Для знакомства с сервисом</p>
+    <div class="pricing-price-v12">
+      <span class="pricing-amount-v12">0</span>
+      <span class="pricing-period-v12">руб</span>
+    </div>
+    <ul class="pricing-features-v12">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        5 документов бесплатно
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Все типы УПД
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Скачивание PDF и Excel
+      </li>
+      <li class="disabled">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        Ограничение 5 док. на ИНН
+      </li>
+    </ul>
+    <button class="pricing-btn-v12 outline" disabled>Активен по умолчанию</button>
+  </div>
+
+  <!-- Subscription -->
+  <div class="pricing-card-v12 featured">
+    <span class="pricing-badge-v12">Популярный</span>
+    <div class="pricing-card-icon-v12 pro">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+      </svg>
+    </div>
+    <h3 class="pricing-name-v12">Подписка</h3>
+    <p class="pricing-desc-v12">Для регулярной работы</p>
+    <div class="pricing-price-v12">
+      <span class="pricing-amount-v12">300</span>
+      <span class="pricing-period-v12">руб / месяц</span>
+    </div>
+    <ul class="pricing-features-v12">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <strong>50 документов</strong> в месяц
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Все типы УПД
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Без ограничений по ИНН
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Приоритетная поддержка
+      </li>
+    </ul>
+    <button class="pricing-btn-v12 primary" onclick="createPayment('subscription')">Оформить подписку</button>
+  </div>
+
+  <!-- Pay per doc -->
+  <div class="pricing-card-v12">
+    <div class="pricing-card-icon-v12 pack">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+      </svg>
+    </div>
+    <h3 class="pricing-name-v12">Пакет документов</h3>
+    <p class="pricing-desc-v12">Платите за использование</p>
+    <div class="pricing-price-v12">
+      <span class="pricing-amount-v12">от 12</span>
+      <span class="pricing-period-v12">руб / док</span>
+    </div>
+    <div class="package-selector-v12" id="package-selector">
+      <div class="package-option-v12" data-count="10" data-price="150" onclick="selectPackage(this)">
+        <span><span class="count">10 документов</span></span>
+        <span class="price">150 руб</span>
+      </div>
+      <div class="package-option-v12" data-count="50" data-price="675" onclick="selectPackage(this)">
+        <span><span class="count">50 документов</span><span class="discount">-10%</span></span>
+        <span class="price">675 руб</span>
+      </div>
+      <div class="package-option-v12" data-count="100" data-price="1200" onclick="selectPackage(this)">
+        <span><span class="count">100 документов</span><span class="discount">-20%</span></span>
+        <span class="price">1200 руб</span>
+      </div>
+    </div>
+    <button class="pricing-btn-v12 warning" id="buy-package-btn" disabled onclick="buyPackage()">Выберите пакет</button>
+  </div>
+</div>
+
+<!-- Payment History -->
+<div class="history-section-v12">
+  <div class="history-header-v12">
+    <h3>История платежей</h3>
+  </div>
+  <table class="history-table-v12">
+    <thead>
+      <tr>
+        <th>Дата</th>
+        <th>Описание</th>
+        <th>Сумма</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+    <tbody id="payment-history">
+      <tr>
+        <td colspan="4">
+          <div class="empty-state-v12">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <div>История платежей пуста</div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+let selectedPackage = null;
+
+// Load limits
+async function loadLimits() {
+  try {
+    const token = document.cookie.split('; ').find(row => row.startsWith('access_token='));
+    if (!token) return;
+    
+    const response = await fetch('/api/v1/billing/limits', {
+      headers: { 'Authorization': 'Bearer ' + token.split('=')[1] }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      updateLimitsUI(data);
+    }
+  } catch (error) {
+    console.error('Error loading limits:', error);
+  }
+}
+
+function updateLimitsUI(data) {
+  const planNames = {
+    'free': 'Бесплатный',
+    'subscription': 'Подписка',
+    'pay_per_doc': 'Пакет документов'
+  };
+  document.getElementById('current-plan-name').textContent = planNames[data.plan] || 'Бесплатный';
+  document.getElementById('free-remaining').textContent = data.free_generations_remaining + ' / ' + data.free_generations_limit;
+  document.getElementById('subscription-remaining').textContent = data.subscription_docs_remaining + ' / ' + data.subscription_docs_limit;
+  document.getElementById('purchased-remaining').textContent = data.purchased_docs_remaining;
+}
+
+// Load payment history
+async function loadPaymentHistory() {
+  try {
+    const token = document.cookie.split('; ').find(row => row.startsWith('access_token='));
+    if (!token) return;
+    
+    const response = await fetch('/api/v1/payment/history', {
+      headers: { 'Authorization': 'Bearer ' + token.split('=')[1] }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      updateHistoryUI(data);
+    }
+  } catch (error) {
+    console.error('Error loading history:', error);
+  }
+}
+
+function updateHistoryUI(payments) {
+  const tbody = document.getElementById('payment-history');
+  
+  if (!payments || payments.length === 0) return;
+  
+  const statusLabels = {
+    'pending': '<span class="status-badge-v12 pending">Ожидает</span>',
+    'created': '<span class="status-badge-v12 pending">Создан</span>',
+    'confirmed': '<span class="status-badge-v12 success">Оплачен</span>',
+    'rejected': '<span class="status-badge-v12 error">Отклонен</span>',
+    'error': '<span class="status-badge-v12 error">Ошибка</span>'
+  };
+  
+  const tariffLabels = {
+    'subscription': 'Подписка на 1 месяц',
+    'pay_per_doc': 'Пакет документов'
+  };
+  
+  tbody.innerHTML = payments.map(p => `
+    <tr>
+      <td>${new Date(p.created_at).toLocaleDateString('ru-RU')}</td>
+      <td>${tariffLabels[p.tariff_type] || p.tariff_type}${p.docs_count ? ` (${p.docs_count} шт.)` : ''}</td>
+      <td><strong>${p.amount} руб</strong></td>
+      <td>${statusLabels[p.status] || p.status}</td>
+    </tr>
+  `).join('');
+}
+
+// Package selection
+function selectPackage(el) {
+  document.querySelectorAll('.package-option-v12').forEach(opt => opt.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPackage = {
+    count: parseInt(el.dataset.count),
+    price: parseInt(el.dataset.price)
+  };
+  const btn = document.getElementById('buy-package-btn');
+  btn.disabled = false;
+  btn.textContent = 'Купить ' + selectedPackage.count + ' док. за ' + selectedPackage.price + ' руб';
+}
+
+// Create payment
+async function createPayment(tariff) {
+  const token = document.cookie.split('; ').find(row => row.startsWith('access_token='));
+  if (!token) {
+    window.location.href = '/login/';
+    return;
+  }
+  
+  try {
+    const response = await fetch('/api/v1/payment/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token.split('=')[1]
+      },
+      body: JSON.stringify({ tariff: tariff })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success && data.payment_url) {
+      window.location.href = data.payment_url;
+    } else {
+      alert(data.error || 'Ошибка создания платежа');
+    }
+  } catch (error) {
+    alert('Ошибка подключения к платежной системе');
+  }
+}
+
+// Buy package
+async function buyPackage() {
+  if (!selectedPackage) return;
+  
+  const token = document.cookie.split('; ').find(row => row.startsWith('access_token='));
+  if (!token) {
+    window.location.href = '/login/';
+    return;
+  }
+  
+  try {
+    const response = await fetch('/api/v1/payment/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token.split('=')[1]
+      },
+      body: JSON.stringify({
+        tariff: 'pay_per_doc',
+        package_count: selectedPackage.count
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success && data.payment_url) {
+      window.location.href = data.payment_url;
+    } else {
+      alert(data.error || 'Ошибка создания платежа');
+    }
+  } catch (error) {
+    alert('Ошибка подключения к платежной системе');
+  }
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', function() {
+  loadLimits();
+  loadPaymentHistory();
+});
+</script>
+{% endblock %}

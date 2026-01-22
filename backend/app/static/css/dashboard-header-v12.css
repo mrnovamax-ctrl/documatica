@@ -1,0 +1,97 @@
+/* ========================================
+   Dashboard Page Header v12.0
+   Единый заголовок для всех страниц dashboard
+   ======================================== */
+
+.page-header-v12 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.page-header-left-v12 {
+  flex: 1;
+  min-width: 250px;
+}
+
+.page-title-v12 {
+  font-size: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  line-height: 1.2;
+  margin: 0 0 8px 0;
+}
+
+.page-subtitle-v12 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  margin: 0;
+}
+
+.page-header-right-v12 {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Breadcrumbs */
+.breadcrumb-v12 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-v12 a {
+  color: #64748b;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-v12 a:hover {
+  color: #3b82f6;
+}
+
+.breadcrumb-v12 .separator {
+  color: #cbd5e1;
+  font-weight: 300;
+}
+
+.breadcrumb-v12 .current {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header-v12 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .page-title-v12 {
+    font-size: 1.5rem;
+  }
+  
+  .page-header-right-v12 {
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .page-header-right-v12 > * {
+    flex: 1;
+  }
+}

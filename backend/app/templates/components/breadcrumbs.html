@@ -1,0 +1,19 @@
+<!-- Breadcrumbs Component v12.0 -->
+<nav aria-label="breadcrumb" class="breadcrumbs-v12">
+  <div class="breadcrumbs-container-v12">
+    <ol class="breadcrumbs-list-v12">
+      {% for item in breadcrumbs %}
+      {% if item.url %}
+      <li class="breadcrumbs-item-v12">
+        <a href="{{ item.url }}">{{ item.title }}</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </li>
+      {% else %}
+      <li class="breadcrumbs-item-v12 active">{{ item.title }}</li>
+      {% endif %}
+      {% endfor %}
+    </ol>
+  </div>
+</nav>

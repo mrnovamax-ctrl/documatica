@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ content.meta.title | default("Documatica - Онлайн генератор УПД") }}</title>
+  <meta name="description" content="{{ content.meta.description | default("Создавайте УПД, счета-фактуры и акты онлайн за минуты.") }}">
+  <link rel="icon" type="image/png" href="/static/images/favicon.png" sizes="16x16">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <!-- Documatica v12.0 Design System -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.7">
+  <!-- Home Page Styles -->
+  <link rel="stylesheet" href="/static/css/home.css?v=1.1">
+  
+  <!-- Hero AI Animation Styles -->
+  <style>
+    /* Scanner Line Animation */
+    @keyframes hero-scan-loop {
+      0% { top: -10%; opacity: 0; }
+      5%, 25% { opacity: 1; }
+      30% { top: 110%; opacity: 0; }
+      100% { top: 110%; opacity: 0; }
+    }
+    .hero-scanner-line {
+      animation: hero-scan-loop 10s infinite;
+    }
+    
+    /* Dynamic Row State Animation */
+    @keyframes hero-row-state {
+      0%, 25% { background-color: #f8fafc; border-color: #f1f5f9; }
+      30%, 55% { background-color: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+      60%, 80% { background-color: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
+      85%, 100% { background-color: rgba(16, 185, 129, 0.1); border-color: #10b981; }
+    }
+    .hero-ai-row-dynamic {
+      animation: hero-row-state 10s infinite;
+    }
+    
+    /* Dynamic Icon Switch */
+    @keyframes hero-icon-switch {
+      0%, 29% { content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23cbd5e1" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>'); }
+      30%, 59% { content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="%23ef4444" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>'); }
+      60%, 84% { content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%233b82f6" stroke-width="3"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>'); }
+      85%, 100% { content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%2310b981" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg>'); }
+    }
+    .hero-dynamic-icon::after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 24px;
+      animation: hero-icon-switch 10s infinite;
+    }
+    
+    /* Message Visibility Animations */
+    @keyframes hero-show-error-msg { 
+      0%, 29% { opacity: 0; visibility: hidden; } 
+      30%, 59% { opacity: 1; visibility: visible; } 
+      60%, 100% { opacity: 0; visibility: hidden; } 
+    }
+    @keyframes hero-show-fixing-msg { 
+      0%, 59% { opacity: 0; visibility: hidden; } 
+      60%, 84% { opacity: 1; visibility: visible; } 
+      85%, 100% { opacity: 0; visibility: hidden; } 
+    }
+    @keyframes hero-show-success-msg { 
+      0%, 84% { opacity: 0; visibility: hidden; } 
+      85%, 100% { opacity: 1; visibility: visible; } 
+    }
+    .hero-msg-error { 
+      opacity: 0; 
+      visibility: hidden;
+      animation: hero-show-error-msg 10s infinite; 
+    }
+    .hero-msg-fixing { 
+      opacity: 0; 
+      visibility: hidden;
+      animation: hero-show-fixing-msg 10s infinite; 
+    }
+    .hero-msg-success { 
+      opacity: 0; 
+      visibility: hidden;
+      animation: hero-show-success-msg 10s infinite; 
+    }
+    
+    /* Fixing Spinner */
+    @keyframes hero-spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .hero-fixing-spinner {
+      animation: hero-spin-slow 1s linear infinite;
+    }
+    
+    /* Pulse for AI dot */
+    @keyframes hero-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.95); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Прелоадер -->
+  <div id="preloader">
+    <div style="position: relative; margin-bottom: 1.5rem;">
+      <svg width="120" height="120" viewBox="0 0 64 64" fill="none">
+        <rect x="8" y="8" width="48" height="48" rx="12" fill="white" fill-opacity="0.05" />
+        <path class="logo-path logo-path-1" d="M18 24H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+        <path class="logo-path logo-path-2" d="M18 32H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+        <path class="logo-path logo-path-3" d="M18 40H34" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+        <circle class="ai-dot-anim" cx="48" cy="40" r="6" fill="#FBBF24" filter="drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))"/>
+      </svg>
+    </div>
+    <div style="color: white; font-weight: bold; letter-spacing: 0.3em; text-transform: uppercase; font-size: 10px; opacity: 0.4; animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; padding: 0 1.5rem; text-align: center;">
+      documatica документы просто
+    </div>
+  </div>
+
+  {% include 'components/header_home.html' %}
+
+  <!-- Hero Section v12.0 - Brandbook Style -->
+  <section class="hero position-relative" style="background: #0f172a; padding: 180px 0 140px; overflow: visible;">
+    <!-- Pattern Background with dots -->
+    <div class="pattern-dark" style="position: absolute; inset: 0;"></div>
+    <!-- Gradient Overlay -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(90deg, #0f172a 0%, rgba(15, 23, 42, 0.85) 60%, rgba(15, 23, 42, 0.7) 100%);"></div>
+    
+    <!-- Content in container - Two Columns -->
+    <div class="container position-relative" style="z-index: 10; padding-left: 1.5rem; padding-right: 1.5rem; overflow: visible;">
+      <div class="row align-items-center" style="overflow: visible;">
+        <!-- Left Column: Text Content -->
+        <div class="col-lg-6" style="padding-right: 2rem;">
+          {% set hero = content.hero | default({}) %}
+          {% set hero_title = hero.title | default("Документы с интеллектом.") %}
+          {% set hero_accent = hero.title_accent | default("интеллектом") %}
+          <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; color: white; margin-bottom: 1.5rem; line-height: 1.05; letter-spacing: -0.05em; text-transform: uppercase;">
+            {{ hero_title | replace(hero_accent, '<span style="color: #3b82f6;">' ~ hero_accent ~ '</span>') | safe }}
+          </h1>
+          
+          <!-- Subtitle -->
+          <p style="color: #94a3b8; font-size: 1.125rem; line-height: 1.75; margin-bottom: 2rem; max-width: 32rem; font-weight: 500;">
+            {{ hero.subtitle | default("Полный цикл автоматизации юридических и финансовых документов на базе нейронных сетей.") }}
+          </p>
+          
+          <!-- CTA Button -->
+          <a href="{{ hero.cta_url | default('/dashboard/upd/create/') }}" style="display: inline-flex; align-items: center; justify-content: center; background: #3b82f6; color: white; padding: 1.25rem 3rem; border-radius: 1.5rem; font-weight: 900; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.15em; text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 35px -5px rgba(59, 130, 246, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px -5px rgba(59, 130, 246, 0.3)';">
+            {{ hero.cta_text | default("Создать УПД бесплатно") }}
+          </a>
+          <div style="margin-top: 1.5rem; font-size: 0.875rem; color: rgba(148, 163, 184, 0.8);">
+            {{ hero.note | default("Попробуйте прямо сейчас") }} • <span style="color: #FBBF24; font-weight: 700;">{{ hero.note_accent | default("Без регистрации") }}</span>
+          </div>
+        </div>
+        
+        <!-- Right Column: AI Animation -->
+        <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center" style="overflow: visible;">
+          <!-- AI Animation Container -->
+          <div style="position: relative; width: 100%; max-width: 400px; min-height: 480px; background: white; border: 1px solid #f1f5f9; border-radius: 3rem; box-shadow: 0 50px 100px -20px rgba(15, 23, 42, 0.2); overflow: hidden; display: flex; flex-direction: column; padding: 2rem;">
+            
+            <!-- Scanner Line -->
+            <div class="hero-scanner-line" style="position: absolute; left: 0; right: 0; height: 80px; background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.25), transparent); border-top: 2px solid #3b82f6; z-index: 20; pointer-events: none;"></div>
+
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; position: relative; z-index: 10;">
+              <div style="text-align: left;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                  <div style="width: 8px; height: 8px; background: #FBBF24; border-radius: 50%; box-shadow: 0 0 10px #fbbf24; animation: hero-pulse 2s infinite;"></div>
+                  <span style="font-size: 9px; font-weight: 900; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.3em;">Documatica</span>
+                </div>
+                <h3 style="font-size: 1.5rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.15; margin: 0;">Ai анализ <br>документа</h3>
+              </div>
+              <div style="background: #f8fafc; padding: 0.375rem 0.75rem; border-radius: 0.5rem; border: 1px solid #f1f5f9;">
+                <span style="font-size: 8px; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em;">Core: 100%</span>
+              </div>
+            </div>
+
+            <!-- Document Rows -->
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 0.625rem; position: relative; z-index: 10;">
+              <!-- Row 1: OK -->
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.875rem; border-radius: 1rem; border: 1px solid #f1f5f9; background: #f8fafc; opacity: 0.4;">
+                <div style="display: flex; flex-direction: column; gap: 0.375rem; width: 100%;">
+                  <div style="height: 6px; border-radius: 100px; background: #e2e8f0; width: 33%;"></div>
+                  <div style="height: 5px; border-radius: 100px; background: #f1f5f9; width: 60%;"></div>
+                </div>
+                <svg style="width: 18px; height: 18px; color: #10b981; margin-left: 0.75rem; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+              </div>
+
+              <!-- Row 2: Dynamic -->
+              <div class="hero-ai-row-dynamic" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border-radius: 1.25rem; border: 2px solid #f1f5f9; background: #f8fafc;">
+                <div style="display: flex; flex-direction: column; gap: 0.375rem; width: 100%;">
+                  <div style="height: 8px; border-radius: 100px; background: #0f172a; width: 50%;"></div>
+                  <div style="height: 6px; border-radius: 100px; background: #cbd5e1; width: 70%;"></div>
+                </div>
+                <div class="hero-dynamic-icon" style="width: 24px; height: 24px; margin-left: 0.75rem; flex-shrink: 0;"></div>
+              </div>
+
+              <!-- Row 3: OK -->
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.875rem; border-radius: 1rem; border: 1px solid #f1f5f9; background: #f8fafc; opacity: 0.4;">
+                <div style="display: flex; flex-direction: column; gap: 0.375rem; width: 100%;">
+                  <div style="height: 6px; border-radius: 100px; background: #e2e8f0; width: 25%;"></div>
+                  <div style="height: 5px; border-radius: 100px; background: #f1f5f9; width: 45%;"></div>
+                </div>
+                <svg style="width: 18px; height: 18px; color: #10b981; margin-left: 0.75rem; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+              </div>
+            </div>
+
+            <!-- Footer Status Bar -->
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f1f5f9; position: relative; height: 70px;">
+              
+              <!-- Error Message -->
+              <div class="hero-msg-error" style="position: absolute; inset: 0; padding-top: 1rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                <div style="width: 36px; height: 36px; border-radius: 0.625rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fef2f2; color: #ef4444;">
+                  <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div style="text-align: left;">
+                  <h4 style="font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 0.125rem 0; color: #ef4444;">Risk Detected</h4>
+                  <p style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0;">Некорректная дата в пункте 4.2</p>
+                </div>
+              </div>
+
+              <!-- Fixing Message -->
+              <div class="hero-msg-fixing" style="position: absolute; inset: 0; padding-top: 1rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                <div style="width: 36px; height: 36px; border-radius: 0.625rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #eff6ff; color: #3b82f6;">
+                  <svg class="hero-fixing-spinner" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                </div>
+                <div style="text-align: left;">
+                  <h4 style="font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 0.125rem 0; color: #3b82f6;">Auto-Fix Active</h4>
+                  <p style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0;">Синхронизация с ЕГРЮЛ...</p>
+                </div>
+              </div>
+
+              <!-- Success Message -->
+              <div class="hero-msg-success" style="position: absolute; inset: 0; padding-top: 1rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                <div style="width: 36px; height: 36px; border-radius: 0.625rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #ecfdf5; color: #10b981;">
+                  <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div style="text-align: left;">
+                  <h4 style="font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 0.125rem 0; color: #10b981;">Verified</h4>
+                  <p style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0;">Все ошибки устранены. OK.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section section-light" id="features">
+    <div class="container">
+      <!-- Section Label -->
+      {% set features = content.features | default({}) %}
+      <div class="section-header">
+        <h2 class="section-title">{{ features.title | default("Почему выбирают Documatica") }}</h2>
+        <p class="section-subtitle">{{ features.subtitle | default("Все необходимое для работы с документами в одном месте") }}</p>
+      </div>
+      
+      <div class="features-grid">
+        {% set feature_cards = features.cards | default([]) %}
+        {% if feature_cards %}
+          {% for item in feature_cards %}
+        <div class="feature-card">
+          <div class="feature-icon">
+            {% set icon = item.icon | default('check-circle') %}
+            {% if icon == 'check-circle' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            {% elif icon == 'alert-triangle' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            {% elif icon == 'code' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            {% elif icon == 'download' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            {% elif icon == 'history' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            {% elif icon == 'gift' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+            {% elif icon == 'users' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            {% elif icon == 'cloud' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+            {% else %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            {% endif %}
+          </div>
+          <h3 class="feature-title">{{ item.title }}</h3>
+          <p class="feature-text">{{ item.description }}</p>
+        </div>
+          {% endfor %}
+        {% else %}
+        <!-- Fallback: захардкоженные карточки если нет данных в YAML -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+          <h3 class="feature-title">Сверка реквизитов</h3>
+          <p class="feature-text">Автоматическая проверка данных контрагентов по ИНН. Заполнение в один клик без ошибок.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- UPD Types Section v12.0 (Hub Style) -->
+  <section class="upd-types-section pattern-light" id="documents">
+    <div class="container">
+      {% set upd_types = content.upd_types | default({}) %}
+      <!-- Header -->
+      <div class="upd-types-header">
+        <div class="upd-types-label">
+          <span class="ai-node"></span>
+          {{ upd_types.label | default("Виды документов") }}
+        </div>
+        <h2 class="upd-types-title">{{ upd_types.title | default("Универсальный передаточный документ") | replace(" ", "<br>", 1) | safe }}</h2>
+      </div>
+      
+      <!-- Grid 3x3 -->
+      <div class="upd-types-grid">
+        {% set upd_cards = upd_types.cards | default([]) %}
+        {% for item in upd_cards %}
+        <a href="{{ item.url }}" class="upd-type-card{% if item.style == 'green' %} upd-type-card--green{% elif item.style == 'gold' %} upd-type-card--gold{% elif item.style == 'purple' %} upd-type-card--purple{% endif %}">
+          <div class="upd-type-card-header">
+            <div class="upd-type-card-icon">
+              {% set icon = item.icon | default('file-text') %}
+              {% if icon == 'dollar-sign' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              {% elif icon == 'slash' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+              </svg>
+              {% elif icon == 'layers' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
+              </svg>
+              {% elif icon == 'user' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              {% elif icon == 'home' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              {% elif icon == 'briefcase' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+              {% elif icon == 'file-text' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+              {% elif icon == 'code' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              {% elif icon == 'help-circle' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              {% else %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              {% endif %}
+            </div>
+            <svg class="upd-type-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+          <div class="upd-type-card-content">
+            <div class="upd-type-card-tag">{{ item.tag }}</div>
+            <h3 class="upd-type-card-title">{{ item.title }}</h3>
+            <p class="upd-type-card-desc">{{ item.description }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section v12.0 -->
+  <section class="pricing-section-v12" id="pricing">
+    <div class="container">
+      {% set pricing = content.pricing | default({}) %}
+      <!-- Header -->
+      <div class="pricing-header-v12">
+        <div class="pricing-label-v12">
+          <span class="ai-node"></span>
+          {{ pricing.label | default("Тарифы") }}
+        </div>
+        <h2 class="pricing-title-v12">{{ pricing.title | default("Инвестируйте в") }}<br><span class="accent">{{ pricing.title_accent | default("простоту") }}</span></h2>
+      </div>
+      
+      <!-- Grid -->
+      <div class="pricing-grid-v12">
+        {% set plans = pricing.plans | default([]) %}
+        {% for plan in plans %}
+        <div class="pricing-card-v12{% if plan.featured %} featured{% endif %}{% if plan.style == 'enterprise' %} enterprise{% endif %}">
+          {% if plan.badge %}
+          <span class="pricing-badge-v12">{{ plan.badge }}</span>
+          {% endif %}
+          <div class="pricing-plan-v12">{{ plan.name }}</div>
+          <div class="pricing-amount-v12">{{ plan.price }}</div>
+          <div class="pricing-period-v12">{{ plan.period }}</div>
+          
+          <ul class="pricing-features-v12">
+            {% for feature in plan.features %}
+            <li{% if not feature.enabled %} class="disabled"{% endif %}>
+              {% if feature.enabled %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              {% else %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              {% endif %}
+              {{ feature.text }}
+            </li>
+            {% endfor %}
+          </ul>
+          
+          <a href="{{ plan.button_url | default('/register') }}" class="pricing-btn-v12 {{ plan.style | default('outline') }}">{{ plan.button_text }}</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section v12.0 -->
+  <section class="cta-section-v12">
+    <div class="container">
+      <div class="cta-card-v12">
+        <div class="cta-content-v12">
+          {% set cta = content.cta | default({}) %}
+          <div class="cta-label-v12">
+            <span class="ai-node"></span>
+            {{ cta.label | default("Начните сейчас") }}
+          </div>
+          <h2 class="cta-title-v12">{{ cta.title | default("Готовы") }}<br><span class="accent">{{ cta.title_accent | default("автоматизировать?") }}</span></h2>
+          <p class="cta-desc-v12">{{ cta.subtitle | default("Создайте первый УПД за 2 минуты. Бесплатно и без регистрации.") }}</p>
+          <a href="{{ cta.button_url | default('/upd-create') }}" class="cta-btn-v12">
+            {{ cta.button_text | default("Создать документ") }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% include 'components/footer_home.html' %}
+
+  <!-- Scripts -->
+  <script src="/static/js/lib/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Прелоадер - показываем только при первом входе в сессии
+    let preloaderTimeout;
+    
+    window.addEventListener('load', () => {
+      const preloader = document.getElementById('preloader');
+      
+      // Проверяем, был ли уже показан прелоадер в этой сессии
+      if (sessionStorage.getItem('preloaderShown')) {
+        // Если уже показывали - сразу скрываем
+        preloader.classList.add('hidden-loader');
+      } else {
+        // Первый вход - показываем прелоадер
+        preloaderTimeout = setTimeout(() => { 
+          preloader.classList.add('hidden-loader');
+          // Запоминаем, что показали прелоадер в этой сессии
+          sessionStorage.setItem('preloaderShown', 'true');
+        }, 2500);
+      }
+    });
+    
+    // Скрываем прелоадер при клике на любую ссылку
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (link && link.href) {
+        const preloader = document.getElementById('preloader');
+        if (preloader && !preloader.classList.contains('hidden-loader')) {
+          clearTimeout(preloaderTimeout);
+          preloader.classList.add('hidden-loader');
+          sessionStorage.setItem('preloaderShown', 'true');
+        }
+      }
+    });
+    
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Preview loader
+    async function loadSidebarPreview() {
+      const iframe = document.getElementById('sidebar-preview-iframe');
+      if (!iframe) return;
+      
+      const container = iframe.parentElement;
+      
+      try {
+        const response = await fetch('/api/v1/documents/upd/demo');
+        
+        if (response.ok) {
+          const html = await response.text();
+          iframe.srcdoc = html;
+          
+          iframe.onload = function() {
+            const containerWidth = container.clientWidth;
+            const docWidth = 1150;
+            const scale = containerWidth / docWidth;
+            
+            let docHeight = 850;
+            try {
+              const doc = iframe.contentDocument || iframe.contentWindow.document;
+              docHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight, 850);
+            } catch(e) {}
+            
+            iframe.style.width = docWidth + 'px';
+            iframe.style.height = docHeight + 'px';
+            iframe.style.transform = 'scale(' + scale + ')';
+            container.style.height = (docHeight * scale) + 'px';
+          };
+        }
+      } catch (error) {
+        console.log('Ошибка загрузки предпросмотра:', error);
+      }
+    }
+    
+    loadSidebarPreview();
+    window.addEventListener('resize', loadSidebarPreview);
+  </script>
+</body>
+
+</html>

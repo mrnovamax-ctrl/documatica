@@ -1,0 +1,269 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block title %}Панель Управления{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<header class="page-header-v12">
+  <div class="page-header-left-v12">
+    <h1 class="page-title-v12">Панель Управления</h1>
+    <p class="page-subtitle-v12">Обзор работы и быстрый доступ</p>
+  </div>
+  <div class="page-header-right-v12">
+    <a href="/dashboard/upd/create/" class="btn-primary-v12">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Создать УПД
+    </a>
+  </div>
+</header>
+
+<!-- Stats Cards -->
+<div class="stats-grid-v12">
+  <div class="stat-card-v12">
+    <div class="stat-label-v12">Всего документов</div>
+    <div class="stat-value-v12" id="total-docs">0</div>
+    <div class="stat-change-v12 up">+12% за месяц</div>
+  </div>
+  <div class="stat-card-v12">
+    <div class="stat-label-v12">За этот месяц</div>
+    <div class="stat-value-v12" id="month-docs">0</div>
+    <div class="stat-change-v12 up">+8% к прошлому</div>
+  </div>
+  <div class="stat-card-v12">
+    <div class="stat-label-v12">Организаций</div>
+    <div class="stat-value-v12" id="total-orgs">0</div>
+    <div class="stat-change-v12">В справочнике</div>
+  </div>
+  <div class="stat-card-v12">
+    <div class="stat-label-v12">Контрагентов</div>
+    <div class="stat-value-v12" id="total-contractors">0</div>
+    <div class="stat-change-v12">В справочнике</div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="section-card-v12">
+  <div class="section-header-v12">
+    <h2 class="section-title-v12">Быстрые действия</h2>
+  </div>
+  <div class="section-body-v12">
+    <div class="quick-actions-grid-v12">
+      <a href="/dashboard/upd/create/" class="quick-action-btn-v12">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="18" x2="12" y2="12"></line>
+          <line x1="9" y1="15" x2="15" y2="15"></line>
+        </svg>
+        Создать УПД
+      </a>
+      <a href="/dashboard/schet/create/" class="quick-action-btn-v12 outline">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        Создать счет
+      </a>
+      <a href="/dashboard/organizations/" class="quick-action-btn-v12 outline">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 21h18"></path>
+          <path d="M5 21V7l8-4v18"></path>
+          <path d="M19 21V11l-6-3"></path>
+        </svg>
+        Мои компании
+      </a>
+      <a href="/dashboard/contractors/" class="quick-action-btn-v12 outline">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        Контрагенты
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Последние документы -->
+<div class="section-card-v12">
+  <div class="section-header-v12">
+    <h2 class="section-title-v12">Последние</h2>
+    <a href="/dashboard/documents/" class="btn-outline-v12">
+      Смотреть все
+    </a>
+  </div>
+  <table class="data-table-v12">
+    <thead>
+      <tr>
+        <th>Номер</th>
+        <th>Дата</th>
+        <th>Контрагент</th>
+        <th>Сумма</th>
+        <th>Статус</th>
+        <th style="width: 120px;">Действия</th>
+      </tr>
+    </thead>
+    <tbody id="documents-table-body">
+      <!-- Documents rows will be inserted here -->
+    </tbody>
+  </table>
+  <div id="empty-documents" class="empty-state-v12" style="display: none;">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+    </div>
+    <div class="title">Нет документов</div>
+    <div class="description">Создайте свой первый УПД для начала работы</div>
+    <a href="/dashboard/upd/create/" class="btn-primary-v12">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Создать первый документ
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const token = localStorage.getItem('access_token');
+  const isAuthenticated = {{ 'true' if user.is_authenticated else 'false' }};
+  
+  // Redirect to login only if not authenticated via server-side check
+  if (!isAuthenticated && !token) {
+    window.location.href = '/login/';
+    return;
+  }
+  
+  // Load dashboard data
+  loadDashboardData();
+  
+  async function loadDashboardData() {
+    try {
+      // Load documents
+      const docsResponse = await fetch('/api/v1/documents/', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      
+      if (docsResponse.ok) {
+        const data = await docsResponse.json();
+        const docs = data.documents || [];
+        document.getElementById('total-docs').textContent = docs.length || 0;
+        
+        // Count this month
+        const now = new Date();
+        const thisMonth = docs.filter(d => {
+          const docDate = new Date(d.created_at);
+          return docDate.getMonth() === now.getMonth() && docDate.getFullYear() === now.getFullYear();
+        });
+        document.getElementById('month-docs').textContent = thisMonth.length || 0;
+        
+        // Show table if docs exist
+        const tbody = document.getElementById('documents-table-body');
+        const emptyState = document.getElementById('empty-documents');
+        
+        if (docs.length > 0) {
+          emptyState.style.display = 'none';
+          
+          // Populate table with last 10 documents
+          docs.slice(0, 10).forEach(doc => {
+            const sum = parseFloat(doc.total_amount) || 0;
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td><a href="/dashboard/upd/edit/${doc.id}/" style="color: #3b82f6; text-decoration: none; font-weight: 700;">${doc.document_number || '-'}</a></td>
+              <td class="secondary">${formatDate(doc.document_date)}</td>
+              <td>${doc.buyer_name || '-'}</td>
+              <td>${formatMoney(sum)} р.</td>
+              <td>
+                <span class="status-indicator-v12">
+                  <span class="dot success"></span>
+                  Создан
+                </span>
+              </td>
+              <td>
+                <div style="display: flex; gap: 4px;">
+                  <button class="btn-outline-v12 btn-sm" title="Редактировать" onclick="window.location.href='/dashboard/upd/edit/${doc.id}'/">
+                    <iconify-icon icon="mdi:pencil"></iconify-icon>
+                  </button>
+                  <button class="btn-outline-v12 btn-sm" title="Удалить" onclick="deleteDoc('${doc.id}')">
+                    <iconify-icon icon="mdi:delete"></iconify-icon>
+                  </button>
+                </div>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
+        } else {
+          tbody.style.display = 'none';
+          emptyState.style.display = 'block';
+        }
+      }
+      
+      // Load organizations
+      const orgsResponse = await fetch('/api/v1/organizations/', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      
+      if (orgsResponse.ok) {
+        const orgs = await orgsResponse.json();
+        document.getElementById('total-orgs').textContent = orgs.length || 0;
+      }
+      
+      // Load contractors
+      const contractorsResponse = await fetch('/api/v1/contractors/', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      
+      if (contractorsResponse.ok) {
+        const contractors = await contractorsResponse.json();
+        document.getElementById('total-contractors').textContent = contractors.length || 0;
+      }
+      
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
+    }
+  }
+  
+  function formatDate(dateStr) {
+    if (!dateStr) return '-';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('ru-RU');
+  }
+  
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+  }
+  
+  async function deleteDoc(docId) {
+    if (!confirm('Вы уверены, что хотите удалить этот документ?')) {
+      return;
+    }
+    
+    try {
+      const response = await fetch(`/api/v1/documents/${docId}/`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      
+      if (response.ok) {
+        location.reload();
+      } else {
+        alert('Ошибка при удалении документа');
+      }
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      alert('Ошибка при удалении документа');
+    }
+  }
+});
+</script>
+{% endblock %}

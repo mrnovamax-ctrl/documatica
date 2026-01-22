@@ -1,0 +1,110 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Пользователи{% endblock %}
+{% block page_title %}Пользователи{% endblock %}
+
+{% block header_actions %}
+<div class="admin-header-meta">
+  Всего: <strong>{{ total_users }}</strong>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Users Table -->
+<div class="admin-table-container">
+  <!-- Table Header -->
+  <div class="admin-table-header admin-table-row-5col">
+    <div class="admin-table-th">Пользователь</div>
+    <div class="admin-table-th">Тариф</div>
+    <div class="admin-table-th">Документов</div>
+    <div class="admin-table-th">Дата регистрации</div>
+    <div class="admin-table-th">Статус</div>
+  </div>
+  
+  <!-- Table Body -->
+  {% for user in users %}
+  <div class="admin-table-row admin-table-row-5col">
+    <!-- Email -->
+    <div class="admin-table-cell">
+      <div class="admin-user-email">{{ user.email }}</div>
+      <div class="admin-user-id">ID: {{ user.id }}</div>
+    </div>
+    
+    <!-- Tariff -->
+    <div class="admin-table-cell">
+      {% set tariff = user.tariff or 'free' %}
+      {% if tariff == 'pro' %}
+      <span class="admin-badge admin-badge-gold">
+        <iconify-icon icon="ri:vip-crown-line" width="14"></iconify-icon>
+        Pro
+      </span>
+      {% elif tariff == 'business' %}
+      <span class="admin-badge admin-badge-purple">
+        <iconify-icon icon="ri:building-line" width="14"></iconify-icon>
+        Business
+      </span>
+      {% else %}
+      <span class="admin-badge admin-badge-muted">
+        Free
+      </span>
+      {% endif %}
+    </div>
+    
+    <!-- Documents -->
+    <div class="admin-table-cell">
+      <span class="admin-docs-count">{{ user.documents_count }}</span>
+      <span class="admin-docs-label">шт</span>
+    </div>
+    
+    <!-- Created At -->
+    <div class="admin-table-cell admin-text-muted">
+      {{ user.created_at[:10] if user.created_at else 'N/A' }}
+    </div>
+    
+    <!-- Status -->
+    <div class="admin-table-cell">
+      {% if user.is_verified %}
+      <span class="admin-badge admin-badge-success">
+        <iconify-icon icon="ri:checkbox-circle-fill" width="14"></iconify-icon>
+        Подтверждён
+      </span>
+      {% else %}
+      <span class="admin-badge admin-badge-warning">
+        <iconify-icon icon="ri:time-line" width="14"></iconify-icon>
+        Не подтверждён
+      </span>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="admin-empty-state">
+    <iconify-icon icon="ri:user-unfollow-line" width="64"></iconify-icon>
+    <div class="admin-empty-state-title">Пользователи не найдены</div>
+    <div class="admin-empty-state-text">Зарегистрированные пользователи появятся здесь</div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if total_pages > 1 %}
+<div class="admin-pagination">
+  {% if page > 1 %}
+  <a href="?page={{ page - 1 }}" class="admin-pagination-btn">
+    <iconify-icon icon="ri:arrow-left-s-line" width="20"></iconify-icon>
+  </a>
+  {% endif %}
+  
+  {% for p in range(1, total_pages + 1) %}
+  <a href="?page={{ p }}" class="admin-pagination-btn {% if p == page %}active{% endif %}">
+    {{ p }}
+  </a>
+  {% endfor %}
+  
+  {% if page < total_pages %}
+  <a href="?page={{ page + 1 }}" class="admin-pagination-btn">
+    <iconify-icon icon="ri:arrow-right-s-line" width="20"></iconify-icon>
+  </a>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

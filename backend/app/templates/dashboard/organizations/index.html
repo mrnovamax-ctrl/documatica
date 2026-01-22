@@ -1,0 +1,220 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<!-- Page Header -->
+<header class="page-header-v12">
+  <div class="page-header-left-v12">
+    <h1 class="page-title-v12">Мои компании</h1>
+    <p class="page-subtitle-v12">Справочник организаций</p>
+  </div>
+  <div class="page-header-right-v12">
+    <a href="/dashboard/organizations/create/" class="btn-primary-v12">
+      <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+      Добавить организацию
+    </a>
+  </div>
+</header>
+
+<!-- Search -->
+<div class="card radius-8 border-0 shadow-sm mb-24">
+  <div class="card-body p-16">
+    <div class="d-flex align-items-center justify-content-between">
+      <input type="text" class="form-control" placeholder="Поиск..." style="width: 250px;">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn-outline-v12" id="view-cards" title="Карточки">
+          <iconify-icon icon="mdi:view-grid"></iconify-icon>
+        </button>
+        <button type="button" class="btn-outline-v12" id="view-table" title="Таблица">
+          <iconify-icon icon="mdi:view-list"></iconify-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Organizations Cards View -->
+<div class="row g-4" id="organizations-cards" style="display: none;">
+  <!-- Organizations cards will be loaded here -->
+</div>
+
+<!-- Organizations Table View -->
+<div class="section-card-v12" id="organizations-table" style="display: none;">
+  <table class="data-table-v12">
+        <thead>
+          <tr>
+            <th>Наименование</th>
+            <th>ИНН</th>
+            <th>КПП</th>
+            <th>Адрес</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="organizations-table-body">
+          <!-- Organizations rows will be loaded here -->
+    </tbody>
+  </table>
+</div>
+
+<div id="empty-state" style="display: none;">
+  <div class="card radius-8 border-0 shadow-sm">
+    <div class="card-body text-center py-48">
+      <iconify-icon icon="mdi:domain" class="text-5xl text-secondary-light mb-16 d-block"></iconify-icon>
+      <h6 class="mb-8">Организаций пока нет</h6>
+      <p class="text-secondary-light mb-16">Добавьте организацию для быстрого создания документов</p>
+      <a href="/dashboard/organizations/create/" class="btn-primary-v12">
+        <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+        Добавить организацию
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+let organizationsData = [];
+let currentView = localStorage.getItem('organizationsView') || 'cards';
+
+document.addEventListener('DOMContentLoaded', async function() {
+  // Инициализация кнопок переключения
+  document.getElementById('view-cards').addEventListener('click', () => switchView('cards'));
+  document.getElementById('view-table').addEventListener('click', () => switchView('table'));
+  
+  // Загрузка данных
+  await loadOrganizations();
+  
+  // Установка активного вида
+  switchView(currentView);
+});
+
+async function loadOrganizations() {
+  try {
+    const response = await fetch('/api/v1/organizations/', {
+      credentials: 'include'
+    });
+    organizationsData = await response.json();
+    
+    const emptyState = document.getElementById('empty-state');
+    
+    if (organizationsData.length === 0) {
+      document.getElementById('organizations-cards').style.display = 'none';
+      document.getElementById('organizations-table').style.display = 'none';
+      emptyState.style.display = 'block';
+      return;
+    }
+    
+    emptyState.style.display = 'none';
+    renderCardsView();
+    renderTableView();
+  } catch (error) {
+    console.error('Error loading organizations:', error);
+  }
+}
+
+function renderCardsView() {
+  const list = document.getElementById('organizations-cards');
+  list.innerHTML = '';
+  
+  organizationsData.forEach(org => {
+    const col = document.createElement('div');
+    col.className = 'col-md-6 col-lg-4';
+    col.innerHTML = `
+      <div class="card radius-8 border-0 shadow-sm h-100" style="cursor: pointer; transition: transform 0.2s;" 
+           onclick="window.location.href='/dashboard/organizations/edit/${org.id}/';" 
+           onmouseover="this.style.transform='translateY(-4px)';" 
+           onmouseout="this.style.transform='translateY(0)';">
+        <div class="card-body p-24">
+          <div class="d-flex align-items-start justify-content-between mb-16">
+            <div class="flex-grow-1">
+              <h6 class="fw-semibold mb-8">${org.name}</h6>
+              <p class="text-secondary-light text-sm mb-8">ИНН: ${org.inn}</p>
+              ${org.kpp ? `<p class="text-secondary-light text-sm mb-8">КПП: ${org.kpp}</p>` : ''}
+              ${org.address ? `<p class="text-secondary-light text-sm mb-0"><iconify-icon icon="mdi:map-marker" class="me-1"></iconify-icon>${org.address}</p>` : ''}
+            </div>
+            <div class="d-flex align-items-start gap-2 ms-3">
+              <div class="w-48-px h-48-px d-flex align-items-center justify-content-center" style="overflow: hidden; flex-shrink: 0;">
+                ${org.logo_url 
+                  ? `<img src="${org.logo_url}" alt="${org.name}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`
+                  : `<div class="w-48-px h-48-px bg-primary-100 rounded-circle d-flex justify-content-center align-items-center"><iconify-icon icon="mdi:domain" class="text-primary-600 text-xl"></iconify-icon></div>`
+                }
+              </div>
+              <button class="btn btn-sm btn-outline-danger-600" title="Удалить" onclick="event.stopPropagation(); deleteOrg('${org.id}');">
+                <iconify-icon icon="mdi:delete"></iconify-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    list.appendChild(col);
+  });
+}
+
+function renderTableView() {
+  const tbody = document.getElementById('organizations-table-body');
+  tbody.innerHTML = '';
+  
+  organizationsData.forEach(org => {
+    const row = document.createElement('tr');
+    row.style.cursor = 'pointer';
+    row.onclick = function(e) {
+      if (!e.target.closest('button')) {
+        window.location.href = `/dashboard/organizations/edit/${org.id}/`;
+      }
+    };
+    row.innerHTML = `
+      <td><strong>${org.name}</strong></td>
+      <td>${org.inn || '-'}</td>
+      <td>${org.kpp || '-'}</td>
+      <td>${org.address || '-'}</td>
+      <td>
+        <div class="d-flex gap-1">
+          <button class="btn btn-sm btn-outline-danger-600" title="Удалить" onclick="event.stopPropagation(); deleteOrg('${org.id}')">
+            <iconify-icon icon="mdi:delete"></iconify-icon>
+          </button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+function switchView(view) {
+  currentView = view;
+  localStorage.setItem('organizationsView', view);
+  
+  const cardsView = document.getElementById('organizations-cards');
+  const tableView = document.getElementById('organizations-table');
+  const cardsBtn = document.getElementById('view-cards');
+  const tableBtn = document.getElementById('view-table');
+  
+  if (view === 'cards') {
+    cardsView.style.display = 'flex';
+    tableView.style.display = 'none';
+    cardsBtn.classList.add('active');
+    cardsBtn.classList.remove('inactive');
+    tableBtn.classList.remove('active');
+    tableBtn.classList.add('inactive');
+  } else {
+    cardsView.style.display = 'none';
+    tableView.style.display = 'block';
+    tableBtn.classList.add('active');
+    tableBtn.classList.remove('inactive');
+    cardsBtn.classList.remove('active');
+    cardsBtn.classList.add('inactive');
+  }
+}
+
+async function deleteOrg(id) {
+  if (!confirm('Удалить организацию?')) return;
+  
+  try {
+    await fetch(`/api/v1/organizations/${id}`, { 
+      method: 'DELETE',
+      credentials: 'include'
+    });
+    location.reload();
+  } catch (error) {
+    console.error('Error deleting organization:', error);
+  }
+}
+</script>
+{% endblock %}

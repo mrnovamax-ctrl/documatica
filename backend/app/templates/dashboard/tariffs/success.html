@@ -1,0 +1,39 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card radius-16 border-0 shadow-sm text-center">
+      <div class="card-body p-40">
+        <div class="mb-24">
+          <span class="w-80-px h-80-px bg-success-100 d-inline-flex justify-content-center align-items-center rounded-circle">
+            <iconify-icon icon="mdi:check-circle" class="text-5xl text-success-main"></iconify-icon>
+          </span>
+        </div>
+        
+        <h4 class="fw-bold text-success-main mb-8">Оплата прошла успешно</h4>
+        <p class="text-secondary-light mb-24">
+          Ваш платёж успешно обработан. Лимиты документов уже обновлены.
+        </p>
+        
+        {% if order_id %}
+        <p class="text-sm text-secondary-light mb-24">
+          Номер заказа: <strong>{{ order_id[:8] }}...</strong>
+        </p>
+        {% endif %}
+        
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+          <a href="/dashboard/tariffs/" class="btn-outline-v12">
+            <iconify-icon icon="mdi:arrow-left" class="me-2"></iconify-icon>
+            К тарифам
+          </a>
+          <a href="/dashboard/upd/create/" class="btn-primary-v12">
+            <iconify-icon icon="mdi:file-document-plus" class="me-2"></iconify-icon>
+            Создать документ
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

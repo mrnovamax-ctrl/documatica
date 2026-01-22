@@ -1,0 +1,402 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}{% if is_new %}Новая статья{% else %}Редактировать: {{ article.title[:30] }}{% endif %}{% endblock %}
+{% block page_title %}{% if is_new %}Новая статья{% else %}Редактирование статьи{% endif %}{% endblock %}
+
+{% block header_actions %}
+<div style="display: flex; align-items: center; gap: 12px;">
+  {% if not is_new and article %}
+  <a href="/news/{{ article.slug }}/" target="_blank" class="admin-btn-secondary">
+    <iconify-icon icon="ri:external-link-line" width="16"></iconify-icon>
+    Открыть
+  </a>
+  {% endif %}
+  <a href="/admin/articles/" class="admin-btn-back">
+    <iconify-icon icon="ri:arrow-left-line" width="18"></iconify-icon>
+    К списку
+  </a>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<!-- TinyMCE Editor -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
+
+{% block content %}
+{% if request.query_params.get('saved') %}
+<div class="admin-alert admin-alert-success" style="margin-bottom: 24px;">
+  <iconify-icon icon="ri:checkbox-circle-line" width="22"></iconify-icon>
+  Статья успешно сохранена
+</div>
+{% endif %}
+
+<form method="POST" id="articleForm">
+  <div style="display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start;">
+    <!-- Main Content -->
+    <div>
+      <!-- Title -->
+      <div class="admin-form-group" style="margin-bottom: 24px;">
+        <label class="admin-form-label">Заголовок статьи</label>
+        <input type="text" name="title" value="{{ article.title if article else '' }}" required
+               class="admin-input admin-input-large" placeholder="Введите заголовок..."
+               oninput="generateSlug(this.value)">
+      </div>
+      
+      <!-- Slug -->
+      <div class="admin-form-group" style="margin-bottom: 24px;">
+        <label class="admin-form-label">URL (slug)</label>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="color: #94a3b8; font-size: 14px;">/news/</span>
+          <input type="text" name="slug" id="slugInput" value="{{ article.slug if article else '' }}"
+                 class="admin-input" placeholder="url-statyi" style="flex: 1;">
+          <span style="color: #94a3b8; font-size: 14px;">/</span>
+        </div>
+      </div>
+      
+      <!-- Excerpt -->
+      <div class="admin-form-group" style="margin-bottom: 24px;">
+        <label class="admin-form-label">Краткое описание (excerpt)</label>
+        <textarea name="excerpt" rows="3" class="admin-textarea" placeholder="Краткое описание для превью...">{{ article.excerpt if article else '' }}</textarea>
+      </div>
+      
+      <!-- Content Editor -->
+      <div class="admin-form-group" style="margin-bottom: 24px;">
+        <label class="admin-form-label">Содержание статьи</label>
+        <textarea name="content" id="contentEditor" class="admin-textarea">{{ article.content if article else '' }}</textarea>
+      </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div style="position: sticky; top: 100px;">
+      <!-- Publish Card -->
+      <div class="admin-sidebar-card" style="margin-bottom: 24px;">
+        <div class="admin-sidebar-card-header">
+          <iconify-icon icon="ri:send-plane-line" width="18"></iconify-icon>
+          Публикация
+        </div>
+        <div class="admin-sidebar-card-body">
+          <label class="admin-checkbox-label">
+            <input type="checkbox" name="is_published" value="true" {% if article and article.is_published %}checked{% endif %}>
+            <span class="admin-checkbox-box"></span>
+            <span>Опубликовать</span>
+          </label>
+          
+          {% if article %}
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #64748b;">
+            <div style="margin-bottom: 8px;">
+              <strong>Создано:</strong> {{ article.created_at[:10] if article.created_at else 'N/A' }}
+            </div>
+            <div style="margin-bottom: 8px;">
+              <strong>Обновлено:</strong> {{ article.updated_at[:10] if article.updated_at else 'N/A' }}
+            </div>
+            <div>
+              <strong>Просмотры:</strong> {{ article.views | default(0) }}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="admin-sidebar-card-footer">
+          <button type="submit" class="admin-btn-primary" style="width: 100%;">
+            <iconify-icon icon="ri:save-line" width="18"></iconify-icon>
+            {% if is_new %}Создать статью{% else %}Сохранить{% endif %}
+          </button>
+        </div>
+      </div>
+      
+      <!-- Category -->
+      <div class="admin-sidebar-card" style="margin-bottom: 24px;">
+        <div class="admin-sidebar-card-header">
+          <iconify-icon icon="ri:folder-line" width="18"></iconify-icon>
+          Категория
+        </div>
+        <div class="admin-sidebar-card-body">
+          <select name="category" class="admin-select">
+            <option value="">Без категории</option>
+            {% for cat in categories %}
+            <option value="{{ cat.slug }}" {% if article and article.category == cat.slug %}selected{% endif %}>
+              {{ cat.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      
+      <!-- Image -->
+      <div class="admin-sidebar-card" style="margin-bottom: 24px;">
+        <div class="admin-sidebar-card-header">
+          <iconify-icon icon="ri:image-line" width="18"></iconify-icon>
+          Изображение
+        </div>
+        <div class="admin-sidebar-card-body">
+          <input type="text" name="image" id="imageInput" value="{{ article.image if article else '' }}"
+                 class="admin-input" placeholder="/static/images/articles/...">
+          <div id="imagePreview" style="margin-top: 12px; border-radius: 12px; overflow: hidden; display: {% if article and article.image %}block{% else %}none{% endif %};">
+            <img src="{{ article.image if article else '' }}" style="width: 100%; height: auto;">
+          </div>
+        </div>
+      </div>
+      
+      <!-- SEO -->
+      <div class="admin-sidebar-card">
+        <div class="admin-sidebar-card-header">
+          <iconify-icon icon="ri:seo-line" width="18"></iconify-icon>
+          SEO
+        </div>
+        <div class="admin-sidebar-card-body">
+          <div class="admin-form-group" style="margin-bottom: 16px;">
+            <label class="admin-form-label-small">Meta Title</label>
+            <input type="text" name="meta_title" value="{{ article.meta_title if article else '' }}"
+                   class="admin-input-small" placeholder="SEO заголовок">
+          </div>
+          <div class="admin-form-group" style="margin-bottom: 16px;">
+            <label class="admin-form-label-small">Meta Description</label>
+            <textarea name="meta_description" rows="2" class="admin-textarea-small" placeholder="SEO описание">{{ article.meta_description if article else '' }}</textarea>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label-small">Keywords</label>
+            <input type="text" name="meta_keywords" value="{{ article.meta_keywords if article else '' }}"
+                   class="admin-input-small" placeholder="ключевые, слова">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Delete -->
+      {% if not is_new and article %}
+      <div style="margin-top: 24px; text-align: center;">
+        <button type="button" onclick="deleteArticle()" style="background: none; border: none; color: #ef4444; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+          <iconify-icon icon="ri:delete-bin-line" width="16"></iconify-icon>
+          Удалить статью
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</form>
+
+<style>
+.admin-form-group { }
+.admin-form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+.admin-form-label-small {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+.admin-input, .admin-textarea, .admin-select {
+  width: 100%;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0f172a;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+.admin-input:focus, .admin-textarea:focus, .admin-select:focus {
+  outline: none;
+  background: white;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+.admin-input-large {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 18px 20px;
+}
+.admin-input-small, .admin-textarea-small {
+  padding: 10px 14px;
+  font-size: 13px;
+}
+.admin-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.admin-textarea-small {
+  width: 100%;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.admin-sidebar-card {
+  background: white;
+  border: 1px solid #f1f5f9;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+.admin-sidebar-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: #f8fafc;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  border-bottom: 1px solid #f1f5f9;
+}
+.admin-sidebar-card-body {
+  padding: 20px;
+}
+.admin-sidebar-card-footer {
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+}
+
+.admin-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+}
+.admin-checkbox-label input {
+  display: none;
+}
+.admin-checkbox-box {
+  width: 22px;
+  height: 22px;
+  background: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.admin-checkbox-label input:checked + .admin-checkbox-box {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+.admin-checkbox-label input:checked + .admin-checkbox-box::after {
+  content: '';
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-bottom: 2px;
+}
+
+.admin-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.admin-btn-secondary:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+/* TinyMCE override */
+.tox-tinymce {
+  border-radius: 12px !important;
+  border-color: #e2e8f0 !important;
+}
+</style>
+
+<script>
+// Slug generator
+function generateSlug(title) {
+  const slugInput = document.getElementById('slugInput');
+  if (slugInput.dataset.manual) return;
+  
+  const translit = {
+    'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo',
+    'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
+    'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
+    'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'ъ': '',
+    'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya'
+  };
+  
+  let result = title.toLowerCase();
+  for (const [ru, en] of Object.entries(translit)) {
+    result = result.split(ru).join(en);
+  }
+  result = result.replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  slugInput.value = result.substring(0, 100);
+}
+
+document.getElementById('slugInput').addEventListener('input', function() {
+  this.dataset.manual = 'true';
+});
+
+// Image preview
+document.getElementById('imageInput').addEventListener('input', function() {
+  const preview = document.getElementById('imagePreview');
+  if (this.value) {
+    preview.style.display = 'block';
+    preview.querySelector('img').src = this.value;
+  } else {
+    preview.style.display = 'none';
+  }
+});
+
+// Delete article
+function deleteArticle() {
+  if (confirm('Вы уверены, что хотите удалить эту статью?')) {
+    fetch('{{ "/admin/articles/" ~ article.id ~ "/delete/" if article else "" }}', {
+      method: 'POST'
+    }).then(() => {
+      window.location.href = '/admin/articles/';
+    });
+  }
+}
+
+// TinyMCE initialization
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof tinymce !== 'undefined') {
+    tinymce.init({
+      selector: '#contentEditor',
+      height: 500,
+      menubar: false,
+      plugins: [
+        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+        'insertdatetime', 'media', 'table', 'help', 'wordcount'
+      ],
+      toolbar: 'undo redo | blocks | bold italic underline strikethrough | ' +
+               'alignleft aligncenter alignright alignjustify | ' +
+               'bullist numlist | link image table | removeformat code',
+      content_style: 'body { font-family: Inter, sans-serif; font-size: 15px; line-height: 1.7; color: #334155; }',
+      branding: false,
+      promotion: false,
+      setup: function(editor) {
+        editor.on('change', function() {
+          editor.save();
+        });
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

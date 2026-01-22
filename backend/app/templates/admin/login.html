@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link rel="icon" type="image/png" href="/static/images/favicon.png" sizes="16x16">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Iconify -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- Documatica v12.0 Design System -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.15">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Pattern background */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(#ef4444 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.08;
+      pointer-events: none;
+    }
+    
+    .login-container {
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .login-card {
+      background: white;
+      border-radius: 3rem;
+      padding: 64px 48px;
+      box-shadow: 0 50px 100px -20px rgba(15, 23, 42, 0.1);
+      border: 1px solid #f1f5f9;
+    }
+    
+    .login-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+    
+    .login-logo svg {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .logo-text {
+      font-size: 24px;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+    
+    .logo-text span {
+      font-weight: 300;
+    }
+    
+    .admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-left: 12px;
+    }
+    
+    .login-title {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .login-title h1 {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+    
+    .login-title p {
+      font-size: 14px;
+      color: #64748b;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #94a3b8;
+      margin-bottom: 10px;
+      margin-left: 4px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 18px 24px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 1.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f172a;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      background: white;
+      border-color: #ef4444;
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+    }
+    
+    .form-input::placeholder {
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #dc2626;
+      padding: 16px 20px;
+      border-radius: 1rem;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 20px 32px;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      border: none;
+      border-radius: 1.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px -10px rgba(239, 68, 68, 0.4);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 32px;
+      font-size: 13px;
+      color: #64748b;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    .back-link:hover {
+      color: #0f172a;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <!-- Logo -->
+      <div class="login-logo">
+        <svg viewBox="0 0 64 64">
+          <path d="M12 16H48V48H12V16Z" fill="#ef4444" fill-opacity="0.2"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="5" fill="#ef4444"/>
+        </svg>
+        <span class="logo-text">Docu<span>matica</span></span>
+        <span class="admin-badge">
+          <iconify-icon icon="ri:shield-user-line" width="12"></iconify-icon>
+          Admin
+        </span>
+      </div>
+      
+      <!-- Title -->
+      <div class="login-title">
+        <h1>Вход в панель управления</h1>
+        <p>Введите учётные данные администратора</p>
+      </div>
+      
+      <!-- Error -->
+      {% if error %}
+      <div class="error-message">
+        <iconify-icon icon="ri:error-warning-line" width="20"></iconify-icon>
+        {{ error }}
+      </div>
+      {% endif %}
+      
+      <!-- Form -->
+      <form method="POST" action="/admin/login/">
+        <div class="form-group">
+          <label class="form-label">Логин</label>
+          <input 
+            type="text" 
+            name="username" 
+            class="form-input" 
+            placeholder="admin"
+            required
+            autocomplete="username"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Пароль</label>
+          <input 
+            type="password" 
+            name="password" 
+            class="form-input" 
+            placeholder="********"
+            required
+            autocomplete="current-password"
+          >
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          <iconify-icon icon="ri:login-box-line" width="18"></iconify-icon>
+          Войти
+        </button>
+      </form>
+      
+      <a href="/" class="back-link">Вернуться на сайт</a>
+    </div>
+  </div>
+</body>
+
+</html>

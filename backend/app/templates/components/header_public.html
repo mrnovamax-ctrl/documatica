@@ -1,0 +1,67 @@
+<!-- Public Header v12.0 -->
+<header class="header-v12">
+  <div class="header-container-v12">
+    <!-- Logo -->
+    <a href="/" class="header-logo-v12">
+      <svg viewBox="0 0 64 64">
+        <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+        <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+      </svg>
+      <span class="logo-text">
+        <span class="logo-bold">docu</span><span class="logo-light">matica</span>
+      </span>
+    </a>
+    
+    <!-- Navigation -->
+    <nav class="header-nav-v12">
+      <div class="header-dropdown-v12">
+        <a href="#" class="dropdown-toggle">Документы</a>
+        <div class="header-dropdown-menu-v12">
+          <a href="/upd/">УПД</a>
+          <a href="/schet/">Счет на оплату</a>
+          <a href="/akt/">Акт выполненных работ</a>
+          <a href="/schet-faktura/">Счет-фактура</a>
+          <a href="/dogovor/">Все договоры</a>
+        </div>
+      </div>
+      <div class="header-dropdown-v12">
+        <a href="#" class="dropdown-toggle">Для кого</a>
+        <div class="header-dropdown-menu-v12">
+          <a href="/dlya-ip/">Для ИП</a>
+          <a href="/dlya-ooo/">Для ООО</a>
+          <a href="/dlya-samozanyatyh/">Для самозанятых</a>
+        </div>
+      </div>
+      <a href="/tarify/">Тарифы</a>
+      <a href="/baza-znanij/">База знаний</a>
+    </nav>
+    
+    <!-- Auth Buttons -->
+    <div class="header-auth-v12">
+      <a href="/login/" class="header-btn-outline-v12">Войти</a>
+      <a href="/register/" class="header-btn-primary-v12">Регистрация</a>
+      
+      <!-- Mobile Toggle -->
+      <button class="header-mobile-toggle-v12" type="button" onclick="document.getElementById('mobileNav').classList.toggle('show')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation (hidden by default) -->
+  <div class="header-mobile-nav" id="mobileNav">
+    <a href="/upd/">УПД</a>
+    <a href="/schet/">Счет на оплату</a>
+    <a href="/akt/">Акт выполненных работ</a>
+    <a href="/tarify/">Тарифы</a>
+    <div class="header-mobile-auth">
+      <a href="/login/" class="header-btn-outline-v12">Войти</a>
+      <a href="/register/" class="header-btn-primary-v12">Регистрация</a>
+    </div>
+  </div>
+</header>

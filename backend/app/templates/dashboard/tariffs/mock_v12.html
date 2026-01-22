@@ -1,0 +1,207 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block title %}Тестовая оплата{% endblock %}
+
+{% block content %}
+<style>
+  .mock-container-v12 {
+    max-width: 500px;
+    margin: 60px auto;
+    text-align: center;
+  }
+  
+  .mock-card-v12 {
+    background: white;
+    border-radius: 2rem;
+    padding: 48px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+  }
+  
+  .mock-badge-v12 {
+    display: inline-block;
+    background: #fbbf24;
+    color: #92400e;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 6px 16px;
+    border-radius: 99px;
+    margin-bottom: 24px;
+  }
+  
+  .mock-icon-v12 {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+  }
+  
+  .mock-icon-v12 svg {
+    width: 40px;
+    height: 40px;
+    stroke: white;
+  }
+  
+  .mock-title-v12 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+  
+  .mock-amount-v12 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #3b82f6;
+    margin-bottom: 8px;
+  }
+  
+  .mock-text-v12 {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 32px;
+  }
+  
+  .mock-order-v12 {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 32px;
+    padding: 12px 20px;
+    background: #f8fafc;
+    border-radius: 0.75rem;
+  }
+  
+  .mock-order-v12 code {
+    font-family: monospace;
+    color: #64748b;
+  }
+  
+  .mock-actions-v12 {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  
+  .mock-btn-v12 {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    border-radius: 1rem;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .mock-btn-v12.success {
+    background: #10b981;
+    color: white;
+  }
+  
+  .mock-btn-v12.success:hover {
+    background: #059669;
+    transform: translateY(-2px);
+  }
+  
+  .mock-btn-v12.danger {
+    background: #f1f5f9;
+    color: #64748b;
+  }
+  
+  .mock-btn-v12.danger:hover {
+    background: #ef4444;
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .mock-info-v12 {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: #fffbeb;
+    border: 1px solid #fbbf24;
+    border-radius: 1rem;
+    font-size: 13px;
+    color: #92400e;
+  }
+</style>
+
+<div class="mock-container-v12">
+  <div class="mock-card-v12">
+    <span class="mock-badge-v12">Тестовый режим</span>
+    
+    <div class="mock-icon-v12">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <line x1="2" y1="10" x2="22" y2="10"/>
+      </svg>
+    </div>
+    
+    <h1 class="mock-title-v12">Подтверждение оплаты</h1>
+    
+    <div class="mock-amount-v12">{{ amount }} ₽</div>
+    
+    <p class="mock-text-v12">
+      Это тестовая страница оплаты.<br>
+      Нажмите кнопку для имитации результата.
+    </p>
+    
+    <div class="mock-order-v12">
+      Заказ: <code>{{ order_id or '—' }}</code>
+    </div>
+    
+    <div class="mock-actions-v12">
+      <button class="mock-btn-v12 success" onclick="simulateSuccess()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20,6 9,17 4,12"/>
+        </svg>
+        Оплатить
+      </button>
+      <button class="mock-btn-v12 danger" onclick="simulateFail()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        Отменить
+      </button>
+    </div>
+    
+    <div class="mock-info-v12">
+      Реальные платежи отключены. Для подключения платёжной системы свяжитесь с поддержкой.
+    </div>
+  </div>
+</div>
+
+<script>
+const orderId = '{{ order_id }}';
+
+async function simulateSuccess() {
+  // Имитируем webhook от Тбанка
+  try {
+    await fetch('/api/v1/payment/mock-confirm', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({order_id: orderId, status: 'CONFIRMED'})
+    });
+  } catch(e) {
+    console.log('Mock confirm sent');
+  }
+  
+  window.location.href = '/dashboard/tariffs/success?order_id=' + orderId;
+}
+
+function simulateFail() {
+  window.location.href = '/dashboard/tariffs/fail?order_id=' + orderId;
+}
+</script>
+{% endblock %}

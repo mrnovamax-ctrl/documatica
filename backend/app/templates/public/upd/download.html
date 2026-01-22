@@ -1,0 +1,60 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+<!-- Breadcrumbs -->
+{% include "components/breadcrumbs.html" %}
+
+<section class="download-section py-48">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card radius-16 shadow-sm border-0 p-32">
+          <div class="text-center mb-32">
+            <div class="w-80-px h-80-px bg-success-100 rounded-circle d-flex justify-content-center align-items-center mx-auto mb-16">
+              <iconify-icon icon="mdi:file-download" class="text-success-600 text-4xl"></iconify-icon>
+            </div>
+            <h1 class="h3 fw-bold mb-8">{{ page.h1 }}</h1>
+            <p class="text-secondary-light">Формат: {{ page.format }}</p>
+          </div>
+          
+          <div class="d-flex flex-column gap-3 mb-32">
+            <a href="{{ page.file_url }}" class="btn btn-success-600 radius-8 py-16 text-lg" download>
+              <iconify-icon icon="mdi:download" class="me-2"></iconify-icon>
+              Скачать бланк
+            </a>
+            <a href="/dashboard/upd/create/" class="btn btn-primary-600 radius-8 py-16 text-lg">
+              <iconify-icon icon="mdi:file-document-edit" class="me-2"></iconify-icon>
+              Заполнить онлайн
+            </a>
+          </div>
+          
+          <div class="bg-neutral-50 radius-8 p-24">
+            <h3 class="h6 fw-semibold mb-16">Преимущества онлайн-генератора:</h3>
+            <ul class="list-unstyled mb-0">
+              <li class="d-flex align-items-start gap-2 mb-12">
+                <iconify-icon icon="mdi:check-circle" class="text-success-600 mt-1"></iconify-icon>
+                <span>Автозаполнение реквизитов по ИНН</span>
+              </li>
+              <li class="d-flex align-items-start gap-2 mb-12">
+                <iconify-icon icon="mdi:check-circle" class="text-success-600 mt-1"></iconify-icon>
+                <span>Автоматический расчет сумм и НДС</span>
+              </li>
+              <li class="d-flex align-items-start gap-2 mb-12">
+                <iconify-icon icon="mdi:check-circle" class="text-success-600 mt-1"></iconify-icon>
+                <span>Сохранение шаблонов и история документов</span>
+              </li>
+              <li class="d-flex align-items-start gap-2">
+                <iconify-icon icon="mdi:check-circle" class="text-success-600 mt-1"></iconify-icon>
+                <span>Экспорт в PDF и XML для ЭДО</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Related Links -->
+{% include "components/related_block.html" %}
+{% endblock %}

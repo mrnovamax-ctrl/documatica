@@ -1,0 +1,155 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<h6 class="fw-semibold mb-24">Личный кабинет</h6>
+
+<!-- Stats Cards -->
+<div class="row gy-4 mb-24">
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-start-1">
+      <div class="card-body p-0">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
+          <div class="d-flex align-items-center gap-2">
+            <span class="mb-0 w-48-px h-48-px bg-primary-600 flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6 mb-0">
+              <iconify-icon icon="mdi:file-document-multiple" class="icon"></iconify-icon>
+            </span>
+            <div>
+              <span class="mb-2 fw-medium text-secondary-light text-sm">Всего документов</span>
+              <h6 class="fw-semibold" id="total-docs">0</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-start-2">
+      <div class="card-body p-0">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
+          <div class="d-flex align-items-center gap-2">
+            <span class="mb-0 w-48-px h-48-px bg-success-main flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6 mb-0">
+              <iconify-icon icon="mdi:calendar-month" class="icon"></iconify-icon>
+            </span>
+            <div>
+              <span class="mb-2 fw-medium text-secondary-light text-sm">За этот месяц</span>
+              <h6 class="fw-semibold" id="month-docs">0</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-start-3">
+      <div class="card-body p-0">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
+          <div class="d-flex align-items-center gap-2">
+            <span class="mb-0 w-48-px h-48-px bg-warning-main flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6 mb-0">
+              <iconify-icon icon="mdi:domain" class="icon"></iconify-icon>
+            </span>
+            <div>
+              <span class="mb-2 fw-medium text-secondary-light text-sm">Организаций</span>
+              <h6 class="fw-semibold" id="total-orgs">0</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card p-3 shadow-none radius-8 border h-100 bg-gradient-start-4">
+      <div class="card-body p-0">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
+          <div class="d-flex align-items-center gap-2">
+            <span class="mb-0 w-48-px h-48-px bg-info-main flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6 mb-0">
+              <iconify-icon icon="mdi:account-group" class="icon"></iconify-icon>
+            </span>
+            <div>
+              <span class="mb-2 fw-medium text-secondary-light text-sm">Контрагентов</span>
+              <h6 class="fw-semibold" id="total-contractors">0</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row gy-4 mb-24">
+  <div class="col-12">
+    <div class="card radius-8 border-0 shadow-sm">
+      <div class="card-header bg-base py-16 px-24 d-flex align-items-center justify-content-between">
+        <h6 class="text-lg mb-0">Быстрые действия</h6>
+      </div>
+      <div class="card-body p-24">
+        <div class="row g-3">
+          <div class="col-md-6 col-lg-3">
+            <a href="/dashboard/upd/create/" class="btn btn-primary-600 w-100 py-16 d-flex align-items-center justify-content-center gap-2">
+              <iconify-icon icon="mdi:file-document-plus" class="text-xl"></iconify-icon>
+              Создать УПД
+            </a>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <a href="/dashboard/schet/create/" class="btn btn-outline-primary-600 w-100 py-16 d-flex align-items-center justify-content-center gap-2">
+              <iconify-icon icon="mdi:file-document-outline" class="text-xl"></iconify-icon>
+              Создать счет
+            </a>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <a href="/dashboard/organizations/create/" class="btn btn-outline-success-600 w-100 py-16 d-flex align-items-center justify-content-center gap-2">
+              <iconify-icon icon="mdi:domain-plus" class="text-xl"></iconify-icon>
+              Добавить организацию
+            </a>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <a href="/dashboard/contractors/create/" class="btn btn-outline-info-600 w-100 py-16 d-flex align-items-center justify-content-center gap-2">
+              <iconify-icon icon="mdi:account-plus" class="text-xl"></iconify-icon>
+              Добавить контрагента
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Load dashboard stats
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    // Load documents
+    const docsResponse = await fetch('/api/v1/documents/', { credentials: 'include' });
+    if (docsResponse.ok) {
+      const data = await docsResponse.json();
+      const docs = data.documents || [];
+      document.getElementById('total-docs').textContent = docs.length;
+      
+      // Count this month
+      const now = new Date();
+      const thisMonth = docs.filter(d => {
+        const date = new Date(d.created_at);
+        return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+      });
+      document.getElementById('month-docs').textContent = thisMonth.length;
+    }
+    
+    // Load organizations
+    const orgsResponse = await fetch('/api/v1/organizations/', { credentials: 'include' });
+    if (orgsResponse.ok) {
+      const orgs = await orgsResponse.json();
+      document.getElementById('total-orgs').textContent = orgs.length;
+    }
+    
+    // Load contractors
+    const contractorsResponse = await fetch('/api/v1/contractors/');
+    if (contractorsResponse.ok) {
+      const contractors = await contractorsResponse.json();
+      document.getElementById('total-contractors').textContent = contractors.length;
+    }
+  } catch (error) {
+    console.error('Error loading dashboard data:', error);
+  }
+});
+</script>
+{% endblock %}

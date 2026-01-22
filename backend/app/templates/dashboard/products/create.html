@@ -1,0 +1,121 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+  <h6 class="fw-semibold mb-0">Добавить товар/услугу</h6>
+</div>
+
+<div class="card radius-8 border-0 shadow-sm">
+  <div class="card-body p-24">
+    <form id="product-form">
+      <div class="row mb-24">
+        <div class="col-12">
+          <label class="form-label">Наименование <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="name" required placeholder="Наименование товара или услуги">
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-md-4">
+          <label class="form-label">Единица измерения</label>
+          <select class="form-select" name="unit">
+            <option value="шт">шт - штука</option>
+            <option value="усл">усл - услуга</option>
+            <option value="час">час - час</option>
+            <option value="кг">кг - килограмм</option>
+            <option value="м">м - метр</option>
+            <option value="м2">м2 - квадратный метр</option>
+            <option value="м3">м3 - кубический метр</option>
+            <option value="л">л - литр</option>
+            <option value="компл">компл - комплект</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Цена</label>
+          <input type="number" class="form-control" name="price" step="0.01" placeholder="0.00">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Ставка НДС</label>
+          <select class="form-select" name="vat_rate">
+            <option value="20">20%</option>
+            <option value="10">10%</option>
+            <option value="0">0%</option>
+            <option value="-1">Без НДС</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="row mb-24">
+        <div class="col-12">
+          <label class="form-label">Описание</label>
+          <textarea class="form-control" name="description" rows="3" placeholder="Дополнительное описание"></textarea>
+        </div>
+      </div>
+      
+      <div class="d-flex gap-3">
+        <button type="submit" class="btn-primary-v12">
+          <iconify-icon icon="mdi:check" class="me-1"></iconify-icon>
+          Сохранить
+        </button>
+        <a href="/dashboard/products/" class="btn-outline-v12">
+          Отмена
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('product-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  const data = {
+    type: 'product',
+    name: formData.get('name'),
+    unit: formData.get('unit'),
+    unit_code: '796', // код ОКЕИ для штук
+    price: parseFloat(formData.get('price')) || 0,
+    vat_rate: parseInt(formData.get('vat_rate')) || 20,
+    qty: 1,
+    country: 'Россия',
+    country_code: '643',
+    description: formData.get('description') || '',
+    sku: '' // артикул опционально
+  };
+  
+  console.log('Отправка товара:', data);
+  
+  const submitBtn = this.querySelector('[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Сохранение...';
+  
+  try {
+    const response = await fetch('/api/v1/products/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data)
+    });
+    
+    console.log('Response status:', response.status);
+    
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Товар создан:', result);
+      window.location.href = '/dashboard/products/';
+    } else {
+      const err = await response.json();
+      console.error('Ошибка от сервера:', err);
+      alert(err.detail || 'Ошибка сохранения');
+    }
+  } catch (error) {
+    console.error('Ошибка сохранения:', error);
+    alert('Ошибка сохранения: ' + error.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<iconify-icon icon="mdi:content-save" class="me-1"></iconify-icon>Сохранить';
+  }
+});
+</script>
+{% endblock %}

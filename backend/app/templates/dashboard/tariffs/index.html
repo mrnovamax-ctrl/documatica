@@ -1,0 +1,448 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<h6 class="fw-semibold mb-24">Тарифы и оплата</h6>
+
+<!-- Current Plan Status -->
+<div class="row mb-24">
+  <div class="col-12">
+    <div class="card radius-16 border-0 shadow-sm">
+      <div class="card-body p-24">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <div class="d-flex align-items-center gap-3 mb-16">
+              <span class="w-56-px h-56-px bg-primary-100 text-primary-600 d-flex justify-content-center align-items-center rounded-circle">
+                <iconify-icon icon="mdi:crown" class="text-2xl"></iconify-icon>
+              </span>
+              <div>
+                <p class="text-sm text-secondary-light mb-0">Ваш текущий тариф</p>
+                <h5 class="fw-semibold mb-0" id="current-plan-name">Загрузка...</h5>
+              </div>
+            </div>
+            <div class="row g-3" id="limits-info">
+              <div class="col-sm-4">
+                <div class="bg-neutral-100 rounded-8 p-16 text-center">
+                  <p class="text-sm text-secondary-light mb-4">Бесплатных осталось</p>
+                  <h4 class="fw-bold text-primary-600 mb-0" id="free-remaining">-</h4>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="bg-neutral-100 rounded-8 p-16 text-center">
+                  <p class="text-sm text-secondary-light mb-4">По подписке</p>
+                  <h4 class="fw-bold text-success-main mb-0" id="subscription-remaining">-</h4>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="bg-neutral-100 rounded-8 p-16 text-center">
+                  <p class="text-sm text-secondary-light mb-4">Куплено</p>
+                  <h4 class="fw-bold text-warning-main mb-0" id="purchased-remaining">-</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 text-center mt-4 mt-md-0">
+            <div id="subscription-status" class="d-none">
+              <p class="text-sm text-secondary-light mb-8">Подписка активна до</p>
+              <h4 class="fw-bold text-success-main" id="subscription-expires">-</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pricing Cards -->
+<div class="row g-4 mb-24">
+  <!-- Free Plan -->
+  <div class="col-lg-4">
+    <div class="card radius-16 border h-100">
+      <div class="card-body p-24">
+        <div class="text-center mb-24">
+          <span class="w-64-px h-64-px bg-neutral-100 d-inline-flex justify-content-center align-items-center rounded-circle mb-16">
+            <iconify-icon icon="mdi:gift-outline" class="text-3xl text-secondary-light"></iconify-icon>
+          </span>
+          <h5 class="fw-semibold mb-8">Бесплатный</h5>
+          <p class="text-secondary-light mb-0">Для знакомства с сервисом</p>
+        </div>
+        <div class="text-center mb-24">
+          <h2 class="fw-bold mb-0">0 <span class="text-lg fw-medium text-secondary-light">руб</span></h2>
+        </div>
+        <ul class="list-unstyled mb-24">
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>5 документов бесплатно</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>Все типы УПД</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>Скачивание PDF и Excel</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-12 text-secondary-light">
+            <iconify-icon icon="mdi:close-circle" class="text-xl"></iconify-icon>
+            <span>Ограничение 5 документов на ИНН</span>
+          </li>
+        </ul>
+        <button class="btn btn-outline-neutral w-100 py-12" disabled>
+          Активен по умолчанию
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscription Plan -->
+  <div class="col-lg-4">
+    <div class="card radius-16 border-2 border-primary-600 h-100 position-relative">
+      <span class="position-absolute top-0 start-50 translate-middle badge bg-primary-600 px-16 py-8 text-sm fw-semibold">
+        Популярный
+      </span>
+      <div class="card-body p-24">
+        <div class="text-center mb-24">
+          <span class="w-64-px h-64-px bg-primary-100 d-inline-flex justify-content-center align-items-center rounded-circle mb-16">
+            <iconify-icon icon="mdi:star" class="text-3xl text-primary-600"></iconify-icon>
+          </span>
+          <h5 class="fw-semibold mb-8">Подписка</h5>
+          <p class="text-secondary-light mb-0">Для регулярной работы</p>
+        </div>
+        <div class="text-center mb-24">
+          <h2 class="fw-bold mb-0">300 <span class="text-lg fw-medium text-secondary-light">руб/мес</span></h2>
+        </div>
+        <ul class="list-unstyled mb-24">
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span><strong>50 документов</strong> в месяц</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>Все типы УПД</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>Без ограничений по ИНН</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>Приоритетная поддержка</span>
+          </li>
+        </ul>
+        <button class="btn btn-primary-600 w-100 py-12" onclick="createPayment('subscription')">
+          Оформить подписку
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pay Per Doc -->
+  <div class="col-lg-4">
+    <div class="card radius-16 border h-100">
+      <div class="card-body p-24">
+        <div class="text-center mb-24">
+          <span class="w-64-px h-64-px bg-warning-100 d-inline-flex justify-content-center align-items-center rounded-circle mb-16">
+            <iconify-icon icon="mdi:file-document-multiple" class="text-3xl text-warning-main"></iconify-icon>
+          </span>
+          <h5 class="fw-semibold mb-8">Пакет документов</h5>
+          <p class="text-secondary-light mb-0">Платите за использование</p>
+        </div>
+        <div class="text-center mb-24">
+          <h2 class="fw-bold mb-0">от 12 <span class="text-lg fw-medium text-secondary-light">руб/док</span></h2>
+        </div>
+        <ul class="list-unstyled mb-24">
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>Без срока действия</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>Все типы УПД</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-12">
+            <iconify-icon icon="mdi:check-circle" class="text-success-main text-xl"></iconify-icon>
+            <span>Скидки на большие пакеты</span>
+          </li>
+        </ul>
+        
+        <!-- Package Selection -->
+        <div class="mb-16">
+          <label class="form-label text-sm fw-medium">Выберите пакет:</label>
+          <div class="d-flex flex-column gap-2">
+            <button class="btn btn-outline-neutral py-8 px-12 text-start package-btn" data-count="10" data-price="150">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>10 документов</span>
+                <span class="fw-bold">150 руб</span>
+              </div>
+            </button>
+            <button class="btn btn-outline-neutral py-8 px-12 text-start package-btn" data-count="50" data-price="675">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>50 документов <span class="badge bg-success-main ms-2">-10%</span></span>
+                <span class="fw-bold">675 руб</span>
+              </div>
+            </button>
+            <button class="btn btn-outline-neutral py-8 px-12 text-start package-btn" data-count="100" data-price="1200">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>100 документов <span class="badge bg-success-main ms-2">-20%</span></span>
+                <span class="fw-bold">1200 руб</span>
+              </div>
+            </button>
+          </div>
+        </div>
+        
+        <button class="btn btn-warning-600 text-white w-100 py-12" id="buy-package-btn" disabled onclick="buyPackage()">
+          Купить пакет
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment History -->
+<div class="card radius-16 border-0 shadow-sm">
+  <div class="card-header bg-base py-16 px-24 d-flex align-items-center justify-content-between">
+    <h6 class="text-lg mb-0">История платежей</h6>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="bg-neutral-100">
+          <tr>
+            <th class="px-24 py-16 text-sm fw-medium">Дата</th>
+            <th class="px-24 py-16 text-sm fw-medium">Описание</th>
+            <th class="px-24 py-16 text-sm fw-medium">Сумма</th>
+            <th class="px-24 py-16 text-sm fw-medium">Статус</th>
+          </tr>
+        </thead>
+        <tbody id="payment-history">
+          <tr>
+            <td colspan="4" class="text-center py-24 text-secondary-light">
+              <iconify-icon icon="mdi:history" class="text-4xl mb-8 d-block"></iconify-icon>
+              История платежей пуста
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content radius-16">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-semibold">Оформление оплаты</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-24 text-center">
+        <div class="mb-24">
+          <iconify-icon icon="mdi:credit-card-check" class="text-6xl text-primary-600"></iconify-icon>
+        </div>
+        <p class="text-secondary-light mb-16" id="payment-description">Подготовка платежа...</p>
+        <div class="spinner-border text-primary-600" role="status" id="payment-spinner">
+          <span class="visually-hidden">Загрузка...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let selectedPackage = null;
+
+// Load current limits
+async function loadLimits() {
+  try {
+    const response = await fetch('/api/v1/billing/limits', {
+      headers: {
+        'Authorization': 'Bearer ' + (getCookie('access_token') || '')
+      }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      updateLimitsUI(data);
+    }
+  } catch (error) {
+    console.error('Error loading limits:', error);
+  }
+}
+
+function updateLimitsUI(data) {
+  // Plan name
+  const planNames = {
+    'free': 'Бесплатный',
+    'subscription': 'Подписка',
+    'pay_per_doc': 'Пакет документов'
+  };
+  document.getElementById('current-plan-name').textContent = planNames[data.plan] || 'Бесплатный';
+  
+  // Limits
+  document.getElementById('free-remaining').textContent = data.free_generations_remaining + ' из ' + data.free_generations_limit;
+  document.getElementById('subscription-remaining').textContent = data.subscription_docs_remaining + ' из ' + data.subscription_docs_limit;
+  document.getElementById('purchased-remaining').textContent = data.purchased_docs_remaining;
+  
+  // Subscription status
+  if (data.subscription_active) {
+    document.getElementById('subscription-status').classList.remove('d-none');
+    const expiresDate = new Date(data.subscription_expires);
+    document.getElementById('subscription-expires').textContent = expiresDate.toLocaleDateString('ru-RU');
+  }
+}
+
+// Load payment history
+async function loadPaymentHistory() {
+  try {
+    const response = await fetch('/api/v1/payment/history', {
+      headers: {
+        'Authorization': 'Bearer ' + (getCookie('access_token') || '')
+      }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      updateHistoryUI(data);
+    }
+  } catch (error) {
+    console.error('Error loading history:', error);
+  }
+}
+
+function updateHistoryUI(payments) {
+  const tbody = document.getElementById('payment-history');
+  
+  if (!payments || payments.length === 0) {
+    return;
+  }
+  
+  const statusLabels = {
+    'pending': '<span class="badge-v12 warning">Ожидает</span>',
+    'created': '<span class="badge-v12 info">Создан</span>',
+    'authorized': '<span class="badge-v12 info">Авторизован</span>',
+    'confirmed': '<span class="badge-v12 success">Оплачен</span>',
+    'rejected': '<span class="badge-v12 danger">Отклонён</span>',
+    'refunded': '<span class="badge-v12 secondary">Возвращён</span>',
+    'canceled': '<span class="badge-v12 muted">Отменён</span>',
+    'error': '<span class="badge-v12 danger">Ошибка</span>'
+  };
+  
+  const tariffLabels = {
+    'subscription': 'Подписка на 1 месяц',
+    'pay_per_doc': 'Пакет документов'
+  };
+  
+  tbody.innerHTML = payments.map(p => `
+    <tr>
+      <td class="px-24 py-16">${new Date(p.created_at).toLocaleDateString('ru-RU')}</td>
+      <td class="px-24 py-16">
+        ${tariffLabels[p.tariff_type] || p.tariff_type}
+        ${p.docs_count ? ` (${p.docs_count} шт.)` : ''}
+      </td>
+      <td class="px-24 py-16 fw-semibold">${p.amount} руб</td>
+      <td class="px-24 py-16">${statusLabels[p.status] || p.status}</td>
+    </tr>
+  `).join('');
+}
+
+// Package selection
+document.querySelectorAll('.package-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.package-btn').forEach(b => b.classList.remove('border-primary-600', 'bg-primary-50'));
+    this.classList.add('border-primary-600', 'bg-primary-50');
+    selectedPackage = {
+      count: parseInt(this.dataset.count),
+      price: parseInt(this.dataset.price)
+    };
+    document.getElementById('buy-package-btn').disabled = false;
+  });
+});
+
+// Create subscription payment
+async function createPayment(tariff) {
+  const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+  document.getElementById('payment-description').textContent = 'Подготовка платежа...';
+  document.getElementById('payment-spinner').classList.remove('d-none');
+  modal.show();
+  
+  try {
+    const response = await fetch('/api/v1/payment/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + (getCookie('access_token') || '')
+      },
+      body: JSON.stringify({ tariff: tariff })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success && data.payment_url) {
+      document.getElementById('payment-description').textContent = 'Переход на страницу оплаты...';
+      window.location.href = data.payment_url;
+    } else {
+      document.getElementById('payment-spinner').classList.add('d-none');
+      document.getElementById('payment-description').innerHTML = 
+        '<span class="text-danger-main">' + (data.error || 'Ошибка создания платежа') + '</span>';
+    }
+  } catch (error) {
+    document.getElementById('payment-spinner').classList.add('d-none');
+    document.getElementById('payment-description').innerHTML = 
+      '<span class="text-danger-main">Ошибка подключения к платёжной системе</span>';
+  }
+}
+
+// Buy package
+async function buyPackage() {
+  if (!selectedPackage) return;
+  
+  const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+  document.getElementById('payment-description').textContent = 'Подготовка платежа...';
+  document.getElementById('payment-spinner').classList.remove('d-none');
+  modal.show();
+  
+  try {
+    const response = await fetch('/api/v1/payment/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + (getCookie('access_token') || '')
+      },
+      body: JSON.stringify({
+        tariff: 'pay_per_doc',
+        package_count: selectedPackage.count
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success && data.payment_url) {
+      document.getElementById('payment-description').textContent = 'Переход на страницу оплаты...';
+      window.location.href = data.payment_url;
+    } else {
+      document.getElementById('payment-spinner').classList.add('d-none');
+      document.getElementById('payment-description').innerHTML = 
+        '<span class="text-danger-main">' + (data.error || 'Ошибка создания платежа') + '</span>';
+    }
+  } catch (error) {
+    document.getElementById('payment-spinner').classList.add('d-none');
+    document.getElementById('payment-description').innerHTML = 
+      '<span class="text-danger-main">Ошибка подключения к платёжной системе</span>';
+  }
+}
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return '';
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', function() {
+  loadLimits();
+  loadPaymentHistory();
+});
+</script>
+{% endblock %}

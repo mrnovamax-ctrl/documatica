@@ -1,0 +1,155 @@
+{% extends "base_dashboard_v12.html" %}
+
+{% block content %}
+<h6 class="fw-semibold mb-24">Мои шаблоны</h6>
+
+<!-- Info Card -->
+<div class="card radius-8 border-0 shadow-sm mb-24 bg-primary-50">
+  <div class="card-body p-16">
+    <div class="d-flex align-items-center gap-3">
+      <iconify-icon icon="mdi:information-outline" class="text-primary-600 text-2xl"></iconify-icon>
+      <div>
+        <p class="mb-0 text-secondary-light">
+          Шаблоны позволяют быстро создавать документы с заранее заполненными данными. 
+          Сохраните шаблон в генераторе документов, нажав кнопку "Сохранить как шаблон".
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Templates Grid -->
+<div class="row" id="templates-grid">
+  <!-- Templates will be loaded here -->
+</div>
+
+<div id="empty-state" style="display: none;">
+  <div class="card radius-8 border-0 shadow-sm">
+    <div class="card-body text-center py-48">
+      <iconify-icon icon="mdi:content-copy" class="text-5xl text-secondary-light mb-16 d-block"></iconify-icon>
+      <h6 class="mb-8">Шаблонов пока нет</h6>
+      <p class="text-secondary-light mb-16">Создайте документ и сохраните его как шаблон</p>
+      <a href="/dashboard/upd/create/" class="btn btn-primary-600 radius-8">
+        <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+        Создать УПД
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    const response = await fetch('/api/v1/templates/', {
+      credentials: 'include'
+    });
+    const templates = await response.json();
+    
+    const grid = document.getElementById('templates-grid');
+    const emptyState = document.getElementById('empty-state');
+    
+    if (templates.length === 0) {
+      grid.style.display = 'none';
+      emptyState.style.display = 'block';
+      return;
+    }
+    
+    templates.forEach(t => {
+      const docTypeLabel = getDocTypeLabel(t.doc_type);
+      const docTypeColor = getDocTypeColor(t.doc_type);
+      const date = new Date(t.created_at).toLocaleDateString('ru-RU');
+      
+      const col = document.createElement('div');
+      col.className = 'col-md-6 col-lg-4 mb-24';
+      col.innerHTML = `
+        <div class="card radius-8 border-0 shadow-sm h-100">
+          <div class="card-body p-24">
+            <div class="d-flex justify-content-between align-items-start mb-16">
+              <span class="badge-v12 ${docTypeColor}">
+                ${docTypeLabel}
+              </span>
+              <div class="dropdown">
+                <button class="btn-outline-v12 btn-sm" data-bs-toggle="dropdown">
+                  <iconify-icon icon="mdi:dots-vertical"></iconify-icon>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a href="/dashboard/upd/create/?template=${t.id}" class="dropdown-item">
+                      <iconify-icon icon="mdi:file-document-plus" class="me-2"></iconify-icon>
+                      Создать документ
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a href="#" class="dropdown-item text-danger" onclick="deleteTemplate('${t.id}'); return false;">
+                      <iconify-icon icon="mdi:delete" class="me-2"></iconify-icon>
+                      Удалить
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <h6 class="mb-8 fw-semibold">${escapeHtml(t.name)}</h6>
+            <p class="text-secondary-light text-sm mb-0">Создан: ${date}</p>
+          </div>
+          <div class="card-footer bg-transparent border-0 p-24 pt-0">
+            <a href="/dashboard/upd/create/?template=${t.id}" class="btn btn-primary-600 radius-8 w-100">
+              <iconify-icon icon="mdi:file-document-plus" class="me-1"></iconify-icon>
+              Использовать
+            </a>
+          </div>
+        </div>
+      `;
+      grid.appendChild(col);
+    });
+  } catch (error) {
+    console.error('Error loading templates:', error);
+  }
+});
+
+function getDocTypeLabel(type) {
+  const labels = {
+    'upd': 'УПД',
+    'schet': 'Счет',
+    'akt': 'Акт'
+  };
+  return labels[type] || type.toUpperCase();
+}
+
+function getDocTypeColor(type) {
+  const colors = {
+    'upd': 'primary',
+    'schet': 'success',
+    'akt': 'info'
+  };
+  return colors[type] || 'secondary';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+async function deleteTemplate(id) {
+  if (!confirm('Удалить шаблон?')) return;
+  
+  try {
+    const response = await fetch(`/api/v1/templates/${id}`, { 
+      method: 'DELETE',
+      credentials: 'include'
+    });
+    
+    if (response.ok) {
+      location.reload();
+    } else {
+      const err = await response.json();
+      alert(err.detail || 'Ошибка удаления');
+    }
+  } catch (error) {
+    console.error('Error deleting template:', error);
+    alert('Ошибка удаления');
+  }
+}
+</script>
+{% endblock %}

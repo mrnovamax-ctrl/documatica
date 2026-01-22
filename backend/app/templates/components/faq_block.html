@@ -1,0 +1,22 @@
+<!-- FAQ Block Component v12.0 -->
+{% if faq %}
+<section class="faq-block-v12">
+  <div class="faq-block-container-v12">
+    <h2 class="faq-block-title-v12">{{ faq_title | default('Часто задаваемые вопросы') }}</h2>
+    
+    {% for item in faq %}
+    <div class="faq-item-v12 {% if loop.first %}open{% endif %}" onclick="this.classList.toggle('open')">
+      <button class="faq-question-v12">
+        <span>{{ item.question }}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+      <div class="faq-answer-v12">
+        {{ item.answer | safe }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

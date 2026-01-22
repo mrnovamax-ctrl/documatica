@@ -1,0 +1,138 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Статистика{% endblock %}
+{% block page_title %}Статистика сервиса{% endblock %}
+
+{% block content %}
+<!-- Stats Grid -->
+<div class="admin-stats-grid">
+  <!-- Users -->
+  <div class="admin-stat-card">
+    <div class="admin-stat-icon blue">
+      <iconify-icon icon="ri:user-line" width="26"></iconify-icon>
+    </div>
+    <div class="admin-stat-value">{{ stats.users.total }}</div>
+    <div class="admin-stat-label">Пользователей</div>
+    <div class="admin-stat-sub">
+      <span class="highlight green">{{ stats.users.paid }}</span> платных,
+      <span>{{ stats.users.free }}</span> бесплатных
+    </div>
+  </div>
+  
+  <!-- Documents Total -->
+  <div class="admin-stat-card">
+    <div class="admin-stat-icon green">
+      <iconify-icon icon="ri:file-text-line" width="26"></iconify-icon>
+    </div>
+    <div class="admin-stat-value">{{ stats.documents.total }}</div>
+    <div class="admin-stat-label">Документов создано</div>
+    <div class="admin-stat-sub">
+      <span class="highlight blue">+{{ stats.documents.today }}</span> сегодня
+    </div>
+  </div>
+  
+  <!-- Documents Week -->
+  <div class="admin-stat-card">
+    <div class="admin-stat-icon gold">
+      <iconify-icon icon="ri:calendar-line" width="26"></iconify-icon>
+    </div>
+    <div class="admin-stat-value">{{ stats.documents.week }}</div>
+    <div class="admin-stat-label">За неделю</div>
+    <div class="admin-stat-sub">
+      {{ stats.documents.month }} за месяц
+    </div>
+  </div>
+  
+  <!-- Organizations -->
+  <div class="admin-stat-card">
+    <div class="admin-stat-icon purple">
+      <iconify-icon icon="ri:building-line" width="26"></iconify-icon>
+    </div>
+    <div class="admin-stat-value">{{ stats.organizations }}</div>
+    <div class="admin-stat-label">Организаций</div>
+    <div class="admin-stat-sub">
+      {{ stats.contractors }} контрагентов
+    </div>
+  </div>
+</div>
+
+<!-- Details Section -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
+  <!-- Documents by Type -->
+  <div class="admin-detail-card">
+    <div class="admin-detail-header">
+      <div class="admin-detail-icon admin-stat-icon blue">
+        <iconify-icon icon="ri:pie-chart-line" width="20"></iconify-icon>
+      </div>
+      <div class="admin-detail-title">Документы по типам</div>
+    </div>
+    
+    {% for doc_type, count in stats.documents.by_type.items() %}
+    <div class="admin-detail-row">
+      <div class="admin-detail-row-label">
+        <iconify-icon 
+          icon="{% if doc_type == 'upd' %}ri:file-list-3-line{% elif doc_type == 'invoice' %}ri:bill-line{% else %}ri:file-line{% endif %}" 
+          width="18"
+        ></iconify-icon>
+        <span style="text-transform: uppercase; font-weight: 600; font-size: 12px; letter-spacing: 0.05em;">{{ doc_type }}</span>
+      </div>
+      <div class="admin-detail-row-value" style="color: #3b82f6; font-size: 18px;">{{ count }}</div>
+    </div>
+    {% else %}
+    <div style="padding: 24px; text-align: center; color: #94a3b8;">
+      Нет данных
+    </div>
+    {% endfor %}
+  </div>
+  
+  <!-- Quick Info -->
+  <div class="admin-detail-card">
+    <div class="admin-detail-header">
+      <div class="admin-detail-icon admin-stat-icon green">
+        <iconify-icon icon="ri:information-line" width="20"></iconify-icon>
+      </div>
+      <div class="admin-detail-title">Информация о системе</div>
+    </div>
+    
+    <div class="admin-detail-row">
+      <span class="admin-detail-row-label">Товаров/услуг в базе</span>
+      <span class="admin-detail-row-value">{{ stats.products }}</span>
+    </div>
+    
+    <div class="admin-detail-row">
+      <span class="admin-detail-row-label">Файлов на диске</span>
+      <span class="admin-detail-row-value">{{ stats.files_on_disk }}</span>
+    </div>
+    
+    <div class="admin-detail-row status-ok">
+      <span class="admin-detail-row-label">Статус системы</span>
+      <span class="admin-detail-row-value">
+        <iconify-icon icon="ri:checkbox-circle-fill" width="18"></iconify-icon>
+        Работает
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div>
+  <div class="admin-actions-title">Быстрые действия</div>
+  
+  <div class="admin-actions-grid">
+    <a href="/admin/content/" class="admin-action-btn">
+      <iconify-icon icon="ri:edit-line" width="20" style="color: #3b82f6;"></iconify-icon>
+      Редактировать контент
+    </a>
+    
+    <a href="/admin/users/" class="admin-action-btn">
+      <iconify-icon icon="ri:user-settings-line" width="20" style="color: #a855f7;"></iconify-icon>
+      Управление пользователями
+    </a>
+    
+    <a href="/" target="_blank" class="admin-action-btn">
+      <iconify-icon icon="ri:external-link-line" width="20" style="color: #22c55e;"></iconify-icon>
+      Открыть сайт
+    </a>
+  </div>
+</div>
+{% endblock %}

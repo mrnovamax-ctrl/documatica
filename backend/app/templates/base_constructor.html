@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Конструктор{% endblock %} - Documatica</title>
+  <link rel="icon" type="image/png" href="/static/images/favicon.png" sizes="16x16">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- remix icon font css -->
+  <link rel="stylesheet" href="/static/css/remixicon.css">
+  <!-- Iconify for v12 icons -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <!-- Date picker css -->
+  <link rel="stylesheet" href="/static/css/lib/flatpickr.min.css">
+  <!-- Documatica v12.0 Design System -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.13">
+  <!-- Dashboard Layout System v12 -->
+  <link rel="stylesheet" href="/static/css/dashboard-layout-v12.css?v=1.2">
+  
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<!-- Sidebar v12 -->
+{% include 'components/sidebar_v12.html' %}
+
+<!-- Sidebar Overlay for mobile -->
+<div class="sidebar-overlay-v12" onclick="document.body.classList.remove('sidebar-open')"></div>
+
+<main class="dashboard-main-v12">
+  <!-- Header v12 -->
+  {% include 'components/header_dashboard_v12.html' %}
+
+  <div class="dashboard-content-v12">
+    {% block content %}{% endblock %}
+  </div>
+</main>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

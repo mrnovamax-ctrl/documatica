@@ -1,0 +1,362 @@
+/* ========================================
+   Dashboard Tables & Cards v12.0
+   Стили для таблиц и карточек в dashboard
+   ======================================== */
+
+/* Spacing utilities */
+.mb-24 {
+  margin-bottom: 1.5rem !important;
+}
+
+.gap-3 {
+  gap: 1rem !important;
+}
+
+/* Cards */
+.card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Page Header */
+h6.fw-semibold {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0;
+  line-height: 1.2;
+}
+
+/* Buttons v12 */
+.btn {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary-600,
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary-600:hover,
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-outline-success-600 {
+  border: 2px solid #10b981;
+  color: #10b981;
+  background: transparent;
+}
+
+.btn-outline-success-600:hover {
+  background: #10b981;
+  color: white;
+}
+
+.btn-outline-danger-600 {
+  border: 2px solid #ef4444;
+  color: #ef4444;
+  background: transparent;
+}
+
+.btn-outline-danger-600:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-outline-primary-600 {
+  border: 2px solid #3b82f6;
+  color: #3b82f6;
+  background: transparent;
+}
+
+.btn-outline-primary-600:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Form Controls */
+.form-control,
+.form-select {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+/* Tables */
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table thead th {
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.table tbody td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.875rem;
+  color: #0f172a;
+}
+
+.table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Badges */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge.bg-success-100 {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge.bg-primary-100 {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge.bg-info-100 {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.badge.bg-warning-100 {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.bg-danger-100 {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  border: none;
+  font-size: 0.875rem;
+}
+
+.alert-success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.alert-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.alert-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.alert-info {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* Breadcrumbs */
+ul.d-flex.align-items-center.gap-2 {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+ul.d-flex.align-items-center.gap-2 li {
+  color: #64748b;
+}
+
+ul.d-flex.align-items-center.gap-2 a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+ul.d-flex.align-items-center.gap-2 a:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* First content wrapper - no top margin needed, padding handles it */
+.d-flex.flex-wrap.align-items-center.justify-content-between.gap-3.mb-24:first-child {
+  padding-top: 0.5rem;
+}
+
+/* Page Title */
+h6.fw-semibold {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0;
+}
+
+/* Modal */
+.modal-content {
+  border-radius: 1.5rem;
+  border: none;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+}
+
+.modal-header {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1.5rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e2e8f0;
+  padding: 1.5rem;
+}
+
+/* Text Colors */
+.text-primary-600 {
+  color: #3b82f6;
+}
+
+.text-success-600 {
+  color: #10b981;
+}
+
+.text-danger-600 {
+  color: #ef4444;
+}
+
+.text-warning-600 {
+  color: #f59e0b;
+}
+
+.text-secondary-light {
+  color: #64748b;
+}
+
+/* Background Colors */
+.bg-primary-50 {
+  background: #eff6ff;
+}
+
+.bg-success-50 {
+  background: #f0fdf4;
+}
+
+.bg-gradient-start-1 {
+  background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+}
+
+/* DataTables Custom Styles */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  font-weight: 600;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: #3b82f6;
+  color: white !important;
+  border-color: #3b82f6;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #dbeafe;
+  color: #1e40af !important;
+  border-color: #93c5fd;
+}
+
+/* Stats Card Specific */
+.w-48-px {
+  width: 48px;
+}
+
+.h-48-px {
+  height: 48px;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .table thead th,
+  .table tbody td {
+    padding: 0.75rem;
+    font-size: 0.75rem;
+  }
+  
+  h6.fw-semibold {
+    font-size: 1.25rem;
+  }
+}

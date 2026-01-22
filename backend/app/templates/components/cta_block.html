@@ -1,0 +1,19 @@
+<!-- CTA Block Component v12.0 -->
+<section class="cta-block-v12">
+  <div class="cta-block-container-v12">
+    <div class="cta-block-card-v12">
+      <span class="cta-block-tag-v12">{{ cta.tag | default('Начните сейчас') }}</span>
+      <h2 class="cta-block-title-v12">{{ cta.title | default('Готовы создать документ?') }}</h2>
+      <p class="cta-block-desc-v12">
+        {{ cta.description | default('Зарегистрируйтесь бесплатно и создайте первый документ за 2 минуты') }}
+      </p>
+      <a href="{{ cta.url | default('/register/') }}" class="cta-btn-v12">
+        {{ cta.text | default('Создать документ') }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

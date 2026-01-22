@@ -1,0 +1,44 @@
+services:
+  documatica-backend:
+    build: ./backend
+    container_name: documatica-backend
+    restart: always
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/documents:/app/documents
+    environment:
+      - DEBUG=0
+    labels:
+      - "traefik.enable=true"
+      # API роуты
+      - "traefik.http.routers.documatica-api.rule=Host(`new.oplatanalogov.ru`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.documatica-api.entrypoints=websecure"
+      - "traefik.http.routers.documatica-api.tls=true"
+      - "traefik.http.routers.documatica-api.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.documatica-api.service=documatica-api"
+      - "traefik.http.services.documatica-api.loadbalancer.server.port=8000"
+    networks:
+      - n8n_n8n-network
+
+  documatica-frontend:
+    image: nginx:alpine
+    container_name: documatica-frontend
+    restart: always
+    volumes:
+      - ./documatica:/usr/share/nginx/html:ro
+      - ./nginx/nginx-static.conf:/etc/nginx/conf.d/default.conf:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.documatica-web.rule=Host(`new.oplatanalogov.ru`)"
+      - "traefik.http.routers.documatica-web.entrypoints=websecure"
+      - "traefik.http.routers.documatica-web.tls=true"
+      - "traefik.http.routers.documatica-web.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.documatica-web.service=documatica-web"
+      - "traefik.http.routers.documatica-web.priority=1"
+      - "traefik.http.services.documatica-web.loadbalancer.server.port=80"
+    networks:
+      - n8n_n8n-network
+
+networks:
+  n8n_n8n-network:
+    external: true

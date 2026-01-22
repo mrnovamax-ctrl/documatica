@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard{% endblock %} - Documatica</title>
+  <link rel="icon" type="image/png" href="/static/images/favicon.png" sizes="16x16">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Iconify for icons -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <!-- ApexCharts & DataTables -->
+  <link rel="stylesheet" href="/static/css/lib/apexcharts.css">
+  <link rel="stylesheet" href="/static/css/lib/dataTables.min.css">
+  <!-- Documatica v12.0 Design System -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.17">
+  <!-- Dashboard Layout System v12 -->
+  <link rel="stylesheet" href="/static/css/dashboard-layout-v12.css?v=2.9">
+  <!-- Dashboard Header v12 -->
+  <link rel="stylesheet" href="/static/css/dashboard-header-v12.css?v=1.3">
+  <!-- Dashboard Tables & Cards v12 -->
+  <link rel="stylesheet" href="/static/css/dashboard-tables-v12.css?v=1.0">
+  {% block extra_css %}{% endblock %}
+  <style>
+    
+    /* Mobile menu button */
+    .mobile-menu-btn-v12 {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      width: 48px;
+      height: 48px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    @media (max-width: 1023px) {
+      .mobile-menu-btn-v12 {
+        display: flex;
+      }
+    }
+    
+    /* Overlay */
+    .sidebar-overlay-v12 {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    body.sidebar-open .sidebar-overlay-v12 {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Stats Cards v12 */
+    .stats-grid-v12 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    
+    @media (max-width: 1200px) {
+      .stats-grid-v12 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .stats-grid-v12 {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .stat-card-v12 {
+      background: white;
+      border: 1px solid #f1f5f9;
+      border-radius: 2.5rem;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card-v12:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.1);
+    }
+    
+    .stat-card-v12.accent {
+      background: #0f172a;
+    }
+    
+    .stat-card-v12.accent .stat-label-v12,
+    .stat-card-v12.accent .stat-value-v12 {
+      color: white;
+    }
+    
+    .stat-card-v12.accent .stat-change-v12 {
+      color: #FBBF24;
+    }
+    
+    .stat-label-v12 {
+      font-size: 9px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+    
+    .stat-value-v12 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    
+    .stat-change-v12 {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .stat-change-v12.up {
+      color: #10b981;
+    }
+    
+    .stat-change-v12.down {
+      color: #ef4444;
+    }
+    
+    /* ========================================
+       Section Card v12
+       ======================================== */
+    .section-card-v12 {
+      background: white;
+      border: 1px solid #f1f5f9;
+      border-radius: 2.5rem;
+      overflow: hidden;
+      margin-bottom: 32px;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.05);
+    }
+    
+    .section-header-v12 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 32px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .section-title-v12 {
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: #94a3b8;
+      margin: 0;
+    }
+    
+    .section-body-v12 {
+      padding: 32px;
+    }
+    
+    /* ========================================
+       Quick Actions v12
+       ======================================== */
+    .quick-actions-grid-v12 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    
+    @media (max-width: 1024px) {
+      .quick-actions-grid-v12 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .quick-actions-grid-v12 {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .quick-action-btn-v12 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px 24px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 1.5rem;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .quick-action-btn-v12:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -5px rgba(59, 130, 246, 0.4);
+      color: white;
+    }
+    
+    .quick-action-btn-v12.outline {
+      background: transparent;
+      color: #64748b;
+      border: 2px solid #e2e8f0;
+    }
+    
+    .quick-action-btn-v12.outline:hover {
+      background: #f8fafc;
+      border-color: #3b82f6;
+      color: #3b82f6;
+      box-shadow: none;
+    }
+    
+    /* ========================================
+       Data Table v12
+       ======================================== */
+    .data-table-v12 {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .data-table-v12 thead {
+      background: rgba(248, 250, 252, 0.8);
+      backdrop-filter: blur(8px);
+    }
+    
+    .data-table-v12 th {
+      padding: 20px 32px;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+      color: #94a3b8;
+      text-align: left;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .data-table-v12 td {
+      padding: 24px 32px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+      border-bottom: 1px solid #f8fafc;
+    }
+    
+    .data-table-v12 tbody tr {
+      transition: background 0.2s ease;
+    }
+    
+    .data-table-v12 tbody tr:hover {
+      background: rgba(248, 250, 252, 0.5);
+    }
+    
+    .data-table-v12 .secondary {
+      color: #64748b;
+      font-weight: 500;
+    }
+    
+    /* Status indicators */
+    .status-indicator-v12 {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .status-indicator-v12 .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    
+    .status-indicator-v12 .dot.success {
+      background: #10b981;
+    }
+    
+    .status-indicator-v12 .dot.warning {
+      background: #f59e0b;
+    }
+    
+    .status-indicator-v12 .dot.error {
+      background: #ef4444;
+    }
+    
+    .status-indicator-v12 .dot.info {
+      background: #3b82f6;
+    }
+    
+    /* Table footer */
+    .table-footer-v12 {
+      background: rgba(59, 130, 246, 0.05);
+    }
+    
+    .table-footer-v12 td {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #3b82f6;
+      letter-spacing: -0.02em;
+    }
+    
+    /* Empty state */
+    .empty-state-v12 {
+      text-align: center;
+      padding: 64px 32px;
+    }
+    
+    .empty-state-v12 .icon {
+      font-size: 64px;
+      color: #cbd5e1;
+      margin-bottom: 24px;
+    }
+    
+    .empty-state-v12 .title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+    
+    .empty-state-v12 .description {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+    
+    /* ========================================
+       Buttons v12
+       ======================================== */
+    .btn-primary-v12 {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary-v12:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -5px rgba(59, 130, 246, 0.3);
+      color: white;
+    }
+    
+    .btn-outline-v12 {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 24px;
+      background: transparent;
+      color: #64748b;
+      border: 2px solid #e2e8f0;
+      border-radius: 1rem;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-v12:hover {
+      background: #f8fafc;
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+    
+    /* Footer v12 for dashboard */
+    .dashboard-footer-v12 {
+      padding: 32px 48px;
+      border-top: 1px solid #e2e8f0;
+      background: white;
+      flex-shrink: 0;
+      margin-top: auto;
+    }
+    
+    .dashboard-footer-v12 p {
+      font-size: 12px;
+      color: #94a3b8;
+      margin: 0;
+    }
+    
+    .dashboard-footer-v12 a {
+      color: #64748b;
+      text-decoration: none;
+    }
+    
+    .dashboard-footer-v12 a:hover {
+      color: #3b82f6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="dashboard-layout-v12">
+    <!-- Sidebar v12 -->
+    {% include 'components/sidebar_v12.html' %}
+    
+    <!-- Overlay for mobile -->
+    <div class="sidebar-overlay-v12" onclick="document.body.classList.remove('sidebar-open')"></div>
+    
+    <!-- Mobile menu button -->
+    <button class="mobile-menu-btn-v12" onclick="document.body.classList.toggle('sidebar-open')">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    
+    <!-- Main Content Area -->
+    <div class="dashboard-content-area-v12">
+      <div class="dashboard-content-wrapper-v12">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="/static/js/lib/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+  <!-- Charts & Tables -->
+  <script src="/static/js/lib/apexcharts.min.js"></script>
+  <script src="/static/js/lib/dataTables.min.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+
+</html>

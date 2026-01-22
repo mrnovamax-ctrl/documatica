@@ -1,0 +1,79 @@
+{% extends "base_public.html" %}
+
+{% set page = content.page | default({}) %}
+{% set meta = content.meta | default({}) %}
+{% set related = content.related | default([]) %}
+{% set cta = content.cta | default({}) %}
+
+{% block title %}{{ meta.title | default('УПД — Documatica') }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ meta.description | default('Информация об УПД') }}">
+{% if meta.canonical %}
+<link rel="canonical" href="{{ site_url }}{{ meta.canonical }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Article Header v12.0 -->
+<section class="upd-hero-v12" style="padding-bottom: 60px;">
+  <div class="upd-hero-content-v12">
+    <span class="upd-hero-tag-v12">{{ page.tag | default('Информация') }}</span>
+    <h1 class="upd-hero-title-v12">
+      {{ page.h1 | default('Информация') }}
+    </h1>
+    {% if page.intro %}
+    <p class="upd-hero-desc-v12">
+      {{ page.intro }}
+    </p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Article Content v12.0 -->
+<section class="upd-content-v12">
+  <div class="upd-content-container-v12">
+    <div class="upd-text-v12">
+      {{ page.content | default('Контент в разработке...') | safe }}
+      
+      {% if page.image %}
+      <div style="margin: 48px 0;">
+        <img src="{{ page.image }}" alt="{{ page.h1 }}" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1);">
+      </div>
+      {% endif %}
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="upd-sidebar-v12">
+      <!-- CTA Card -->
+      <div class="upd-sidebar-cta-v12">
+        <h4>Готовы создать УПД?</h4>
+        <p>Автозаполнение реквизитов по ИНН, актуальная форма 2026 года</p>
+        <a href="{{ cta.url | default('/dashboard/upd/create/') }}" class="docu-btn-primary" style="width: 100%; text-align: center;">
+          {{ cta.text | default('Создать УПД') }}
+        </a>
+      </div>
+      
+      <!-- Related Links -->
+      {% if related %}
+      <div class="upd-sidebar-related-v12">
+        <h4>Читайте также</h4>
+        <ul>
+          {% for item in related %}
+          <li>
+            <a href="{{ item.url }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+              {{ item.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

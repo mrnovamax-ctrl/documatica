@@ -1,0 +1,154 @@
+meta:
+  title: Documatica - Онлайн генератор УПД и бухгалтерских документов
+  description: Создавайте УПД, счета-фактуры и акты онлайн за минуты. Простой конструктор
+    документов для бизнеса.
+  keywords: упд онлайн, генератор упд, упд бесплатно, создать упд
+hero:
+  title: Документы с интеллектом.
+  title_accent: интеллектом
+  subtitle: Полный цикл автоматизации юридических и финансовых документов на базе
+    нейронных сетей.
+  cta_text: Создать УПД, счет или акт бесплатно
+  cta_url: /dashboard/upd/create/
+  note: Попробуйте прямо сейчас
+  note_accent: С проверкой правильности от AI
+features:
+  title: Почему выбирают Documatica
+  subtitle: Все необходимое для работы с документами в одном месте
+  cards:
+  - title: Сверка реквизитов
+    description: Автоматическая проверка данных контрагентов по ИНН. Заполнение в
+      один клик без ошибок.
+    icon: check-circle
+  - title: Поиск рисков
+    description: AI анализирует документы на ошибки и несоответствия до отправки.
+    icon: alert-triangle
+  - title: Сохраняйте шаблоны
+    description: Любой документ можно сохранить как шаблон и использовать снова.
+    icon: code
+  - title: Экспорт PDF
+    description: Скачивайте готовые документы для печати.
+    icon: download
+  - title: История документов
+    description: Все созданные документы сохраняются в личном кабинете.
+    icon: history
+  - title: Бесплатный старт
+    description: Создавайте до 5 документов в месяц бесплатно, без ограничений функций.
+    icon: gift
+document_types:
+  title: Типы документов
+  subtitle: Создавайте любые бухгалтерские документы
+  cards:
+  - name: УПД
+    description: Универсальный передаточный документ
+    url: /upd/
+  - name: Счет на оплату
+    description: Счет для оплаты товаров и услуг
+    url: /schet/
+  - name: Акт
+    description: Акт выполненных работ
+    url: /#/
+  - name: Договор (скоро)
+    description: Типовые договоры для бизнеса
+    url: /#/
+upd_types:
+  title: Универсальный передаточный документ
+  label: Виды документов
+  cards:
+  - tag: С НДС
+    title: УПД с НДС
+    description: Для плательщиков НДС. Полный расчет налога.
+    url: /upd-s-nds
+    icon: dollar-sign
+  - tag: Без налога
+    title: УПД без НДС
+    description: Для освобожденных от уплаты НДС.
+    url: /upd-bez-nds
+    icon: slash
+  - tag: Упрощенка
+    title: УПД для УСН
+    description: Упрощенная система налогообложения.
+    url: /upd-usn
+    icon: layers
+  - tag: Для ИП
+    title: УПД для ИП
+    description: Индивидуальные предприниматели.
+    url: /upd-dlya-ip
+    icon: user
+  - tag: Для ООО
+    title: УПД для ООО
+    description: Общества с ограниченной ответственностью.
+    url: /upd-dlya-ooo
+    icon: home
+  - tag: НПД
+    title: Самозанятые
+    description: Налог на профессиональный доход.
+    url: /upd-samozanyatye
+    icon: briefcase
+  - tag: Скачать
+    title: Бланк Excel
+    description: Готовый бланк УПД в формате XLSX.
+    url: /skachat-excel
+    icon: file-text
+    style: green
+  - tag: ЭДО
+    title: XML для ЭДО (скоро)
+    description: Приказ 970, Диадок, СБИС, Контур.
+    url: /#
+    icon: code
+    style: gold
+  - tag: Справка
+    title: Образец
+    description: Примеры заполненных УПД с пояснениями.
+    url: /#
+    icon: help-circle
+    style: purple
+pricing:
+  label: Тарифы
+  title: Инвестируйте в
+  title_accent: простоту
+  plans:
+  - name: Starter Kit
+    price: 0 ₽
+    period: Бесплатно навсегда
+    features:
+    - text: 5 документов в месяц
+      enabled: true
+    - text: AI Аудит рисков
+      enabled: false
+    button_text: Начать бесплатно
+    button_url: /register
+    style: outline
+  - name: Professional
+    price: 299 ₽
+    period: В месяц
+    featured: true
+    badge: Рекомендуемый выбор
+    features:
+    - text: Безлимитный экспорт
+      enabled: true
+    - text: AI Аудит рисков v12
+      enabled: true
+    - text: Полный доступ к API
+      enabled: true
+    button_text: Выбрать Professional
+    button_url: /register
+    style: primary
+  - name: Enterprise
+    price: Custom
+    period: Tailored Solution
+    features:
+    - text: Выделенный AI-кластер
+      enabled: true
+    - text: Индивидуальное обучение ИИ
+      enabled: true
+    button_text: Связаться с нами
+    button_url: /contact
+    style: enterprise
+cta:
+  label: Начните сейчас
+  title: Готовы
+  title_accent: автоматизировать?
+  subtitle: Создайте первый УПД за 2 минуты. Бесплатно.
+  button_text: Создать документ
+  button_url: /upd-create

@@ -1,0 +1,190 @@
+/* ========================================
+   Documatica v12.0 - Dashboard Layout System
+   Единая система отступов и лейаутов для ВСЕГО личного кабинета
+   ======================================== */
+
+/* Spacing Scale (единая шкала отступов) */
+:root {
+  --docu-spacing-xs: 8px;
+  --docu-spacing-sm: 16px;
+  --docu-spacing-md: 24px;
+  --docu-spacing-lg: 32px;
+  --docu-spacing-xl: 48px;
+  --docu-spacing-2xl: 64px;
+  
+  /* Dashboard specific */
+  --docu-sidebar-width: 320px;
+  --docu-content-padding-desktop: 32px 48px;
+  --docu-content-padding-tablet: 24px 32px;
+  --docu-content-padding-mobile: 24px 16px;
+  --docu-content-max-width: 1600px;
+}
+
+/* ========================================
+   Global Dashboard Layout
+   ======================================== */
+
+/* Pattern Background - для всех страниц личного кабинета */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  background-image: radial-gradient(circle, #3b82f6 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Dashboard Layout Wrapper */
+.dashboard-layout-v12 {
+  display: flex;
+  min-height: 100%;
+}
+
+/* Sidebar - фиксированный слева */
+aside.sidebar-v12 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--docu-sidebar-width);
+  height: 100vh;
+  z-index: 50;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.3s ease;
+}
+
+/* Main content area - отступ слева от sidebar */
+.dashboard-main-v12,
+.dashboard-content-area-v12 {
+  margin-left: var(--docu-sidebar-width);
+  transition: margin-left 0.3s ease;
+  width: calc(100% - var(--docu-sidebar-width));
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Content Container - универсальный для всех страниц */
+.dashboard-content-v12,
+.dashboard-content-wrapper-v12 {
+  padding: var(--docu-content-padding-desktop);
+  padding-bottom: 0;
+  flex: 1;
+  max-width: var(--docu-content-max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Tablet (до 1200px) */
+@media (max-width: 1200px) {
+  .dashboard-content-v12,
+  .dashboard-content-wrapper-v12 {
+    padding: var(--docu-content-padding-tablet);
+  }
+}
+
+/* Mobile (до 991px) */
+@media (max-width: 991px) {
+  .dashboard-main-v12,
+  .dashboard-content-area-v12 {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  aside.sidebar-v12 {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  body.sidebar-open aside.sidebar-v12 {
+    transform: translateX(0);
+  }
+}
+
+/* Mobile (до 768px) */
+@media (max-width: 768px) {
+  .dashboard-content-v12,
+  .dashboard-content-wrapper-v12 {
+    padding: var(--docu-content-padding-mobile);
+  }
+}
+
+/* Cards Spacing - единообразное расстояние между карточками */
+.card-grid-v12 {
+  display: grid;
+  gap: var(--docu-spacing-md);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.card-spacing-v12 {
+  margin-bottom: var(--docu-spacing-md);
+}
+
+/* Section Spacing - расстояние между секциями */
+.section-spacing-v12 {
+  margin-bottom: var(--docu-spacing-xl);
+}
+
+.section-spacing-lg-v12 {
+  margin-bottom: var(--docu-spacing-2xl);
+}
+
+/* Page Header Spacing */
+.page-header-v12 {
+  margin-bottom: var(--docu-spacing-xl);
+}
+
+/* Button Groups */
+.button-group-v12 {
+  display: flex;
+  gap: var(--docu-spacing-sm);
+  align-items: center;
+}
+
+/* Breadcrumb Spacing */
+.breadcrumb-v12 {
+  margin-bottom: var(--docu-spacing-md);
+}
+
+/* Table Container */
+.table-container-v12 {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  margin-bottom: var(--docu-spacing-md);
+}
+
+/* Form Spacing */
+.form-group-v12 {
+  margin-bottom: var(--docu-spacing-md);
+}
+
+.form-section-v12 {
+  margin-bottom: var(--docu-spacing-xl);
+}
+
+/* Utility Classes */
+.mb-xs-v12 { margin-bottom: var(--docu-spacing-xs); }
+.mb-sm-v12 { margin-bottom: var(--docu-spacing-sm); }
+.mb-md-v12 { margin-bottom: var(--docu-spacing-md); }
+.mb-lg-v12 { margin-bottom: var(--docu-spacing-lg); }
+.mb-xl-v12 { margin-bottom: var(--docu-spacing-xl); }
+
+.mt-xs-v12 { margin-top: var(--docu-spacing-xs); }
+.mt-sm-v12 { margin-top: var(--docu-spacing-sm); }
+.mt-md-v12 { margin-top: var(--docu-spacing-md); }
+.mt-lg-v12 { margin-top: var(--docu-spacing-lg); }
+.mt-xl-v12 { margin-top: var(--docu-spacing-xl); }
+
+.gap-xs-v12 { gap: var(--docu-spacing-xs); }
+.gap-sm-v12 { gap: var(--docu-spacing-sm); }
+.gap-md-v12 { gap: var(--docu-spacing-md); }
+.gap-lg-v12 { gap: var(--docu-spacing-lg); }
+.gap-xl-v12 { gap: var(--docu-spacing-xl); }

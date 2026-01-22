@@ -1,0 +1,69 @@
+{
+  "documents": [
+    {
+      "id": "c43d890f-8542-4e9e-8974-74f4d32c5a35",
+      "user_email": "e@diez.io",
+      "type": "upd",
+      "document_number": "10001",
+      "document_date": "2026-01-12T12:56:48.735961",
+      "seller_id": "1",
+      "seller_name": "ООО \"Рога и Копыта\"",
+      "buyer_id": "1",
+      "buyer_name": "ИП Иванов И.И.",
+      "total_amount": 125000.0,
+      "created_at": "2026-01-12T12:56:48.736031"
+    },
+    {
+      "id": "2205a10c-538c-4c13-ba8c-defad6dcba25",
+      "user_email": "e@diez.io",
+      "type": "upd",
+      "document_number": "10002",
+      "document_date": "2026-01-17T12:56:48.736048",
+      "seller_id": "1",
+      "seller_name": "ООО \"Рога и Копыта\"",
+      "buyer_id": "2",
+      "buyer_name": "ООО \"Ромашка\"",
+      "total_amount": 85600.0,
+      "created_at": "2026-01-17T12:56:48.736052"
+    },
+    {
+      "id": "bdc4f3cc-ba13-44b0-a723-3e526ccf5c18",
+      "user_email": "e@diez.io",
+      "type": "invoice",
+      "document_number": "С-0001",
+      "document_date": "2026-01-19T12:56:48.736063",
+      "seller_id": "1",
+      "seller_name": "ООО \"Рога и Копыта\"",
+      "buyer_id": "1",
+      "buyer_name": "ИП Иванов И.И.",
+      "total_amount": 45000.0,
+      "created_at": "2026-01-19T12:56:48.736066"
+    },
+    {
+      "id": "c8951da5-ddbe-45cd-af3f-000937037c84",
+      "user_email": "e@diez.io",
+      "type": "upd",
+      "document_number": "10003",
+      "document_date": "2026-01-22T12:56:48.736075",
+      "seller_id": "1",
+      "seller_name": "ООО \"Рога и Копыта\"",
+      "buyer_id": "1",
+      "buyer_name": "ИП Иванов И.И.",
+      "total_amount": 234500.0,
+      "created_at": "2026-01-22T12:56:48.736078"
+    },
+    {
+      "id": "54bd69f9-7eef-4890-afd3-f2f7344addbf",
+      "user_email": "e@diez.io",
+      "type": "invoice",
+      "document_number": "С-0002",
+      "document_date": "2026-01-22T12:56:48.736086",
+      "seller_id": "1",
+      "seller_name": "ООО \"Рога и Копыта\"",
+      "buyer_id": "2",
+      "buyer_name": "ООО \"Ромашка\"",
+      "total_amount": 67800.0,
+      "created_at": "2026-01-22T12:56:48.736088"
+    }
+  ]
+}

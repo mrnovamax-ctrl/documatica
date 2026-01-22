@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ title | default('Documatica') }}{% endblock %}</title>
+  
+  {% block meta %}
+  <meta name="description" content="{{ description | default('Генератор документов для бизнеса. УПД, счета, акты, договоры онлайн бесплатно.') }}">
+  <meta name="keywords" content="{{ keywords | default('упд онлайн, генератор документов, счет на оплату, акт выполненных работ') }}">
+  {% if canonical %}
+  <link rel="canonical" href="{{ site_url }}{{ canonical }}">
+  {% endif %}
+  {% endblock %}
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ title | default('Documatica') }}">
+  <meta property="og:description" content="{{ description | default('Генератор документов для бизнеса') }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:image" content="{{ site_url }}/static/images/og-image.png">
+  
+  <link rel="icon" type="image/png" href="/static/images/favicon.png" sizes="16x16">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/css/remixicon.css">
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <!-- Documatica v12.0 Design System (NO old style.css) -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.13">
+  {% block extra_css %}{% endblock %}
+  
+  <!-- Iconify -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+  {% block body %}{% endblock %}
+  
+  <!-- JS -->
+  <script src="/static/js/lib/jquery-3.7.1.min.js"></script>
+  <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+  {% block extra_js %}{% endblock %}
+  <script src="/static/js/app.js"></script>
+</body>
+
+</html>

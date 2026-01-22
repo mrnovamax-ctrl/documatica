@@ -1,0 +1,85 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}{{ content_path }}{% endblock %}
+{% block page_title %}Редактирование: {{ content_path }}{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/content/" class="admin-btn-back">
+  <iconify-icon icon="ri:arrow-left-line" width="18"></iconify-icon>
+  Назад к списку
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Alerts -->
+{% if success %}
+<div class="admin-alert admin-alert-success">
+  <iconify-icon icon="ri:checkbox-circle-line" width="22"></iconify-icon>
+  {{ success }}
+</div>
+{% endif %}
+
+{% if error %}
+<div class="admin-alert admin-alert-error">
+  <iconify-icon icon="ri:error-warning-line" width="22"></iconify-icon>
+  {{ error }}
+</div>
+{% endif %}
+
+<!-- Editor Card -->
+<div class="admin-editor-card">
+  <form method="POST" action="/admin/content/{{ content_path }}/">
+    <!-- Toolbar -->
+    <div class="admin-editor-toolbar">
+      <div class="admin-editor-info">
+        <div class="admin-file-badge">
+          <iconify-icon icon="ri:file-code-line" width="18"></iconify-icon>
+          {{ content_path }}.yaml
+        </div>
+        <a href="/{{ content_path.split('/')[0] }}/" target="_blank" class="admin-preview-link">
+          <iconify-icon icon="ri:external-link-line" width="16"></iconify-icon>
+          Предпросмотр страницы
+        </a>
+      </div>
+      <button type="submit" class="admin-btn-primary">
+        <iconify-icon icon="ri:save-line" width="18"></iconify-icon>
+        Сохранить
+      </button>
+    </div>
+    
+    <!-- Editor -->
+    <textarea 
+      name="yaml_content" 
+      class="admin-yaml-editor"
+      spellcheck="false"
+    >{{ content_yaml }}</textarea>
+  </form>
+</div>
+
+<!-- Help -->
+<div class="admin-yaml-help">
+  <h4>Структура YAML-файла</h4>
+  <code>meta:
+  title: "SEO заголовок страницы"
+  description: "Мета-описание для поисковиков"
+  keywords: "ключевые, слова"
+
+page:
+  h1: "Заголовок H1 на странице"
+  intro: "Вводный текст под заголовком"
+
+features:
+  - title: "Название фичи"
+    description: "Описание"
+    icon: "mdi:check"
+
+faq:
+  - question: "Вопрос?"
+    answer: "Ответ в HTML формате"
+
+cta:
+  title: "Призыв к действию"
+  text: "Текст кнопки"
+  url: "/dashboard/"</code>
+</div>
+{% endblock %}
