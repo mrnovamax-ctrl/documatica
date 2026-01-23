@@ -3928,8 +3928,31 @@ body {
 }
 
 /* Page Title v12 */
-.page-title-v12 {
+.page-header-v12 {
   margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-header-left-v12 {
+  flex: 1;
+}
+
+.page-title-v12 {
+  font-size: 32px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle-v12 {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
 }
 
 .page-title-v12 h1 {
@@ -4040,6 +4063,81 @@ body {
 
 .flatpickr-calendar.open {
   z-index: 1060 !important;
+}
+
+/* Modal utility classes */
+.docu-mb-48 {
+  margin-bottom: 48px !important;
+}
+
+/* Card header override */
+.card-header {
+  padding: 24px 32px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  background: transparent !important;
+}
+
+.card-header h4 {
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3em !important;
+  color: #94a3b8 !important;
+  line-height: 1.2;
+  margin: 0 !important;
+}
+
+/* Border utilities override - убираем линии разделители */
+.border-top {
+  border-top: none !important;
+}
+
+.border-bottom {
+  border-bottom: none !important;
+}
+
+/* Add product buttons */
+.add-product-btn {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-product-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #475569;
+  transform: translateY(-1px);
+}
+
+/* Modal search input styling */
+.modal-body .form-control {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+  transition: all 0.2s;
+}
+
+.modal-body .form-control:focus {
+  background-color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+.modal-body .form-control::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 .flatpickr-months .flatpickr-prev-month,

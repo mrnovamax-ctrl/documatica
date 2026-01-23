@@ -162,11 +162,13 @@
   {% include 'components/header_dashboard_v12.html' %}
 
   <div class="dashboard-content-v12 upd-constructor-page">
-    <!-- Page Title -->
-    <div class="page-title-v12">
-      <h1>Создать счёт на оплату</h1>
-      <p>Счёт на оплату товаров и услуг</p>
-    </div>
+    <!-- Page Header -->
+    <header class="page-header-v12">
+      <div class="page-header-left-v12">
+        <h1 class="page-title-v12">Создать счёт на оплату</h1>
+        <p class="page-subtitle-v12">Счёт на оплату товаров и услуг</p>
+      </div>
+    </header>
 
     <form id="invoice-form">
       <div class="row gy-4">
@@ -321,48 +323,48 @@
               <h4 class="mb-0">Товары и услуги</h4>
             </div>
             <div class="card-body p-24">
-              <!-- Products Header -->
-              <div class="invoice-products-header-v12">
-                <span>Наименование</span>
-                <span>Кол-во</span>
-                <span>Ед.</span>
-                <span>Цена</span>
-                <span>Сумма</span>
-                <span></span>
-              </div>
-              
               <!-- Products Container -->
               <div id="products-container">
                 <!-- Products will be added here dynamically -->
               </div>
               
-              <!-- Add Product Button -->
-              <button type="button" class="invoice-add-btn-v12" id="add-product-btn">
-                <iconify-icon icon="mdi:plus" width="18"></iconify-icon>
-                Добавить товар или услугу
-              </button>
+              <!-- Add Product Buttons -->
+              <div class="d-flex mb-16" style="gap: 16px;">
+                <button type="button" class="add-product-btn flex-grow-1 py-16 radius-12 d-flex align-items-center justify-content-center gap-8 text-secondary-light" id="add-product-btn">
+                  <iconify-icon icon="mdi:plus-circle" class="text-xl"></iconify-icon>
+                  Добавить ещё
+                </button>
+                <button type="button" class="add-product-btn flex-grow-1 py-16 radius-12 d-flex align-items-center justify-content-center gap-8 text-secondary-light" data-bs-toggle="modal" data-bs-target="#selectProductModal">
+                  <iconify-icon icon="mdi:package-variant" class="text-xl"></iconify-icon>
+                  Выбрать из справочника
+                </button>
+              </div>
               
               <!-- Totals -->
-              <div class="invoice-totals-v12">
-                <div class="invoice-totals-row-v12">
-                  <span>Сумма без НДС:</span>
-                  <span id="total-without-vat">0.00 руб.</span>
-                </div>
-                <div class="invoice-totals-row-v12">
-                  <span>
-                    НДС 
-                    <select id="vat-rate" class="invoice-vat-select-v12">
-                      <option value="20">20%</option>
-                      <option value="10">10%</option>
-                      <option value="5">5%</option>
-                      <option value="0">Без НДС</option>
-                    </select>:
-                  </span>
-                  <span id="total-vat">0.00 руб.</span>
-                </div>
-                <div class="invoice-totals-row-v12 total">
-                  <span>Итого к оплате:</span>
-                  <span id="total-with-vat">0.00 руб.</span>
+              <div style="margin-top: 48px;">
+                <div class="row justify-content-end">
+                  <div class="col-md-6">
+                    <div class="d-flex justify-content-between mb-16">
+                      <span class="text-secondary-light">Итого без НДС:</span>
+                      <span class="fw-medium" id="total-without-vat">0 ₽</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-16">
+                      <span class="text-secondary-light">
+                        НДС 
+                        <select id="vat-rate" class="form-select form-select-sm d-inline-block" style="width: 100px; font-size: 14px;">
+                          <option value="20">20%</option>
+                          <option value="10">10%</option>
+                          <option value="5">5%</option>
+                          <option value="0">Без НДС</option>
+                        </select>:
+                      </span>
+                      <span class="fw-medium" id="total-vat">0 ₽</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <span class="fw-semibold text-lg">Итого к оплате:</span>
+                      <span class="fw-bold text-lg text-primary-600" id="total-with-vat">0 ₽</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -449,30 +451,120 @@
 </main>
 
 <!-- Select Organization Modal -->
-<div class="modal fade modal-v12" id="selectOrganizationModal" tabindex="-1">
+<div class="modal fade" id="selectOrganizationModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Выберите организацию</h5>
+    <div class="modal-content radius-16">
+      <div class="modal-header bg-neutral-50 py-16 px-24 border-bottom">
+        <div>
+          <h5 class="modal-title mb-1">Выберите организацию</h5>
+          <p class="text-secondary-light text-sm mb-0">Нажмите на карточку для выбора</p>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body" id="organizations-list">
-        <div class="text-center py-4 text-secondary-light">Загрузка...</div>
+      <div class="modal-body p-24">
+        <div class="docu-mb-48">
+          <input type="text" class="form-control" id="search-organization" placeholder="Поиск по названию или ИНН...">
+        </div>
+        <div id="organizations-modal-list" class="row g-3">
+          <div class="col-12 text-center py-24 text-secondary-light">
+            <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
+            <p class="mt-8">Загрузка организаций...</p>
+          </div>
+        </div>
+        <div id="no-organizations-message" style="display: none;" class="text-center py-24">
+          <iconify-icon icon="mdi:domain" class="text-secondary-light text-4xl"></iconify-icon>
+          <p class="mt-8 text-secondary-light">Организации не найдены</p>
+          <a href="/dashboard/organizations/create/" class="btn btn-sm btn-primary-600 mt-8">
+            <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+            Добавить организацию
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer bg-neutral-50 border-top">
+        <a href="/dashboard/organizations/create/" class="btn btn-outline-primary-600">
+          <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+          Добавить новую
+        </a>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Select Contractor Modal -->
-<div class="modal fade modal-v12" id="selectContractorModal" tabindex="-1">
+<div class="modal fade" id="selectContractorModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Выберите контрагента</h5>
+    <div class="modal-content radius-16">
+      <div class="modal-header bg-neutral-50 py-16 px-24 border-bottom">
+        <div>
+          <h5 class="modal-title mb-1">Выберите контрагента</h5>
+          <p class="text-secondary-light text-sm mb-0">Нажмите на карточку для выбора</p>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body" id="contractors-list">
-        <div class="text-center py-4 text-secondary-light">Загрузка...</div>
+      <div class="modal-body p-24">
+        <div class="docu-mb-48">
+          <input type="text" class="form-control" id="search-contractor" placeholder="Поиск по названию или ИНН...">
+        </div>
+        <div id="contractors-modal-list" class="row g-3">
+          <div class="col-12 text-center py-24 text-secondary-light">
+            <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
+            <p class="mt-8">Загрузка контрагентов...</p>
+          </div>
+        </div>
+        <div id="no-contractors-message" style="display: none;" class="text-center py-24">
+          <iconify-icon icon="mdi:account-group" class="text-secondary-light text-4xl"></iconify-icon>
+          <p class="mt-8 text-secondary-light">Контрагенты не найдены</p>
+          <a href="/dashboard/contractors/create/" class="btn btn-sm btn-primary-600 mt-8">
+            <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+            Добавить контрагента
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer bg-neutral-50 border-top">
+        <a href="/dashboard/contractors/create/" class="btn btn-outline-primary-600">
+          <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+          Добавить нового
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Select Product Modal -->
+<div class="modal fade" id="selectProductModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content radius-16">
+      <div class="modal-header bg-neutral-50 py-16 px-24 border-bottom">
+        <div>
+          <h5 class="modal-title mb-1">Выберите товар или услугу</h5>
+          <p class="text-secondary-light text-sm mb-0">Нажмите на карточку для добавления</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-24">
+        <div class="docu-mb-48">
+          <input type="text" class="form-control" id="search-product" placeholder="Поиск по названию или артикулу...">
+        </div>
+        <div id="products-modal-list" class="row g-3">
+          <div class="col-12 text-center py-24 text-secondary-light">
+            <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
+            <p class="mt-8">Загрузка товаров...</p>
+          </div>
+        </div>
+        <div id="no-products-message" style="display: none;" class="text-center py-24">
+          <iconify-icon icon="mdi:package-variant" class="text-secondary-light text-4xl"></iconify-icon>
+          <p class="mt-8 text-secondary-light">Товары не найдены</p>
+          <a href="/dashboard/products/create/" class="btn btn-sm btn-primary-600 mt-8">
+            <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+            Добавить товар
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer bg-neutral-50 border-top">
+        <a href="/dashboard/products/create/" class="btn btn-outline-primary-600">
+          <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+          В справочник
+        </a>
       </div>
     </div>
   </div>
@@ -675,32 +767,49 @@ document.addEventListener('DOMContentLoaded', function() {
     products.forEach(product => {
       const amount = (parseFloat(product.quantity) || 0) * (parseFloat(product.price) || 0);
       const row = document.createElement('div');
-      row.className = 'invoice-product-row-v12';
+      row.className = 'card border radius-12 p-16 mb-16';
       row.setAttribute('data-product-id', product.id);
       row.innerHTML = `
-        <div>
-          <input type="text" class="form-control" placeholder="Наименование товара/услуги" 
-                 value="${product.name}" onchange="window.updateProduct(${product.id}, 'name', this.value)">
-        </div>
-        <div>
-          <input type="number" class="form-control text-center" value="${product.quantity}" min="1" step="1"
-                 onchange="window.updateProduct(${product.id}, 'quantity', this.value)" 
-                 oninput="window.updateProduct(${product.id}, 'quantity', this.value)">
-        </div>
-        <div>
-          <input type="text" class="form-control text-center" value="${product.unit}" 
-                 onchange="window.updateProduct(${product.id}, 'unit', this.value)">
-        </div>
-        <div>
-          <input type="number" class="form-control text-right" value="${product.price}" min="0" step="0.01"
-                 onchange="window.updateProduct(${product.id}, 'price', this.value)" 
-                 oninput="window.updateProduct(${product.id}, 'price', this.value)">
-        </div>
-        <div class="product-amount">${amount.toFixed(2)}</div>
-        <div>
-          <button type="button" class="invoice-remove-btn-v12" onclick="window.removeProduct(${product.id})">
-            <iconify-icon icon="mdi:close" width="18"></iconify-icon>
-          </button>
+        <div class="row g-12 align-items-end">
+          <div class="col">
+            <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Название товара или услуги" 
+                   value="${product.name}" onchange="window.updateProduct(${product.id}, 'name', this.value)" required>
+          </div>
+          <div class="col-auto" style="width: 100px;">
+            <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Кол-во</label>
+            <input type="number" class="form-control" value="${product.quantity}" min="0.01" step="0.01"
+                   onchange="window.updateProduct(${product.id}, 'quantity', this.value)" 
+                   oninput="window.updateProduct(${product.id}, 'quantity', this.value)">
+          </div>
+          <div class="col-auto" style="width: 110px;">
+            <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ед. изм.</label>
+            <select class="form-select" onchange="window.updateProduct(${product.id}, 'unit', this.value)">
+              <option value="шт" ${product.unit === 'шт' ? 'selected' : ''}>шт</option>
+              <option value="усл" ${product.unit === 'усл' ? 'selected' : ''}>усл</option>
+              <option value="ч" ${product.unit === 'ч' ? 'selected' : ''}>ч</option>
+              <option value="кг" ${product.unit === 'кг' ? 'selected' : ''}>кг</option>
+              <option value="л" ${product.unit === 'л' ? 'selected' : ''}>л</option>
+              <option value="м" ${product.unit === 'м' ? 'selected' : ''}>м</option>
+              <option value="м2" ${product.unit === 'м2' ? 'selected' : ''}>м2</option>
+              <option value="м3" ${product.unit === 'м3' ? 'selected' : ''}>м3</option>
+            </select>
+          </div>
+          <div class="col-auto" style="width: 120px;">
+            <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Цена</label>
+            <input type="number" class="form-control" value="${product.price}" min="0" step="0.01"
+                   onchange="window.updateProduct(${product.id}, 'price', this.value)" 
+                   oninput="window.updateProduct(${product.id}, 'price', this.value)">
+          </div>
+          <div class="col-auto" style="width: 120px;">
+            <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Сумма</label>
+            <input type="text" class="form-control" value="${amount.toFixed(2)} ₽" readonly>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-outline-danger" onclick="window.removeProduct(${product.id})" title="Удалить">
+              <iconify-icon icon="mdi:trash-can-outline"></iconify-icon>
+            </button>
+          </div>
         </div>
       `;
       container.appendChild(row);
@@ -761,20 +870,51 @@ document.addEventListener('DOMContentLoaded', function() {
       
       if (response.ok) {
         const organizations = await response.json();
-        const container = document.getElementById('organizations-list');
+        const container = document.getElementById('organizations-modal-list');
         
         if (organizations.length === 0) {
-          container.innerHTML = '<div class="text-center py-4 text-secondary-light">Нет сохранённых организаций</div>';
+          document.getElementById('no-organizations-message').style.display = 'block';
+          container.innerHTML = '';
         } else {
-          container.innerHTML = organizations.map(org => `
-            <div class="constructor-entity-card-v12 mb-12" data-org='${JSON.stringify(org).replace(/'/g, "&#39;")}'>
-              <div class="entity-name">${org.name}</div>
-              <div class="entity-info">ИНН: ${org.inn}${org.kpp ? ', КПП: ' + org.kpp : ''}</div>
-              <div class="entity-info mt-1">${org.address || ''}</div>
-            </div>
-          `).join('');
+          document.getElementById('no-organizations-message').style.display = 'none';
+          container.innerHTML = organizations.map(org => {
+            const logoHtml = org.logo_url 
+              ? `<img src="${org.logo_url}" alt="${org.name}" style="max-width: 48px; max-height: 48px; object-fit: contain;">`
+              : `<div class="w-48-px h-48-px bg-primary-100 rounded-circle d-flex justify-content-center align-items-center">
+                   <iconify-icon icon="mdi:domain" class="text-primary-600 text-xl"></iconify-icon>
+                 </div>`;
+            
+            return `
+              <div class="col-12 organization-item" data-org='${JSON.stringify(org).replace(/'/g, "&#39;")}'>
+                <div class="card radius-8 border-0 shadow-sm h-100" style="cursor: pointer; transition: all 0.2s;">
+                  <div class="card-body p-20">
+                    <div class="d-flex align-items-start justify-content-between">
+                      <div class="flex-grow-1">
+                        <h6 class="fw-semibold mb-8">${org.name}</h6>
+                        <p class="text-secondary-light text-sm mb-6">ИНН: ${org.inn}</p>
+                        ${org.kpp ? `<p class="text-secondary-light text-sm mb-6">КПП: ${org.kpp}</p>` : ''}
+                        ${org.address ? `<p class="text-secondary-light text-sm mb-0">
+                          <iconify-icon icon="mdi:map-marker" class="me-1"></iconify-icon>${org.address}
+                        </p>` : ''}
+                      </div>
+                      <div class="d-flex align-items-center gap-2 ms-3" style="flex-shrink: 0;">
+                        ${logoHtml}
+                        <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
           
-          container.querySelectorAll('.constructor-entity-card-v12').forEach(item => {
+          // Добавляем hover эффект
+          container.querySelectorAll('.organization-item .card').forEach(card => {
+            card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-2px)');
+            card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0)');
+          });
+          
+          container.querySelectorAll('.organization-item').forEach(item => {
             item.addEventListener('click', () => {
               const org = JSON.parse(item.dataset.org.replace(/&#39;/g, "'"));
               document.getElementById('supplier_name').value = org.name || '';
@@ -808,20 +948,51 @@ document.addEventListener('DOMContentLoaded', function() {
       
       if (response.ok) {
         const contractors = await response.json();
-        const container = document.getElementById('contractors-list');
+        const container = document.getElementById('contractors-modal-list');
         
         if (!contractors || contractors.length === 0) {
-          container.innerHTML = '<div class="text-center py-4 text-secondary-light">Нет сохранённых контрагентов</div>';
+          document.getElementById('no-contractors-message').style.display = 'block';
+          container.innerHTML = '';
         } else {
-          container.innerHTML = contractors.map(c => `
-            <div class="constructor-entity-card-v12 mb-12" data-contractor='${JSON.stringify(c).replace(/'/g, "&#39;")}'>
-              <div class="entity-name">${c.name}</div>
-              <div class="entity-info">ИНН: ${c.inn}${c.kpp ? ', КПП: ' + c.kpp : ''}</div>
-              <div class="entity-info mt-1">${c.address || ''}</div>
-            </div>
-          `).join('');
+          document.getElementById('no-contractors-message').style.display = 'none';
+          container.innerHTML = contractors.map(c => {
+            const logoHtml = c.logo_url 
+              ? `<img src="${c.logo_url}" alt="${c.name}" style="max-width: 48px; max-height: 48px; object-fit: contain;">`
+              : `<div class="w-48-px h-48-px bg-primary-100 rounded-circle d-flex justify-content-center align-items-center">
+                   <iconify-icon icon="mdi:account-group" class="text-primary-600 text-xl"></iconify-icon>
+                 </div>`;
+            
+            return `
+              <div class="col-12 contractor-item" data-contractor='${JSON.stringify(c).replace(/'/g, "&#39;")}'>
+                <div class="card radius-8 border-0 shadow-sm h-100" style="cursor: pointer; transition: all 0.2s;">
+                  <div class="card-body p-20">
+                    <div class="d-flex align-items-start justify-content-between">
+                      <div class="flex-grow-1">
+                        <h6 class="fw-semibold mb-8">${c.name}</h6>
+                        <p class="text-secondary-light text-sm mb-6">ИНН: ${c.inn}</p>
+                        ${c.kpp ? `<p class="text-secondary-light text-sm mb-6">КПП: ${c.kpp}</p>` : ''}
+                        ${c.address ? `<p class="text-secondary-light text-sm mb-0">
+                          <iconify-icon icon="mdi:map-marker" class="me-1"></iconify-icon>${c.address}
+                        </p>` : ''}
+                      </div>
+                      <div class="d-flex align-items-center gap-2 ms-3" style="flex-shrink: 0;">
+                        ${logoHtml}
+                        <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
           
-          container.querySelectorAll('.constructor-entity-card-v12').forEach(item => {
+          // Добавляем hover эффект
+          container.querySelectorAll('.contractor-item .card').forEach(card => {
+            card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-2px)');
+            card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0)');
+          });
+          
+          container.querySelectorAll('.contractor-item').forEach(item => {
             item.addEventListener('click', () => {
               const c = JSON.parse(item.dataset.contractor.replace(/&#39;/g, "'"));
               document.getElementById('client_name').value = c.name || '';
@@ -836,6 +1007,101 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     } catch (error) {
       console.error('Error loading contractors:', error);
+    }
+  });
+  
+  // ========== Product Selection ==========
+  document.getElementById('selectProductModal').addEventListener('show.bs.modal', async () => {
+    try {
+      const response = await fetch('/api/v1/products', {
+        headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const productsList = await response.json();
+        const container = document.getElementById('products-modal-list');
+        
+        if (!productsList || productsList.length === 0) {
+          document.getElementById('no-products-message').style.display = 'block';
+          container.innerHTML = '';
+        } else {
+          document.getElementById('no-products-message').style.display = 'none';
+          container.innerHTML = productsList.map(p => {
+            const price = parseFloat(p.price || 0).toFixed(2);
+            
+            return `
+              <div class="col-12 product-item" data-product='${JSON.stringify(p).replace(/'/g, "&#39;")}'>
+                <div class="card radius-8 border-0 shadow-sm h-100" style="cursor: pointer; transition: all 0.2s;">
+                  <div class="card-body p-20">
+                    <div class="d-flex align-items-start justify-content-between">
+                      <div class="flex-grow-1">
+                        <h6 class="fw-semibold mb-8">${p.name}</h6>
+                        ${p.article ? `<p class="text-secondary-light text-sm mb-6">Артикул: ${p.article}</p>` : ''}
+                        <p class="text-secondary-light text-sm mb-0">
+                          <span class="fw-bold text-primary-600">${price} ₽</span>
+                          ${p.unit ? ` / ${p.unit}` : ''}
+                        </p>
+                      </div>
+                      <div class="d-flex align-items-center gap-2 ms-3" style="flex-shrink: 0;">
+                        <div class="w-48-px h-48-px bg-primary-100 rounded-circle d-flex justify-content-center align-items-center">
+                          <iconify-icon icon="mdi:package-variant" class="text-primary-600 text-xl"></iconify-icon>
+                        </div>
+                        <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+          
+          // Добавляем hover эффект
+          container.querySelectorAll('.product-item .card').forEach(card => {
+            card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-2px)');
+            card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0)');
+          });
+          
+          container.querySelectorAll('.product-item').forEach(item => {
+            item.addEventListener('click', () => {
+              const product = JSON.parse(item.dataset.product.replace(/&#39;/g, "'"));
+              
+              // Проверяем, есть ли пустой первый товар
+              const firstProduct = products[0];
+              const isFirstEmpty = firstProduct && !firstProduct.name.trim();
+              
+              if (isFirstEmpty) {
+                // Заменяем первый пустой товар
+                products[0] = {
+                  id: firstProduct.id,
+                  name: product.name || '',
+                  quantity: 1,
+                  unit: product.unit || 'шт',
+                  price: parseFloat(product.price || 0)
+                };
+              } else {
+                // Добавляем новый товар в конец
+                const newProduct = {
+                  id: productIdCounter++,
+                  name: product.name || '',
+                  quantity: 1,
+                  unit: product.unit || 'шт',
+                  price: parseFloat(product.price || 0)
+                };
+                products.push(newProduct);
+              }
+              
+              renderProducts();
+              updateTotals();
+              
+              bootstrap.Modal.getInstance(document.getElementById('selectProductModal')).hide();
+              debouncedPreview();
+            });
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error loading products:', error);
     }
   });
   
