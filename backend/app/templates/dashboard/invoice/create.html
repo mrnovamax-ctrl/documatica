@@ -58,6 +58,37 @@
       padding-top: 0 !important;
     }
     
+    /* Animated action buttons */
+    #save-supplier-btn,
+    #save-client-btn {
+      opacity: 0;
+      visibility: hidden;
+    }
+    #save-supplier-btn.show,
+    #save-client-btn.show {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateX(0) !important;
+    }
+    #save-supplier-btn:hover,
+    #save-client-btn:hover {
+      padding: 0 16px !important;
+      box-shadow: 0 4px 16px rgba(251, 191, 36, 0.5) !important;
+    }
+    #save-supplier-btn:hover span,
+    #save-client-btn:hover span {
+      opacity: 1 !important;
+      width: auto !important;
+    }
+    #save-supplier-btn:hover svg,
+    #save-client-btn:hover svg {
+      transform: rotate(90deg) !important;
+    }
+    #save-supplier-btn:active,
+    #save-client-btn:active {
+      transform: translateX(0) scale(0.95) !important;
+    }
+    
     .card.radius-16, .card {
       background: white !important;
       border: 1px solid #e2e8f0 !important;
@@ -151,15 +182,15 @@
             <div class="card-body p-24">
               <div class="row g-16">
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Номер счёта <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Номер счёта <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="invoice_number" placeholder="Например: 124" required>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Дата счёта <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Дата счёта <span class="text-danger">*</span></label>
                   <input type="text" class="form-control date-picker" id="invoice_date" placeholder="Выберите дату" required>
                 </div>
                 <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Основание (договор, счёт)</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Основание (договор, счёт)</label>
                   <input type="text" class="form-control" id="contract_info" placeholder="Например: Договор №34 от 30.08.2025">
                 </div>
               </div>
@@ -177,41 +208,49 @@
             <div class="card-body p-24">
               <div class="row g-16">
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Наименование <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="supplier_name" placeholder='ООО "Компания"' required>
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label fw-medium mb-8">ИНН <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">ИНН <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="supplier_inn" placeholder="7707123456" required maxlength="12">
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label fw-medium mb-8">КПП</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">КПП</label>
                   <input type="text" class="form-control" id="supplier_kpp" placeholder="770701001" maxlength="9">
                 </div>
-                <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Адрес <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="supplier_address" placeholder="123456, г. Москва, ул. Примерная, д. 1" required>
+                <div class="col-12" style="position: relative;">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Адрес <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="supplier_address" placeholder="123456, г. Москва, ул. Примерная, д. 1" required style="padding-right: 50px;">
+                  <!-- Кнопка добавить в организации внутри поля -->
+                  <button type="button" id="save-supplier-btn" title="Добавить в мои организации" style="position: absolute; right: 12px; bottom: 10px; background: #FBBF24; color: #0f172a; border: none; border-radius: 0.75rem; height: 36px; min-width: 36px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); z-index: 10; transform: translateX(calc(100% + 24px)); white-space: nowrap; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="flex-shrink: 0; transition: transform 0.3s;">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span style="opacity: 0; width: 0; overflow: hidden; transition: opacity 0.3s, width 0.3s;">Добавить в мои организации</span>
+                  </button>
                 </div>
               </div>
               
               <!-- Bank Details -->
               <div class="mt-24 pt-16 border-top">
-                <label class="form-label fw-medium mb-16">Банковские реквизиты</label>
+                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Банковские реквизиты</label>
                 <div class="row g-16">
                   <div class="col-md-6">
-                    <label class="form-label text-sm mb-4">Банк <span class="text-danger">*</span></label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Банк <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="supplier_bank_name" placeholder="ПАО Сбербанк" required>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label text-sm mb-4">БИК <span class="text-danger">*</span></label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">БИК <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="supplier_bank_bik" placeholder="044525225" required maxlength="9">
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label text-sm mb-4">Расчётный счёт <span class="text-danger">*</span></label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Расчётный счёт <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="supplier_bank_account" placeholder="40702810000000000001" required maxlength="20">
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label text-sm mb-4">Корр. счёт</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Корр. счёт</label>
                     <input type="text" class="form-control" id="supplier_bank_corr" placeholder="30101810400000000225" maxlength="20">
                   </div>
                 </div>
@@ -219,14 +258,14 @@
               
               <!-- Signatures -->
               <div class="mt-24 pt-16 border-top">
-                <label class="form-label fw-medium mb-16">Подписанты</label>
+                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Подписанты</label>
                 <div class="row g-16">
                   <div class="col-md-6">
-                    <label class="form-label text-sm mb-4">Руководитель</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Руководитель</label>
                     <input type="text" class="form-control" id="supplier_director" placeholder="Иванов И.И.">
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label text-sm mb-4">Главный бухгалтер</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Главный бухгалтер</label>
                     <input type="text" class="form-control" id="supplier_accountant" placeholder="Петрова П.П.">
                   </div>
                 </div>
@@ -245,20 +284,28 @@
             <div class="card-body p-24">
               <div class="row g-16">
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Наименование <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="client_name" placeholder='ООО "Контрагент"' required>
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label fw-medium mb-8">ИНН <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">ИНН <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="client_inn" placeholder="7707654321" required maxlength="12">
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label fw-medium mb-8">КПП</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">КПП</label>
                   <input type="text" class="form-control" id="client_kpp" placeholder="770701001" maxlength="9">
                 </div>
-                <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Адрес</label>
-                  <input type="text" class="form-control" id="client_address" placeholder="Адрес покупателя">
+                <div class="col-12" style="position: relative;">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Адрес</label>
+                  <input type="text" class="form-control" id="client_address" placeholder="Адрес покупателя" style="padding-right: 50px;">
+                  <!-- Кнопка добавить в клиенты внутри поля -->
+                  <button type="button" id="save-client-btn" title="Добавить в мои контрагенты" style="position: absolute; right: 12px; bottom: 10px; background: #FBBF24; color: #0f172a; border: none; border-radius: 0.75rem; height: 36px; min-width: 36px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); z-index: 10; transform: translateX(calc(100% + 24px)); white-space: nowrap; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="flex-shrink: 0; transition: transform 0.3s;">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span style="opacity: 0; width: 0; overflow: hidden; transition: opacity 0.3s, width 0.3s;">Добавить в мои контрагенты</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -433,13 +480,100 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // Debounced preview function
+  // ========== Action Buttons Management ==========
+  // Show "Add to organizations" button on manual supplier input
+  $('#supplier_name, #supplier_inn').on('input', function() {
+    const name = $('#supplier_name').val().trim();
+    const inn = $('#supplier_inn').val().trim();
+    if (name && inn && inn.length >= 10) {
+      $('#save-supplier-btn').addClass('show');
+    } else {
+      $('#save-supplier-btn').removeClass('show');
+    }
+  });
+  
+  // Show "Add to clients" button on manual client input
+  $('#client_name, #client_inn').on('input', function() {
+    const name = $('#client_name').val().trim();
+    const inn = $('#client_inn').val().trim();
+    if (name && inn && inn.length >= 10) {
+      $('#save-client-btn').addClass('show');
+    } else {
+      $('#save-client-btn').removeClass('show');
+    }
+  });
+  
+  // Save supplier to organizations
+  $('#save-supplier-btn').on('click', async function() {
+    const data = {
+      org_type: $('#supplier_inn').val().length === 12 ? 'ip' : 'ooo',
+      name: $('#supplier_name').val(),
+      inn: $('#supplier_inn').val(),
+      kpp: $('#supplier_kpp').val() || null,
+      address: $('#supplier_address').val()
+    };
+    
+    try {
+      const response = await fetch('/api/v1/organizations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) throw new Error('API error');
+    } catch (error) {
+      // Fallback to localStorage
+      const orgs = JSON.parse(localStorage.getItem('organizations') || '[]');
+      data.id = 'org_' + Date.now();
+      orgs.push(data);
+      localStorage.setItem('organizations', JSON.stringify(orgs));
+    }
+    
+    const toast = $('<div class=\"position-fixed top-0 end-0 m-24 p-16 bg-success-100 text-success-main shadow-lg\" style=\"z-index: 9999;\"><div class=\"d-flex align-items-center gap-8\"><iconify-icon icon=\"mdi:check-circle\" class=\"text-xl\"></iconify-icon><span>Организация добавлена!</span></div></div>');
+    $('body').append(toast);
+    setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 2000);
+    $('#save-supplier-btn').removeClass('show');
+  });
+  
+  // Save client to contractors
+  $('#save-client-btn').on('click', async function() {
+    const data = {
+      org_type: $('#client_inn').val().length === 12 ? 'ip' : 'ooo',
+      name: $('#client_name').val(),
+      inn: $('#client_inn').val(),
+      kpp: $('#client_kpp').val() || null,
+      address: $('#client_address').val()
+    };
+    
+    try {
+      const response = await fetch('/api/v1/contractors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) throw new Error('API error');
+    } catch (error) {
+      // Fallback to localStorage
+      const contractors = JSON.parse(localStorage.getItem('contractors') || '[]');
+      data.id = 'contractor_' + Date.now();
+      contractors.push(data);
+      localStorage.setItem('contractors', JSON.stringify(contractors));
+    }
+    
+    const toast = $('<div class=\"position-fixed top-0 end-0 m-24 p-16 bg-success-100 text-success-main shadow-lg\" style=\"z-index: 9999;\"><div class=\"d-flex align-items-center gap-8\"><iconify-icon icon=\"mdi:check-circle\" class=\"text-xl\"></iconify-icon><span>Контрагент добавлен!</span></div></div>');
+    $('body').append(toast);
+    setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 2000);
+    $('#save-client-btn').removeClass('show');
+  });
+  
+  // Debounced preview function with optimization
   let previewTimeout = null;
+  let isPreviewUpdating = false;
+  
   function debouncedPreview() {
     if (previewTimeout) {
       clearTimeout(previewTimeout);
     }
-    previewTimeout = setTimeout(loadPreview, 500);
+    previewTimeout = setTimeout(loadPreview, 1500); // Increased from 500ms to 1.5s
   }
   
   // ========== Products Management ==========
@@ -704,6 +838,12 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // ========== Preview ==========
   async function loadPreview() {
+    // Prevent concurrent preview updates
+    if (isPreviewUpdating) {
+      return;
+    }
+    
+    isPreviewUpdating = true;
     const formData = collectFormData();
     
     try {
@@ -723,6 +863,8 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     } catch (error) {
       console.error('Preview error:', error);
+    } finally {
+      isPreviewUpdating = false;
     }
   }
   
@@ -793,8 +935,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // Load initial preview
-  setTimeout(loadPreview, 500);
+  // Load initial preview with reduced delay
+  setTimeout(loadPreview, 100);
 });
 </script>
 
