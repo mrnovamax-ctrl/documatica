@@ -4,10 +4,11 @@ Admin Articles - управление статьями
 
 import json
 import uuid
+import shutil
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Optional
-from fastapi import APIRouter, Request, Form
+from fastapi import APIRouter, Request, Form, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 
 from app.core.templates import templates
@@ -17,6 +18,10 @@ router = APIRouter()
 
 # Путь к данным
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
+UPLOAD_DIR = Path(__file__).parent.parent / "static" / "uploads" / "articles"
+
+# Создаём папку для загрузок если её нет
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_articles() -> Dict[str, Any]:
@@ -285,3 +290,61 @@ async def article_toggle_publish(request: Request, article_id: str):
     save_articles(data)
     
     return JSONResponse({"success": True})
+
+
+@router.post("/upload-image/")
+async def upload_image(request: Request, file: UploadFile = File(...)):
+    """Загрузка изображения статьи"""
+    auth_check = require_admin(request)
+    if auth_check:
+        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+    
+    # Проверяем тип файла
+    allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+    if file.content_type not in allowed_types:
+        return JSONResponse({"error": "Недопустимый формат файла"}, status_code=400)
+    
+    # Генерируем уникальное имя файла
+    file_ext = file.filename.split(".")[-1] if "." in file.filename else "jpg"
+    unique_filename = f"{uuid.uuid4()}.{file_ext}"
+    file_path = UPLOAD_DIR / unique_filename
+    
+    # Сохраняем файл
+    try:
+        with open(file_path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+    except Exception as e:
+        return JSONResponse({"error": f"Ошибка сохранения: {str(e)}"}, status_code=500)
+    
+    # Возвращаем URL
+    image_url = f"/static/uploads/articles/{unique_filename}"
+    return JSONResponse({"success": True, "url": image_url})
+
+
+@router.post("/tinymce-upload/")
+async def tinymce_upload_image(request: Request, file: UploadFile = File(...)):
+    """Загрузка изображения через TinyMCE"""
+    auth_check = require_admin(request)
+    if auth_check:
+        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+    
+    # Проверяем тип файла
+    allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+    if file.content_type not in allowed_types:
+        return JSONResponse({"error": "Недопустимый формат файла"}, status_code=400)
+    
+    # Генерируем уникальное имя файла
+    file_ext = file.filename.split(".")[-1] if "." in file.filename else "jpg"
+    unique_filename = f"{uuid.uuid4()}.{file_ext}"
+    file_path = UPLOAD_DIR / unique_filename
+    
+    # Сохраняем файл
+    try:
+        with open(file_path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+    except Exception as e:
+        return JSONResponse({"error": f"Ошибка сохранения: {str(e)}"}, status_code=500)
+    
+    # Возвращаем URL в формате TinyMCE
+    image_url = f"/static/uploads/articles/{unique_filename}"
+    return JSONResponse({"location": image_url})

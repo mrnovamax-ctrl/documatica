@@ -377,25 +377,42 @@ $(document).ready(function() {
         
         let html = '';
         filtered.forEach(org => {
-            const typeLabel = org.org_type === 'ip' ? 'ИП' : 'Юр. лицо';
-            const typeBadgeClass = org.org_type === 'ip' ? 'bg-info-100 text-info-600' : 'bg-primary-100 text-primary-600';
+            const logoHtml = org.logo_url 
+                ? `<img src="${org.logo_url}" alt="${org.name}" style="max-width: 48px; max-height: 48px; object-fit: contain;">`
+                : `<div class="w-48-px h-48-px bg-primary-100 rounded-circle d-flex justify-content-center align-items-center">
+                     <iconify-icon icon="mdi:domain" class="text-primary-600 text-xl"></iconify-icon>
+                   </div>`;
+            
             html += `
-                <div class="card border mb-12 organization-item" data-id="${org.id}" style="cursor: pointer;">
-                    <div class="card-body p-16">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <span class="badge ${typeBadgeClass} mb-8">${typeLabel}</span>
-                                <h6 class="mb-4">${org.name}</h6>
-                                <p class="text-secondary-light small mb-0">ИНН: ${org.inn}${org.kpp ? ', КПП: ' + org.kpp : ''}</p>
-                                ${org.address ? `<p class="text-secondary-light small mb-0">${org.address}</p>` : ''}
+                <div class="col-12 organization-item" data-id="${org.id}">
+                    <div class="card radius-8 border-0 shadow-sm h-100" style="cursor: pointer; transition: all 0.2s;">
+                        <div class="card-body p-20">
+                            <div class="d-flex align-items-start justify-content-between">
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-semibold mb-8">${org.name}</h6>
+                                    <p class="text-secondary-light text-sm mb-6">ИНН: ${org.inn}</p>
+                                    ${org.kpp ? `<p class="text-secondary-light text-sm mb-6">КПП: ${org.kpp}</p>` : ''}
+                                    ${org.address ? `<p class="text-secondary-light text-sm mb-0">
+                                        <iconify-icon icon="mdi:map-marker" class="me-1"></iconify-icon>${org.address}
+                                    </p>` : ''}
+                                </div>
+                                <div class="d-flex align-items-center gap-2 ms-3" style="flex-shrink: 0;">
+                                    ${logoHtml}
+                                    <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
+                                </div>
                             </div>
-                            <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
                         </div>
                     </div>
                 </div>
             `;
         });
         container.html(html);
+        
+        // Добавляем hover эффект
+        $('.organization-item .card').hover(
+            function() { $(this).css('transform', 'translateY(-2px)'); },
+            function() { $(this).css('transform', 'translateY(0)'); }
+        );
     }
     
     // Load contractors for modal
@@ -438,25 +455,42 @@ $(document).ready(function() {
         
         let html = '';
         filtered.forEach(contractor => {
-            const typeLabel = contractor.org_type === 'ip' ? 'ИП' : 'Юр. лицо';
-            const typeBadgeClass = contractor.org_type === 'ip' ? 'bg-info-100 text-info-600' : 'bg-success-100 text-success-600';
+            const logoHtml = contractor.logo_url 
+                ? `<img src="${contractor.logo_url}" alt="${contractor.name}" style="max-width: 48px; max-height: 48px; object-fit: contain;">`
+                : `<div class="w-48-px h-48-px bg-success-100 rounded-circle d-flex justify-content-center align-items-center">
+                     <iconify-icon icon="mdi:account-group" class="text-success-600 text-xl"></iconify-icon>
+                   </div>`;
+            
             html += `
-                <div class="card border mb-12 contractor-item" data-id="${contractor.id}" style="cursor: pointer;">
-                    <div class="card-body p-16">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <span class="badge ${typeBadgeClass} mb-8">${typeLabel}</span>
-                                <h6 class="mb-4">${contractor.name}</h6>
-                                <p class="text-secondary-light small mb-0">ИНН: ${contractor.inn}${contractor.kpp ? ', КПП: ' + contractor.kpp : ''}</p>
-                                ${contractor.address ? `<p class="text-secondary-light small mb-0">${contractor.address}</p>` : ''}
+                <div class="col-12 contractor-item" data-id="${contractor.id}">
+                    <div class="card radius-8 border-0 shadow-sm h-100" style="cursor: pointer; transition: all 0.2s;">
+                        <div class="card-body p-20">
+                            <div class="d-flex align-items-start justify-content-between">
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-semibold mb-8">${contractor.name}</h6>
+                                    <p class="text-secondary-light text-sm mb-6">ИНН: ${contractor.inn}</p>
+                                    ${contractor.kpp ? `<p class="text-secondary-light text-sm mb-6">КПП: ${contractor.kpp}</p>` : ''}
+                                    ${contractor.address ? `<p class="text-secondary-light text-sm mb-0">
+                                        <iconify-icon icon="mdi:map-marker" class="me-1"></iconify-icon>${contractor.address}
+                                    </p>` : ''}
+                                </div>
+                                <div class="d-flex align-items-center gap-2 ms-3" style="flex-shrink: 0;">
+                                    ${logoHtml}
+                                    <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
+                                </div>
                             </div>
-                            <iconify-icon icon="mdi:chevron-right" class="text-xl text-secondary-light"></iconify-icon>
                         </div>
                     </div>
                 </div>
             `;
         });
         container.html(html);
+        
+        // Добавляем hover эффект
+        $('.contractor-item .card').hover(
+            function() { $(this).css('transform', 'translateY(-2px)'); },
+            function() { $(this).css('transform', 'translateY(0)'); }
+        );
     }
     
     // Select organization from modal
@@ -625,7 +659,7 @@ $(document).ready(function() {
                         <label class="form-label text-sm mb-4">Кол-во</label>
                         <input type="number" class="form-control product-qty" value="${product.qty || 1}" min="0.01" step="0.01">
                     </div>
-                    <div class="col-auto" style="width: 90px;">
+                    <div class="col-auto" style="width: 110px;">
                         <label class="form-label text-sm mb-4">Ед. изм.</label>
                         <select class="form-select product-unit">
                             <option value="шт" ${product.unit === 'шт' ? 'selected' : ''}>шт</option>
@@ -641,6 +675,10 @@ $(document).ready(function() {
                     <div class="col-auto" style="width: 120px;">
                         <label class="form-label text-sm mb-4">Цена</label>
                         <input type="number" class="form-control product-price" value="${product.price || 0}" min="0" step="0.01">
+                    </div>
+                    <div class="col-auto" style="width: 120px;">
+                        <label class="form-label text-sm mb-4">Сумма</label>
+                        <input type="text" class="form-control product-total" value="0 ₽" readonly>
                     </div>
                     <div class="col-auto">
                         <button type="button" class="btn btn-outline-danger remove-product" title="Удалить">
@@ -946,7 +984,7 @@ $(document).ready(function() {
                         <label class="form-label text-sm mb-4">Кол-во</label>
                         <input type="number" class="form-control product-qty" value="1" min="0.01" step="0.01">
                     </div>
-                    <div class="col-auto" style="width: 90px;">
+                    <div class="col-auto" style="width: 110px;">
                         <label class="form-label text-sm mb-4">Ед. изм.</label>
                         <select class="form-select product-unit">
                             <option value="шт">шт</option>
@@ -962,6 +1000,10 @@ $(document).ready(function() {
                     <div class="col-auto" style="width: 120px;">
                         <label class="form-label text-sm mb-4">Цена</label>
                         <input type="number" class="form-control product-price" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="col-auto" style="width: 120px;">
+                        <label class="form-label text-sm mb-4">Сумма</label>
+                        <input type="text" class="form-control product-total" value="0 ₽" readonly>
                     </div>
                     <div class="col-auto">
                         <button type="button" class="btn btn-outline-danger remove-product" title="Удалить">
@@ -1845,10 +1887,10 @@ $(document).ready(function() {
     
     // Функция для загрузки предпросмотра в боковой iframe
     async function loadSidebarPreview() {
-        const iframe = document.getElementById('sidebar-preview-iframe');
-        if (!iframe) return;
+        const canvas = document.getElementById('sidebar-preview-canvas');
+        if (!canvas) return;
         
-        const container = iframe.parentElement;
+        const container = canvas.parentElement;
         const requestData = collectFormData();
         
         try {
@@ -1861,26 +1903,41 @@ $(document).ready(function() {
             
             if (response.ok) {
                 const html = await response.text();
-                iframe.srcdoc = html;
                 
-                // Масштабирование под ширину контейнера
-                iframe.onload = function() {
-                    const containerWidth = container.clientWidth;
-                    const docWidth = 1150;
-                    const scale = containerWidth / docWidth;
-                    
-                    // Получаем реальную высоту документа
-                    let docHeight = 850; // минимум
-                    try {
-                        const doc = iframe.contentDocument || iframe.contentWindow.document;
-                        docHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight, 850);
-                    } catch(e) {}
-                    
-                    iframe.style.width = docWidth + 'px';
-                    iframe.style.height = docHeight + 'px';
-                    iframe.style.transform = 'scale(' + scale + ')';
-                    container.style.height = (docHeight * scale) + 'px';
-                };
+                // Создаём временный контейнер для рендеринга
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.width = '1200px';
+                tempDiv.innerHTML = html;
+                document.body.appendChild(tempDiv);
+                
+                // Ждём загрузки стилей и изображений
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Рендерим в canvas
+                const renderedCanvas = await html2canvas(tempDiv, {
+                    scale: 4,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                });
+                
+                // Удаляем временный контейнер
+                document.body.removeChild(tempDiv);
+                
+                // Устанавливаем canvas в полное разрешение (без даунскейла)
+                canvas.width = renderedCanvas.width;
+                canvas.height = renderedCanvas.height;
+                
+                // Копируем изображение в полном разрешении
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(renderedCanvas, 0, 0);
+                
+                // Через CSS масштабируем только отображение
+                canvas.style.width = '100%';
+                canvas.style.height = 'auto';
+                canvas.style.display = 'block';
             }
         } catch (error) {
             console.log('Ошибка загрузки предпросмотра:', error);
@@ -2302,4 +2359,118 @@ $(document).ready(function() {
     });
     
     // ============== END GUEST REGISTRATION HANDLER ==============
+    
+    // ============== AUTO-FIT PREVIEW ==============
+    function fitPreview() {
+        const $iframe = $('#sidebar-preview-iframe');
+        const $container = $iframe.parent();
+        
+        if ($iframe.length === 0) return;
+        
+        const containerWidth = $container.width();
+        const containerHeight = $container.height();
+        
+        // Размеры УПД (альбомная)
+        const docWidth = 1500;
+        const docHeight = 1000;
+        
+        // Вычисляем масштаб чтобы влезло всё
+        const scaleW = containerWidth / docWidth;
+        const scaleH = containerHeight / docHeight;
+        const scale = Math.min(scaleW, scaleH) * 0.95; // 0.95 для отступа
+        
+        // Устанавливаем оригинальные размеры и масштабируем через transform
+        $iframe.css({
+            'width': docWidth + 'px',
+            'height': docHeight + 'px',
+            'transform': `scale(${scale})`,
+            'transform-origin': 'center center'
+        });
+    }
+    
+    // Применяем при загрузке и изменении размера
+    setTimeout(fitPreview, 500);
+    $(window).on('resize', fitPreview);
+    // ============== END AUTO-FIT PREVIEW ==============
+    
+    // ============== CANVAS MAGNIFIER (лупа) ==============
+    const $magnifier = $('#canvas-magnifier');
+    const $magnifierCanvas = $('#magnifier-canvas')[0];
+    const $previewCanvas = $('#sidebar-preview-canvas')[0];
+    const $container = $previewCanvas ? $($previewCanvas).parent() : null;
+    
+    if ($container && $previewCanvas && $magnifierCanvas) {
+        const displayWidth = 400; // Визуальный размер лупы
+        const displayHeight = 300;
+        const canvasWidth = 1200; // Физическое разрешение canvas
+        const canvasHeight = 900;
+        const magnification = 1.1; // Увеличение в 1.1 раза
+        const magnifierCtx = $magnifierCanvas.getContext('2d');
+        
+        $container.on('mouseenter', function() {
+            if ($previewCanvas.width > 0) { // Проверяем что canvas отрендерен
+                $magnifier.show();
+            }
+        });
+        
+        $container.on('mouseleave', function() {
+            $magnifier.hide();
+        });
+        
+        $container.on('mousemove', function(e) {
+            if ($previewCanvas.width === 0) return;
+            
+            const containerOffset = $container.offset();
+            const mouseX = e.pageX - containerOffset.left;
+            const mouseY = e.pageY - containerOffset.top;
+            
+            // Позиционируем лупу (центр в курсоре) - используем визуальные размеры
+            let left = mouseX - displayWidth / 2;
+            let top = mouseY - displayHeight / 2;
+            
+            // Ограничиваем лупу границами контейнера
+            const containerWidth = $container.width();
+            const containerHeight = $container.height();
+            
+            if (left < 0) left = 0;
+            if (top < 0) top = 0;
+            if (left + displayWidth > containerWidth) left = containerWidth - displayWidth;
+            if (top + displayHeight > containerHeight) top = containerHeight - displayHeight;
+            
+            $magnifier.css({
+                left: left + 'px',
+                top: top + 'px'
+            });
+            
+            // Вычисляем координаты на canvas с учётом масштабирования
+            const canvasRect = $previewCanvas.getBoundingClientRect();
+            const containerRect = $container[0].getBoundingClientRect();
+            
+            // Относительные координаты мыши на canvas
+            const canvasMouseX = (mouseX - (canvasRect.left - containerRect.left)) * ($previewCanvas.width / canvasRect.width);
+            const canvasMouseY = (mouseY - (canvasRect.top - containerRect.top)) * ($previewCanvas.height / canvasRect.height);
+            
+            // Размер области которую захватываем (в пикселях оригинального canvas)
+            const sourceWidth = displayWidth / magnification;
+            const sourceHeight = displayHeight / magnification;
+            
+            // Очищаем magnifier canvas
+            magnifierCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+            
+            // Рисуем увеличенную область
+            magnifierCtx.drawImage(
+                $previewCanvas,
+                canvasMouseX - sourceWidth / 2, // source x
+                canvasMouseY - sourceHeight / 2, // source y
+                sourceWidth, // source width
+                sourceHeight, // source height
+                0, // dest x
+                0, // dest y
+                canvasWidth, // dest width
+                canvasHeight  // dest height
+            );
+        });
+    }
+    // ============== END CANVAS MAGNIFIER ==============
+    
 });
