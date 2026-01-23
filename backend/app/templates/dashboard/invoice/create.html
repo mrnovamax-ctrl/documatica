@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
   <!-- Date picker css -->
   <link rel="stylesheet" href="/static/css/lib/flatpickr.min.css">
+  <!-- html2canvas for preview -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <!-- Documatica v12.0 Design System (ONLY v12, no old styles) -->
   <link rel="stylesheet" href="/static/css/documatica.css?v=12.11">
   <style>
@@ -162,12 +164,10 @@
 
   <div class="dashboard-content-v12">
     <!-- Page Title -->
-    <header class="page-header-v12">
-      <div class="page-header-left-v12">
-        <h1 class="page-title-v12">Создать счёт на оплату</h1>
-        <p class="page-subtitle-v12">Заполните данные для формирования счёта</p>
-      </div>
-    </header>
+    <div class="page-title-v12">
+      <h1>Создать счёт на оплату</h1>
+      <p>Заполните данные для формирования счёта</p>
+    </div>
 
     <form id="invoice-form">
       <div class="row gy-4">
@@ -199,9 +199,9 @@
 
           <!-- Supplier Info -->
           <div class="card radius-16 mb-24">
-            <div class="constructor-card-header-v12">
-              <h4>Поставщик</h4>
-              <button type="button" class="constructor-card-action-btn-v12" data-bs-toggle="modal" data-bs-target="#selectOrganizationModal">
+            <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
+              <h4 class="mb-0">Поставщик</h4>
+              <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectOrganizationModal">
                 Выбрать из списка
               </button>
             </div>
@@ -275,9 +275,9 @@
 
           <!-- Client Info -->
           <div class="card radius-16 mb-24">
-            <div class="constructor-card-header-v12">
-              <h4>Покупатель (Плательщик)</h4>
-              <button type="button" class="constructor-card-action-btn-v12" data-bs-toggle="modal" data-bs-target="#selectContractorModal">
+            <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
+              <h4 class="mb-0">Покупатель (Плательщик)</h4>
+              <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectContractorModal">
                 Выбрать из списка
               </button>
             </div>
@@ -379,17 +379,61 @@
         </div>
 
         <!-- Right Column - Preview -->
-        <div class="col-xxl-5 col-xl-6">
-          <div class="constructor-preview-v12">
-            <div class="constructor-preview-header-v12">
-              <h4>Предпросмотр</h4>
-              <button type="button" class="constructor-card-action-btn-v12" id="refresh-preview">
-                Обновить
-              </button>
+        <div class="col-xxl-5 col-xl-6 d-none d-xl-block">
+          <div class="sticky-preview">
+            <div class="card radius-16">
+              <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
+                <h4 class="mb-0">Предпросмотр счёта</h4>
+                <div class="d-flex" style="gap: 8px;">
+                  <button type="button" class="btn btn-sm btn-outline-primary-600" id="refresh-preview">
+                    Обновить
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#previewModal">
+                    Предпросмотр
+                  </button>
+                </div>
+              </div>
+              <div class="card-body p-0 bg-white d-flex align-items-start justify-content-center position-relative" style="overflow: auto; background: #f8fafc;">
+                <canvas id="sidebar-preview-canvas" style="width: 100%; height: auto;"></canvas>
+                <!-- Лупа -->
+                <div id="canvas-magnifier" style="display: none; position: absolute; width: 400px; height: 300px; border: 3px solid #3b82f6; border-radius: 12px; pointer-events: none; z-index: 1000; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.3); background: white;">
+                  <canvas id="magnifier-canvas" width="1200" height="900" style="width: 100%; height: 100%; display: block;"></canvas>
+                </div>
+              </div>
             </div>
-            <div class="constructor-preview-body-v12">
-              <div style="transform: scale(0.48); transform-origin: top left; width: 208%; height: 850px;">
-                <iframe id="preview-iframe" style="width: 100%; height: 1600px; border: none; background: white; border-radius: 8px;"></iframe>
+            
+            <!-- AI Analysis Block -->
+            <div class="card radius-16 mt-24">
+              <div class="card-header py-16 px-24 d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+                <div class="d-flex align-items-center" style="gap: 24px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
+                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                    <circle cx="7.5" cy="14.5" r="1.5"/>
+                    <circle cx="16.5" cy="14.5" r="1.5"/>
+                  </svg>
+                  <span class="fw-bold text-uppercase" style="font-size: 18px; letter-spacing: 0.3em; color: #fbbf24; font-weight: 900;">ИИ Анализ документа</span>
+                </div>
+                <div class="d-flex align-items-center gap-8">
+                  <button type="button" class="btn btn-sm d-none align-items-center gap-8" id="clear-highlights-btn" style="background: transparent; color: #94a3b8; border: 1px solid #475569; font-weight: 600; font-size: 10px; text-transform: uppercase;">
+                    Сбросить подсветку
+                  </button>
+                  <button type="button" class="btn btn-sm d-flex align-items-center gap-8" id="ai-analyze-btn" style="background: #fbbf24; color: #0f172a; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="11" cy="11" r="8"/>
+                      <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    Анализировать
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" id="ai-analysis-result" style="min-height: 100px;">
+                <div class="text-center py-24 text-secondary-light">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mb-12 mx-auto d-block" style="opacity: 0.5;">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 11 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                  </svg>
+                  <p class="mb-4 fw-semibold text-secondary-light">Нажмите "Анализировать" для проверки документа</p>
+                  <small class="text-secondary-light">ИИ проверит документ на ошибки с точки зрения бухгалтера и юриста</small>
+                </div>
               </div>
             </div>
           </div>
@@ -843,6 +887,9 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
+    const canvas = document.getElementById('sidebar-preview-canvas');
+    if (!canvas) return;
+    
     isPreviewUpdating = true;
     const formData = collectFormData();
     
@@ -859,7 +906,41 @@ document.addEventListener('DOMContentLoaded', function() {
       
       if (response.ok) {
         const html = await response.text();
-        document.getElementById('preview-iframe').srcdoc = html;
+        
+        // Создаём временный контейнер для рендеринга
+        const tempDiv = document.createElement('div');
+        tempDiv.style.position = 'absolute';
+        tempDiv.style.left = '-9999px';
+        tempDiv.style.width = '1200px';
+        tempDiv.innerHTML = html;
+        document.body.appendChild(tempDiv);
+        
+        // Уменьшили задержку с 500мс до 100мс
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Рендерим в canvas с пониженным scale для ускорения
+        const renderedCanvas = await html2canvas(tempDiv, {
+          scale: 3, // Было 4, стало 3 для ускорения
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff'
+        });
+        
+        // Удаляем временный контейнер
+        document.body.removeChild(tempDiv);
+        
+        // Устанавливаем canvas в полное разрешение (без даунскейла)
+        canvas.width = renderedCanvas.width;
+        canvas.height = renderedCanvas.height;
+        
+        // Копируем изображение в полном разрешении
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(renderedCanvas, 0, 0);
+        
+        // Через CSS масштабируем только отображение
+        canvas.style.width = '100%';
+        canvas.style.height = 'auto';
+        canvas.style.display = 'block';
       }
     } catch (error) {
       console.error('Preview error:', error);
@@ -937,6 +1018,83 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Load initial preview with reduced delay
   setTimeout(loadPreview, 100);
+  
+  // ============== CANVAS MAGNIFIER (лупа) ==============
+  const magnifierEl = document.getElementById('canvas-magnifier');
+  const magnifierCanvas = document.getElementById('magnifier-canvas');
+  const previewCanvas = document.getElementById('sidebar-preview-canvas');
+  const container = previewCanvas ? previewCanvas.parentElement : null;
+  
+  if (container && previewCanvas && magnifierCanvas) {
+    const displayWidth = 400; // Визуальный размер лупы
+    const displayHeight = 300;
+    const canvasWidth = 1200; // Физическое разрешение canvas
+    const canvasHeight = 900;
+    const magnification = 1.1; // Увеличение в 1.1 раза
+    const magnifierCtx = magnifierCanvas.getContext('2d');
+    
+    container.addEventListener('mouseenter', function() {
+      if (previewCanvas.width > 0) { // Проверяем что canvas отрендерен
+        magnifierEl.style.display = 'block';
+      }
+    });
+    
+    container.addEventListener('mouseleave', function() {
+      magnifierEl.style.display = 'none';
+    });
+    
+    container.addEventListener('mousemove', function(e) {
+      if (previewCanvas.width === 0) return;
+      
+      const containerRect = container.getBoundingClientRect();
+      const mouseX = e.clientX - containerRect.left;
+      const mouseY = e.clientY - containerRect.top;
+      
+      // Позиционируем лупу (центр в курсоре) - используем визуальные размеры
+      let left = mouseX - displayWidth / 2;
+      let top = mouseY - displayHeight / 2;
+      
+      // Ограничиваем лупу границами контейнера
+      const containerWidth = containerRect.width;
+      const containerHeight = containerRect.height;
+      
+      if (left < 0) left = 0;
+      if (top < 0) top = 0;
+      if (left + displayWidth > containerWidth) left = containerWidth - displayWidth;
+      if (top + displayHeight > containerHeight) top = containerHeight - displayHeight;
+      
+      magnifierEl.style.left = left + 'px';
+      magnifierEl.style.top = top + 'px';
+      
+      // Вычисляем координаты на canvas с учётом масштабирования
+      const canvasRect = previewCanvas.getBoundingClientRect();
+      
+      // Относительные координаты мыши на canvas
+      const canvasMouseX = (mouseX - (canvasRect.left - containerRect.left)) * (previewCanvas.width / canvasRect.width);
+      const canvasMouseY = (mouseY - (canvasRect.top - containerRect.top)) * (previewCanvas.height / canvasRect.height);
+      
+      // Размер области которую захватываем (в пикселях оригинального canvas)
+      const sourceWidth = displayWidth / magnification;
+      const sourceHeight = displayHeight / magnification;
+      
+      // Очищаем magnifier canvas
+      magnifierCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+      
+      // Рисуем увеличенную область
+      magnifierCtx.drawImage(
+        previewCanvas,
+        canvasMouseX - sourceWidth / 2, // source x
+        canvasMouseY - sourceHeight / 2, // source y
+        sourceWidth, // source width
+        sourceHeight, // source height
+        0, // dest x
+        0, // dest y
+        canvasWidth, // dest width
+        canvasHeight  // dest height
+      );
+    });
+  }
+  // ============== END CANVAS MAGNIFIER ==============
 });
 </script>
 
