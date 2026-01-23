@@ -3949,6 +3949,169 @@ body {
    UPD Constructor v12.0
    ======================================== */
 
+/* Constructor page layout - full width */
+.upd-constructor-page {
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+/* Input group styles */
+.input-group .btn-outline-secondary-600 {
+  border-left: none !important;
+  border-radius: 0 8px 8px 0 !important;
+  margin-left: -1px;
+}
+
+.input-group .form-control {
+  border-radius: 8px 0 0 8px !important;
+}
+
+.input-group .form-control:focus + .btn-outline-secondary-600 {
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+}
+
+/* Flatpickr calendar z-index */
+.flatpickr-calendar {
+  z-index: 10000 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e2e8f0 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.flatpickr-months {
+  border-radius: 16px 16px 0 0 !important;
+  background: #f8fafc !important;
+}
+
+.flatpickr-current-month {
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  font-size: 14px !important;
+}
+
+.flatpickr-day {
+  border-radius: 8px !important;
+  color: #64748b !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+}
+
+.flatpickr-day:hover:not(.flatpickr-disabled) {
+  background: #f1f5f9 !important;
+  border-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.flatpickr-day.selected {
+  background: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: white !important;
+  font-weight: 700 !important;
+}
+
+.flatpickr-day.today {
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+  font-weight: 700 !important;
+}
+
+.flatpickr-day.today:hover {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+.flatpickr-weekday {
+  color: #94a3b8 !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+}
+
+/* Modals and overlays z-index fix */
+.modal {
+  z-index: 1055 !important;
+}
+
+.modal-backdrop {
+  z-index: 1050 !important;
+}
+
+.flatpickr-calendar.open {
+  z-index: 1060 !important;
+}
+
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+  fill: #64748b !important;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover {
+  fill: #3b82f6 !important;
+}
+
+/* Button styles for constructor */
+.btn-outline-primary-600 {
+  background: transparent !important;
+  color: #3b82f6 !important;
+  border: 2px solid #3b82f6 !important;
+  border-radius: 1rem !important;
+  padding: 14px 24px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  transition: all 0.3s ease !important;
+  transform: none !important;
+}
+
+.btn-outline-primary-600:hover {
+  background: #3b82f6 !important;
+  color: white !important;
+  border-color: #3b82f6 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3) !important;
+}
+
+.btn-outline-primary-600:focus {
+  background: #3b82f6 !important;
+  color: white !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-outline-primary-600:active {
+  transform: translateY(0px) !important;
+}
+
+.btn-outline-secondary-600 {
+  color: #64748b !important;
+  border: 1px solid #cbd5e1 !important;
+  background: transparent !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  padding: 10px 16px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn-outline-secondary-600:hover {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  border-color: #94a3b8 !important;
+}
+
+.btn-outline-secondary-600 iconify-icon {
+  font-size: 18px !important;
+}
+
 /* Page Background with Pattern */
 .constructor-page-v12 {
   background: #f8fafc;
@@ -3966,7 +4129,8 @@ body {
   z-index: 0;
 }
 
-.constructor-page-v12 > * {
+.constructor-page-v12 > main,
+.constructor-page-v12 > aside {
   position: relative;
   z-index: 1;
 }
@@ -4441,6 +4605,12 @@ body {
 }
 
 /* Preview Panel */
+.sticky-preview {
+  position: sticky;
+  top: 100px;
+  z-index: 1;
+}
+
 .constructor-preview-v12 {
   background: white;
   border: 1px solid #f1f5f9;

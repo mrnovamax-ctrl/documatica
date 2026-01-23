@@ -51,7 +51,6 @@
       min-height: 100vh !important;
       padding-top: 0 !important;
       margin-top: 0 !important;
-      position: relative !important;
     }
     
     /* Header at top of main */
@@ -162,11 +161,11 @@
   <!-- Header v12 -->
   {% include 'components/header_dashboard_v12.html' %}
 
-  <div class="dashboard-content-v12">
+  <div class="dashboard-content-v12 upd-constructor-page">
     <!-- Page Title -->
     <div class="page-title-v12">
       <h1>Создать счёт на оплату</h1>
-      <p>Заполните данные для формирования счёта</p>
+      <p>Счёт на оплату товаров и услуг</p>
     </div>
 
     <form id="invoice-form">
@@ -176,7 +175,7 @@
           
           <!-- Document Info -->
           <div class="card radius-16 mb-24">
-            <div class="card-header py-16 px-24 border-bottom">
+            <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
               <h4 class="mb-0">Реквизиты документа</h4>
             </div>
             <div class="card-body p-24">
@@ -187,7 +186,12 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Дата счёта <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control date-picker" id="invoice_date" placeholder="Выберите дату" required>
+                  <div style="position: relative;">
+                    <input type="text" class="form-control date-picker" id="invoice_date" placeholder="дд.мм.гггг" required style="padding-right: 45px;">
+                    <button type="button" id="invoice-date-icon" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: #64748b; cursor: pointer; padding: 4px 8px; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+                      <iconify-icon icon="mdi:calendar" style="font-size: 20px;"></iconify-icon>
+                    </button>
+                  </div>
                 </div>
                 <div class="col-12">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Основание (договор, счёт)</label>
@@ -313,7 +317,7 @@
 
           <!-- Products/Services -->
           <div class="card radius-16 mb-24">
-            <div class="card-header py-16 px-24 border-bottom">
+            <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
               <h4 class="mb-0">Товары и услуги</h4>
             </div>
             <div class="card-body p-24">
@@ -442,9 +446,6 @@
       </div>
     </form>
   </div>
-
-  <!-- Footer -->
-  {% include 'components/footer.html' %}
 </main>
 
 <!-- Select Organization Modal -->
@@ -523,6 +524,14 @@ document.addEventListener('DOMContentLoaded', function() {
       debouncedPreview();
     }
   });
+  
+  // Calendar icon opens datepicker
+  const invoiceDateEl = document.getElementById('invoice_date');
+  if (invoiceDateEl && invoiceDateEl._flatpickr) {
+    document.getElementById('invoice-date-icon').addEventListener('click', function() {
+      invoiceDateEl._flatpickr.open();
+    });
+  }
   
   // ========== Action Buttons Management ==========
   // Show "Add to organizations" button on manual supplier input
