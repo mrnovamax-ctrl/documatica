@@ -20,7 +20,7 @@
 
 {% block extra_css %}
 <!-- TinyMCE Editor -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/r2v05zzwh60bkbscnns4ljyx3jbi421dgma0nplglm1yn0p4/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 {% endblock %}
 
 {% block content %}
@@ -129,10 +129,17 @@
           Изображение
         </div>
         <div class="admin-sidebar-card-body">
-          <input type="text" name="image" id="imageInput" value="{{ article.image if article else '' }}"
-                 class="admin-input" placeholder="/static/images/articles/...">
-          <div id="imagePreview" style="margin-top: 12px; border-radius: 12px; overflow: hidden; display: {% if article and article.image %}block{% else %}none{% endif %};">
+          <input type="hidden" name="image" id="imageInput" value="{{ article.image if article else '' }}">
+          <div id="imagePreview" style="margin-bottom: 12px; border-radius: 12px; overflow: hidden; display: {% if article and article.image %}block{% else %}none{% endif %};">
             <img src="{{ article.image if article else '' }}" style="width: 100%; height: auto;">
+          </div>
+          <label class="admin-upload-btn" for="imageFileInput">
+            <iconify-icon icon="ri:upload-cloud-line" width="18"></iconify-icon>
+            Выбрать изображение
+          </label>
+          <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+          <div id="uploadProgress" style="display: none; margin-top: 8px; font-size: 12px; color: #3b82f6;">
+            Загрузка...
           </div>
         </div>
       </div>
@@ -260,7 +267,24 @@
   background: #f8fafc;
   border-top: 1px solid #f1f5f9;
 }
-
+.admin-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.admin-upload-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
 .admin-checkbox-label {
   display: flex;
   align-items: center;
@@ -350,14 +374,38 @@ document.getElementById('slugInput').addEventListener('input', function() {
   this.dataset.manual = 'true';
 });
 
-// Image preview
-document.getElementById('imageInput').addEventListener('input', function() {
-  const preview = document.getElementById('imagePreview');
-  if (this.value) {
-    preview.style.display = 'block';
-    preview.querySelector('img').src = this.value;
-  } else {
-    preview.style.display = 'none';
+// Image upload
+document.getElementById('imageFileInput').addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  const progress = document.getElementById('uploadProgress');
+  progress.style.display = 'block';
+  
+  try {
+    const response = await fetch('/admin/articles/upload-image/', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      document.getElementById('imageInput').value = result.url;
+      const preview = document.getElementById('imagePreview');
+      preview.style.display = 'block';
+      preview.querySelector('img').src = result.url;
+      progress.style.display = 'none';
+    } else {
+      alert('Ошибка загрузки: ' + (result.error || 'Неизвестная ошибка'));
+      progress.style.display = 'none';
+    }
+  } catch (error) {
+    alert('Ошибка загрузки изображения');
+    progress.style.display = 'none';
   }
 });
 
@@ -390,6 +438,10 @@ document.addEventListener('DOMContentLoaded', function() {
       content_style: 'body { font-family: Inter, sans-serif; font-size: 15px; line-height: 1.7; color: #334155; }',
       branding: false,
       promotion: false,
+      // Интеграция загрузки изображений
+      images_upload_url: '/admin/articles/tinymce-upload/',
+      automatic_uploads: true,
+      images_reuse_filename: false,
       setup: function(editor) {
         editor.on('change', function() {
           editor.save();

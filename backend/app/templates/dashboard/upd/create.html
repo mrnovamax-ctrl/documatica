@@ -18,10 +18,12 @@
   <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
   <!-- Date picker css -->
   <link rel="stylesheet" href="/static/css/lib/flatpickr.min.css">
+  <!-- html2canvas for preview -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <!-- Documatica v12.0 Design System (ONLY v12, no old styles) -->
   <link rel="stylesheet" href="/static/css/documatica.css?v=12.9">
   <!-- UPD Constructor Styles (extracted from inline for better performance) -->
-  <link rel="stylesheet" href="/static/css/upd-constructor.css?v=1.5">
+    <link rel="stylesheet" href="/static/css/upd-constructor.css?v=2.0">
 </head>
 
 <body class="constructor-page-v12">
@@ -36,7 +38,7 @@
   <!-- Header v12 -->
   {% include 'components/header_dashboard_v12.html' %}
 
-  <div class="dashboard-content-v12">
+  <div class="dashboard-content-v12 upd-constructor-page">
     <!-- Page Title -->
     <div class="page-title-v12">
       <h1>Создать УПД</h1>
@@ -50,7 +52,7 @@
           <!-- Document Info -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h6 class="mb-0">Параметры документа</h6>
+              <h4 class="mb-0">Параметры документа</h4>
             </div>
             <div class="card-body p-24">
               <div class="row g-16">
@@ -105,7 +107,7 @@
           <!-- Seller Info -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
-              <h6 class="mb-0">Продавец</h6>
+              <h4 class="mb-0">Продавец</h4>
               <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectCompanyModal">
                 Выбрать из списка
               </button>
@@ -207,16 +209,10 @@
           <!-- Buyer Info -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
-              <h6 class="mb-0">Покупатель</h6>
-              <div class="d-flex gap-8">
-                <div class="position-relative">
-                  <input type="text" class="form-control form-control-sm ps-36" placeholder="Поиск по ИНН" id="search-inn" style="width: 160px;">
-                  <iconify-icon icon="mdi:magnify" class="position-absolute top-50 start-0 translate-middle-y ms-12 text-secondary-light"></iconify-icon>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectContractorModal">
-                  Из списка
-                </button>
-              </div>
+              <h4 class="mb-0">Покупатель</h4>
+              <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectContractorModal">
+                Выбрать из списка
+              </button>
             </div>
             <div class="card-body p-24">
               <div class="row g-16">
@@ -301,7 +297,7 @@
           <!-- Payment and Shipping Documents -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h6 class="mb-0">Дополнительные сведения</h6>
+              <h4 class="mb-0">Дополнительные сведения</h4>
             </div>
             <div class="card-body p-24">
               <div class="row g-16">
@@ -320,10 +316,9 @@
           <!-- Products/Services -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h6 class="mb-0 d-flex align-items-center gap-8">
-                <iconify-icon icon="mdi:package-variant" class="text-info-main"></iconify-icon>
+              <h4 class="mb-0">
                 Товары и услуги
-              </h6>
+              </h4>
             </div>
             <div class="card-body p-24">
               <div id="products-container">
@@ -338,7 +333,7 @@
                       <label class="form-label text-sm mb-4">Кол-во</label>
                       <input type="number" class="form-control product-qty" value="1" min="0.01" step="0.01">
                     </div>
-                    <div class="col-auto" style="width: 90px;">
+                    <div class="col-auto" style="width: 110px;">
                       <label class="form-label text-sm mb-4">Ед. изм.</label>
                       <select class="form-select product-unit">
                         <option value="шт">шт</option>
@@ -355,6 +350,10 @@
                       <label class="form-label text-sm mb-4">Цена</label>
                       <input type="number" class="form-control product-price" value="0" min="0" step="0.01">
                     </div>
+                    <div class="col-auto" style="width: 120px;">
+                      <label class="form-label text-sm mb-4">Сумма</label>
+                      <input type="text" class="form-control product-total" value="0 ₽" readonly>
+                    </div>
                     <div class="col-auto">
                       <button type="button" class="btn btn-outline-danger remove-product" title="Удалить">
                         <iconify-icon icon="mdi:trash-can-outline"></iconify-icon>
@@ -365,10 +364,10 @@
               </div>
 
               <!-- Add Product Buttons -->
-              <div class="d-flex gap-12 mb-16">
+              <div class="d-flex mb-16" style="gap: 16px;">
                 <button type="button" class="add-product-btn flex-grow-1 py-16 radius-12 d-flex align-items-center justify-content-center gap-8 text-secondary-light" id="add-product">
                   <iconify-icon icon="mdi:plus-circle" class="text-xl"></iconify-icon>
-                  Добавить вручную
+                  Добавить ещё
                 </button>
                 <button type="button" class="add-product-btn flex-grow-1 py-16 radius-12 d-flex align-items-center justify-content-center gap-8 text-secondary-light" data-bs-toggle="modal" data-bs-target="#selectProductModal">
                   <iconify-icon icon="mdi:package-variant" class="text-xl"></iconify-icon>
@@ -377,18 +376,18 @@
               </div>
 
               <!-- Totals -->
-              <div class="mt-24 pt-24 border-top">
+              <div style="margin-top: 48px;">
                 <div class="row justify-content-end">
                   <div class="col-md-6">
-                    <div class="d-flex justify-content-between mb-12">
+                    <div class="d-flex justify-content-between mb-16">
                       <span class="text-secondary-light">Итого без НДС:</span>
                       <span class="fw-medium" id="total-without-vat">0 ₽</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-12">
+                    <div class="d-flex justify-content-between mb-16">
                       <span class="text-secondary-light">НДС:</span>
                       <span class="fw-medium" id="total-vat">0 ₽</span>
                     </div>
-                    <div class="d-flex justify-content-between pt-12 border-top">
+                    <div class="d-flex justify-content-between">
                       <span class="fw-semibold text-lg">Итого с НДС:</span>
                       <span class="fw-bold text-lg text-primary-600" id="total-with-vat">0 ₽</span>
                     </div>
@@ -401,19 +400,14 @@
           <!-- Additional Info - Подписант со стороны продавца -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h6 class="mb-0">Подписант со стороны продавца</h6>
+              <h4 class="mb-0">Подписант со стороны продавца</h4>
             </div>
             <div class="card-body p-24">
               <div class="row g-16">
                 <!-- Основание передачи -->
                 <div class="col-md-6">
                   <label class="form-label fw-medium mb-8">Основание передачи (сдачи) / получения (приемки)</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control" id="transfer-basis" placeholder="Договор № от дд.мм.гггг">
-                    <button class="btn btn-outline-secondary-600 d-none" type="button" id="add-contract-btn" title="Добавить в договоры">
-                      <iconify-icon icon="mdi:plus"></iconify-icon>
-                    </button>
-                  </div>
+                  <input type="text" class="form-control" id="transfer-basis" placeholder="Договор № от дд.мм.гггг">
                 </div>
                 <!-- Данные о транспортировке -->
                 <div class="col-md-6">
@@ -428,12 +422,7 @@
                       <input type="text" class="form-control" id="released-position" placeholder="Должность">
                     </div>
                     <div class="col-md-4">
-                      <div class="input-group">
-                        <input type="text" class="form-control" id="released-by" placeholder="ФИО">
-                        <button class="btn btn-outline-primary-600" type="button" id="select-released-org" title="Выбрать из организации">
-                          <iconify-icon icon="mdi:account-box"></iconify-icon>
-                        </button>
-                      </div>
+                      <input type="text" class="form-control" id="released-by" placeholder="ФИО">
                     </div>
                     <div class="col-md-4">
                       <div class="input-group">
@@ -458,12 +447,7 @@
                       <input type="text" class="form-control" id="responsible-position" placeholder="Должность">
                     </div>
                     <div class="col-md-4">
-                      <div class="input-group">
-                        <input type="text" class="form-control" id="responsible-name" placeholder="ФИО">
-                        <button class="btn btn-outline-primary-600" type="button" id="select-responsible-org" title="Выбрать из организации">
-                          <iconify-icon icon="mdi:account-box"></iconify-icon>
-                        </button>
-                      </div>
+                      <input type="text" class="form-control" id="responsible-name" placeholder="ФИО">
                     </div>
                     <div class="col-md-4">
                       <input type="text" class="form-control" id="economic-entity" placeholder="В т.ч. комиссионера / агента (может не заполняться)">
@@ -477,7 +461,7 @@
           <!-- Подписант со стороны покупателя -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h6 class="mb-0">Подписант со стороны покупателя</h6>
+              <h4 class="mb-0">Подписант со стороны покупателя</h4>
             </div>
             <div class="card-body p-24">
               <div class="row g-16">
@@ -489,12 +473,7 @@
                       <input type="text" class="form-control" id="received-position" placeholder="Должность">
                     </div>
                     <div class="col-md-4">
-                      <div class="input-group">
-                        <input type="text" class="form-control" id="received-by" placeholder="ФИО">
-                        <button class="btn btn-outline-primary-600" type="button" id="select-received-contractor" title="Выбрать из контрагентов">
-                          <iconify-icon icon="mdi:account-box"></iconify-icon>
-                        </button>
-                      </div>
+                      <input type="text" class="form-control" id="received-by" placeholder="ФИО">
                     </div>
                     <div class="col-md-4">
                       <div class="input-group">
@@ -519,20 +498,10 @@
                       <input type="text" class="form-control" id="buyer-responsible-position" placeholder="Должность">
                     </div>
                     <div class="col-md-4">
-                      <div class="input-group">
-                        <input type="text" class="form-control" id="buyer-responsible-name" placeholder="ФИО">
-                        <button class="btn btn-outline-primary-600" type="button" id="select-buyer-responsible" title="Выбрать из контрагентов">
-                          <iconify-icon icon="mdi:account-box"></iconify-icon>
-                        </button>
-                      </div>
+                      <input type="text" class="form-control" id="buyer-responsible-name" placeholder="ФИО">
                     </div>
                     <div class="col-md-4">
-                      <div class="input-group">
-                        <input type="text" class="form-control" id="buyer-economic-entity" placeholder="Может не заполняться при М.П.">
-                        <button class="btn btn-outline-primary-600" type="button" id="select-buyer-entity" title="Выбрать организацию">
-                          <iconify-icon icon="mdi:domain"></iconify-icon>
-                        </button>
-                      </div>
+                      <input type="text" class="form-control" id="buyer-economic-entity" placeholder="Может не заполняться при М.П.">
                     </div>
                   </div>
                 </div>
@@ -543,7 +512,7 @@
           <!-- Actions -->
           <div class="card radius-16">
             <div class="card-body p-24">
-              <div class="d-flex flex-wrap gap-12 justify-content-center">
+              <div class="d-flex flex-wrap justify-content-center" style="gap: 16px;">
                 <button type="button" class="btn btn-outline-neutral-600 px-24" id="save-draft">
                   Сохранить черновик
                 </button>
@@ -566,26 +535,35 @@
           <div class="sticky-preview">
             <div class="card radius-16">
               <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
-                <h6 class="mb-0">Предпросмотр УПД</h6>
-                <button type="button" class="btn btn-sm btn-outline-primary-600" id="refresh-preview">
-                  Обновить
-                </button>
+                <h4 class="mb-0">Предпросмотр УПД</h4>
+                <div class="d-flex" style="gap: 8px;">
+                  <button type="button" class="btn btn-sm btn-outline-primary-600" id="refresh-preview">
+                    Обновить
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#previewModal">
+                    Предпросмотр
+                  </button>
+                </div>
               </div>
-              <div class="card-body p-0 bg-white" style="overflow: hidden; min-height: 400px;">
-                <iframe id="sidebar-preview-iframe" style="width: 1150px; height: 850px; border: none; transform-origin: top left; background: white;" scrolling="no"></iframe>
+              <div class="card-body p-0 bg-white d-flex align-items-start justify-content-center position-relative" style="overflow: auto; background: #f8fafc;">
+                <canvas id="sidebar-preview-canvas" style="width: 100%; height: auto;"></canvas>
+                <!-- Лупа -->
+                <div id="canvas-magnifier" style="display: none; position: absolute; width: 400px; height: 300px; border: 3px solid #3b82f6; border-radius: 12px; pointer-events: none; z-index: 1000; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.3); background: white;">
+                  <canvas id="magnifier-canvas" width="1200" height="900" style="width: 100%; height: 100%; display: block;"></canvas>
+                </div>
               </div>
             </div>
             
             <!-- AI Analysis Block -->
             <div class="card radius-16 mt-24">
               <div class="card-header py-16 px-24 d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
-                <div class="d-flex align-items-center gap-12">
+                <div class="d-flex align-items-center" style="gap: 24px;">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
                     <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
                     <circle cx="7.5" cy="14.5" r="1.5"/>
                     <circle cx="16.5" cy="14.5" r="1.5"/>
                   </svg>
-                  <span class="text-white fw-bold text-uppercase" style="font-size: 12px; letter-spacing: 0.05em;">ИИ Анализ документа</span>
+                  <span class="fw-bold text-uppercase" style="font-size: 18px; letter-spacing: 0.3em; color: #fbbf24; font-weight: 900;">ИИ Анализ документа</span>
                 </div>
                 <div class="d-flex align-items-center gap-8">
                   <button type="button" class="btn btn-sm d-none align-items-center gap-8" id="clear-highlights-btn" style="background: transparent; color: #94a3b8; border: 1px solid #475569; font-weight: 600; font-size: 10px; text-transform: uppercase;">
@@ -642,16 +620,19 @@
 <div class="modal fade" id="selectCompanyModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content radius-16">
-      <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
-        <h5 class="modal-title">Выберите организацию</h5>
+      <div class="modal-header bg-neutral-50 py-16 px-24 border-bottom">
+        <div>
+          <h5 class="modal-title mb-1">Выберите организацию</h5>
+          <p class="text-secondary-light text-sm mb-0">Нажмите на карточку для выбора</p>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body p-24">
-        <div class="mb-16">
+        <div class="docu-mb-48">
           <input type="text" class="form-control" id="search-organization" placeholder="Поиск по названию или ИНН...">
         </div>
-        <div id="organizations-modal-list">
-          <div class="text-center py-24 text-secondary-light">
+        <div id="organizations-modal-list" class="row g-3">
+          <div class="col-12 text-center py-24 text-secondary-light">
             <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
             <p class="mt-8">Загрузка организаций...</p>
           </div>
@@ -659,34 +640,38 @@
         <div id="no-organizations-message" style="display: none;" class="text-center py-24">
           <iconify-icon icon="mdi:domain" class="text-secondary-light text-4xl"></iconify-icon>
           <p class="mt-8 text-secondary-light">Организации не найдены</p>
-          <a href="/organizations" class="btn btn-sm btn-primary-600 mt-8">Добавить организацию</a>
+          <a href="/dashboard/organizations/create/" class="btn btn-sm btn-primary-600 mt-8">
+            <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+            Добавить организацию
+          </a>
         </div>
       </div>
-      <div class="modal-footer">
-        <a href="/organizations" class="btn btn-outline-primary-600">
-          <iconify-icon icon="mdi:plus"></iconify-icon>
+      <div class="modal-footer bg-neutral-50 border-top">
+        <a href="/dashboard/organizations/create/" class="btn btn-outline-primary-600">
+          <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
           Добавить новую
         </a>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Select Contractor Modal -->
 <div class="modal fade" id="selectContractorModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content radius-16">
-      <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
-        <h5 class="modal-title">Выберите контрагента</h5>
+      <div class="modal-header bg-neutral-50 py-16 px-24 border-bottom">
+        <div>
+          <h5 class="modal-title mb-1">Выберите контрагента</h5>
+          <p class="text-secondary-light text-sm mb-0">Нажмите на карточку для выбора</p>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body p-24">
-        <div class="mb-16">
+        <div class="docu-mb-48">
           <input type="text" class="form-control" id="search-contractor" placeholder="Поиск по названию или ИНН...">
         </div>
-        <div id="contractors-modal-list">
-          <div class="text-center py-24 text-secondary-light">
+        <div id="contractors-modal-list" class="row g-3">
+          <div class="col-12 text-center py-24 text-secondary-light">
             <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
             <p class="mt-8">Загрузка контрагентов...</p>
           </div>
@@ -694,15 +679,17 @@
         <div id="no-contractors-message" style="display: none;" class="text-center py-24">
           <iconify-icon icon="mdi:account-group" class="text-secondary-light text-4xl"></iconify-icon>
           <p class="mt-8 text-secondary-light">Контрагенты не найдены</p>
-          <a href="/contractors" class="btn btn-sm btn-primary-600 mt-8">Добавить контрагента</a>
+          <a href="/dashboard/contractors/create/" class="btn btn-sm btn-primary-600 mt-8">
+            <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
+            Добавить контрагента
+          </a>
         </div>
       </div>
-      <div class="modal-footer">
-        <a href="/contractors" class="btn btn-outline-primary-600">
-          <iconify-icon icon="mdi:plus"></iconify-icon>
+      <div class="modal-footer bg-neutral-50 border-top">
+        <a href="/dashboard/contractors/create/" class="btn btn-outline-primary-600">
+          <iconify-icon icon="mdi:plus" class="me-1"></iconify-icon>
           Добавить нового
         </a>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>
@@ -714,7 +701,6 @@
     <div class="modal-content radius-16">
       <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
         <h5 class="modal-title">Выберите товар или услугу</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body p-24">
         <div class="mb-16">
@@ -729,15 +715,14 @@
         <div id="no-products-message" style="display: none;" class="text-center py-24">
           <iconify-icon icon="mdi:package-variant" class="text-secondary-light text-4xl"></iconify-icon>
           <p class="mt-8 text-secondary-light">Товары не найдены</p>
-          <a href="/products" class="btn btn-sm btn-primary-600 mt-8">Добавить товар</a>
+          <a href="/dashboard/products" class="btn btn-sm btn-primary-600 mt-8">Добавить товар</a>
         </div>
       </div>
       <div class="modal-footer">
-        <a href="/products" class="btn btn-outline-primary-600">
+        <a href="/dashboard/products" class="btn btn-outline-primary-600">
           <iconify-icon icon="mdi:plus"></iconify-icon>
           В справочник
         </a>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>
@@ -924,7 +909,7 @@
 </script>
 
 <!-- UPD Constructor Main JS (extracted from inline) -->
-<script src="/static/js/upd-constructor/upd-main.js?v=2.9"></script>
+<script src="/static/js/upd-constructor/upd-main.js?v=3.3"></script>
 
 </body>
 </html>
