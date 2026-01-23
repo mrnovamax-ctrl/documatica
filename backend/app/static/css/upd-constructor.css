@@ -4,6 +4,31 @@
    Extracted from inline styles for better performance
    ======================================== */
 
+/* Card Headers - увеличенные заголовки */
+.card-header h4 {
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3em !important;
+  color: #94a3b8 !important;
+  margin: 0 !important;
+}
+
+/* Центрирование контента для конструктора УПД */
+.dashboard-content-v12.upd-constructor-page {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Documatica v12 Spacing System */
+.docu-mb-48 {
+  margin-bottom: 48px !important;
+}
+
+.docu-mb-32 {
+  margin-bottom: 32px !important;
+}
+
 /* Page Background with Blue Dots Pattern - like homepage */
 body.constructor-page-v12 {
   background-color: #f8fafc !important;
@@ -31,7 +56,7 @@ body.constructor-page-v12 {
 }
 
 .card-header h6,
-.card-header .mb-0 {
+.card-header h6.mb-0 {
   font-size: 10px !important;
   font-weight: 900 !important;
   text-transform: uppercase !important;
@@ -438,11 +463,8 @@ select.form-select {
 .sticky-preview {
   position: sticky !important;
   top: 100px !important;
-  background: white !important;
-  border: 1px solid #f1f5f9 !important;
   border-radius: 2rem !important;
   overflow: hidden !important;
-  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.05) !important;
 }
 
 /* Modal - v12 style */
@@ -688,60 +710,92 @@ body.constructor-page-v12 .footer-v12 .footer-nav-v12 a:hover {
 
 /* Fix z-index для ВСЕХ модальных окон, попапов и overlays */
 /* Устанавливаем максимально высокие значения */
-.modal {
-  z-index: 99999 !important;
+.modal,
+#selectCompanyModal,
+#selectContractorModal,
+#previewModal {
+  z-index: 999999 !important;
+  position: fixed !important;
 }
 
-.modal-backdrop {
-  z-index: 99998 !important;
+.modal-backdrop,
+.modal-backdrop.show {
+  z-index: 999998 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
 }
 
 .modal-dialog {
-  z-index: 100000 !important;
+  z-index: 1000000 !important;
+  position: relative !important;
+  margin: 1.75rem auto !important;
+}
+
+.modal.show {
+  z-index: 999999 !important;
+  display: flex !important;
+  align-items: center !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.modal.show .modal-dialog {
+  transform: none !important;
 }
 
 .flatpickr-calendar {
-  z-index: 100000 !important;
+  z-index: 1000000 !important;
   position: absolute !important;
 }
 
 .flatpickr-calendar.open {
-  z-index: 100000 !important;
+  z-index: 1000000 !important;
   position: absolute !important;
 }
 
 /* Bootstrap dropdowns */
 .dropdown-menu {
-  z-index: 100000 !important;
+  z-index: 1000000 !important;
 }
 
 /* Tooltips и popovers */
 .tooltip {
-  z-index: 100000 !important;
+  z-index: 1000000 !important;
 }
 
 .popover {
-  z-index: 100000 !important;
+  z-index: 1000000 !important;
 }
 
 /* Select2 и другие селекты */
 .select2-container,
 .select2-dropdown {
-  z-index: 100000 !important;
+  z-index: 1000000 !important;
 }
 
 /* Общие overlay классы */
 .overlay,
 .popup,
 .dialog {
-  z-index: 99999 !important;
+  z-index: 999999 !important;
 }
 
 /* Понижаем z-index для всех остальных элементов страницы */
-body.constructor-page-v12 .footer-v12,
 body.constructor-page-v12 .sidebar-v12,
 body.constructor-page-v12 .header-v12,
 body.constructor-page-v12 .dashboard-main-v12 {
+  z-index: 1 !important;
+  position: relative !important;
+}
+
+/* Убираем transform у всех родителей, которые могут создавать stacking context */
+body.constructor-page-v12,
+body.constructor-page-v12 * {
+  transform: none !important;
+}
   z-index: auto !important;
   position: relative !important;
 }
