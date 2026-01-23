@@ -3328,6 +3328,7 @@ body {
   z-index: 50;
   padding: 32px;
   transition: transform 0.3s ease;
+  overflow-x: hidden;
 }
 
 @media (max-width: 1023px) {
@@ -3390,6 +3391,7 @@ body {
 .sidebar-nav-v12 {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar-section-v12 {

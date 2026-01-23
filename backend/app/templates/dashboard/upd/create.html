@@ -24,6 +24,58 @@
   <link rel="stylesheet" href="/static/css/documatica.css?v=12.9">
   <!-- UPD Constructor Styles (extracted from inline for better performance) -->
     <link rel="stylesheet" href="/static/css/upd-constructor.css?v=2.0">
+  
+  <style>
+    /* Анимация выезда кнопки "Добавить в контрагенты" */
+    #save-buyer-btn {
+      opacity: 0;
+      visibility: hidden;
+    }
+    #save-buyer-btn.show {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateX(0) !important;
+    }
+    #save-buyer-btn:hover {
+      padding: 0 16px !important;
+      box-shadow: 0 4px 16px rgba(251, 191, 36, 0.5) !important;
+    }
+    #save-buyer-btn:hover span {
+      opacity: 1 !important;
+      width: auto !important;
+    }
+    #save-buyer-btn:hover svg {
+      transform: rotate(90deg) !important;
+    }
+    #save-buyer-btn:active {
+      transform: translateX(0) scale(0.95) !important;
+    }
+    
+    /* Анимация выезда кнопки "Добавить в организации" */
+    #save-seller-btn {
+      opacity: 0;
+      visibility: hidden;
+    }
+    #save-seller-btn.show {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateX(0) !important;
+    }
+    #save-seller-btn:hover {
+      padding: 0 16px !important;
+      box-shadow: 0 4px 16px rgba(251, 191, 36, 0.5) !important;
+    }
+    #save-seller-btn:hover span {
+      opacity: 1 !important;
+      width: auto !important;
+    }
+    #save-seller-btn:hover svg {
+      transform: rotate(90deg) !important;
+    }
+    #save-seller-btn:active {
+      transform: translateX(0) scale(0.95) !important;
+    }
+  </style>
 </head>
 
 <body class="constructor-page-v12">
@@ -55,10 +107,10 @@
               <h4 class="mb-0">Параметры документа</h4>
             </div>
             <div class="card-body p-24">
-              <div class="row g-16">
+              <div class="row g-16" style="margin-bottom: 24px;">
                 <!-- Статус УПД - радиобаттоны -->
                 <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Статус УПД</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Статус УПД</label>
                   <div class="d-flex align-items-center flex-wrap gap-28">
                     <div class="form-check checked-primary d-flex align-items-center gap-2">
                       <input class="form-check-input" type="radio" name="upd-status" id="upd-status-1" value="1" checked>
@@ -72,7 +124,7 @@
                 </div>
                 <!-- Номер и дата -->
                 <div class="col-md-4">
-                  <label class="form-label fw-medium mb-8">Номер УПД <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Номер УПД <span class="text-danger">*</span></label>
                   <div class="input-group">
                     <input type="text" class="form-control" id="upd-number" placeholder="Авто" required>
                     <button class="btn btn-outline-secondary-600" type="button" id="auto-number-btn" title="Автонумерация">
@@ -81,7 +133,7 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <label class="form-label fw-medium mb-8">Дата документа <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Дата документа <span class="text-danger">*</span></label>
                   <div class="input-group">
                     <input type="text" class="form-control date-picker" id="upd-date" placeholder="дд.мм.гггг" required>
                     <button class="btn btn-outline-secondary-600" type="button" id="upd-date-icon">
@@ -90,7 +142,7 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <label class="form-label fw-medium mb-8">Исправление №</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Исправление №</label>
                   <div class="row g-8">
                     <div class="col-6">
                       <input type="text" class="form-control" id="correction-number" placeholder="--">
@@ -113,13 +165,13 @@
               </button>
             </div>
             <div class="card-body p-24">
-              <div class="row g-16">
+              <div class="row g-16" style="margin-bottom: 24px;">
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Наименование <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="seller-name" placeholder='ООО "Название"' required>
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label fw-medium mb-8">ИНН <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">ИНН <span class="text-danger">*</span></label>
                   <div class="input-group">
                     <input type="text" class="form-control" id="seller-inn" placeholder="7707123456" required maxlength="12">
                     <button class="btn btn-outline-primary-600 dadata-search-btn" type="button" id="seller-inn-search" title="Найти по ИНН">
@@ -129,7 +181,7 @@
                   <small class="text-muted d-none" id="seller-inn-loading">Поиск...</small>
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label fw-medium mb-8">КПП</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">КПП</label>
                   <input type="text" class="form-control" id="seller-kpp" placeholder="770701001" maxlength="9">
                 </div>
                 <div class="col-12 d-none" id="seller-inn-error-container">
@@ -137,21 +189,23 @@
                     <small id="seller-inn-error"></small>
                   </div>
                 </div>
-                <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Адрес <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="seller-address" placeholder="123456, г. Москва, ул. Примерная, д. 1" required>
-                </div>
-                <!-- Кнопка добавить в организации (показывается при ручном вводе) -->
-                <div class="col-12" id="add-seller-to-org" style="display: none;">
-                  <button type="button" class="btn btn-sm btn-outline-success-600" id="save-seller-btn">
-                    Добавить в мои организации
+                <div class="col-12" style="position: relative;">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Адрес <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="seller-address" placeholder="123456, г. Москва, ул. Примерная, д. 1" required style="padding-right: 50px;">
+                  <!-- Кнопка добавить в организации внутри поля -->
+                  <button type="button" id="save-seller-btn" title="Добавить в мои организации" style="position: absolute; right: 12px; bottom: 10px; background: #FBBF24; color: #0f172a; border: none; border-radius: 0.75rem; height: 36px; min-width: 36px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); z-index: 10; transform: translateX(calc(100% + 24px)); white-space: nowrap; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="flex-shrink: 0; transition: transform 0.3s;">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span style="opacity: 0; width: 0; overflow: hidden; transition: opacity 0.3s, width 0.3s;">Добавить в мои организации</span>
                   </button>
                 </div>
               </div>
               
               <!-- Грузоотправитель -->
               <div class="mt-24 pt-16 border-top">
-                <label class="form-label fw-medium mb-8">Грузоотправитель и его адрес</label>
+                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Грузоотправитель и его адрес</label>
                 <div class="d-flex align-items-center flex-wrap gap-28 mb-12">
                   <div class="form-check checked-primary d-flex align-items-center gap-2">
                     <input class="form-check-input" type="radio" name="consignor-type" id="consignor-none" value="none" checked>
@@ -171,10 +225,10 @@
               
               <!-- Настройки НДС по умолчанию -->
               <div class="mt-24 pt-16 border-top">
-                <label class="form-label fw-medium mb-12">Настройки НДС и страна происхождения (по умолчанию для товаров)</label>
-                <div class="row g-16">
+                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Настройки НДС и страна происхождения (по умолчанию для товаров)</label>
+                <div class="row g-16" style="margin-bottom: 24px;">
                   <div class="col-md-3">
-                    <label class="form-label text-sm mb-4">Ставка НДС</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ставка НДС</label>
                     <select class="form-select" id="default-vat">
                       <option value="22">22%</option>
                       <option value="20" selected>20%</option>
@@ -187,18 +241,18 @@
                     </select>
                   </div>
                   <div class="col-md-3">
-                    <label class="form-label text-sm mb-4">НДС</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">НДС</label>
                     <select class="form-select" id="default-vat-type">
                       <option value="on-top" selected>Сверху</option>
                       <option value="included">Включен в цену</option>
                     </select>
                   </div>
                   <div class="col-md-3">
-                    <label class="form-label text-sm mb-4">Страна</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Страна</label>
                     <input type="text" class="form-control" id="default-country" value="Россия">
                   </div>
                   <div class="col-md-3">
-                    <label class="form-label text-sm mb-4">Код страны</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Код страны</label>
                     <input type="text" class="form-control" id="default-country-code" value="643">
                   </div>
                 </div>
@@ -215,13 +269,13 @@
               </button>
             </div>
             <div class="card-body p-24">
-              <div class="row g-16">
+              <div class="row g-16" style="margin-bottom: 24px;">
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Наименование <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="buyer-name" placeholder='ООО "Контрагент"' required>
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label fw-medium mb-8">ИНН <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">ИНН <span class="text-danger">*</span></label>
                   <div class="input-group">
                     <input type="text" class="form-control" id="buyer-inn" placeholder="7708654321" required maxlength="12">
                     <button class="btn btn-outline-primary-600 dadata-search-btn" type="button" id="buyer-inn-search" title="Найти по ИНН">
@@ -231,7 +285,7 @@
                   <small class="text-muted d-none" id="buyer-inn-loading">Поиск...</small>
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label fw-medium mb-8">КПП</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">КПП</label>
                   <input type="text" class="form-control" id="buyer-kpp" placeholder="770801001" maxlength="9">
                 </div>
                 <div class="col-12 d-none" id="buyer-inn-error-container">
@@ -239,23 +293,25 @@
                     <small id="buyer-inn-error"></small>
                   </div>
                 </div>
-                <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Адрес <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="buyer-address" placeholder="654321, г. Санкт-Петербург, пр. Невский, д. 100" required>
-                </div>
-                <!-- Кнопка добавить в клиенты (показывается при ручном вводе) -->
-                <div class="col-12" id="add-buyer-to-clients" style="display: none;">
-                  <button type="button" class="btn btn-sm btn-outline-success-600" id="save-buyer-btn">
-                    Добавить в мои клиенты
+                <div class="col-12" style="position: relative;">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Адрес <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="buyer-address" placeholder="654321, г. Санкт-Петербург, пр. Невский, д. 100" required style="padding-right: 50px;">
+                  <!-- Кнопка добавить в клиенты внутри поля -->
+                  <button type="button" id="save-buyer-btn" title="Добавить в мои контрагенты" style="position: absolute; right: 12px; bottom: 10px; background: #FBBF24; color: #0f172a; border: none; border-radius: 0.75rem; height: 36px; min-width: 36px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); z-index: 10; transform: translateX(calc(100% + 24px)); white-space: nowrap; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="flex-shrink: 0; transition: transform 0.3s;">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span style="opacity: 0; width: 0; overflow: hidden; transition: opacity 0.3s, width 0.3s;">Добавить в мои контрагенты</span>
                   </button>
                 </div>
               </div>
               
               <!-- Валюта и идентификатор госконтракта -->
               <div class="mt-24 pt-16 border-top">
-                <div class="row g-16">
+                <div class="row g-16" style="margin-bottom: 24px;">
                   <div class="col-md-6">
-                    <label class="form-label fw-medium mb-8">Валюта: наименование, код</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Валюта: наименование, код</label>
                     <div class="row g-8">
                       <div class="col-8">
                         <input type="text" class="form-control" id="currency-name" value="Российский рубль" placeholder="Наименование валюты">
@@ -266,7 +322,7 @@
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label fw-medium mb-8">Идентификатор гос. контракта</label>
+                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Идентификатор гос. контракта</label>
                     <input type="text" class="form-control" id="gov-contract-id" placeholder="При наличии">
                   </div>
                 </div>
@@ -274,7 +330,7 @@
               
               <!-- Грузополучатель -->
               <div class="mt-24 pt-16 border-top">
-                <label class="form-label fw-medium mb-8">Грузополучатель и его адрес</label>
+                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Грузополучатель и его адрес</label>
                 <div class="d-flex align-items-center flex-wrap gap-28 mb-12">
                   <div class="form-check checked-primary d-flex align-items-center gap-2">
                     <input class="form-check-input" type="radio" name="consignee-type" id="consignee-none" value="none" checked>
@@ -300,13 +356,13 @@
               <h4 class="mb-0">Дополнительные сведения</h4>
             </div>
             <div class="card-body p-24">
-              <div class="row g-16">
+              <div class="row g-16" style="margin-bottom: 24px;">
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">К платежно-расчетному документу №</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">К платежно-расчетному документу №</label>
                   <input type="text" class="form-control" id="payment-document" placeholder="№ и дата платежного документа">
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Документ об отгрузке</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Документ об отгрузке</label>
                   <input type="text" class="form-control" id="shipping-document" placeholder="№ и дата документа об отгрузке">
                 </div>
               </div>
@@ -326,15 +382,15 @@
                 <div class="product-row card border radius-12 p-16 mb-16" data-row="1">
                   <div class="row g-12 align-items-end">
                     <div class="col">
-                      <label class="form-label text-sm mb-4">Наименование <span class="text-danger">*</span></label>
+                      <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
                       <input type="text" class="form-control product-name" placeholder="Название товара или услуги" required>
                     </div>
                     <div class="col-auto" style="width: 100px;">
-                      <label class="form-label text-sm mb-4">Кол-во</label>
+                      <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Кол-во</label>
                       <input type="number" class="form-control product-qty" value="1" min="0.01" step="0.01">
                     </div>
                     <div class="col-auto" style="width: 110px;">
-                      <label class="form-label text-sm mb-4">Ед. изм.</label>
+                      <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ед. изм.</label>
                       <select class="form-select product-unit">
                         <option value="шт">шт</option>
                         <option value="усл">усл</option>
@@ -347,11 +403,11 @@
                       </select>
                     </div>
                     <div class="col-auto" style="width: 120px;">
-                      <label class="form-label text-sm mb-4">Цена</label>
+                      <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Цена</label>
                       <input type="number" class="form-control product-price" value="0" min="0" step="0.01">
                     </div>
                     <div class="col-auto" style="width: 120px;">
-                      <label class="form-label text-sm mb-4">Сумма</label>
+                      <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Сумма</label>
                       <input type="text" class="form-control product-total" value="0 ₽" readonly>
                     </div>
                     <div class="col-auto">
@@ -403,20 +459,20 @@
               <h4 class="mb-0">Подписант со стороны продавца</h4>
             </div>
             <div class="card-body p-24">
-              <div class="row g-16">
+              <div class="row g-16" style="margin-bottom: 24px;">
                 <!-- Основание передачи -->
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Основание передачи (сдачи) / получения (приемки)</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Основание передачи (сдачи) / получения (приемки)</label>
                   <input type="text" class="form-control" id="transfer-basis" placeholder="Договор № от дд.мм.гггг">
                 </div>
                 <!-- Данные о транспортировке -->
                 <div class="col-md-6">
-                  <label class="form-label fw-medium mb-8">Данные о транспортировке и грузе</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Данные о транспортировке и грузе</label>
                   <input type="text" class="form-control" id="transport-info" placeholder="Транспортная накладная, поручение экспедитору, экспедиторская / складская расписка и т.п.">
                 </div>
                 <!-- Товар передал -->
                 <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Товар (груз) передал / услуги, результаты работ, права сдал</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Товар (груз) передал / услуги, результаты работ, права сдал</label>
                   <div class="row g-12">
                     <div class="col-md-4">
                       <input type="text" class="form-control" id="released-position" placeholder="Должность">
@@ -436,12 +492,12 @@
                 </div>
                 <!-- Иные сведения об отгрузке -->
                 <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Иные сведения об отгрузке, передаче</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Иные сведения об отгрузке, передаче</label>
                   <input type="text" class="form-control" id="other-shipping-info" placeholder="Ссылки на неотъемлемые приложения, сопутствующие документы, иные документы и т.п.">
                 </div>
                 <!-- Ответственный за правильность оформления -->
                 <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Ответственный за правильность оформления факта хоз. жизни</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ответственный за правильность оформления факта хоз. жизни</label>
                   <div class="row g-12">
                     <div class="col-md-4">
                       <input type="text" class="form-control" id="responsible-position" placeholder="Должность">
@@ -464,10 +520,10 @@
               <h4 class="mb-0">Подписант со стороны покупателя</h4>
             </div>
             <div class="card-body p-24">
-              <div class="row g-16">
+              <div class="row g-16" style="margin-bottom: 24px;">
                 <!-- Товар получил -->
                 <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Товар (груз) получил / услуги, результаты работ, права принял</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Товар (груз) получил / услуги, результаты работ, права принял</label>
                   <div class="row g-12">
                     <div class="col-md-4">
                       <input type="text" class="form-control" id="received-position" placeholder="Должность">
@@ -487,12 +543,12 @@
                 </div>
                 <!-- Иные сведения о получении -->
                 <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Иные сведения о получении, приемке</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Иные сведения о получении, приемке</label>
                   <input type="text" class="form-control" id="other-receiving-info" placeholder="Информация о наличии/отсутствии претензии; ссылки на неотъемлемые приложения, и другие документы и т.п.">
                 </div>
                 <!-- Ответственный за правильность оформления (покупатель) -->
                 <div class="col-12">
-                  <label class="form-label fw-medium mb-8">Ответственный за правильность оформления факта хоз. жизни</label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ответственный за правильность оформления факта хоз. жизни</label>
                   <div class="row g-12">
                     <div class="col-md-4">
                       <input type="text" class="form-control" id="buyer-responsible-position" placeholder="Должность">

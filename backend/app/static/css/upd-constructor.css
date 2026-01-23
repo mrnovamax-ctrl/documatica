@@ -4,8 +4,10 @@
    Extracted from inline styles for better performance
    ======================================== */
 
-/* Card Headers - увеличенные заголовки */
-.card-header h4 {
+/* Card Headers - единый стиль v12 для всех h4 в card-header */
+.card-header h4,
+.constructor-card-header-v12 h4,
+.constructor-preview-header-v12 h4 {
   font-size: 18px !important;
   font-weight: 900 !important;
   text-transform: uppercase !important;
@@ -14,10 +16,22 @@
   margin: 0 !important;
 }
 
+/* Page titles - h4 без класса, используемые как page title */
+h4.mb-0,
+h4.mb-24,
+h4.mb-16 {
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3em !important;
+  color: #94a3b8 !important;
+}
+
 /* Центрирование контента для конструктора УПД */
-.dashboard-content-v12.upd-constructor-page {
+.upd-constructor-page.dashboard-content-v12 {
   margin-left: auto !important;
   margin-right: auto !important;
+  max-width: var(--docu-content-max-width) !important;
 }
 
 /* Documatica v12 Spacing System */
@@ -55,15 +69,6 @@ body.constructor-page-v12 {
   background: transparent !important;
 }
 
-.card-header h6,
-.card-header h6.mb-0 {
-  font-size: 10px !important;
-  font-weight: 900 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.3em !important;
-  color: #94a3b8 !important;
-  margin: 0 !important;
-}
 
 /* Card Body */
 .card-body {

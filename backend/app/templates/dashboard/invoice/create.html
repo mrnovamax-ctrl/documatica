@@ -131,10 +131,12 @@
 
   <div class="dashboard-content-v12">
     <!-- Page Title -->
-    <div class="page-title-v12">
-      <h1>Создать счёт на оплату</h1>
-      <p>Заполните данные для формирования счёта</p>
-    </div>
+    <header class="page-header-v12">
+      <div class="page-header-left-v12">
+        <h1 class="page-title-v12">Создать счёт на оплату</h1>
+        <p class="page-subtitle-v12">Заполните данные для формирования счёта</p>
+      </div>
+    </header>
 
     <form id="invoice-form">
       <div class="row gy-4">
@@ -144,7 +146,7 @@
           <!-- Document Info -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h6 class="mb-0">Реквизиты документа</h6>
+              <h4 class="mb-0">Реквизиты документа</h4>
             </div>
             <div class="card-body p-24">
               <div class="row g-16">
@@ -167,7 +169,7 @@
           <!-- Supplier Info -->
           <div class="card radius-16 mb-24">
             <div class="constructor-card-header-v12">
-              <h6>Поставщик</h6>
+              <h4>Поставщик</h4>
               <button type="button" class="constructor-card-action-btn-v12" data-bs-toggle="modal" data-bs-target="#selectOrganizationModal">
                 Выбрать из списка
               </button>
@@ -235,7 +237,7 @@
           <!-- Client Info -->
           <div class="card radius-16 mb-24">
             <div class="constructor-card-header-v12">
-              <h6>Покупатель (Плательщик)</h6>
+              <h4>Покупатель (Плательщик)</h4>
               <button type="button" class="constructor-card-action-btn-v12" data-bs-toggle="modal" data-bs-target="#selectContractorModal">
                 Выбрать из списка
               </button>
@@ -265,7 +267,7 @@
           <!-- Products/Services -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h6 class="mb-0">Товары и услуги</h6>
+              <h4 class="mb-0">Товары и услуги</h4>
             </div>
             <div class="card-body p-24">
               <!-- Products Header -->
@@ -333,7 +335,7 @@
         <div class="col-xxl-5 col-xl-6">
           <div class="constructor-preview-v12">
             <div class="constructor-preview-header-v12">
-              <h3>Предпросмотр</h3>
+              <h4>Предпросмотр</h4>
               <button type="button" class="constructor-card-action-btn-v12" id="refresh-preview">
                 Обновить
               </button>

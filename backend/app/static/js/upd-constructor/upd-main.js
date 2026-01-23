@@ -526,7 +526,7 @@ $(document).ready(function() {
             bootstrap.Modal.getInstance(document.getElementById('selectCompanyModal')).hide();
             
             // Hide "add to organizations" button since selected from list
-            $('#add-seller-to-org').hide();
+            $('#save-seller-btn').removeClass('show');
             
             // Update preview
             updatePreview();
@@ -563,7 +563,7 @@ $(document).ready(function() {
             bootstrap.Modal.getInstance(document.getElementById('selectContractorModal')).hide();
             
             // Hide "add to clients" button since selected from list
-            $('#add-buyer-to-clients').hide();
+            $('#save-buyer-btn').removeClass('show');
             
             // Update preview
             updatePreview();
@@ -801,9 +801,9 @@ $(document).ready(function() {
         const name = $('#seller-name').val().trim();
         const inn = $('#seller-inn').val().trim();
         if (name && inn && inn.length >= 10) {
-            $('#add-seller-to-org').show();
+            $('#save-seller-btn').addClass('show');
         } else {
-            $('#add-seller-to-org').hide();
+            $('#save-seller-btn').removeClass('show');
         }
     });
     
@@ -835,7 +835,7 @@ $(document).ready(function() {
         const toast = $('<div class="position-fixed top-0 end-0 m-24 p-16 bg-success-100 text-success-main shadow-lg" style="z-index: 9999;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="mdi:check-circle" class="text-xl"></iconify-icon><span>Организация добавлена!</span></div></div>');
         $('body').append(toast);
         setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 2000);
-        $('#add-seller-to-org').hide();
+        $('#save-seller-btn').removeClass('show');
     });
     
     // Show "Add to clients" button on manual buyer input
@@ -843,9 +843,9 @@ $(document).ready(function() {
         const name = $('#buyer-name').val().trim();
         const inn = $('#buyer-inn').val().trim();
         if (name && inn && inn.length >= 10) {
-            $('#add-buyer-to-clients').show();
+            $('#save-buyer-btn').addClass('show');
         } else {
-            $('#add-buyer-to-clients').hide();
+            $('#save-buyer-btn').removeClass('show');
         }
     });
     
@@ -877,7 +877,7 @@ $(document).ready(function() {
         const toast = $('<div class="position-fixed top-0 end-0 m-24 p-16 bg-success-100 text-success-main shadow-lg" style="z-index: 9999;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="mdi:check-circle" class="text-xl"></iconify-icon><span>Контрагент добавлен!</span></div></div>');
         $('body').append(toast);
         setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 2000);
-        $('#add-buyer-to-clients').hide();
+        $('#save-buyer-btn').removeClass('show');
     });
     
     // Show "Add to contracts" button when transfer-basis is filled
@@ -1091,14 +1091,15 @@ $(document).ready(function() {
 
     // Update preview - теперь загружает реальную форму через API
     let previewDebounceTimer = null;
+    let isPreviewUpdating = false;
     function updatePreview() {
-        // Debounce - обновляем не чаще чем раз в 1 секунду
+        // Debounce - обновляем не чаще чем раз в 1.5 секунды для снижения нагрузки
         clearTimeout(previewDebounceTimer);
         previewDebounceTimer = setTimeout(() => {
-            if (typeof loadSidebarPreview === 'function') {
+            if (typeof loadSidebarPreview === 'function' && !isPreviewUpdating) {
                 loadSidebarPreview();
             }
-        }, 1000);
+        }, 1500);
     }
 
     // Live update preview on any input change
@@ -1887,9 +1888,12 @@ $(document).ready(function() {
     
     // Функция для загрузки предпросмотра в боковой iframe
     async function loadSidebarPreview() {
+        if (isPreviewUpdating) return; // Пропускаем если уже обновляется
+        
         const canvas = document.getElementById('sidebar-preview-canvas');
         if (!canvas) return;
         
+        isPreviewUpdating = true;
         const container = canvas.parentElement;
         const requestData = collectFormData();
         
@@ -1912,12 +1916,12 @@ $(document).ready(function() {
                 tempDiv.innerHTML = html;
                 document.body.appendChild(tempDiv);
                 
-                // Ждём загрузки стилей и изображений
-                await new Promise(resolve => setTimeout(resolve, 500));
+                // Уменьшили задержку с 500мс до 100мс
+                await new Promise(resolve => setTimeout(resolve, 100));
                 
-                // Рендерим в canvas
+                // Рендерим в canvas с пониженным scale для ускорения
                 const renderedCanvas = await html2canvas(tempDiv, {
-                    scale: 4,
+                    scale: 3, // Было 4, стало 3 для ускорения
                     useCORS: true,
                     logging: false,
                     backgroundColor: '#ffffff'
@@ -1941,6 +1945,8 @@ $(document).ready(function() {
             }
         } catch (error) {
             console.log('Ошибка загрузки предпросмотра:', error);
+        } finally {
+            isPreviewUpdating = false;
         }
     }
     
