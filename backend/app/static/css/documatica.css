@@ -5128,4 +5128,673 @@ body {
   }
 }
 
+/* ========================================
+   MOBILE RESPONSIVE v12.0 - Documatica Core
+   ======================================== */
 
+/* === AUTH PAGES - Tablet === */
+@media (max-width: 768px) {
+  .auth-page-v12 {
+    padding: 24px 16px;
+  }
+  
+  .auth-card-v12 {
+    padding: 32px 24px;
+    border-radius: 2rem;
+  }
+  
+  .auth-header-v12 {
+    margin-bottom: 28px;
+  }
+  
+  .auth-logo-v12 {
+    margin-bottom: 24px;
+  }
+  
+  .auth-logo-v12 svg {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .auth-logo-v12 .logo-text {
+    font-size: 1.25rem;
+  }
+  
+  .auth-title-v12 {
+    font-size: 1.25rem;
+  }
+  
+  .auth-subtitle-v12 {
+    font-size: 0.8125rem;
+  }
+  
+  .auth-form-v12 {
+    gap: 16px;
+  }
+  
+  .auth-input-v12 {
+    padding: 14px 20px;
+    font-size: 0.8125rem;
+    border-radius: 0.875rem;
+  }
+  
+  .auth-checkbox-v12 input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+  }
+  
+  .auth-checkbox-v12 span {
+    font-size: 0.6875rem;
+  }
+  
+  .auth-btn-v12 {
+    padding: 16px 24px;
+    font-size: 10px;
+    border-radius: 1.25rem;
+  }
+  
+  .auth-footer-v12 {
+    margin-top: 24px;
+    padding-top: 24px;
+  }
+  
+  .auth-footer-v12 p {
+    font-size: 0.8125rem;
+  }
+}
+
+/* === AUTH PAGES - Small Mobile === */
+@media (max-width: 480px) {
+  .auth-page-v12 {
+    padding: 16px 12px;
+    align-items: flex-start;
+    padding-top: 48px;
+  }
+  
+  .auth-card-v12 {
+    padding: 28px 20px;
+    border-radius: 1.75rem;
+  }
+  
+  .auth-header-v12 {
+    margin-bottom: 24px;
+  }
+  
+  .auth-logo-v12 {
+    margin-bottom: 20px;
+  }
+  
+  .auth-logo-v12 svg {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .auth-logo-v12 .logo-text {
+    font-size: 1.125rem;
+  }
+  
+  .auth-title-v12 {
+    font-size: 1.125rem;
+    margin-bottom: 6px;
+  }
+  
+  .auth-subtitle-v12 {
+    font-size: 0.75rem;
+  }
+  
+  .auth-form-v12 {
+    gap: 14px;
+  }
+  
+  .auth-label-v12 {
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    margin-left: 6px;
+    margin-bottom: 6px;
+  }
+  
+  .auth-input-v12 {
+    padding: 12px 16px;
+    font-size: 0.8125rem;
+    border-radius: 0.75rem;
+  }
+  
+  .auth-options-v12 {
+    gap: 8px;
+  }
+  
+  .auth-checkbox-v12 input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .auth-checkbox-v12 input[type="checkbox"]:checked::after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+  }
+  
+  .auth-checkbox-v12 span {
+    font-size: 0.625rem;
+  }
+  
+  .auth-forgot-v12 {
+    font-size: 0.6875rem;
+  }
+  
+  .auth-btn-v12 {
+    padding: 14px 20px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    border-radius: 1rem;
+  }
+  
+  .auth-footer-v12 {
+    margin-top: 20px;
+    padding-top: 20px;
+  }
+  
+  .auth-footer-v12 p {
+    font-size: 0.75rem;
+  }
+  
+  .auth-status-v12 {
+    margin-top: 16px;
+    gap: 6px;
+  }
+  
+  .auth-status-v12 .status-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .auth-status-v12 .status-text {
+    font-size: 8px;
+  }
+}
+
+/* === HEADER v12 Mobile === */
+@media (max-width: 768px) {
+  .header-v12 {
+    border-bottom-width: 1px;
+  }
+  
+  .header-container-v12 {
+    padding: 12px 16px;
+  }
+  
+  .header-logo-v12 svg {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .header-logo-v12 .logo-text {
+    font-size: 1.125rem;
+  }
+  
+  .header-btn-primary-v12 {
+    padding: 10px 16px;
+    font-size: 9px;
+    border-radius: 0.75rem;
+  }
+  
+  .header-mobile-toggle-v12 {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  
+  .header-mobile-nav {
+    padding: 12px 16px;
+  }
+  
+  .header-mobile-nav a {
+    padding: 14px 0;
+    font-size: 0.9375rem;
+  }
+  
+  .header-mobile-auth {
+    gap: 10px;
+    padding-top: 14px;
+    margin-top: 6px;
+  }
+  
+  .header-mobile-auth a {
+    padding: 14px 16px;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+}
+
+/* === UPD PAGES Mobile === */
+@media (max-width: 768px) {
+  .upd-hero-v12 {
+    padding: 80px 0 60px;
+  }
+  
+  .upd-hero-content-v12 {
+    padding: 0 20px;
+    text-align: center;
+  }
+  
+  .upd-hero-tag-v12 {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    margin-bottom: 16px;
+  }
+  
+  .upd-hero-title-v12 {
+    font-size: 1.75rem;
+    margin-bottom: 16px;
+    max-width: 100%;
+  }
+  
+  .upd-hero-desc-v12 {
+    font-size: 1rem;
+    margin-bottom: 28px;
+    max-width: 100%;
+  }
+  
+  .upd-hero-actions-v12 {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .upd-hero-actions-v12 .docu-btn-primary,
+  .upd-hero-actions-v12 .docu-btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    font-size: 0.6875rem;
+  }
+  
+  .upd-quick-links-v12 {
+    justify-content: center;
+    margin-top: 28px;
+  }
+  
+  .upd-quick-link-v12 {
+    font-size: 9px;
+    padding: 8px 12px;
+  }
+  
+  /* UPD Content */
+  .upd-content-v12 {
+    padding: 48px 0;
+  }
+  
+  .upd-content-container-v12 {
+    padding: 0 20px;
+    gap: 40px;
+  }
+  
+  .upd-text-v12 h2 {
+    font-size: 1.25rem;
+    margin: 32px 0 16px;
+  }
+  
+  .upd-text-v12 h3 {
+    font-size: 1rem;
+    margin: 24px 0 12px;
+  }
+  
+  .upd-text-v12 p {
+    font-size: 0.9375rem;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .upd-hero-v12 {
+    padding: 64px 0 48px;
+  }
+  
+  .upd-hero-content-v12 {
+    padding: 0 16px;
+  }
+  
+  .upd-hero-tag-v12 {
+    font-size: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .upd-hero-title-v12 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+  
+  .upd-hero-desc-v12 {
+    font-size: 0.9375rem;
+    margin-bottom: 24px;
+  }
+  
+  .upd-hero-actions-v12 .docu-btn-primary,
+  .upd-hero-actions-v12 .docu-btn-secondary {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.625rem;
+    border-radius: 0.875rem;
+  }
+  
+  .upd-quick-links-v12 {
+    margin-top: 24px;
+    gap: 6px;
+  }
+  
+  .upd-quick-link-v12 {
+    font-size: 8px;
+    padding: 6px 10px;
+  }
+  
+  .upd-content-v12 {
+    padding: 40px 0;
+  }
+  
+  .upd-content-container-v12 {
+    padding: 0 16px;
+  }
+  
+  .upd-text-v12 h2 {
+    font-size: 1.125rem;
+    margin: 28px 0 14px;
+  }
+  
+  .upd-text-v12 h3 {
+    font-size: 0.9375rem;
+    margin: 20px 0 10px;
+  }
+  
+  .upd-text-v12 p {
+    font-size: 0.875rem;
+  }
+  
+  .upd-text-v12 ul,
+  .upd-text-v12 ol {
+    padding-left: 20px;
+  }
+}
+
+/* === BREADCRUMBS Mobile === */
+@media (max-width: 768px) {
+  .breadcrumbs-v12 {
+    padding: 16px 0;
+  }
+  
+  .breadcrumbs-container-v12 {
+    padding: 0 16px;
+  }
+  
+  .breadcrumbs-list-v12 {
+    gap: 6px;
+  }
+  
+  .breadcrumbs-item-v12 a,
+  .breadcrumbs-item-v12.active {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  
+  .breadcrumbs-item-v12 svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* === FEATURES SECTION Mobile === */
+@media (max-width: 768px) {
+  .features-section-v12 {
+    padding: 48px 0;
+  }
+  
+  .features-container-v12 {
+    padding: 0 20px;
+  }
+  
+  .features-header-v12 {
+    margin-bottom: 32px;
+  }
+  
+  .features-label-v12 {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+  }
+  
+  .feature-card-v12 {
+    padding: 28px;
+    border-radius: 1.5rem;
+  }
+  
+  .feature-icon-v12 {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .feature-icon-v12 svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .feature-title-v12 {
+    font-size: 0.9375rem;
+    margin-bottom: 8px;
+  }
+  
+  .feature-text-v12 {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .features-section-v12 {
+    padding: 40px 0;
+  }
+  
+  .features-container-v12 {
+    padding: 0 16px;
+  }
+  
+  .features-grid-v12 {
+    gap: 12px;
+  }
+  
+  .feature-card-v12 {
+    padding: 24px;
+    border-radius: 1.25rem;
+  }
+  
+  .feature-icon-v12 {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 14px;
+    border-radius: 0.75rem;
+  }
+  
+  .feature-icon-v12 svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .feature-title-v12 {
+    font-size: 0.875rem;
+  }
+  
+  .feature-text-v12 {
+    font-size: 0.75rem;
+  }
+}
+
+/* === LEGAL PAGES Mobile === */
+@media (max-width: 768px) {
+  .legal-hero-v12 {
+    padding: 80px 0 48px;
+  }
+  
+  .legal-hero-v12 .container {
+    padding: 0 20px;
+  }
+  
+  .legal-title-v12 {
+    font-size: 1.75rem;
+    margin-bottom: 12px;
+  }
+  
+  .legal-meta-v12 {
+    font-size: 11px;
+  }
+  
+  .legal-content-v12 {
+    padding: 48px 0;
+  }
+  
+  .legal-content-v12 .container {
+    padding: 0 20px;
+  }
+  
+  .legal-text-v12 h2 {
+    font-size: 1.25rem;
+    margin: 32px 0 16px;
+  }
+  
+  .legal-text-v12 p {
+    font-size: 0.9375rem;
+    margin-bottom: 16px;
+  }
+  
+  .legal-text-v12 ul {
+    padding-left: 20px;
+  }
+  
+  .legal-text-v12 li {
+    font-size: 0.9375rem;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .legal-hero-v12 {
+    padding: 64px 0 40px;
+  }
+  
+  .legal-hero-v12 .container {
+    padding: 0 16px;
+  }
+  
+  .legal-title-v12 {
+    font-size: 1.5rem;
+  }
+  
+  .legal-meta-v12 {
+    font-size: 10px;
+  }
+  
+  .legal-content-v12 {
+    padding: 40px 0;
+  }
+  
+  .legal-content-v12 .container {
+    padding: 0 16px;
+  }
+  
+  .legal-text-v12 h2 {
+    font-size: 1.125rem;
+  }
+  
+  .legal-text-v12 p,
+  .legal-text-v12 li {
+    font-size: 0.875rem;
+  }
+}
+
+/* === BUTTONS Mobile === */
+@media (max-width: 768px) {
+  .docu-btn-primary {
+    padding: 0.875rem 1.75rem;
+    font-size: 0.6875rem;
+    border-radius: 0.875rem;
+  }
+  
+  .docu-btn-secondary {
+    padding: 0.875rem 1.75rem;
+    font-size: 0.6875rem;
+    border-radius: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .docu-btn-primary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+  }
+  
+  .docu-btn-secondary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* === TYPOGRAPHY Mobile adjustments === */
+@media (max-width: 768px) {
+  .docu-h1,
+  .typo-h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  
+  .docu-h2,
+  .typo-h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+  
+  .docu-h3,
+  .typo-h3 {
+    font-size: 1.125rem;
+  }
+  
+  .docu-tag,
+  .typo-tag {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+  }
+  
+  .docu-lead,
+  .typo-lead {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .docu-h1,
+  .typo-h1 {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+  
+  .docu-h2,
+  .typo-h2 {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+  }
+  
+  .docu-h3,
+  .typo-h3 {
+    font-size: 1rem;
+  }
+  
+  .docu-tag,
+  .typo-tag {
+    font-size: 8px;
+    letter-spacing: 0.25em;
+  }
+  
+  .docu-lead,
+  .typo-lead {
+    font-size: 0.9375rem;
+  }
+  
+  .docu-body,
+  .typo-body {
+    font-size: 0.8125rem;
+  }
+}
