@@ -40,7 +40,7 @@ async def invoice_create(request: Request, preset: Optional[str] = None):
     
     return templates.TemplateResponse(
         request=request,
-        name="dashboard/invoice/create.html",
+        name="dashboard/invoice/create_v12.html",
         context=get_dashboard_context(
             request=request,
             title="Создать счёт на оплату — Documatica",
@@ -84,7 +84,7 @@ async def invoice_edit(request: Request, document_id: str = PathParam(...)):
     
     return templates.TemplateResponse(
         request=request,
-        name="dashboard/invoice/create.html",
+        name="dashboard/invoice/create_v12.html",
         context=get_dashboard_context(
             request=request,
             title="Редактировать счёт — Documatica",
