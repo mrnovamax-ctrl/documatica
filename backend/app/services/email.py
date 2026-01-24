@@ -16,7 +16,7 @@ SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
 SMTP_FROM = os.getenv("SMTP_FROM", "noreply@documatica.ru")
 SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "Documatica")
 
-BASE_URL = os.getenv("BASE_URL", "https://new.oplatanalogov.ru")
+BASE_URL = os.getenv("BASE_URL", "https://oplatanalogov.ru")
 
 
 def send_email(to_email: str, subject: str, html_content: str) -> bool:

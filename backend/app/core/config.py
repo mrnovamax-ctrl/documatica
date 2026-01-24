@@ -38,7 +38,7 @@ class Settings:
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     
     # Базовый URL приложения (для callback'ов)
-    BASE_URL: str = os.getenv("BASE_URL", "https://new.oplatanalogov.ru")
+    BASE_URL: str = os.getenv("BASE_URL", "https://oplatanalogov.ru")
     
     # Debug режим
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"

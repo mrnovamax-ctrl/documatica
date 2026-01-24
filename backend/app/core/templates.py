@@ -17,7 +17,7 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 # Добавляем глобальные переменные и фильтры
 templates.env.globals["current_year"] = datetime.now().year
 templates.env.globals["site_name"] = "Documatica"
-templates.env.globals["site_url"] = "https://new.oplatanalogov.ru"
+templates.env.globals["site_url"] = "https://oplatanalogov.ru"
 
 # Функция для загрузки навигации (будет вызываться в шаблонах)
 def get_navigation():

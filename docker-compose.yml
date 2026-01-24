@@ -46,7 +46,7 @@ services:
       - SMTP_PASSWORD=frzvstfntuvfrucc
       - SMTP_FROM=mr.novamax@yandex.ru
       - SMTP_FROM_NAME=Documatica
-      - BASE_URL=https://new.oplatanalogov.ru
+      - BASE_URL=https://oplatanalogov.ru
       # Т-Банк эквайринг
       - TBANK_TERMINAL_KEY=1768827606521DEMO
       - TBANK_PASSWORD=PzTRU*6^raNSV2B5
@@ -61,7 +61,16 @@ services:
         condition: service_started
     labels:
       - traefik.enable=true
-      - traefik.http.routers.documatica.rule=Host(`new.oplatanalogov.ru`)
+      - traefik.http.routers.documatica.rule=Host(`oplatanalogov.ru`) || Host(`www.oplatanalogov.ru`)
+      # Redirect from new subdomain to main domain
+      - traefik.http.routers.documatica-old.rule=Host(`new.oplatanalogov.ru`)
+      - traefik.http.routers.documatica-old.entrypoints=websecure
+      - traefik.http.routers.documatica-old.tls=true
+      - traefik.http.routers.documatica-old.tls.certresolver=mytlschallenge
+      - traefik.http.routers.documatica-old.middlewares=redirect-to-main@docker
+      - traefik.http.middlewares.redirect-to-main.redirectregex.regex=^https://new\.oplatanalogov\.ru/(.*)
+      - traefik.http.middlewares.redirect-to-main.redirectregex.replacement=https://oplatanalogov.ru/$${1}
+      - traefik.http.middlewares.redirect-to-main.redirectregex.permanent=true
       - traefik.http.routers.documatica.entrypoints=websecure
       - traefik.http.routers.documatica.tls=true
       - traefik.http.routers.documatica.tls.certresolver=mytlschallenge
