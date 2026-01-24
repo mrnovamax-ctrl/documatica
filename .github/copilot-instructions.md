@@ -208,3 +208,130 @@ Footer: A massive blue-600 submit button and a 'System Ready' status node.
 | Дропдауны | `dropdown.html` |
 | Табы | `tabs.html` |
 | Таблицы | `table-data.html` |
+
+---
+
+## Архитектура публичной части (Public Site)
+
+### Иерархия шаблонов
+
+```
+base.html                    <- Корневой шаблон (meta, scripts, body)
+  |
+  +-- base_home.html         <- Главная страница (preloader, header_dynamic)
+  |     +-- public/home.html
+  |
+  +-- base_public.html       <- Все остальные публичные страницы
+        +-- public/about.html
+        +-- public/upd/*.html
+        +-- public/news/*.html
+```
+
+### Добавление новой публичной страницы
+
+1. **Создать роутер** в `backend/app/pages/`:
+```python
+# backend/app/pages/new_page.py
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+from app.core.templates import templates
+
+router = APIRouter()
+
+@router.get("/new-page", response_class=HTMLResponse)
+async def new_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="public/new_page.html",
+        context={"title": "Заголовок страницы"}
+    )
+```
+
+2. **Зарегистрировать роутер** в `backend/app/pages/__init__.py`:
+```python
+from app.pages import new_page
+router.include_router(new_page.router)
+```
+
+3. **Создать шаблон** `backend/app/templates/public/new_page.html`:
+```html
+{% extends "base_public.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+  <section class="py-24">
+    <div class="container">
+      <h1 class="docu-h2 mb-8">{{ title }}</h1>
+    </div>
+  </section>
+{% endblock %}
+```
+
+### Динамическое меню документов
+
+Меню генерируется из конфига `backend/content/navigation.yaml`:
+
+```yaml
+sections:
+  - title: "По типу налогообложения"
+    menu_items:  # ВАЖНО: именно menu_items, не items!
+      - title: "УПД для ИП"
+        url: "/upd/dlya-ip"
+        icon: "user"
+        description: "Краткое описание"
+        
+icons:
+  user: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>'
+```
+
+Шаблон: `backend/app/templates/components/header_dynamic.html`
+
+### Универсальный роутер УПД
+
+Все лендинги УПД генерируются одним роутером из конфига `backend/content/upd/_pages.yaml`:
+
+```yaml
+pages:
+  dlya-ip:
+    title: "УПД для ИП"
+    slug: "dlya-ip"
+    template: "landing"
+    meta:
+      description: "SEO описание"
+    hero:
+      title: "Заголовок Hero"
+      subtitle: "Подзаголовок"
+```
+
+Добавление новой страницы УПД:
+1. Добавить секцию в `_pages.yaml`
+2. Добавить роут в `backend/app/pages/upd.py` (массив LANDING_PAGES)
+3. Готово - шаблон общий
+
+### Кэширование контента
+
+**YAML-конфиги** кэшируются через `lru_cache` в `backend/app/core/content.py`:
+- `load_content(name)` - загрузка YAML из `content/`
+- `load_navigation()` - меню
+- TTL автоматический через `_get_cache_key()`
+
+**Статьи** кэшируются в `backend/app/pages/news.py`:
+- `load_articles()` - с TTL 60 сек
+- `clear_articles_cache()` - вызывать при CRUD операциях
+
+### CSS для публичных страниц
+
+| Файл | Назначение |
+|------|------------|
+| `documatica.css` | Дизайн-система v12.0 (общие стили) |
+| `home.css` | Главная + новости + динамическое меню |
+
+Классы для новостей: `.news-hero`, `.news-grid`, `.news-card`, `.news-filter`, `.news-pagination`, `.news-cta`
+
+### Checklist для масштабирования
+
+- [ ] Новые страницы наследуют `base_public.html` или `base_home.html`
+- [ ] Никаких inline-стилей, только CSS-классы
+- [ ] Контент в YAML, не захардкожен в шаблонах
+- [ ] Роутеры в `backend/app/pages/`, не в `main.py`
+- [ ] При добавлении пункта меню - редактировать `navigation.yaml`
+- [ ] При добавлении типа УПД - редактировать `_pages.yaml`
