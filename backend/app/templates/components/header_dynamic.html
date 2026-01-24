@@ -176,15 +176,17 @@
 <script>
 function toggleMobileMenu() {
   const menu = document.getElementById('mobileMenu');
-  const isOpen = menu.style.visibility === 'visible';
+  const isOpen = menu.getAttribute('data-open') === 'true';
   if (isOpen) {
     menu.style.transform = 'translateX(100%)';
     menu.style.opacity = '0';
     menu.style.visibility = 'hidden';
+    menu.setAttribute('data-open', 'false');
   } else {
     menu.style.transform = 'translateX(0)';
     menu.style.opacity = '1';
     menu.style.visibility = 'visible';
+    menu.setAttribute('data-open', 'true');
   }
 }
 
