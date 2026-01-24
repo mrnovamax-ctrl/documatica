@@ -1,1 +1,67 @@
-[]
+[
+  {
+    "id": "08173ca7-a9bb-40e5-a103-3f14e693b8df",
+    "name": "Продавец - ООО \"ДНТ\"",
+    "doc_type": "upd",
+    "data": {
+      "document_number": "11111",
+      "document_date": "2026-01-24",
+      "status": 1,
+      "correction_number": null,
+      "correction_date": null,
+      "seller": {
+        "name": "Продавец",
+        "inn": "0000000000",
+        "kpp": null,
+        "address": "Адрес не указан"
+      },
+      "buyer": {
+        "name": "ООО \"ДНТ\"",
+        "inn": "3920800518",
+        "kpp": "392001001",
+        "address": "г Калининград, Балтийский пер, д 2"
+      },
+      "consignor": null,
+      "consignee": null,
+      "payment_document": null,
+      "shipping_document": null,
+      "items": [
+        {
+          "row_number": 1,
+          "name": "111",
+          "unit_code": "796",
+          "unit_name": "шт",
+          "quantity": 1,
+          "price": 111,
+          "amount_without_vat": 111,
+          "vat_rate": "20%",
+          "vat_amount": 22.200000000000003,
+          "amount_with_vat": 133.2,
+          "country_code": "643",
+          "country_name": "Россия"
+        }
+      ],
+      "total_amount_without_vat": 111,
+      "total_vat_amount": 22.200000000000003,
+      "total_amount_with_vat": 133.2,
+      "currency_code": "643",
+      "currency_name": "Российский рубль",
+      "gov_contract_id": null,
+      "contract_info": null,
+      "transport_info": null,
+      "shipping_date": null,
+      "other_shipping_info": null,
+      "seller_signer": null,
+      "seller_responsible": null,
+      "economic_entity": null,
+      "receiving_date": null,
+      "other_receiving_info": null,
+      "buyer_signer": null,
+      "buyer_responsible": null,
+      "buyer_economic_entity": null
+    },
+    "user_id": 6,
+    "created_at": "2026-01-24T09:38:31.536147",
+    "updated_at": "2026-01-24T09:38:31.536147"
+  }
+]

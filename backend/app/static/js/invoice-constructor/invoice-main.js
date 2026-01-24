@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    // Отключаем transitions при инициализации страницы
+    document.body.classList.add('no-transitions');
+    setTimeout(function() {
+        document.body.classList.remove('no-transitions');
+    }, 100);
+    
     // Initialize date picker
     flatpickr('.date-picker', {
         dateFormat: 'd.m.Y',
@@ -18,18 +24,18 @@ $(document).ready(function() {
     
     // Устанавливаем сегодняшнюю дату и обработчик иконки после инициализации
     setTimeout(function() {
-        const updDateEl = document.getElementById('upd-date');
-        if (updDateEl && updDateEl._flatpickr) {
+        const invoiceDateEl = document.getElementById('invoice-date');
+        if (invoiceDateEl && invoiceDateEl._flatpickr) {
             // Устанавливаем сегодняшнюю дату
-            updDateEl._flatpickr.setDate(new Date());
+            invoiceDateEl._flatpickr.setDate(new Date());
             
             // Иконка календаря открывает датапикер
-            document.getElementById('upd-date-icon').addEventListener('click', function() {
-                updDateEl._flatpickr.open();
+            document.getElementById('invoice-date-icon').addEventListener('click', function() {
+                invoiceDateEl._flatpickr.open();
             });
             
             // Маска для ручного ввода даты дд.мм.гггг
-            updDateEl.addEventListener('input', function(e) {
+            invoiceDateEl.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, ''); // Только цифры
                 if (value.length > 8) value = value.substring(0, 8);
                 
@@ -61,7 +67,7 @@ $(document).ready(function() {
             });
             
             // Проверка валидности даты при потере фокуса
-            updDateEl.addEventListener('blur', function(e) {
+            invoiceDateEl.addEventListener('blur', function(e) {
                 const value = e.target.value;
                 if (value && value.length === 10) {
                     const parts = value.split('.');
@@ -184,11 +190,11 @@ $(document).ready(function() {
         })();
     } else if (templateId === 'true') {
         // Старый способ через localStorage (для обратной совместимости)
-        const templateData = localStorage.getItem('upd_use_template');
+        const templateData = localStorage.getItem('invoice_use_template');
         if (templateData) {
             setTimeout(function() {
                 loadTemplateData(JSON.parse(templateData));
-                localStorage.removeItem('upd_use_template');
+                localStorage.removeItem('invoice_use_template');
                 showNotification('success', 'Шаблон загружен! Измените данные и создайте документ.');
             }, 500);
         }
@@ -196,7 +202,7 @@ $(document).ready(function() {
     
     // Check if we need to load a draft
     if (urlParams.get('draft') === 'true') {
-        const draftData = localStorage.getItem('upd_draft');
+        const draftData = localStorage.getItem('invoice_draft');
         if (draftData) {
             setTimeout(function() {
                 loadTemplateData(JSON.parse(draftData));
@@ -525,13 +531,30 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const org = organizationsList.find(o => o.id === id);
         if (org) {
+            // Отключаем transitions при массовом заполнении полей
+            document.body.classList.add('no-transitions');
+            
             // Fill seller fields
             $('#supplier-name').val(org.name);
             $('#supplier-inn').val(org.inn);
             $('#supplier-kpp').val(org.kpp || '');
             $('#supplier-address').val(org.address || '');
             
-            // Fill seller signer fields if available
+            // Fill bank details for invoice
+            $('#bank-name').val(org.bank_name || '');
+            $('#bank-bik').val(org.bank_bik || '');
+            $('#bank-account').val(org.bank_account || '');
+            $('#bank-corr').val(org.bank_corr_account || '');
+            
+            // Fill signers for invoice
+            if (org.director_name) {
+                $('#signer-director').val(org.director_name);
+            }
+            if (org.accountant_name) {
+                $('#signer-accountant').val(org.accountant_name);
+            }
+            
+            // Fill seller signer fields if available (for UPD compatibility)
             if (org.director_name) {
                 $('#released-position').val('Генеральный директор');
                 $('#released-by').val(org.director_name);
@@ -550,13 +573,21 @@ $(document).ready(function() {
             }
             
             // Close modal
-            bootstrap.Modal.getInstance(document.getElementById('selectCompanyModal')).hide();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('selectCompanyModal'));
+            if (modal) {
+                modal.hide();
+            }
             
             // Hide "add to organizations" button since selected from list
             $('#save-seller-btn').removeClass('show');
             
-            // Update preview
-            updatePreview();
+            // Включаем transitions обратно
+            setTimeout(function() {
+                document.body.classList.remove('no-transitions');
+            }, 50);
+            
+            // Обновляем превью с небольшой задержкой после закрытия модалки
+            setTimeout(updatePreview, 400);
         }
     });
     
@@ -565,6 +596,9 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const contractor = contractorsList.find(c => c.id === id);
         if (contractor) {
+            // Отключаем transitions при массовом заполнении полей
+            document.body.classList.add('no-transitions');
+            
             // Fill buyer fields
             $('#buyer-name').val(contractor.name);
             $('#buyer-inn').val(contractor.inn);
@@ -587,13 +621,21 @@ $(document).ready(function() {
             }
             
             // Close modal
-            bootstrap.Modal.getInstance(document.getElementById('selectContractorModal')).hide();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('selectContractorModal'));
+            if (modal) {
+                modal.hide();
+            }
             
             // Hide "add to clients" button since selected from list
             $('#save-buyer-btn').removeClass('show');
             
-            // Update preview
-            updatePreview();
+            // Включаем transitions обратно
+            setTimeout(function() {
+                document.body.classList.remove('no-transitions');
+            }, 50);
+            
+            // Обновляем превью с небольшой задержкой после закрытия модалки
+            setTimeout(updatePreview, 400);
         }
     });
     
@@ -1198,7 +1240,7 @@ $(document).ready(function() {
         
         if (!token) {
             // Гость - сохраняем данные формы в localStorage и показываем модалку
-            localStorage.setItem('pending_upd_data', JSON.stringify(requestData));
+            localStorage.setItem('pending_invoice_data', JSON.stringify(requestData));
             $('#guestRegistrationModal').modal('show');
             return;
         }
@@ -1220,19 +1262,27 @@ $(document).ready(function() {
             });
             
             if (!response.ok) {
-                const error = await response.json();
-                // Обработка разных форматов ошибок
+                // Пытаемся получить JSON ошибку, если не получится - читаем как текст
                 let errorMessage = 'Ошибка генерации';
-                if (typeof error.detail === 'string') {
-                    errorMessage = error.detail;
-                } else if (Array.isArray(error.detail)) {
-                    // Pydantic validation errors
-                    errorMessage = error.detail.map(e => {
-                        const field = e.loc ? e.loc.join(' -> ') : 'поле';
-                        return `${field}: ${e.msg}`;
-                    }).join('; ');
-                } else if (error.detail) {
-                    errorMessage = JSON.stringify(error.detail);
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    try {
+                        const error = await response.json();
+                        if (typeof error.detail === 'string') {
+                            errorMessage = error.detail;
+                        } else if (Array.isArray(error.detail)) {
+                            errorMessage = error.detail.map(e => {
+                                const field = e.loc ? e.loc.join(' -> ') : 'поле';
+                                return `${field}: ${e.msg}`;
+                            }).join('; ');
+                        } else if (error.detail) {
+                            errorMessage = JSON.stringify(error.detail);
+                        }
+                    } catch (e) {
+                        errorMessage = `Ошибка сервера (${response.status})`;
+                    }
+                } else {
+                    errorMessage = `Ошибка сервера (${response.status})`;
                 }
                 throw new Error(errorMessage);
             }
@@ -1261,31 +1311,12 @@ $(document).ready(function() {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `UPD_${requestData.document_number}_${requestData.document_date.replace(/-/g, '')}.pdf`;
+                a.download = `Schet_${requestData.document_number}_${requestData.document_date.replace(/\./g, '')}.pdf`;
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
                 a.remove();
-                showNotification('success', 'УПД успешно сгенерирован и скачан!');
-            }
-            
-            // Сохраняем документ в личном кабинете
-            try {
-                const saveResponse = await fetch(`${API_URL}/api/v1/documents/invoice/save`, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': token ? `Bearer ${token}` : ''
-                    },
-                    body: JSON.stringify(requestData)
-                });
-                
-                if (saveResponse.ok) {
-                    const saveResult = await saveResponse.json();
-                    console.log('Документ сохранён:', saveResult.document_id);
-                }
-            } catch (saveError) {
-                console.log('Не удалось сохранить документ:', saveError);
+                showNotification('success', 'Счёт успешно сгенерирован и скачан!');
             }
             
         } catch (error) {
@@ -1349,6 +1380,7 @@ $(document).ready(function() {
                 unit_name: $(this).find('.product-unit').val() || 'шт',
                 quantity: qty,
                 price: price,
+                amount: amountWithVat, // для шаблона счёта
                 amount_without_vat: amountWithoutVat,
                 vat_rate: vatRateStr,
                 vat_amount: vatAmount,
@@ -1366,16 +1398,31 @@ $(document).ready(function() {
             totalWithVat += item.amount_with_vat;
         });
         
-        // Формируем запрос к API
+        // Получаем ставку НДС для отображения
+        let vatRateDisplay = 'Без НДС';
+        if (vatRate !== 'none') {
+            vatRateDisplay = vatRate + '%';
+        }
+        
+        // Формируем запрос к API (используем правильные имена полей для invoice)
         return {
             document_number: $('#invoice-number').val(),
-            document_date: convertDateToISO($('#invoice-date').val()),
-            status: parseInt($('input[name="upd-status"]:checked').val()) || 1,
-            seller: {
+            document_date: $('#invoice-date').val(), // Не конвертируем в ISO для счёта
+            supplier: {
                 name: $('#supplier-name').val(),
                 inn: $('#supplier-inn').val(),
                 kpp: $('#supplier-kpp').val() || null,
                 address: $('#supplier-address').val()
+            },
+            bank: {
+                name: $('#bank-name').val() || '',
+                bik: $('#bank-bik').val() || '',
+                account: $('#bank-account').val() || '',
+                corr_account: $('#bank-corr').val() || ''
+            },
+            signers: {
+                director: $('#signer-director').val() || null,
+                accountant: $('#signer-accountant').val() || null
             },
             buyer: {
                 name: $('#buyer-name').val(),
@@ -1384,23 +1431,13 @@ $(document).ready(function() {
                 address: $('#buyer-address').val()
             },
             items: items,
+            vat_rate: vatRateDisplay,
             total_amount_without_vat: totalWithoutVat,
             total_vat_amount: totalVat,
             total_amount_with_vat: totalWithVat,
-            currency_code: '643',
-            currency_name: 'Российский рубль',
-            contract_info: $('#transfer-basis').val() || null,
-            transport_info: $('#transport-info').val() || null,
-            seller_signer: $('#released-by').val() ? {
-                position: '',
-                full_name: $('#released-by').val(),
-                basis: 'Устав'
-            } : null,
-            buyer_signer: $('#received-by').val() ? {
-                position: '',
-                full_name: $('#received-by').val(),
-                basis: 'Устав'
-            } : null
+            contract_info: $('#contract-info').val() || null,
+            payment_due: parseInt($('#payment-due').val()) || null,
+            invoice_note: $('#invoice-note').val() || null
         };
     }
     
@@ -1716,7 +1753,7 @@ $(document).ready(function() {
     // Сохранить черновик
     $('#save-draft').on('click', function() {
         const formData = collectFormData();
-        localStorage.setItem('upd_draft', JSON.stringify(formData));
+        localStorage.setItem('invoice_draft', JSON.stringify(formData));
         showNotification('success', 'Черновик сохранен!');
     });
 
@@ -1768,6 +1805,7 @@ $(document).ready(function() {
                 unit_name: $(this).find('.product-unit').val() || 'шт',
                 quantity: qty,
                 price: price,
+                amount: amountWithVat, // для шаблона счёта
                 amount_without_vat: amountWithoutVat,
                 vat_rate: vatRateStr,
                 vat_amount: vatAmount,
@@ -1784,7 +1822,7 @@ $(document).ready(function() {
         
         return {
             document_number: $('#invoice-number').val() || '1',
-            document_date: convertDateToISO($('#invoice-date').val()),
+            document_date: $('#invoice-date').val() || '',
             supplier: {
                 name: $('#supplier-name').val() || 'Поставщик',
                 inn: $('#supplier-inn').val() || '0000000000',
@@ -1814,6 +1852,7 @@ $(document).ready(function() {
                 unit_name: 'шт',
                 quantity: 1,
                 price: 0,
+                amount: 0,
                 amount_without_vat: 0,
                 vat_rate: '20%',
                 vat_amount: 0,
@@ -1863,10 +1902,12 @@ $(document).ready(function() {
         if (isPreviewUpdating) return; // Пропускаем если уже обновляется
         
         const canvas = document.getElementById('sidebar-preview-canvas');
-        if (!canvas) return;
+        if (!canvas) {
+            console.log('Sidebar preview: canvas not found');
+            return;
+        }
         
         isPreviewUpdating = true;
-        const container = canvas.parentElement;
         const requestData = collectFormData();
         
         try {
@@ -1880,15 +1921,13 @@ $(document).ready(function() {
             if (response.ok) {
                 const html = await response.text();
                 
-                // Создаём временный контейнер для рендеринга
+                // Создаём временный контейнер для рендеринга (за экраном, но видимый для html2canvas)
                 const tempDiv = document.createElement('div');
-                tempDiv.style.position = 'absolute';
-                tempDiv.style.left = '-9999px';
-                tempDiv.style.width = '1200px';
+                tempDiv.style.cssText = 'position:absolute;left:-9999px;top:0;width:1200px;';
                 tempDiv.innerHTML = html;
                 document.body.appendChild(tempDiv);
                 
-                // Уменьшили задержку с 500мс до 100мс
+                // Небольшая задержка для рендеринга
                 await new Promise(resolve => setTimeout(resolve, 100));
                 
                 // Рендерим в canvas с пониженным scale для ускорения
@@ -1992,8 +2031,14 @@ $(document).ready(function() {
             console.log('AI Analysis: response status', response.status);
             
             if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.detail || 'Ошибка анализа');
+                // Проверяем тип ответа перед парсингом
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const err = await response.json();
+                    throw new Error(err.detail || 'Ошибка анализа');
+                } else {
+                    throw new Error(`Ошибка сервера (${response.status}). Попробуйте позже.`);
+                }
             }
             
             const result = await response.json();
@@ -2315,11 +2360,11 @@ $(document).ready(function() {
                 .removeClass('d-none').text('Регистрация успешна! Генерируем PDF...');
             
             // Восстанавливаем данные формы из localStorage и генерируем PDF
-            const pendingData = localStorage.getItem('pending_upd_data');
+            const pendingData = localStorage.getItem('pending_invoice_data');
             if (pendingData) {
                 const requestData = JSON.parse(pendingData);
                 // Очищаем временные данные
-                localStorage.removeItem('pending_upd_data');
+                localStorage.removeItem('pending_invoice_data');
                 // Генерируем PDF с авторизованным токеном
                 await generateAndDownloadPDF(requestData);
             }

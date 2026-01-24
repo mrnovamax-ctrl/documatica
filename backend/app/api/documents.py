@@ -934,25 +934,41 @@ async def generate_invoice(
         # Загружаем шаблон
         template = jinja_env.get_template("invoice_template.html")
         
-        # Подготовка данных
-        total_with_vat = float(request.get('total_with_vat', 0))
+        # Подготовка данных (поддержка обоих форматов полей)
+        total_with_vat = float(request.get('total_amount_with_vat', request.get('total_with_vat', 0)))
+        total_without_vat = float(request.get('total_amount_without_vat', request.get('total_without_vat', 0)))
+        total_vat = float(request.get('total_vat_amount', request.get('vat_amount', 0)))
+        
+        supplier = request.get('supplier', {})
+        buyer = request.get('buyer', request.get('client', {}))
+        bank = request.get('bank', {})
+        signers = request.get('signers', {})
         
         template_data = {
-            "invoice_number": request.get('invoice_number', ''),
-            "invoice_date": request.get('invoice_date', ''),
+            "invoice_number": request.get('document_number', request.get('invoice_number', '')),
+            "invoice_date": request.get('document_date', request.get('invoice_date', '')),
             "contract_info": request.get('contract_info', ''),
-            "supplier": request.get('supplier', {}),
-            "client": request.get('client', {}),
+            "payment_due": request.get('payment_due'),
+            "invoice_note": request.get('invoice_note', ''),
+            "supplier": supplier,
+            "bank": bank,
+            "signers": signers,
+            "client": buyer,
             "items": request.get('items', []),
             "vat_rate": request.get('vat_rate', 'Без НДС'),
-            "vat_amount": request.get('vat_amount', 0),
-            "total_without_vat": request.get('total_without_vat', 0),
+            "vat_amount": total_vat,
+            "total_without_vat": total_without_vat,
             "total_with_vat": total_with_vat,
             "amount_in_words": number_to_words_ru(total_with_vat).capitalize(),
         }
         
         # Рендерим HTML
         html_content = template.render(**template_data)
+        
+        # Формируем имя файла
+        doc_number = request.get('document_number', request.get('invoice_number', '1'))
+        doc_date = request.get('document_date', request.get('invoice_date', ''))
+        filename = f"Schet_{doc_number}_{doc_date.replace('.', '').replace('-', '')}"
         
         # Создаём папку для документа
         document_id = str(uuid.uuid4())
@@ -974,11 +990,11 @@ async def generate_invoice(
             "id": document_id,
             "type": "invoice",
             "user_id": user_id,
-            "document_number": request.get('invoice_number', ''),
-            "document_date": request.get('invoice_date', ''),
+            "document_number": doc_number,
+            "document_date": doc_date,
             "created_at": datetime.now().isoformat(),
-            "seller_name": request.get('supplier', {}).get('name', ''),
-            "buyer_name": request.get('client', {}).get('name', ''),
+            "seller_name": supplier.get('name', ''),
+            "buyer_name": buyer.get('name', ''),
             "total_amount": total_with_vat,
         }
         
@@ -987,19 +1003,39 @@ async def generate_invoice(
             json.dump(metadata, f, ensure_ascii=False, indent=2)
         
         # Генерируем PDF если доступен WeasyPrint
-        pdf_path = None
         if WEASYPRINT_AVAILABLE:
             pdf_path = doc_folder / "document.pdf"
             WeasyHTML(string=html_content).write_pdf(str(pdf_path))
-        
-        return {
-            "success": True,
-            "document_id": document_id,
-            "message": "Счёт успешно сформирован",
-            "pdf_available": pdf_path is not None
-        }
+            
+            # Возвращаем PDF напрямую
+            pdf_buffer = io.BytesIO()
+            WeasyHTML(string=html_content).write_pdf(pdf_buffer)
+            pdf_buffer.seek(0)
+            
+            from urllib.parse import quote
+            filename_encoded = quote(filename + ".pdf")
+            return StreamingResponse(
+                pdf_buffer,
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f"attachment; filename*=UTF-8''{filename_encoded}"
+                }
+            )
+        else:
+            # Без WeasyPrint возвращаем чистый HTML для печати
+            from urllib.parse import quote
+            filename_encoded = quote(filename + ".html")
+            return HTMLResponse(
+                content=html_content,
+                headers={
+                    "Content-Disposition": f"inline; filename*=UTF-8''{filename_encoded}"
+                }
+            )
         
     except Exception as e:
+        import traceback
+        print(f"Invoice generate error: {str(e)}")
+        print(traceback.format_exc())
         raise HTTPException(
             status_code=500,
             detail=f"Ошибка генерации счёта: {str(e)}"

@@ -4,6 +4,13 @@
    Extracted from inline styles for better performance
    ======================================== */
 
+/* Отключение transitions при массовом заполнении полей */
+.no-transitions,
+.no-transitions * {
+  transition: none !important;
+  animation: none !important;
+}
+
 /* Card Headers - единый стиль v12 для всех h4 в card-header */
 .card-header h4,
 .constructor-card-header-v12 h4,

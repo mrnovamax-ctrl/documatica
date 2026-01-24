@@ -108,42 +108,50 @@ pricing:
   title: Инвестируйте в
   title_accent: простоту
   plans:
-  - name: Starter Kit
-    price: 0 ₽
-    period: Бесплатно навсегда
+  - name: Бесплатный
+    price: 0 руб
+    period: Для знакомства
     features:
-    - text: 5 документов в месяц
+    - text: 5 документов бесплатно
       enabled: true
-    - text: AI Аудит рисков
+    - text: Все типы УПД
+      enabled: true
+    - text: Скачивание PDF и Excel
+      enabled: true
+    - text: Ограничение 5 документов на ИНН
       enabled: false
     button_text: Начать бесплатно
     button_url: /register
     style: outline
-  - name: Professional
-    price: 299 ₽
+  - name: Подписка
+    price: 300 руб
     period: В месяц
     featured: true
-    badge: Рекомендуемый выбор
+    badge: Популярный
     features:
-    - text: Безлимитный экспорт
+    - text: 50 документов в месяц
       enabled: true
-    - text: AI Аудит рисков v12
+    - text: Все типы УПД
       enabled: true
-    - text: Полный доступ к API
+    - text: Без ограничений по ИНН
       enabled: true
-    button_text: Выбрать Professional
-    button_url: /register
+    - text: Приоритетная поддержка
+      enabled: true
+    button_text: Оформить подписку
+    button_url: /dashboard/tariffs/
     style: primary
-  - name: Enterprise
-    price: Custom
-    period: Tailored Solution
+  - name: Пакет документов
+    price: от 12 руб
+    period: За документ
     features:
-    - text: Выделенный AI-кластер
+    - text: Без срока действия
       enabled: true
-    - text: Индивидуальное обучение ИИ
+    - text: Все типы УПД
       enabled: true
-    button_text: Связаться с нами
-    button_url: /contact
+    - text: Скидки на большие пакеты
+      enabled: true
+    button_text: Купить пакет
+    button_url: /dashboard/tariffs/
     style: enterprise
 cta:
   label: Начните сейчас

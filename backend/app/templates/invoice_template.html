@@ -269,11 +269,11 @@ td, th {
     {% for item in items %}
     <tr>
       <td class="text-center">{{ loop.index }}</td>
-      <td>{{ item.name }}</td>
-      <td class="text-right">{{ item.quantity }}</td>
-      <td class="text-center">{{ item.unit_name or 'шт' }}</td>
-      <td class="text-right">{{ "%.2f"|format(item.price) }}</td>
-      <td class="text-right">{{ "%.2f"|format(item.amount) }}</td>
+      <td>{{ item['name'] }}</td>
+      <td class="text-right">{{ item['quantity'] }}</td>
+      <td class="text-center">{{ item['unit_name'] or item.get('unit', 'шт') }}</td>
+      <td class="text-right">{{ "%.2f"|format(item['price']|float) }}</td>
+      <td class="text-right">{{ "%.2f"|format(item['amount']|float) }}</td>
     </tr>
     {% endfor %}
   </tbody>

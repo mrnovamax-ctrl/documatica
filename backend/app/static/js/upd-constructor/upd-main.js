@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    // Отключаем transitions при инициализации страницы
+    document.body.classList.add('no-transitions');
+    setTimeout(function() {
+        document.body.classList.remove('no-transitions');
+    }, 100);
+    
     // Initialize date picker
     flatpickr('.date-picker', {
         dateFormat: 'd.m.Y',
@@ -498,6 +504,9 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const org = organizationsList.find(o => o.id === id);
         if (org) {
+            // Отключаем transitions при массовом заполнении полей
+            document.body.classList.add('no-transitions');
+            
             // Fill seller fields
             $('#seller-name').val(org.name);
             $('#seller-inn').val(org.inn);
@@ -528,6 +537,11 @@ $(document).ready(function() {
             // Hide "add to organizations" button since selected from list
             $('#save-seller-btn').removeClass('show');
             
+            // Включаем transitions обратно
+            setTimeout(function() {
+                document.body.classList.remove('no-transitions');
+            }, 50);
+            
             // Update preview
             updatePreview();
         }
@@ -538,6 +552,9 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const contractor = contractorsList.find(c => c.id === id);
         if (contractor) {
+            // Отключаем transitions при массовом заполнении полей
+            document.body.classList.add('no-transitions');
+            
             // Fill buyer fields
             $('#buyer-name').val(contractor.name);
             $('#buyer-inn').val(contractor.inn);
@@ -564,6 +581,11 @@ $(document).ready(function() {
             
             // Hide "add to clients" button since selected from list
             $('#save-buyer-btn').removeClass('show');
+            
+            // Включаем transitions обратно
+            setTimeout(function() {
+                document.body.classList.remove('no-transitions');
+            }, 50);
             
             // Update preview
             updatePreview();
