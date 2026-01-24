@@ -176,15 +176,24 @@
 <script>
 function toggleMobileMenu() {
   const menu = document.getElementById('mobileMenu');
-  const header = document.getElementById('header');
-  menu.classList.toggle('is-open');
-  header.classList.toggle('mobile-open');
+  const isOpen = menu.style.visibility === 'visible';
+  if (isOpen) {
+    menu.style.transform = 'translateX(100%)';
+    menu.style.opacity = '0';
+    menu.style.visibility = 'hidden';
+  } else {
+    menu.style.transform = 'translateX(0)';
+    menu.style.opacity = '1';
+    menu.style.visibility = 'visible';
+  }
 }
 
 window.addEventListener('resize', () => {
   if (window.innerWidth > 1024) {
-    document.getElementById('mobileMenu').classList.remove('is-open');
-    document.getElementById('header').classList.remove('mobile-open');
+    const menu = document.getElementById('mobileMenu');
+    menu.style.transform = 'translateX(100%)';
+    menu.style.opacity = '0';
+    menu.style.visibility = 'hidden';
   }
 });
 

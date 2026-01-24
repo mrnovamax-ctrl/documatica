@@ -259,8 +259,29 @@
 </head>
 <body>
 
-<!-- Header -->
-{% include 'components/header_public.html' %}
+<!-- Sidebar v12 -->
+{% include 'components/sidebar_v12.html' %}
+
+<!-- Sidebar Overlay for mobile -->
+<div class="sidebar-overlay-v12" onclick="document.body.classList.remove('sidebar-open')"></div>
+
+<!-- Mobile Burger Button -->
+<button class="constructor-burger-btn" onclick="document.body.classList.toggle('sidebar-open')" style="position: fixed; top: 16px; left: 16px; z-index: 1001; width: 48px; height: 48px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#64748b" stroke-width="2">
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</button>
+<style>
+  @media (max-width: 1023px) {
+    .constructor-burger-btn { display: flex !important; }
+    .sidebar-v12 { transform: translateX(-100%); z-index: 1000; transition: transform 0.3s ease; }
+    body.sidebar-open .sidebar-v12 { transform: translateX(0); }
+    body.sidebar-open .sidebar-overlay-v12 { opacity: 1; visibility: visible; }
+    .sidebar-overlay-v12 { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+  }
+</style>
 
 <!-- Main Content -->
 <main class="form-page-v12" style="padding-top: 100px;">
