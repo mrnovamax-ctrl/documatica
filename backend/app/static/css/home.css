@@ -715,7 +715,8 @@ body {
 .hero-section {
   position: relative;
   background: #0f172a;
-  padding: 160px 0 120px;
+  padding: 180px 0 160px;
+  min-height: 700px;
   overflow: visible;
 }
 
