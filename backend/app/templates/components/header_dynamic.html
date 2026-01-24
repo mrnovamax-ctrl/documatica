@@ -91,11 +91,49 @@
       </svg>
     </button>
     <style>
-      .main-header__mobile-toggle { display: none; }
+      .main-header__mobile-toggle {
+        display: none;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        color: #64748b;
+      }
+      .main-header__mobile-toggle svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+      }
+      .main-header__mobile {
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: white;
+        z-index: 98;
+        overflow-y: auto;
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+      .main-header__mobile.is-open {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+      }
       @media (max-width: 1024px) {
         .main-header__mobile-toggle { display: flex !important; }
         .main-header__nav { display: none !important; }
         .main-header__auth { display: none !important; }
+      }
+      @media (min-width: 1025px) {
+        .main-header__mobile { display: none !important; }
       }
     </style>
     
