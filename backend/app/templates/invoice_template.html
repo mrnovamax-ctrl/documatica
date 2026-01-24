@@ -176,13 +176,13 @@ td, th {
     <tr>
       <td rowspan="2" style="width: 50%; vertical-align: top;">
         <div class="label">Банк получателя</div>
-        <div class="value bold">{{ supplier.bank_name }}</div>
+        <div class="value bold">{{ bank.name if bank else supplier.bank_name }}</div>
       </td>
       <td style="width: 15%;">
         <div class="label">БИК</div>
       </td>
       <td style="width: 35%;">
-        <div class="value">{{ supplier.bank_bik }}</div>
+        <div class="value">{{ bank.bik if bank else supplier.bank_bik }}</div>
       </td>
     </tr>
     <tr>
@@ -190,7 +190,7 @@ td, th {
         <div class="label">Сч. №</div>
       </td>
       <td>
-        <div class="value">{{ supplier.bank_corr_account }}</div>
+        <div class="value">{{ bank.corr_account if bank else supplier.bank_corr_account }}</div>
       </td>
     </tr>
     <tr>
@@ -202,7 +202,7 @@ td, th {
         <div class="label">Сч. №</div>
       </td>
       <td rowspan="2">
-        <div class="value">{{ supplier.bank_account }}</div>
+        <div class="value">{{ bank.account if bank else supplier.bank_account }}</div>
       </td>
     </tr>
     <tr>
@@ -297,9 +297,9 @@ td, th {
   {{ amount_in_words }}
 </div>
 
-{% if payment_note %}
+{% if invoice_note %}
 <div style="margin: 10px 0; font-size: 9pt; color: #666;">
-  {{ payment_note }}
+  {{ invoice_note }}
 </div>
 {% endif %}
 
@@ -311,7 +311,7 @@ td, th {
         <div style="margin-bottom: 20px;">
           <strong>Генеральный директор</strong>
           <span class="signature-line"></span>
-          {{ supplier.director_name or '________________' }}
+          {{ signers.director if signers else (supplier.director_name or '________________') }}
         </div>
       </td>
       <td style="width: 50%; text-align: right;" rowspan="2">
@@ -323,7 +323,7 @@ td, th {
         <div>
           <strong>Главный бухгалтер</strong>
           <span class="signature-line"></span>
-          {{ supplier.accountant_name or '________________' }}
+          {{ signers.accountant if signers else (supplier.accountant_name or '________________') }}
         </div>
       </td>
     </tr>

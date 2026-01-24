@@ -846,19 +846,31 @@ async def invoice_preview(request: dict):
     try:
         template = jinja_env.get_template("invoice_template.html")
         
-        # Подготовка данных для шаблона
-        total_with_vat = float(request.get('total_with_vat', 0))
+        # Подготовка данных для шаблона (поддержка обоих форматов)
+        total_with_vat = float(request.get('total_amount_with_vat', request.get('total_with_vat', 0)))
+        total_without_vat = float(request.get('total_amount_without_vat', request.get('total_without_vat', 0)))
+        total_vat = float(request.get('total_vat_amount', request.get('vat_amount', 0)))
+        
+        # Получаем supplier и buyer (поддержка разных названий)
+        supplier = request.get('supplier', {})
+        buyer = request.get('buyer', request.get('client', {}))
+        bank = request.get('bank', {})
+        signers = request.get('signers', {})
         
         template_data = {
-            "invoice_number": request.get('invoice_number', ''),
-            "invoice_date": request.get('invoice_date', ''),
+            "invoice_number": request.get('document_number', request.get('invoice_number', '')),
+            "invoice_date": request.get('document_date', request.get('invoice_date', '')),
             "contract_info": request.get('contract_info', ''),
-            "supplier": request.get('supplier', {}),
-            "client": request.get('client', {}),
+            "payment_due": request.get('payment_due'),
+            "invoice_note": request.get('invoice_note', ''),
+            "supplier": supplier,
+            "bank": bank,
+            "signers": signers,
+            "client": buyer,
             "items": request.get('items', []),
             "vat_rate": request.get('vat_rate', 'Без НДС'),
-            "vat_amount": request.get('vat_amount', 0),
-            "total_without_vat": request.get('total_without_vat', 0),
+            "vat_amount": total_vat,
+            "total_without_vat": total_without_vat,
             "total_with_vat": total_with_vat,
             "amount_in_words": number_to_words_ru(total_with_vat).capitalize(),
         }
