@@ -1,0 +1,193 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero">
+  <div class="container">
+    <div class="about-hero__content">
+      <span class="docu-tag">О сервисе</span>
+      <h1 class="docu-h1">Documatica</h1>
+      <p class="docu-lead">Современный онлайн-сервис для автоматической генерации бухгалтерских документов</p>
+    </div>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section class="about-section">
+  <div class="container">
+    <div class="about-card about-card--wide">
+      <div class="about-card__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <h2 class="docu-h2">Наша миссия</h2>
+      <p class="docu-body">
+        Мы создали Documatica, чтобы избавить предпринимателей и бухгалтеров от рутинной работы с документами. 
+        Наша цель — автоматизировать создание бухгалтерских документов, сделать этот процесс быстрым, 
+        удобным и доступным для всех.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Features Grid -->
+<section class="about-section about-section--gray">
+  <div class="container">
+    <div class="text-center mb-16">
+      <span class="docu-tag-muted">Возможности</span>
+      <h2 class="docu-h2">Что мы предлагаем</h2>
+    </div>
+    
+    <div class="about-features">
+      <div class="about-feature">
+        <div class="about-feature__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <h3 class="docu-h3">УПД</h3>
+        <p class="docu-body">Универсальный передаточный документ с НДС и без. Полностью соответствует требованиям ФНС.</p>
+      </div>
+      
+      <div class="about-feature">
+        <div class="about-feature__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M7 15h0M2 9.5h20"/>
+          </svg>
+        </div>
+        <h3 class="docu-h3">Счета</h3>
+        <p class="docu-body">Создание счетов на оплату за секунды. Профессиональный дизайн и все необходимые реквизиты.</p>
+      </div>
+      
+      <div class="about-feature">
+        <div class="about-feature__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h3 class="docu-h3">Акты</h3>
+        <p class="docu-body">Акты выполненных работ и оказанных услуг. Автоматическое заполнение на основе счёта.</p>
+      </div>
+      
+      <div class="about-feature">
+        <div class="about-feature__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <h3 class="docu-h3">Договоры</h3>
+        <p class="docu-body">Шаблоны типовых договоров с возможностью кастомизации под ваши нужды.</p>
+      </div>
+      
+      <div class="about-feature">
+        <div class="about-feature__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+        <h3 class="docu-h3">Автозаполнение</h3>
+        <p class="docu-body">Поиск реквизитов компании по ИНН. Интеграция с базой данных ФНС через DaData.</p>
+      </div>
+      
+      <div class="about-feature">
+        <div class="about-feature__icon about-feature__icon--gold">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <h3 class="docu-h3">AI-помощник</h3>
+        <p class="docu-body">Искусственный интеллект помогает заполнять документы и исправлять ошибки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="about-section">
+  <div class="container">
+    <div class="about-stats">
+      <div class="about-stat">
+        <span class="about-stat__number">10 000+</span>
+        <span class="about-stat__label">Документов создано</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat__number">2 500+</span>
+        <span class="about-stat__label">Активных пользователей</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat__number">99.9%</span>
+        <span class="about-stat__label">Uptime сервиса</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat__number">24/7</span>
+        <span class="about-stat__label">Техподдержка</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Us Section -->
+<section class="about-section about-section--blue">
+  <div class="container">
+    <div class="text-center mb-16">
+      <span class="docu-tag" style="color: white; border-color: rgba(255,255,255,0.3);">Преимущества</span>
+      <h2 class="docu-h2" style="color: white;">Почему выбирают нас</h2>
+    </div>
+    
+    <div class="about-advantages">
+      <div class="about-advantage">
+        <div class="about-advantage__number">01</div>
+        <h3 class="about-advantage__title">Бесплатный старт</h3>
+        <p class="about-advantage__text">Начните работу без оплаты. Базовый функционал доступен бесплатно.</p>
+      </div>
+      
+      <div class="about-advantage">
+        <div class="about-advantage__number">02</div>
+        <h3 class="about-advantage__title">Без регистрации</h3>
+        <p class="about-advantage__text">Создавайте документы без обязательной регистрации и подтверждения email.</p>
+      </div>
+      
+      <div class="about-advantage">
+        <div class="about-advantage__number">03</div>
+        <h3 class="about-advantage__title">Соответствие ФНС</h3>
+        <p class="about-advantage__text">Все документы соответствуют требованиям налоговой службы России.</p>
+      </div>
+      
+      <div class="about-advantage">
+        <div class="about-advantage__number">04</div>
+        <h3 class="about-advantage__title">Облачное хранение</h3>
+        <p class="about-advantage__text">Ваши документы сохраняются в облаке и доступны с любого устройства.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="about-section">
+  <div class="container">
+    <div class="about-cta">
+      <h2 class="docu-h2">Готовы начать?</h2>
+      <p class="docu-lead">Создайте свой первый документ прямо сейчас — это бесплатно</p>
+      <div class="about-cta__buttons">
+        <a href="/upd/" class="btn-primary-massive">
+          Создать УПД
+        </a>
+        <a href="/#pricing" class="btn-outline-large">
+          Тарифы
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

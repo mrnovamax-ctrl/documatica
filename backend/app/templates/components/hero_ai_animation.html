@@ -1,0 +1,88 @@
+<!-- Hero AI Animation Component -->
+<div class="hero-ai-animation">
+  
+  <!-- Scanner Line -->
+  <div class="hero-scanner-line"></div>
+
+  <!-- Header -->
+  <div class="hero-ai-header">
+    <div>
+      <div class="hero-ai-label">
+        <div class="hero-ai-dot"></div>
+        <span>Documatica</span>
+      </div>
+      <h3 class="hero-ai-title">Ai анализ <br>документа</h3>
+    </div>
+    <div class="hero-ai-badge">
+      <span>Core: 100%</span>
+    </div>
+  </div>
+
+  <!-- Document Rows -->
+  <div class="hero-ai-rows">
+    <!-- Row 1: OK -->
+    <div class="hero-ai-row hero-ai-row-ok">
+      <div class="hero-ai-row-lines">
+        <div class="hero-ai-line hero-ai-line-1"></div>
+        <div class="hero-ai-line hero-ai-line-2"></div>
+      </div>
+      <svg class="hero-ai-check" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+    </div>
+
+    <!-- Row 2: Dynamic -->
+    <div class="hero-ai-row hero-ai-row-dynamic">
+      <div class="hero-ai-row-lines">
+        <div class="hero-ai-line hero-ai-line-active-1"></div>
+        <div class="hero-ai-line hero-ai-line-active-2"></div>
+      </div>
+      <div class="hero-dynamic-icon"></div>
+    </div>
+
+    <!-- Row 3: OK -->
+    <div class="hero-ai-row hero-ai-row-ok">
+      <div class="hero-ai-row-lines">
+        <div class="hero-ai-line hero-ai-line-3"></div>
+        <div class="hero-ai-line hero-ai-line-4"></div>
+      </div>
+      <svg class="hero-ai-check" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+    </div>
+  </div>
+
+  <!-- Footer Status Bar -->
+  <div class="hero-ai-footer">
+    
+    <!-- Error Message -->
+    <div class="hero-msg hero-msg-error">
+      <div class="hero-msg-icon hero-msg-icon-error">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      </div>
+      <div>
+        <h4 class="hero-msg-title hero-msg-title-error">Risk Detected</h4>
+        <p class="hero-msg-text">Некорректная дата в пункте 4.2</p>
+      </div>
+    </div>
+
+    <!-- Fixing Message -->
+    <div class="hero-msg hero-msg-fixing">
+      <div class="hero-msg-icon hero-msg-icon-fixing">
+        <svg class="hero-fixing-spinner" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+      </div>
+      <div>
+        <h4 class="hero-msg-title hero-msg-title-fixing">Auto-Fix Active</h4>
+        <p class="hero-msg-text">Синхронизация с ЕГРЮЛ...</p>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="hero-msg hero-msg-success">
+      <div class="hero-msg-icon hero-msg-icon-success">
+        <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+      </div>
+      <div>
+        <h4 class="hero-msg-title hero-msg-title-success">Verified</h4>
+        <p class="hero-msg-text">Все ошибки устранены. OK.</p>
+      </div>
+    </div>
+
+  </div>
+</div>

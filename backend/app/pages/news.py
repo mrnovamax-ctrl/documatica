@@ -3,8 +3,10 @@
 """
 
 import json
+import time
+from functools import lru_cache
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import HTMLResponse
 
@@ -15,14 +17,34 @@ router = APIRouter()
 # Путь к данным
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
 
+# TTL кэша статей (секунды)
+ARTICLES_CACHE_TTL = 60
 
-def load_articles() -> Dict[str, Any]:
-    """Загрузка статей из JSON"""
+
+def _get_cache_key() -> int:
+    """Ключ кэша с учетом TTL (меняется каждые ARTICLES_CACHE_TTL секунд)"""
+    return int(time.time() // ARTICLES_CACHE_TTL)
+
+
+@lru_cache(maxsize=4)
+def _load_articles_cached(cache_key: int) -> Tuple[str, ...]:
+    """Внутренняя функция с кэшем. Возвращает JSON как строку для hashability"""
     filepath = DATA_DIR / "articles.json"
     if filepath.exists():
         with open(filepath, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {"articles": [], "categories": []}
+            return (f.read(),)
+    return ('{"articles": [], "categories": []}',)
+
+
+def load_articles() -> Dict[str, Any]:
+    """Загрузка статей из JSON с кэшированием (TTL: 60 сек)"""
+    cache_key = _get_cache_key()
+    raw = _load_articles_cached(cache_key)[0]
+    data = json.loads(raw)
+    # Поддержка старого формата (массив статей)
+    if isinstance(data, list):
+        return {"articles": data, "categories": []}
+    return data
 
 
 def get_published_articles() -> List[Dict]:
@@ -41,6 +63,11 @@ def get_article_by_slug(slug: str) -> Optional[Dict]:
         if article.get("slug") == slug and article.get("is_published", False):
             return article
     return None
+
+
+def clear_articles_cache():
+    """Очистка кэша статей (вызывать при CRUD операциях)"""
+    _load_articles_cached.cache_clear()
 
 
 def get_categories() -> List[Dict]:
@@ -68,6 +95,8 @@ def increment_views(slug: str):
             break
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+    # Очистка кэша после записи
+    clear_articles_cache()
 
 
 @router.get("/", response_class=HTMLResponse)

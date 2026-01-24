@@ -6,6 +6,8 @@ from pathlib import Path
 from fastapi.templating import Jinja2Templates
 from datetime import datetime
 
+from app.core.content import load_navigation
+
 # Путь к шаблонам
 TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
 
@@ -16,6 +18,13 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 templates.env.globals["current_year"] = datetime.now().year
 templates.env.globals["site_name"] = "Documatica"
 templates.env.globals["site_url"] = "https://new.oplatanalogov.ru"
+
+# Функция для загрузки навигации (будет вызываться в шаблонах)
+def get_navigation():
+    """Получение конфигурации навигации для меню"""
+    return load_navigation()
+
+templates.env.globals["get_navigation"] = get_navigation
 
 
 # Кастомные фильтры

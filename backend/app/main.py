@@ -4,9 +4,12 @@ Documatica Backend - FastAPI Application
 """
 
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload
 from app.pages import router as pages_router
@@ -14,8 +17,10 @@ from app.dashboard import router as dashboard_router
 from app.admin import router as admin_router
 from app.database import init_db
 
-# Пути к статике (app/static внутри модуля app)
+# Пути к статике и шаблонам
 STATIC_DIR = Path(__file__).parent / "static"
+TEMPLATES_DIR = Path(__file__).parent / "templates"
+error_templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 app = FastAPI(
     title="Documatica API",
@@ -36,6 +41,24 @@ app.add_middleware(
 
 # Статические файлы
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+# ===== Обработчик ошибок 404 =====
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
+    """Кастомный обработчик HTTP ошибок с красивой страницей 404"""
+    if exc.status_code == 404:
+        return error_templates.TemplateResponse(
+            "errors/404.html",
+            {"request": request},
+            status_code=404
+        )
+    # Для остальных ошибок возвращаем стандартный ответ
+    return HTMLResponse(
+        content=f"<h1>Error {exc.status_code}</h1><p>{exc.detail}</p>",
+        status_code=exc.status_code
+    )
+
 
 # ===== API роутеры =====
 app.include_router(

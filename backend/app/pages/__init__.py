@@ -4,7 +4,7 @@ Pages - SSR роутеры для публичных страниц
 
 from fastapi import APIRouter
 
-from app.pages import home, upd, auth_pages, news
+from app.pages import home, upd, auth_pages, news, about
 
 router = APIRouter()
 
@@ -13,3 +13,4 @@ router.include_router(home.router)
 router.include_router(upd.router, prefix="/upd")
 router.include_router(auth_pages.router)
 router.include_router(news.router, prefix="/news")
+router.include_router(about.router)

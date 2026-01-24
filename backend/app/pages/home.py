@@ -2,6 +2,9 @@
 Главная страница
 """
 
+import json
+from pathlib import Path
+from typing import List, Dict
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
@@ -10,17 +13,48 @@ from app.core.content import load_content
 
 router = APIRouter()
 
+# Путь к данным
+DATA_DIR = Path(__file__).parent.parent.parent / "data"
+
+
+def get_latest_articles(limit: int = 5) -> List[Dict]:
+    """Получение последних опубликованных статей для главной страницы"""
+    filepath = DATA_DIR / "articles.json"
+    if not filepath.exists():
+        return []
+    
+    with open(filepath, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    # Поддержка старого формата (массив статей)
+    if isinstance(data, list):
+        articles = data
+    else:
+        articles = data.get("articles", [])
+    
+    # Только опубликованные
+    published = [a for a in articles if a.get("is_published", False) or a.get("status") == "published"]
+    
+    # Сортировка по дате (новые сначала)
+    published.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+    
+    return published[:limit]
+
 
 @router.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Главная страница сайта"""
     content = load_content("home")
     
+    # Получаем последние статьи для блока новостей
+    latest_articles = get_latest_articles(5)
+    
     return templates.TemplateResponse(
         request=request,
         name="public/home.html",
         context={
             "content": content,
+            "latest_articles": latest_articles,
             "title": content.get("meta", {}).get("title", "Documatica — генератор документов для бизнеса"),
             "description": content.get("meta", {}).get("description", "Создавайте УПД, счета, акты и договоры онлайн бесплатно."),
         }

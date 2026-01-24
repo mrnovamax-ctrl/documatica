@@ -1,16 +1,63 @@
 """
 УПД - публичные страницы (хаб и лендинги)
+Рефакторинг: универсальный роутер на основе конфига
 """
 
+import yaml
+from pathlib import Path
+from functools import lru_cache
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
-from typing import Optional
+from typing import Dict, Any, Optional
 
 from app.core.templates import templates
 from app.core.content import load_content
 
 router = APIRouter()
 
+# Путь к конфигу страниц
+CONFIG_PATH = Path(__file__).parent.parent.parent / "content" / "upd" / "_pages.yaml"
+
+
+@lru_cache(maxsize=1)
+def load_upd_pages_config() -> Dict[str, Any]:
+    """Загрузка конфигурации УПД страниц"""
+    if CONFIG_PATH.exists():
+        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    return {}
+
+
+def get_landing_config(slug: str) -> Optional[Dict[str, Any]]:
+    """Получение конфига лендинга по slug"""
+    config = load_upd_pages_config()
+    return config.get("landings", {}).get(slug)
+
+
+def get_info_config(slug: str) -> Optional[Dict[str, Any]]:
+    """Получение конфига информационной страницы по slug"""
+    config = load_upd_pages_config()
+    info_pages = config.get("info_pages", {})
+    
+    # Прямой поиск
+    if slug in info_pages:
+        return info_pages[slug]
+    
+    # Поиск по алиасам
+    for page_slug, page_config in info_pages.items():
+        if slug in page_config.get("aliases", []):
+            return page_config
+    
+    return None
+
+
+def get_download_config(slug: str) -> Optional[Dict[str, Any]]:
+    """Получение конфига страницы скачивания по slug"""
+    config = load_upd_pages_config()
+    return config.get("downloads", {}).get(slug)
+
+
+# ============== ГЛАВНАЯ СТРАНИЦА РАЗДЕЛА ==============
 
 @router.get("/", response_class=HTMLResponse)
 async def upd_hub(request: Request):
@@ -30,124 +77,33 @@ async def upd_hub(request: Request):
     )
 
 
+# ============== УНИВЕРСАЛЬНЫЙ РОУТЕР ЛЕНДИНГОВ ==============
+
+# Определяем все возможные лендинги статически для FastAPI
+LANDING_SLUGS = ["ooo", "ip", "samozanyatye", "s-nds", "bez-nds", "usn", "2026", "xml-edo"]
+
+
 @router.get("/ooo/", response_class=HTMLResponse)
-async def upd_ooo(request: Request):
-    """УПД для ООО"""
-    content = load_content("upd/ooo")
-    
-    return templates.TemplateResponse(
-        request=request,
-        name="public/upd/landing.html",
-        context={
-            "content": content,
-            "breadcrumbs": [
-                {"title": "Главная", "url": "/"},
-                {"title": "УПД", "url": "/upd/"},
-                {"title": "Для ООО", "url": None},
-            ]
-        }
-    )
-
-
 @router.get("/ip/", response_class=HTMLResponse)
-async def upd_ip(request: Request):
-    """УПД для ИП"""
-    content = load_content("upd/ip")
-    
-    return templates.TemplateResponse(
-        request=request,
-        name="public/upd/landing.html",
-        context={
-            "content": content,
-            "breadcrumbs": [
-                {"title": "Главная", "url": "/"},
-                {"title": "УПД", "url": "/upd/"},
-                {"title": "Для ИП", "url": None},
-            ]
-        }
-    )
-
-
 @router.get("/samozanyatye/", response_class=HTMLResponse)
-async def upd_samozanyatye(request: Request):
-    """УПД для самозанятых"""
-    content = load_content("upd/samozanyatye")
-    
-    return templates.TemplateResponse(
-        request=request,
-        name="public/upd/landing.html",
-        context={
-            "content": content,
-            "breadcrumbs": [
-                {"title": "Главная", "url": "/"},
-                {"title": "УПД", "url": "/upd/"},
-                {"title": "Для самозанятых", "url": None},
-            ]
-        }
-    )
-
-
 @router.get("/s-nds/", response_class=HTMLResponse)
-async def upd_s_nds(request: Request):
-    """УПД с НДС"""
-    content = load_content("upd/s-nds")
-    
-    return templates.TemplateResponse(
-        request=request,
-        name="public/upd/landing.html",
-        context={
-            "content": content,
-            "breadcrumbs": [
-                {"title": "Главная", "url": "/"},
-                {"title": "УПД", "url": "/upd/"},
-                {"title": "С НДС", "url": None},
-            ]
-        }
-    )
-
-
 @router.get("/bez-nds/", response_class=HTMLResponse)
-async def upd_bez_nds(request: Request):
-    """УПД без НДС"""
-    content = load_content("upd/bez-nds")
-    
-    return templates.TemplateResponse(
-        request=request,
-        name="public/upd/landing.html",
-        context={
-            "content": content,
-            "breadcrumbs": [
-                {"title": "Главная", "url": "/"},
-                {"title": "УПД", "url": "/upd/"},
-                {"title": "Без НДС", "url": None},
-            ]
-        }
-    )
-
-
 @router.get("/usn/", response_class=HTMLResponse)
-async def upd_usn(request: Request):
-    """УПД на УСН"""
-    content = load_content("upd/usn")
-    
-    return templates.TemplateResponse(
-        request=request,
-        name="public/upd/landing.html",
-        context={
-            "content": content,
-            "breadcrumbs": [
-                {"title": "Главная", "url": "/"},
-                {"title": "УПД", "url": "/upd/"},
-                {"title": "На УСН", "url": None},
-            ]
-        }
-    )
-
-
 @router.get("/2026/", response_class=HTMLResponse)
-async def upd_2026(request: Request):
-    """УПД 2026 - новая форма"""
-    content = load_content("upd/2026")
+@router.get("/xml-edo/", response_class=HTMLResponse)
+async def upd_landing(request: Request):
+    """Универсальный обработчик лендингов УПД"""
+    # Извлекаем slug из пути
+    path = request.url.path
+    slug = path.strip("/").split("/")[-1]
+    
+    # Получаем конфиг
+    config = get_landing_config(slug)
+    if not config:
+        raise HTTPException(status_code=404, detail="Страница не найдена")
+    
+    # Загружаем контент
+    content = load_content(config["content_file"])
     
     return templates.TemplateResponse(
         request=request,
@@ -157,17 +113,26 @@ async def upd_2026(request: Request):
             "breadcrumbs": [
                 {"title": "Главная", "url": "/"},
                 {"title": "УПД", "url": "/upd/"},
-                {"title": "Форма 2026", "url": None},
+                {"title": config["breadcrumb"], "url": None},
             ]
         }
     )
 
+
+# ============== ИНФОРМАЦИОННЫЕ СТРАНИЦЫ ==============
 
 @router.get("/obrazec/", response_class=HTMLResponse)
 @router.get("/obrazec-zapolneniya/", response_class=HTMLResponse)
-async def upd_obrazec(request: Request):
-    """Образец заполнения УПД"""
-    content = load_content("upd/obrazec-zapolneniya")
+async def upd_info(request: Request):
+    """Информационные страницы УПД"""
+    path = request.url.path
+    slug = path.strip("/").split("/")[-1]
+    
+    config = get_info_config(slug)
+    if not config:
+        raise HTTPException(status_code=404, detail="Страница не найдена")
+    
+    content = load_content(config["content_file"])
     
     return templates.TemplateResponse(
         request=request,
@@ -177,144 +142,67 @@ async def upd_obrazec(request: Request):
             "breadcrumbs": [
                 {"title": "Главная", "url": "/"},
                 {"title": "УПД", "url": "/upd/"},
-                {"title": "Образец заполнения", "url": None},
+                {"title": config["breadcrumb"], "url": None},
             ]
         }
     )
 
+
+# ============== СТРАНИЦЫ СКАЧИВАНИЯ ==============
 
 @router.get("/blank-excel/", response_class=HTMLResponse)
-async def upd_blank_excel(request: Request):
-    """Скачать бланк УПД Excel"""
-    return templates.TemplateResponse(
-        request=request,
-        name="public/upd/download.html",
-        context={
-            "meta": {
-                "title": "Скачать бланк УПД Excel бесплатно — Documatica",
-                "description": "Скачайте пустой бланк УПД в формате Excel (.xlsx) бесплатно. Актуальная форма 2026 года.",
-            },
-            "page": {
-                "h1": "Скачать бланк УПД Excel",
-                "format": "Excel (.xlsx)",
-                "file_url": "/static/blanks/upd-blank-2026.xlsx",
-            },
-            "breadcrumbs": [
-                {"title": "Главная", "url": "/"},
-                {"title": "УПД", "url": "/upd/"},
-                {"title": "Скачать Excel", "url": None},
-            ]
-        }
-    )
-
-
 @router.get("/blank-word/", response_class=HTMLResponse)
-async def upd_blank_word(request: Request):
-    """Скачать бланк УПД Word"""
-    return templates.TemplateResponse(
-        request=request,
-        name="public/upd/download.html",
-        context={
-            "meta": {
-                "title": "Скачать бланк УПД Word бесплатно — Documatica",
-                "description": "Скачайте пустой бланк УПД в формате Word (.docx) бесплатно. Актуальная форма 2026 года.",
-            },
-            "page": {
-                "h1": "Скачать бланк УПД Word",
-                "format": "Word (.docx)",
-                "file_url": "/static/blanks/upd-blank-2026.docx",
-            },
-            "breadcrumbs": [
-                {"title": "Главная", "url": "/"},
-                {"title": "УПД", "url": "/upd/"},
-                {"title": "Скачать Word", "url": None},
-            ]
-        }
-    )
-
-
-@router.get("/xml-edo/", response_class=HTMLResponse)
-async def upd_xml_edo(request: Request):
-    """УПД XML для ЭДО"""
-    content = load_content("upd/xml-edo")
+async def upd_download(request: Request):
+    """Страницы скачивания бланков"""
+    path = request.url.path
+    slug = path.strip("/").split("/")[-1]
+    
+    config = get_download_config(slug)
+    if not config:
+        raise HTTPException(status_code=404, detail="Страница не найдена")
     
     return templates.TemplateResponse(
         request=request,
-        name="public/upd/landing.html",
+        name="public/upd/download.html",
         context={
-            "content": content,
+            "meta": {
+                "title": config["title"],
+                "description": config["description"],
+            },
+            "page": {
+                "h1": config["h1"],
+                "format": config["format"],
+                "file_url": config["file_url"],
+            },
             "breadcrumbs": [
                 {"title": "Главная", "url": "/"},
                 {"title": "УПД", "url": "/upd/"},
-                {"title": "XML для ЭДО", "url": None},
+                {"title": config["breadcrumb"], "url": None},
             ]
         }
     )
 
 
-# ============== РЕДИРЕКТЫ СО СТАРЫХ URL ==============
+# ============== РЕДИРЕКТЫ (без trailing slash) ==============
+
+REDIRECT_SLUGS = [
+    "s-nds", "bez-nds", "ooo", "ip", "samozanyatye", "usn", "2026",
+    "obrazec-zapolneniya", "xml-edo", "blank-excel", "blank-word"
+]
+
 
 @router.get("/s-nds", response_class=RedirectResponse)
-async def redirect_upd_s_nds():
-    """Редирект: /upd/s-nds → /upd/s-nds/"""
-    return RedirectResponse(url="/upd/s-nds/", status_code=301)
-
-
 @router.get("/bez-nds", response_class=RedirectResponse)
-async def redirect_upd_bez_nds():
-    """Редирект: /upd/bez-nds → /upd/bez-nds/"""
-    return RedirectResponse(url="/upd/bez-nds/", status_code=301)
-
-
 @router.get("/ooo", response_class=RedirectResponse)
-async def redirect_upd_ooo():
-    """Редирект: /upd/ooo → /upd/ooo/"""
-    return RedirectResponse(url="/upd/ooo/", status_code=301)
-
-
 @router.get("/ip", response_class=RedirectResponse)
-async def redirect_upd_ip():
-    """Редирект: /upd/ip → /upd/ip/"""
-    return RedirectResponse(url="/upd/ip/", status_code=301)
-
-
 @router.get("/samozanyatye", response_class=RedirectResponse)
-async def redirect_upd_samozanyatye():
-    """Редирект: /upd/samozanyatye → /upd/samozanyatye/"""
-    return RedirectResponse(url="/upd/samozanyatye/", status_code=301)
-
-
 @router.get("/usn", response_class=RedirectResponse)
-async def redirect_upd_usn():
-    """Редирект: /upd/usn → /upd/usn/"""
-    return RedirectResponse(url="/upd/usn/", status_code=301)
-
-
 @router.get("/2026", response_class=RedirectResponse)
-async def redirect_upd_2026():
-    """Редирект: /upd/2026 → /upd/2026/"""
-    return RedirectResponse(url="/upd/2026/", status_code=301)
-
-
 @router.get("/obrazec-zapolneniya", response_class=RedirectResponse)
-async def redirect_upd_obrazec():
-    """Редирект: /upd/obrazec-zapolneniya → /upd/obrazec-zapolneniya/"""
-    return RedirectResponse(url="/upd/obrazec-zapolneniya/", status_code=301)
-
-
 @router.get("/xml-edo", response_class=RedirectResponse)
-async def redirect_upd_xml_edo():
-    """Редирект: /upd/xml-edo → /upd/xml-edo/"""
-    return RedirectResponse(url="/upd/xml-edo/", status_code=301)
-
-
 @router.get("/blank-excel", response_class=RedirectResponse)
-async def redirect_upd_blank_excel():
-    """Редирект: /upd/blank-excel → /upd/blank-excel/"""
-    return RedirectResponse(url="/upd/blank-excel/", status_code=301)
-
-
 @router.get("/blank-word", response_class=RedirectResponse)
-async def redirect_upd_blank_word():
-    """Редирект: /upd/blank-word → /upd/blank-word/"""
-    return RedirectResponse(url="/upd/blank-word/", status_code=301)
+async def upd_redirect(request: Request):
+    """Редирект на URL с trailing slash"""
+    path = request.url.path
+    return RedirectResponse(url=f"{path}/", status_code=301)

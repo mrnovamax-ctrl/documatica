@@ -1,0 +1,163 @@
+<!-- Main Navigation Header v12.1 (Dynamic) -->
+{% set nav = get_navigation() %}
+
+<header class="main-header" id="header">
+  <div class="main-header__container">
+    
+    <!-- Logo -->
+    <a href="/" class="main-header__logo">
+      <svg class="main-header__logo-icon" viewBox="0 0 64 64" fill="none">
+        <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+        <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+      </svg>
+      <span class="main-header__logo-text">
+        <span class="main-header__logo-bold">docu</span><span class="main-header__logo-light">matica</span>
+      </span>
+    </a>
+    
+    <!-- Main Navigation -->
+    <nav class="main-header__nav">
+      
+      <!-- Dropdown: Документы (динамически из navigation.yaml) -->
+      <div class="main-header__dropdown">
+        <button class="main-header__dropdown-toggle" type="button">
+          <span>Документы</span>
+          <svg class="main-header__dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="main-header__mega-menu">
+          <div class="mega-menu__inner">
+            
+            {% for section in nav.sections %}
+            <div class="mega-menu__section">
+              <div class="mega-menu__section-title">{{ section.title }}</div>
+              {% for item in section.menu_items %}
+              <a href="{{ item.url }}" class="mega-menu__item{% if item.featured %} mega-menu__item--featured{% endif %}{% if item.coming_soon %} mega-menu__item--disabled{% endif %}">
+                <div class="mega-menu__item-icon{% if item.featured %} mega-menu__item-icon--blue{% endif %}">
+                  {% set icon_svg = nav.icons[item.icon] | default('') %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">{{ icon_svg | safe }}</svg>
+                </div>
+                <div class="mega-menu__item-content">
+                  <div class="mega-menu__item-title">{{ item.title }}</div>
+                  {% if item.description %}
+                  <div class="mega-menu__item-desc">{{ item.description }}</div>
+                  {% endif %}
+                </div>
+                {% if item.badge %}
+                <span class="mega-menu__badge">{{ item.badge }}</span>
+                {% elif item.coming_soon %}
+                <span class="mega-menu__badge mega-menu__badge--muted">Скоро</span>
+                {% endif %}
+              </a>
+              {% endfor %}
+            </div>
+            {% endfor %}
+            
+            <!-- Promo блок -->
+            <div class="mega-menu__promo">
+              <div class="mega-menu__promo-card">
+                <div class="mega-menu__promo-badge">Новое</div>
+                <div class="mega-menu__promo-title">AI-помощник</div>
+                <div class="mega-menu__promo-desc">Автозаполнение документов по ИНН, проверка данных</div>
+                <a href="/dashboard/upd/create/" class="mega-menu__promo-btn">Попробовать</a>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <!-- Простые ссылки -->
+      <a href="/#pricing" class="main-header__link">Тарифы</a>
+      <a href="/news/" class="main-header__link">Новости</a>
+      <a href="/about/" class="main-header__link">О нас</a>
+      
+    </nav>
+    
+    <!-- Right Side: Auth -->
+    <div class="main-header__auth">
+      <a href="/login/" class="main-header__btn main-header__btn--outline">Войти</a>
+      <a href="/register/" class="main-header__btn main-header__btn--primary">Регистрация</a>
+    </div>
+    
+    <!-- Mobile Toggle -->
+    <button class="main-header__mobile-toggle" type="button" aria-label="Открыть меню" onclick="toggleMobileMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div class="main-header__mobile" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      
+      <!-- Mobile: Документы (динамически) -->
+      {% for section in nav.sections %}
+      <div class="mobile-menu__section">
+        <div class="mobile-menu__section-title">{{ section.title }}</div>
+        {% for item in section.menu_items %}
+        <a href="{{ item.url }}" class="mobile-menu__item{% if item.coming_soon %} mobile-menu__item--disabled{% endif %}">
+          {{ item.title }}
+          {% if item.coming_soon %}<span class="mobile-menu__soon">Скоро</span>{% endif %}
+        </a>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      
+      <!-- Mobile: Остальное -->
+      <div class="mobile-menu__section">
+        <a href="/#pricing" class="mobile-menu__item">Тарифы</a>
+        <a href="/news/" class="mobile-menu__item">Новости</a>
+        <a href="/about/" class="mobile-menu__item">О нас</a>
+      </div>
+      
+      <!-- Mobile: Auth -->
+      <div class="mobile-menu__auth">
+        <a href="/login/" class="main-header__btn main-header__btn--outline">Войти</a>
+        <a href="/register/" class="main-header__btn main-header__btn--primary">Регистрация</a>
+      </div>
+      
+    </div>
+  </div>
+</header>
+
+<script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const header = document.getElementById('header');
+  menu.classList.toggle('is-open');
+  header.classList.toggle('mobile-open');
+}
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1024) {
+    document.getElementById('mobileMenu').classList.remove('is-open');
+    document.getElementById('header').classList.remove('mobile-open');
+  }
+});
+
+document.querySelectorAll('.main-header__dropdown-toggle').forEach(toggle => {
+  toggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    const dropdown = toggle.closest('.main-header__dropdown');
+    document.querySelectorAll('.main-header__dropdown').forEach(d => {
+      if (d !== dropdown) d.classList.remove('is-open');
+    });
+    dropdown.classList.toggle('is-open');
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.main-header__dropdown')) {
+    document.querySelectorAll('.main-header__dropdown').forEach(d => {
+      d.classList.remove('is-open');
+    });
+  }
+});
+</script>

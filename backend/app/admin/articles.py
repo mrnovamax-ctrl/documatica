@@ -29,7 +29,11 @@ def load_articles() -> Dict[str, Any]:
     filepath = DATA_DIR / "articles.json"
     if filepath.exists():
         with open(filepath, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+        # Поддержка старого формата (массив статей)
+        if isinstance(data, list):
+            return {"articles": data, "categories": []}
+        return data
     return {"articles": [], "categories": []}
 
 

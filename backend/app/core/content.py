@@ -93,3 +93,21 @@ def get_all_content_paths() -> list:
         if path not in paths:
             paths.append(path)
     return sorted(paths)
+
+
+@lru_cache(maxsize=1)
+def load_navigation() -> Dict[str, Any]:
+    """
+    Загрузка конфигурации навигации для меню
+    Кэшируется на весь срок работы приложения
+    """
+    file_path = CONTENT_DIR / "navigation.yaml"
+    
+    if not file_path.exists():
+        return {"sections": [], "icons": {}}
+    
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f) or {"sections": [], "icons": {}}
+    except yaml.YAMLError:
+        return {"sections": [], "icons": {}}

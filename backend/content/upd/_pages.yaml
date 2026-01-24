@@ -1,0 +1,62 @@
+# УПД - Конфигурация страниц
+# Этот файл определяет все публичные страницы УПД
+
+# Лендинги (используют шаблон landing.html)
+landings:
+  ooo:
+    breadcrumb: "Для ООО"
+    content_file: "upd/ooo"
+    
+  ip:
+    breadcrumb: "Для ИП"
+    content_file: "upd/ip"
+    
+  samozanyatye:
+    breadcrumb: "Для самозанятых"
+    content_file: "upd/samozanyatye"
+    
+  s-nds:
+    breadcrumb: "С НДС"
+    content_file: "upd/s-nds"
+    
+  bez-nds:
+    breadcrumb: "Без НДС"
+    content_file: "upd/bez-nds"
+    
+  usn:
+    breadcrumb: "На УСН"
+    content_file: "upd/usn"
+    
+  "2026":
+    breadcrumb: "Форма 2026"
+    content_file: "upd/2026"
+    
+  xml-edo:
+    breadcrumb: "XML для ЭДО"
+    content_file: "upd/xml-edo"
+
+# Информационные страницы (используют шаблон info.html)
+info_pages:
+  obrazec-zapolneniya:
+    breadcrumb: "Образец заполнения"
+    content_file: "upd/obrazec-zapolneniya"
+    aliases:
+      - "obrazec"
+
+# Страницы скачивания (используют шаблон download.html)
+downloads:
+  blank-excel:
+    breadcrumb: "Скачать Excel"
+    title: "Скачать бланк УПД Excel бесплатно — Documatica"
+    description: "Скачайте пустой бланк УПД в формате Excel (.xlsx) бесплатно. Актуальная форма 2026 года."
+    h1: "Скачать бланк УПД Excel"
+    format: "Excel (.xlsx)"
+    file_url: "/static/blanks/upd-blank-2026.xlsx"
+    
+  blank-word:
+    breadcrumb: "Скачать Word"
+    title: "Скачать бланк УПД Word бесплатно — Documatica"
+    description: "Скачайте пустой бланк УПД в формате Word (.docx) бесплатно. Актуальная форма 2026 года."
+    h1: "Скачать бланк УПД Word"
+    format: "Word (.docx)"
+    file_url: "/static/blanks/upd-blank-2026.docx"

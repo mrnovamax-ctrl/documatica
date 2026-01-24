@@ -5,44 +5,40 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 120px 0 80px;">
+<section class="news-hero">
   <div class="container">
     <!-- Breadcrumbs -->
-    <nav style="margin-bottom: 32px;">
-      <ol style="display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0;">
+    <nav class="news-breadcrumbs">
+      <ol class="news-breadcrumbs__list">
         {% for crumb in breadcrumbs if crumb %}
-        <li style="display: flex; align-items: center; gap: 8px;">
+        <li class="news-breadcrumbs__item">
           {% if not loop.first %}
-          <span style="color: #64748b;">/</span>
+          <span class="news-breadcrumbs__separator">/</span>
           {% endif %}
           {% if crumb.url %}
-          <a href="{{ crumb.url }}" style="color: #94a3b8; text-decoration: none; font-size: 14px;">{{ crumb.title }}</a>
+          <a href="{{ crumb.url }}" class="news-breadcrumbs__link">{{ crumb.title }}</a>
           {% else %}
-          <span style="color: #3b82f6; font-size: 14px; font-weight: 600;">{{ crumb.title }}</span>
+          <span class="news-breadcrumbs__current">{{ crumb.title }}</span>
           {% endif %}
         </li>
         {% endfor %}
       </ol>
     </nav>
     
-    <h1 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: white; margin-bottom: 16px; text-transform: uppercase; letter-spacing: -0.02em;">
-      {{ title }}
-    </h1>
-    <p style="color: #94a3b8; font-size: 1.125rem; max-width: 600px;">
-      {{ description }}
-    </p>
+    <h1 class="news-hero__title">{{ title }}</h1>
+    <p class="news-hero__desc">{{ description }}</p>
   </div>
 </section>
 
 <!-- Categories Filter -->
-<section style="background: white; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 100;">
+<section class="news-filter">
   <div class="container">
-    <div style="display: flex; gap: 8px; padding: 16px 0; overflow-x: auto;">
-      <a href="/news/" style="padding: 10px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; text-decoration: none; transition: all 0.2s; {% if not current_category %}background: #3b82f6; color: white;{% else %}background: #f1f5f9; color: #64748b;{% endif %}">
+    <div class="news-filter__list">
+      <a href="/news/" class="news-filter__btn{% if not current_category %} news-filter__btn--active{% endif %}">
         Все статьи
       </a>
       {% for cat in categories %}
-      <a href="/news/?category={{ cat.slug }}" style="padding: 10px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: all 0.2s; {% if current_category and current_category.slug == cat.slug %}background: #3b82f6; color: white;{% else %}background: #f1f5f9; color: #64748b;{% endif %}">
+      <a href="/news/?category={{ cat.slug }}" class="news-filter__btn{% if current_category and current_category.slug == cat.slug %} news-filter__btn--active{% endif %}">
         {{ cat.name }}
       </a>
       {% endfor %}
@@ -51,18 +47,18 @@
 </section>
 
 <!-- Articles Grid -->
-<section style="padding: 60px 0; background: #f8fafc;">
+<section class="news-grid-section">
   <div class="container">
     {% if articles %}
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 32px;">
+    <div class="news-grid">
       {% for article in articles %}
-      <article style="background: white; border-radius: 2rem; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.04)';">
+      <article class="news-card">
         <!-- Image -->
-        <a href="/news/{{ article.slug }}/" style="display: block; aspect-ratio: 16/9; background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 100%); overflow: hidden;">
+        <a href="/news/{{ article.slug }}/" class="news-card__image">
           {% if article.image %}
-          <img src="{{ article.image }}" alt="{{ article.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="{{ article.image }}" alt="{{ article.title }}">
           {% else %}
-          <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+          <div class="news-card__placeholder">
             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5">
               <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/>
               <path d="M8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
@@ -73,37 +69,31 @@
         </a>
         
         <!-- Content -->
-        <div style="padding: 28px;">
+        <div class="news-card__body">
           <!-- Category & Date -->
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <div class="news-card__meta">
             {% set cat = None %}
             {% for c in categories if c.slug == article.category %}
               {% set cat = c %}
             {% endfor %}
             {% if cat %}
-            <span style="padding: 6px 12px; background: rgba(59, 130, 246, 0.1); color: #3b82f6; border-radius: 100px; font-size: 11px; font-weight: 700; text-transform: uppercase;">
-              {{ cat.name }}
-            </span>
+            <span class="news-card__category">{{ cat.name }}</span>
             {% endif %}
-            <span style="font-size: 12px; color: #94a3b8;">
-              {{ article.created_at[:10] }}
-            </span>
+            <span class="news-card__date">{{ article.created_at[:10] }}</span>
           </div>
           
           <!-- Title -->
-          <h2 style="margin: 0 0 12px; font-size: 18px; font-weight: 700; line-height: 1.4;">
-            <a href="/news/{{ article.slug }}/" style="color: #0f172a; text-decoration: none;">
-              {{ article.title }}
-            </a>
+          <h2 class="news-card__title">
+            <a href="/news/{{ article.slug }}/">{{ article.title }}</a>
           </h2>
           
           <!-- Excerpt -->
-          <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
+          <p class="news-card__excerpt">
             {{ article.excerpt[:150] }}{% if article.excerpt|length > 150 %}...{% endif %}
           </p>
           
           <!-- Read More -->
-          <a href="/news/{{ article.slug }}/" style="display: inline-flex; align-items: center; gap: 8px; color: #3b82f6; font-size: 13px; font-weight: 600; text-decoration: none;">
+          <a href="/news/{{ article.slug }}/" class="news-card__link">
             Читать далее
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -116,21 +106,21 @@
     
     <!-- Pagination -->
     {% if total_pages > 1 %}
-    <div style="display: flex; justify-content: center; gap: 8px; margin-top: 48px;">
+    <div class="news-pagination">
       {% if page > 1 %}
-      <a href="?{% if current_category %}category={{ current_category.slug }}&{% endif %}page={{ page - 1 }}" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; color: #64748b; text-decoration: none;">
+      <a href="?{% if current_category %}category={{ current_category.slug }}&{% endif %}page={{ page - 1 }}" class="news-pagination__btn news-pagination__btn--arrow">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
       </a>
       {% endif %}
       
       {% for p in range(1, total_pages + 1) %}
-      <a href="?{% if current_category %}category={{ current_category.slug }}&{% endif %}page={{ p }}" style="display: flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 16px; border-radius: 12px; font-weight: 600; text-decoration: none; {% if p == page %}background: #3b82f6; color: white;{% else %}background: white; border: 1px solid #e2e8f0; color: #64748b;{% endif %}">
+      <a href="?{% if current_category %}category={{ current_category.slug }}&{% endif %}page={{ p }}" class="news-pagination__btn{% if p == page %} news-pagination__btn--active{% endif %}">
         {{ p }}
       </a>
       {% endfor %}
       
       {% if page < total_pages %}
-      <a href="?{% if current_category %}category={{ current_category.slug }}&{% endif %}page={{ page + 1 }}" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; color: #64748b; text-decoration: none;">
+      <a href="?{% if current_category %}category={{ current_category.slug }}&{% endif %}page={{ page + 1 }}" class="news-pagination__btn news-pagination__btn--arrow">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
       </a>
       {% endif %}
@@ -139,29 +129,25 @@
     
     {% else %}
     <!-- Empty State -->
-    <div style="text-align: center; padding: 80px 40px; background: white; border-radius: 2rem;">
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5" style="margin-bottom: 24px;">
+    <div class="news-empty">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
         <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
       </svg>
-      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Статьи не найдены</h3>
-      <p style="color: #64748b;">В этой категории пока нет статей</p>
+      <h3>Статьи не найдены</h3>
+      <p>В этой категории пока нет статей</p>
     </div>
     {% endif %}
   </div>
 </section>
 
 <!-- CTA Section -->
-<section style="padding: 80px 0; background: white;">
+<section class="news-cta">
   <div class="container">
-    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 3rem; padding: 60px; text-align: center;">
-      <h2 style="font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 900; color: white; margin-bottom: 16px; text-transform: uppercase;">
-        Создайте документ прямо сейчас
-      </h2>
-      <p style="color: #94a3b8; font-size: 1.125rem; margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto;">
-        УПД, счета, акты — за 2 минуты с автозаполнением по ИНН
-      </p>
-      <a href="/dashboard/upd/create/" style="display: inline-flex; align-items: center; gap: 10px; background: #3b82f6; color: white; padding: 18px 40px; border-radius: 1.5rem; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none;">
+    <div class="news-cta__card">
+      <h2 class="news-cta__title">Создайте документ прямо сейчас</h2>
+      <p class="news-cta__desc">УПД, счета, акты — за 2 минуты с автозаполнением по ИНН</p>
+      <a href="/dashboard/upd/create/" class="news-cta__btn">
         Попробовать бесплатно
       </a>
     </div>

@@ -1,0 +1,52 @@
+# Documatica - Конфигурация меню документов
+# Используется для динамической генерации меню в header
+
+sections:
+  - title: "Первичные документы"
+    menu_items:
+      - title: "УПД"
+        description: "Универсальный передаточный документ"
+        url: "/upd/"
+        icon: "file-text"
+        featured: true
+        badge: "Популярно"
+        
+      - title: "Счет на оплату"
+        description: "Выставление счетов клиентам"
+        url: "/schet/"
+        icon: "credit-card"
+        coming_soon: true
+        
+      - title: "Акт выполненных работ"
+        description: "Подтверждение оказания услуг"
+        url: "/akt/"
+        icon: "check-circle"
+        coming_soon: true
+        
+  - title: "Налоговые документы"
+    menu_items:
+      - title: "Счет-фактура"
+        description: "Документ для вычета НДС"
+        url: "/schet-faktura/"
+        icon: "file-invoice"
+        coming_soon: true
+
+  - title: "Юридические документы"
+    menu_items:
+      - title: "Договоры"
+        description: "Шаблоны типовых договоров"
+        url: "/dogovory/"
+        icon: "book"
+        coming_soon: true
+
+# Иконки (SVG paths для использования в шаблонах)
+icons:
+  file-text: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>'
+  
+  credit-card: '<rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line>'
+  
+  check-circle: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
+  
+  file-invoice: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line>'
+  
+  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>'
