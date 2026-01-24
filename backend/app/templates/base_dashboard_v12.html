@@ -438,7 +438,7 @@
     <div class="sidebar-overlay-v12" onclick="document.body.classList.remove('sidebar-open')"></div>
     
     <!-- Mobile menu button -->
-    <button class="mobile-menu-btn-v12" onclick="document.body.classList.toggle('sidebar-open')" style="display: none;">
+    <button class="mobile-menu-btn-v12" onclick="document.body.classList.toggle('sidebar-open')">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -446,6 +446,7 @@
       </svg>
     </button>
     <style>
+      .mobile-menu-btn-v12 { display: none; }
       @media (max-width: 1023px) {
         .mobile-menu-btn-v12 { display: flex !important; }
         aside.sidebar-v12 { transform: translateX(-100%); z-index: 1000; }
