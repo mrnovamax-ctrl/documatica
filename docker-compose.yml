@@ -47,11 +47,11 @@ services:
       - SMTP_FROM=mr.novamax@yandex.ru
       - SMTP_FROM_NAME=Documatica
       - BASE_URL=https://oplatanalogov.ru
-      # Т-Банк эквайринг
-      - TBANK_TERMINAL_KEY=1768827606521DEMO
-      - TBANK_PASSWORD=PzTRU*6^raNSV2B5
-      - TBANK_PRODUCTION=false
-      - TBANK_MOCK=true
+      # Т-Банк эквайринг (боевой)
+      - TBANK_TERMINAL_KEY=1768827606544
+      - TBANK_PASSWORD=8#*qFZ5l2Z%Eb_u&
+      - TBANK_PRODUCTION=true
+      - TBANK_MOCK=false
       # OpenAI API
       - OPENAI_API_KEY=${OPENAI_API_KEY:-your-api-key-here}
     depends_on:
