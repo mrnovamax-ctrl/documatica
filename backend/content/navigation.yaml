@@ -15,7 +15,7 @@ sections:
         description: "Выставление счетов клиентам"
         url: "/schet/"
         icon: "credit-card"
-        coming_soon: true
+        featured: false
         
       - title: "Акт выполненных работ"
         description: "Подтверждение оказания услуг"

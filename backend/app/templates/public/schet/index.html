@@ -1,0 +1,201 @@
+{% extends "base_public.html" %}
+
+{% set page = content.page | default({}) %}
+{% set meta = content.meta | default({}) %}
+{% set features = content.features | default([]) %}
+{% set faq = content.faq | default([]) %}
+{% set cta = content.cta | default({}) %}
+{% set related = content.related | default([]) %}
+
+{% block title %}{{ meta.title | default('Генератор счета на оплату онлайн — Documatica') }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ meta.description | default('Создайте счет на оплату онлайн бесплатно. Автозаполнение реквизитов по ИНН, QR-код для оплаты.') }}">
+<meta name="keywords" content="{{ meta.keywords | default('счет на оплату онлайн, генератор счетов, счет бесплатно') }}">
+{% if meta.canonical %}
+<link rel="canonical" href="{{ site_url }}{{ meta.canonical }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section v12.0 -->
+<section class="upd-hero-v12">
+  <div class="upd-hero-content-v12">
+    <span class="upd-hero-tag-v12">{{ page.tag | default('Генератор документов') }}</span>
+    <h1 class="upd-hero-title-v12">
+      {{ page.h1 | default('Генератор счета на оплату') }}
+    </h1>
+    <p class="upd-hero-desc-v12">
+      {{ page.intro | default('Создайте счет на оплату за 1 минуту. Автозаполнение реквизитов по ИНН, QR-код для быстрой оплаты.') }}
+    </p>
+    
+    <div class="upd-hero-actions-v12">
+      <a href="{{ cta.url | default('/dashboard/invoice/create/') }}" class="docu-btn-primary" style="padding: 20px 40px;">
+        {{ cta.text | default('Создать счет') }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+      <a href="/schet/obrazec/" class="header-btn-outline-v12" style="display: inline-flex; align-items: center; gap: 8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        Смотреть образец
+      </a>
+    </div>
+    
+    <!-- Quick Links -->
+    <div class="upd-quick-links-v12">
+      <a href="/schet/ip/" class="upd-quick-link-v12">Счет для ИП</a>
+      <a href="/schet/ooo/" class="upd-quick-link-v12">Счет для ООО</a>
+      <a href="/schet/s-nds/" class="upd-quick-link-v12">Счет с НДС</a>
+      <a href="/schet/bez-nds/" class="upd-quick-link-v12">Счет без НДС</a>
+      <a href="/schet/qr-kod/" class="upd-quick-link-v12">С QR-кодом</a>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+{% set features_title = "Возможности генератора счетов" %}
+{% include "components/features_block.html" %}
+
+<!-- All Invoice Types v12.0 -->
+<section class="upd-types-section-v12" style="padding: 80px 0; background: white;">
+  <div style="max-width: 1400px; margin: 0 auto; padding: 0 24px;">
+    <h2 class="docu-tag-muted" style="text-align: center; margin-bottom: 48px;">Выберите тип счета</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+      <a href="/schet/ip/" class="upd-type-card">
+        <div class="upd-type-card-header">
+          <div class="upd-type-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </div>
+        <div class="upd-type-card-content">
+          <span class="docu-tag-muted">Индивидуальный предприниматель</span>
+          <h3 class="docu-h3">Счет для ИП</h3>
+          <p class="docu-body">Для индивидуальных предпринимателей на любой системе налогообложения</p>
+        </div>
+      </a>
+      
+      <a href="/schet/ooo/" class="upd-type-card">
+        <div class="upd-type-card-header">
+          <div class="upd-type-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18"></path>
+              <path d="M5 21V7l8-4v18"></path>
+              <path d="M19 21V11l-6-4"></path>
+            </svg>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </div>
+        <div class="upd-type-card-content">
+          <span class="docu-tag-muted">Организации</span>
+          <h3 class="docu-h3">Счет для ООО</h3>
+          <p class="docu-body">Для юридических лиц с любой системой налогообложения</p>
+        </div>
+      </a>
+      
+      <a href="/schet/samozanyatye/" class="upd-type-card">
+        <div class="upd-type-card-header">
+          <div class="upd-type-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </div>
+        <div class="upd-type-card-content">
+          <span class="docu-tag-muted">НПД</span>
+          <h3 class="docu-h3">Счет для самозанятых</h3>
+          <p class="docu-body">Для плательщиков налога на профессиональный доход</p>
+        </div>
+      </a>
+      
+      <a href="/schet/s-nds/" class="upd-type-card">
+        <div class="upd-type-card-header">
+          <div class="upd-type-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </div>
+        <div class="upd-type-card-content">
+          <span class="docu-tag-muted">Налогообложение</span>
+          <h3 class="docu-h3">Счет с НДС</h3>
+          <p class="docu-body">Для плательщиков НДС на общей системе</p>
+        </div>
+      </a>
+      
+      <a href="/schet/bez-nds/" class="upd-type-card">
+        <div class="upd-type-card-header">
+          <div class="upd-type-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+            </svg>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </div>
+        <div class="upd-type-card-content">
+          <span class="docu-tag-muted">УСН / Патент</span>
+          <h3 class="docu-h3">Счет без НДС</h3>
+          <p class="docu-body">Для неплательщиков НДС на спецрежимах</p>
+        </div>
+      </a>
+      
+      <a href="/schet/qr-kod/" class="upd-type-card">
+        <div class="upd-type-card-header">
+          <div class="upd-type-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </div>
+        <div class="upd-type-card-content">
+          <span class="docu-tag-muted">Быстрая оплата</span>
+          <h3 class="docu-h3">Счет с QR-кодом</h3>
+          <p class="docu-body">Мгновенная оплата через мобильный банк</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+{% include "components/faq_block.html" %}
+
+<!-- CTA -->
+{% include "components/cta_block.html" %}
+{% endblock %}

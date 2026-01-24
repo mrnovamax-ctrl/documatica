@@ -1,0 +1,129 @@
+{% extends "base_public.html" %}
+
+{% set page = content.page | default({}) %}
+{% set meta = content.meta | default({}) %}
+{% set features = content.features | default([]) %}
+{% set faq = content.faq | default([]) %}
+{% set cta = content.cta | default({}) %}
+{% set related = content.related | default([]) %}
+
+{% block title %}{{ meta.title | default('Счет на оплату — Documatica') }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ meta.description | default('Создайте счет на оплату онлайн бесплатно') }}">
+<meta name="keywords" content="{{ meta.keywords | default('счет на оплату онлайн') }}">
+{% if meta.canonical %}
+<link rel="canonical" href="{{ site_url }}{{ meta.canonical }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section v12.0 - Two Columns -->
+<section class="upd-hero-v12">
+  <div class="container position-relative" style="max-width: 1400px; margin: 0 auto; padding: 0 24px; z-index: 10;">
+    <div class="row align-items-center" style="overflow: visible;">
+      
+      <!-- Left Column: Text Content -->
+      <div class="col-lg-6" style="padding-right: 2rem;">
+        <span class="upd-hero-tag-v12">{{ page.tag | default('Генератор документов') }}</span>
+        <h1 class="upd-hero-title-v12">
+          {{ page.h1 | default('Генератор счета на оплату') }}
+        </h1>
+        <p class="upd-hero-desc-v12">
+          {{ page.intro | default('Создайте счет на оплату онлайн бесплатно') }}
+        </p>
+        
+        <div class="upd-hero-actions-v12">
+          <a href="{{ cta.url | default('/dashboard/invoice/create/') }}" class="docu-btn-primary" style="padding: 20px 40px;">
+            {{ cta.text | default('Создать счет') }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Right Column: Invoice Preview -->
+      <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center" style="overflow: visible;">
+        <div class="upd-preview-card" style="transform: rotate(2deg);">
+          <div class="upd-preview-header">
+            <div class="upd-preview-badge">Счет на оплату</div>
+            <div class="upd-preview-number">N 1 от 24.01.2026</div>
+          </div>
+          <div class="upd-preview-line">
+            <span class="upd-preview-label">Поставщик:</span>
+            <span class="upd-preview-value">ООО "Ваша компания"</span>
+          </div>
+          <div class="upd-preview-line">
+            <span class="upd-preview-label">Покупатель:</span>
+            <span class="upd-preview-value">ООО "Клиент"</span>
+          </div>
+          <div class="upd-preview-line">
+            <span class="upd-preview-label">Товар/услуга:</span>
+            <span class="upd-preview-value">Консультационные услуги</span>
+          </div>
+          <div class="upd-preview-total">
+            <span>Итого к оплате:</span>
+            <span class="upd-preview-sum">150 000,00 руб.</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Content v12.0 -->
+{% if page.content %}
+<section class="upd-content-v12">
+  <div class="upd-content-container-v12">
+    <div class="upd-text-v12">
+      {{ page.content | safe }}
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="upd-sidebar-v12">
+      <div class="upd-sidebar-cta-v12">
+        <h4>Готовы создать счет?</h4>
+        <p>Автозаполнение реквизитов по ИНН, QR-код для оплаты</p>
+        <a href="{{ cta.url | default('/dashboard/invoice/create/') }}" class="docu-btn-primary" style="width: 100%; text-align: center;">
+          {{ cta.text | default('Создать счет') }}
+        </a>
+      </div>
+      
+      {% if related %}
+      <div class="upd-sidebar-related-v12">
+        <h4>Читайте также</h4>
+        <ul>
+          {% for item in related %}
+          <li>
+            <a href="{{ item.url }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+              {{ item.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Features -->
+{% if features %}
+{% set features_title = page.features_title | default('Преимущества') %}
+{% include "components/features_block.html" %}
+{% endif %}
+
+<!-- FAQ -->
+{% include "components/faq_block.html" %}
+
+<!-- CTA -->
+{% include "components/cta_block.html" %}
+{% endblock %}

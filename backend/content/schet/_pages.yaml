@@ -1,0 +1,44 @@
+# Счет на оплату - Конфигурация страниц
+# Этот файл определяет все публичные страницы Счетов
+
+# Лендинги (используют шаблон landing.html)
+landings:
+  ip:
+    breadcrumb: "Для ИП"
+    content_file: "schet/ip"
+    
+  ooo:
+    breadcrumb: "Для ООО"
+    content_file: "schet/ooo"
+    
+  samozanyatye:
+    breadcrumb: "Для самозанятых"
+    content_file: "schet/samozanyatye"
+    
+  s-nds:
+    breadcrumb: "С НДС"
+    content_file: "schet/s-nds"
+    
+  bez-nds:
+    breadcrumb: "Без НДС"
+    content_file: "schet/bez-nds"
+    
+  qr-kod:
+    breadcrumb: "С QR-кодом"
+    content_file: "schet/qr-kod"
+
+# Информационные страницы (используют шаблон info.html)
+info_pages:
+  obrazec:
+    breadcrumb: "Образец заполнения"
+    content_file: "schet/obrazec"
+
+# Страницы скачивания (используют шаблон download.html)
+downloads:
+  blank-excel:
+    breadcrumb: "Скачать Excel"
+    title: "Скачать бланк счета на оплату Excel бесплатно — Documatica"
+    description: "Скачайте пустой бланк счета на оплату в формате Excel (.xlsx) бесплатно. Актуальный образец 2026 года."
+    h1: "Скачать бланк счета на оплату Excel"
+    format: "Excel (.xlsx)"
+    file_url: "/static/blanks/schet-blank-2026.xlsx"
