@@ -104,7 +104,11 @@
     <div class="mm-section">
       <div class="mm-section-title">{{ section.title }}</div>
       {% for item in section.menu_items %}
-      <a href="{{ item.url }}" class="mm-link">{{ item.title }}</a>
+      <a href="{{ item.url }}" class="mm-link{% if item.coming_soon %} mm-link-disabled{% endif %}">
+        {{ item.title }}
+        {% if item.coming_soon %}<span class="mm-soon">Скоро</span>{% endif %}
+        {% if item.badge %}<span class="mm-badge">{{ item.badge }}</span>{% endif %}
+      </a>
       {% endfor %}
     </div>
     {% endfor %}
@@ -221,7 +225,9 @@
   margin-bottom: 12px;
 }
 .mm-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 12px 0;
   color: #334155;
   text-decoration: none;
@@ -231,6 +237,26 @@
 }
 .mm-link:hover {
   color: #3b82f6;
+}
+.mm-link-disabled {
+  color: #94a3b8;
+  pointer-events: none;
+}
+.mm-soon {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.mm-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
 .mm-auth {
