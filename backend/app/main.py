@@ -16,6 +16,7 @@ from app.pages import router as pages_router
 from app.dashboard import router as dashboard_router
 from app.admin import router as admin_router
 from app.database import init_db
+from app.core.redirects import RedirectMiddleware
 
 # Пути к статике и шаблонам
 STATIC_DIR = Path(__file__).parent / "static"
@@ -38,6 +39,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 301 редиректы со старых URL
+app.add_middleware(RedirectMiddleware)
 
 # Статические файлы
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
