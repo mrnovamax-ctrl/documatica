@@ -4,6 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Cache Control -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
   <title>{% block title %}{{ title | default('Documatica') }}{% endblock %}</title>
   
   {% block meta %}
@@ -15,23 +21,46 @@
   {% endblock %}
   
   <!-- Open Graph -->
-  <meta property="og:title" content="{{ title | default('Documatica') }}">
-  <meta property="og:description" content="{{ description | default('Генератор документов для бизнеса') }}">
-  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ og_title | default(title) | default('Documatica') }}">
+  <meta property="og:description" content="{{ og_description | default(description) | default('Генератор документов для бизнеса. УПД, счета, акты, договоры онлайн бесплатно.') }}">
+  <meta property="og:type" content="{{ og_type | default('website') }}">
   <meta property="og:url" content="{{ request.url }}">
-  <meta property="og:image" content="{{ site_url }}/static/images/og-image.png">
+  <meta property="og:image" content="{{ og_image | default(site_url ~ '/static/images/og-image.png') }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Documatica">
+  <meta property="og:locale" content="ru_RU">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ og_title | default(title) | default('Documatica') }}">
+  <meta name="twitter:description" content="{{ og_description | default(description) | default('Генератор документов для бизнеса') }}">
+  <meta name="twitter:image" content="{{ og_image | default(site_url ~ '/static/images/og-image.png') }}">
   
   <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
   
   <!-- CSS -->
-  <link rel="stylesheet" href="/static/css/remixicon.css">
   <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
   <!-- Documatica v12.0 Design System (NO old style.css) -->
-  <link rel="stylesheet" href="/static/css/documatica.css?v=12.13">
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.15">
   {% block extra_css %}{% endblock %}
   
   <!-- Iconify -->
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  
+  <!-- Yandex.Metrika counter (в head для доступности во всех скриптах) -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+      ym(76440544, 'init', {webvisor:true, clickmap:true, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/76440544" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -40,6 +69,7 @@
   <!-- JS -->
   <script src="/static/js/lib/jquery-3.7.1.min.js"></script>
   <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+  <script src="/static/js/toasts.js"></script>
   {% block extra_js %}{% endblock %}
   <script src="/static/js/app.js"></script>
 </body>

@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Создать УПД - Documatica</title>
+  <title>Создать Акт выполненных работ - Documatica</title>
   <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,57 +22,57 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <!-- Documatica v12.0 Design System (ONLY v12, no old styles) -->
   <link rel="stylesheet" href="/static/css/documatica.css?v=12.9">
-  <!-- UPD Constructor Styles (extracted from inline for better performance) -->
-    <link rel="stylesheet" href="/static/css/upd-constructor.css?v=2.1">
+  <!-- UPD Constructor Styles (reuse for Akt) -->
+  <link rel="stylesheet" href="/static/css/upd-constructor.css?v=2.1">
   
   <style>
     /* Анимация выезда кнопки "Добавить в контрагенты" */
-    #save-buyer-btn {
+    #save-customer-btn {
       opacity: 0;
       visibility: hidden;
     }
-    #save-buyer-btn.show {
+    #save-customer-btn.show {
       opacity: 1 !important;
       visibility: visible !important;
       transform: translateX(0) !important;
     }
-    #save-buyer-btn:hover {
+    #save-customer-btn:hover {
       padding: 0 16px !important;
       box-shadow: 0 4px 16px rgba(251, 191, 36, 0.5) !important;
     }
-    #save-buyer-btn:hover span {
+    #save-customer-btn:hover span {
       opacity: 1 !important;
       width: auto !important;
     }
-    #save-buyer-btn:hover svg {
+    #save-customer-btn:hover svg {
       transform: rotate(90deg) !important;
     }
-    #save-buyer-btn:active {
+    #save-customer-btn:active {
       transform: translateX(0) scale(0.95) !important;
     }
     
     /* Анимация выезда кнопки "Добавить в организации" */
-    #save-seller-btn {
+    #save-executor-btn {
       opacity: 0;
       visibility: hidden;
     }
-    #save-seller-btn.show {
+    #save-executor-btn.show {
       opacity: 1 !important;
       visibility: visible !important;
       transform: translateX(0) !important;
     }
-    #save-seller-btn:hover {
+    #save-executor-btn:hover {
       padding: 0 16px !important;
       box-shadow: 0 4px 16px rgba(251, 191, 36, 0.5) !important;
     }
-    #save-seller-btn:hover span {
+    #save-executor-btn:hover span {
       opacity: 1 !important;
       width: auto !important;
     }
-    #save-seller-btn:hover svg {
+    #save-executor-btn:hover svg {
       transform: rotate(90deg) !important;
     }
-    #save-seller-btn:active {
+    #save-executor-btn:active {
       transform: translateX(0) scale(0.95) !important;
     }
   </style>
@@ -111,11 +111,11 @@
   <div class="dashboard-content-v12 upd-constructor-page">
     <!-- Page Title -->
     <div class="page-title-v12">
-      <h1>Создать УПД</h1>
-      <p>Универсальный передаточный документ</p>
+      <h1>Создать Акт</h1>
+      <p>Акт выполненных работ (оказанных услуг)</p>
     </div>
 
-    <form id="upd-form">
+    <form id="akt-form">
       <div class="row gy-4">
         <!-- Left Column - Form -->
         <div class="col-xxl-7 col-xl-6">
@@ -126,25 +126,11 @@
             </div>
             <div class="card-body p-24">
               <div class="row g-16" style="margin-bottom: 24px;">
-                <!-- Статус УПД - радиобаттоны -->
-                <div class="col-12">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Статус УПД</label>
-                  <div class="d-flex align-items-center flex-wrap gap-28">
-                    <div class="form-check checked-primary d-flex align-items-center gap-2">
-                      <input class="form-check-input" type="radio" name="upd-status" id="upd-status-1" value="1" checked>
-                      <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="upd-status-1">1 - счет-фактура и передаточный документ</label>
-                    </div>
-                    <div class="form-check checked-primary d-flex align-items-center gap-2">
-                      <input class="form-check-input" type="radio" name="upd-status" id="upd-status-2" value="2">
-                      <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="upd-status-2">2 - передаточный документ (акт)</label>
-                    </div>
-                  </div>
-                </div>
                 <!-- Номер и дата -->
                 <div class="col-md-4">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Номер УПД <span class="text-danger">*</span></label>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Номер акта <span class="text-danger">*</span></label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="upd-number" placeholder="Авто" required>
+                    <input type="text" class="form-control" id="akt-number" placeholder="Авто" required>
                     <button class="btn btn-outline-secondary-600" type="button" id="auto-number-btn" title="Автонумерация">
                       Авто
                     </button>
@@ -153,31 +139,37 @@
                 <div class="col-md-4">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Дата документа <span class="text-danger">*</span></label>
                   <div class="input-group">
-                    <input type="text" class="form-control date-picker" id="upd-date" placeholder="дд.мм.гггг" required>
-                    <button class="btn btn-outline-secondary-600" type="button" id="upd-date-icon">
+                    <input type="text" class="form-control date-picker" id="akt-date" placeholder="дд.мм.гггг" required>
+                    <button class="btn btn-outline-secondary-600" type="button" id="akt-date-icon">
                       <iconify-icon icon="mdi:calendar"></iconify-icon>
                     </button>
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Исправление №</label>
-                  <div class="row g-8">
-                    <div class="col-6">
-                      <input type="text" class="form-control" id="correction-number" placeholder="--">
-                    </div>
-                    <div class="col-6">
-                      <input type="text" class="form-control date-picker" id="correction-date" placeholder="от">
-                    </div>
+                  <!-- Пустая колонка для выравнивания -->
+                </div>
+                <!-- Договор -->
+                <div class="col-md-6">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Номер договора</label>
+                  <input type="text" class="form-control" id="contract-number" placeholder="Номер договора">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Дата договора</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control date-picker" id="contract-date" placeholder="дд.мм.гггг">
+                    <button class="btn btn-outline-secondary-600" type="button" id="contract-date-icon">
+                      <iconify-icon icon="mdi:calendar"></iconify-icon>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Seller Info -->
+          <!-- Executor Info -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
-              <h4 class="mb-0">Продавец</h4>
+              <h4 class="mb-0">Исполнитель</h4>
               <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectCompanyModal">
                 Выбрать из списка
               </button>
@@ -186,32 +178,32 @@
               <div class="row g-16" style="margin-bottom: 24px;">
                 <div class="col-md-6">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="seller-name" placeholder='ООО "Название"' required>
+                  <input type="text" class="form-control" id="executor-name" placeholder='ООО "Название"' required>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">ИНН <span class="text-danger">*</span></label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="seller-inn" placeholder="7707123456" required maxlength="12">
-                    <button class="btn btn-outline-primary-600 dadata-search-btn" type="button" id="seller-inn-search" title="Найти по ИНН">
+                    <input type="text" class="form-control" id="executor-inn" placeholder="7707123456" required maxlength="12">
+                    <button class="btn btn-outline-primary-600 dadata-search-btn" type="button" id="executor-inn-search" title="Найти по ИНН">
                       <iconify-icon icon="mdi:magnify" class="text-lg"></iconify-icon>
                     </button>
                   </div>
-                  <small class="text-muted d-none" id="seller-inn-loading">Поиск...</small>
+                  <small class="text-muted d-none" id="executor-inn-loading">Поиск...</small>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">КПП</label>
-                  <input type="text" class="form-control" id="seller-kpp" placeholder="770701001" maxlength="9">
+                  <input type="text" class="form-control" id="executor-kpp" placeholder="770701001" maxlength="9">
                 </div>
-                <div class="col-12 d-none" id="seller-inn-error-container">
+                <div class="col-12 d-none" id="executor-inn-error-container">
                   <div class="alert alert-danger py-2 px-3 mb-0" role="alert">
-                    <small id="seller-inn-error"></small>
+                    <small id="executor-inn-error"></small>
                   </div>
                 </div>
                 <div class="col-12" style="position: relative;">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Адрес <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="seller-address" placeholder="123456, г. Москва, ул. Примерная, д. 1" required style="padding-right: 50px;">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Адрес</label>
+                  <input type="text" class="form-control" id="executor-address" placeholder="123456, г. Москва, ул. Примерная, д. 1" style="padding-right: 50px;">
                   <!-- Кнопка добавить в организации внутри поля -->
-                  <button type="button" id="save-seller-btn" title="Добавить в мои организации" style="position: absolute; right: 12px; bottom: 10px; background: #FBBF24; color: #0f172a; border: none; border-radius: 0.75rem; height: 36px; min-width: 36px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); z-index: 10; transform: translateX(calc(100% + 24px)); white-space: nowrap; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">
+                  <button type="button" id="save-executor-btn" title="Добавить в мои организации" style="position: absolute; right: 12px; bottom: 10px; background: #FBBF24; color: #0f172a; border: none; border-radius: 0.75rem; height: 36px; min-width: 36px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); z-index: 10; transform: translateX(calc(100% + 24px)); white-space: nowrap; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="flex-shrink: 0; transition: transform 0.3s;">
                       <line x1="12" y1="5" x2="12" y2="19"></line>
                       <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -221,31 +213,11 @@
                 </div>
               </div>
               
-              <!-- Грузоотправитель -->
-              <div class="mt-24 pt-16 border-top">
-                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Грузоотправитель и его адрес</label>
-                <div class="d-flex align-items-center flex-wrap gap-28 mb-12">
-                  <div class="form-check checked-primary d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="radio" name="consignor-type" id="consignor-none" value="none" checked>
-                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignor-none">Не заполнять</label>
-                  </div>
-                  <div class="form-check checked-primary d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="radio" name="consignor-type" id="consignor-same" value="same">
-                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignor-same">Совпадает с продавцом</label>
-                  </div>
-                  <div class="form-check checked-primary d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="radio" name="consignor-type" id="consignor-manual" value="manual">
-                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignor-manual">Ручной ввод</label>
-                  </div>
-                </div>
-                <input type="text" class="form-control" id="consignor-address" placeholder="Грузоотправитель, адрес" disabled>
-              </div>
-              
               <!-- Настройки НДС по умолчанию -->
               <div class="mt-24 pt-16 border-top">
-                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Настройки НДС и страна происхождения (по умолчанию для товаров)</label>
+                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Настройки НДС (по умолчанию для услуг)</label>
                 <div class="row g-16" style="margin-bottom: 24px;">
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ставка НДС</label>
                     <select class="form-select" id="default-vat">
                       <option value="22">22%</option>
@@ -258,30 +230,22 @@
                       <option value="none">Без НДС</option>
                     </select>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">НДС</label>
                     <select class="form-select" id="default-vat-type">
                       <option value="on-top" selected>Сверху</option>
                       <option value="included">Включен в цену</option>
                     </select>
                   </div>
-                  <div class="col-md-3">
-                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Страна</label>
-                    <input type="text" class="form-control" id="default-country" value="Россия">
-                  </div>
-                  <div class="col-md-3">
-                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Код страны</label>
-                    <input type="text" class="form-control" id="default-country-code" value="643">
-                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Buyer Info -->
+          <!-- Customer Info -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
-              <h4 class="mb-0">Покупатель</h4>
+              <h4 class="mb-0">Заказчик</h4>
               <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#selectContractorModal">
                 Выбрать из списка
               </button>
@@ -290,32 +254,32 @@
               <div class="row g-16" style="margin-bottom: 24px;">
                 <div class="col-md-6">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="buyer-name" placeholder='ООО "Контрагент"' required>
+                  <input type="text" class="form-control" id="customer-name" placeholder='ООО "Контрагент"' required>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">ИНН <span class="text-danger">*</span></label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="buyer-inn" placeholder="7708654321" required maxlength="12">
-                    <button class="btn btn-outline-primary-600 dadata-search-btn" type="button" id="buyer-inn-search" title="Найти по ИНН">
+                    <input type="text" class="form-control" id="customer-inn" placeholder="7708654321" required maxlength="12">
+                    <button class="btn btn-outline-primary-600 dadata-search-btn" type="button" id="customer-inn-search" title="Найти по ИНН">
                       <iconify-icon icon="mdi:magnify" class="text-lg"></iconify-icon>
                     </button>
                   </div>
-                  <small class="text-muted d-none" id="buyer-inn-loading">Поиск...</small>
+                  <small class="text-muted d-none" id="customer-inn-loading">Поиск...</small>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">КПП</label>
-                  <input type="text" class="form-control" id="buyer-kpp" placeholder="770801001" maxlength="9">
+                  <input type="text" class="form-control" id="customer-kpp" placeholder="770801001" maxlength="9">
                 </div>
-                <div class="col-12 d-none" id="buyer-inn-error-container">
+                <div class="col-12 d-none" id="customer-inn-error-container">
                   <div class="alert alert-danger py-2 px-3 mb-0" role="alert">
-                    <small id="buyer-inn-error"></small>
+                    <small id="customer-inn-error"></small>
                   </div>
                 </div>
                 <div class="col-12" style="position: relative;">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Адрес <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="buyer-address" placeholder="654321, г. Санкт-Петербург, пр. Невский, д. 100" required style="padding-right: 50px;">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Адрес</label>
+                  <input type="text" class="form-control" id="customer-address" placeholder="654321, г. Санкт-Петербург, пр. Невский, д. 100" style="padding-right: 50px;">
                   <!-- Кнопка добавить в клиенты внутри поля -->
-                  <button type="button" id="save-buyer-btn" title="Добавить в мои контрагенты" style="position: absolute; right: 12px; bottom: 10px; background: #FBBF24; color: #0f172a; border: none; border-radius: 0.75rem; height: 36px; min-width: 36px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); z-index: 10; transform: translateX(calc(100% + 24px)); white-space: nowrap; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">
+                  <button type="button" id="save-customer-btn" title="Добавить в мои контрагенты" style="position: absolute; right: 12px; bottom: 10px; background: #FBBF24; color: #0f172a; border: none; border-radius: 0.75rem; height: 36px; min-width: 36px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); z-index: 10; transform: translateX(calc(100% + 24px)); white-space: nowrap; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="flex-shrink: 0; transition: transform 0.3s;">
                       <line x1="12" y1="5" x2="12" y2="19"></line>
                       <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -324,84 +288,24 @@
                   </button>
                 </div>
               </div>
-              
-              <!-- Валюта и идентификатор госконтракта -->
-              <div class="mt-24 pt-16 border-top">
-                <div class="row g-16" style="margin-bottom: 24px;">
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Валюта: наименование, код</label>
-                    <div class="row g-8">
-                      <div class="col-8">
-                        <input type="text" class="form-control" id="currency-name" value="Российский рубль" placeholder="Наименование валюты">
-                      </div>
-                      <div class="col-4">
-                        <input type="text" class="form-control" id="currency-code" value="643" placeholder="Код">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Идентификатор гос. контракта</label>
-                    <input type="text" class="form-control" id="gov-contract-id" placeholder="При наличии">
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Грузополучатель -->
-              <div class="mt-24 pt-16 border-top">
-                <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Грузополучатель и его адрес</label>
-                <div class="d-flex align-items-center flex-wrap gap-28 mb-12">
-                  <div class="form-check checked-primary d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="radio" name="consignee-type" id="consignee-none" value="none" checked>
-                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignee-none">Не заполнять</label>
-                  </div>
-                  <div class="form-check checked-primary d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="radio" name="consignee-type" id="consignee-same" value="same">
-                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignee-same">Совпадает с покупателем</label>
-                  </div>
-                  <div class="form-check checked-primary d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="radio" name="consignee-type" id="consignee-manual" value="manual">
-                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="consignee-manual">Ручной ввод</label>
-                  </div>
-                </div>
-                <input type="text" class="form-control" id="consignee-address" placeholder="Грузополучатель, адрес" disabled>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Payment and Shipping Documents -->
-          <div class="card radius-16 mb-24">
-            <div class="card-header py-16 px-24 border-bottom">
-              <h4 class="mb-0">Дополнительные сведения</h4>
-            </div>
-            <div class="card-body p-24">
-              <div class="row g-16" style="margin-bottom: 24px;">
-                <div class="col-md-6">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">К платежно-расчетному документу №</label>
-                  <input type="text" class="form-control" id="payment-document" placeholder="№ и дата платежного документа">
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Документ об отгрузке</label>
-                  <input type="text" class="form-control" id="shipping-document" placeholder="№ и дата документа об отгрузке">
-                </div>
-              </div>
             </div>
           </div>
 
-          <!-- Products/Services -->
+          <!-- Works/Services -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
               <h4 class="mb-0">
-                Товары и услуги
+                Работы и услуги
               </h4>
             </div>
             <div class="card-body p-24">
               <div id="products-container">
-                <!-- Product Row 1 -->
+                <!-- Work Row 1 -->
                 <div class="product-row card border radius-12 p-16 mb-16" data-row="1">
                   <div class="row g-12 align-items-end">
                     <div class="col">
                       <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Наименование <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control product-name" placeholder="Название товара или услуги" required>
+                      <input type="text" class="form-control product-name" placeholder="Название работы или услуги" required>
                     </div>
                     <div class="col-auto" style="width: 100px;">
                       <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Кол-во</label>
@@ -410,8 +314,8 @@
                     <div class="col-auto" style="width: 110px;">
                       <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ед. изм.</label>
                       <select class="form-select product-unit">
+                        <option value="усл" selected>усл</option>
                         <option value="шт">шт</option>
-                        <option value="усл">усл</option>
                         <option value="ч">ч</option>
                         <option value="кг">кг</option>
                         <option value="л">л</option>
@@ -471,113 +375,37 @@
             </div>
           </div>
 
-          <!-- Additional Info - Подписант со стороны продавца -->
+          <!-- Signatories -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h4 class="mb-0">Подписант со стороны продавца</h4>
+              <h4 class="mb-0">Подписанты</h4>
             </div>
             <div class="card-body p-24">
               <div class="row g-16" style="margin-bottom: 24px;">
-                <!-- Основание передачи -->
+                <!-- Исполнитель -->
                 <div class="col-md-6">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Основание передачи (сдачи) / получения (приемки)</label>
-                  <input type="text" class="form-control" id="transfer-basis" placeholder="Договор № от дд.мм.гггг">
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">От исполнителя (ФИО)</label>
+                  <input type="text" class="form-control" id="executor-signatory" placeholder="Иванов И.И.">
                 </div>
-                <!-- Данные о транспортировке -->
+                <!-- Заказчик -->
                 <div class="col-md-6">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Данные о транспортировке и грузе</label>
-                  <input type="text" class="form-control" id="transport-info" placeholder="Транспортная накладная, поручение экспедитору, экспедиторская / складская расписка и т.п.">
-                </div>
-                <!-- Товар передал -->
-                <div class="col-12">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Товар (груз) передал / услуги, результаты работ, права сдал</label>
-                  <div class="row g-12">
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="released-position" placeholder="Должность">
-                    </div>
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="released-by" placeholder="ФИО">
-                    </div>
-                    <div class="col-md-4">
-                      <div class="input-group">
-                        <input type="text" class="form-control date-picker" id="shipping-date" placeholder="Дата отгрузки">
-                        <button class="btn btn-outline-secondary-600" type="button" id="set-today-shipping" title="Текущая дата">
-                          Сегодня
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Иные сведения об отгрузке -->
-                <div class="col-12">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Иные сведения об отгрузке, передаче</label>
-                  <input type="text" class="form-control" id="other-shipping-info" placeholder="Ссылки на неотъемлемые приложения, сопутствующие документы, иные документы и т.п.">
-                </div>
-                <!-- Ответственный за правильность оформления -->
-                <div class="col-12">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ответственный за правильность оформления факта хоз. жизни</label>
-                  <div class="row g-12">
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="responsible-position" placeholder="Должность">
-                    </div>
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="responsible-name" placeholder="ФИО">
-                    </div>
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="economic-entity" placeholder="В т.ч. комиссионера / агента (может не заполняться)">
-                    </div>
-                  </div>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">От заказчика (ФИО)</label>
+                  <input type="text" class="form-control" id="customer-signatory" placeholder="Петров П.П.">
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Подписант со стороны покупателя -->
+          <!-- Additional Info -->
           <div class="card radius-16 mb-24">
             <div class="card-header py-16 px-24 border-bottom">
-              <h4 class="mb-0">Подписант со стороны покупателя</h4>
+              <h4 class="mb-0">Дополнительные сведения</h4>
             </div>
             <div class="card-body p-24">
               <div class="row g-16" style="margin-bottom: 24px;">
-                <!-- Товар получил -->
                 <div class="col-12">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Товар (груз) получил / услуги, результаты работ, права принял</label>
-                  <div class="row g-12">
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="received-position" placeholder="Должность">
-                    </div>
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="received-by" placeholder="ФИО">
-                    </div>
-                    <div class="col-md-4">
-                      <div class="input-group">
-                        <input type="text" class="form-control date-picker" id="receiving-date" placeholder="Дата получения">
-                        <button class="btn btn-outline-secondary-600" type="button" id="set-today-receiving" title="Текущая дата">
-                          Сегодня
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Иные сведения о получении -->
-                <div class="col-12">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Иные сведения о получении, приемке</label>
-                  <input type="text" class="form-control" id="other-receiving-info" placeholder="Информация о наличии/отсутствии претензии; ссылки на неотъемлемые приложения, и другие документы и т.п.">
-                </div>
-                <!-- Ответственный за правильность оформления (покупатель) -->
-                <div class="col-12">
-                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Ответственный за правильность оформления факта хоз. жизни</label>
-                  <div class="row g-12">
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="buyer-responsible-position" placeholder="Должность">
-                    </div>
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="buyer-responsible-name" placeholder="ФИО">
-                    </div>
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" id="buyer-economic-entity" placeholder="Может не заполняться при М.П.">
-                    </div>
-                  </div>
+                  <label class="form-label fw-bold text-xs text-slate-600 text-uppercase" style="letter-spacing: 0.05em; margin-top: 16px; margin-bottom: 8px;">Примечания</label>
+                  <textarea class="form-control" id="notes" rows="3" placeholder="Дополнительная информация"></textarea>
                 </div>
               </div>
             </div>
@@ -587,12 +415,6 @@
           <div class="card radius-16">
             <div class="card-body p-24">
               <div class="d-flex flex-wrap justify-content-center" style="gap: 16px;">
-                <button type="button" class="btn btn-outline-neutral-600 px-24" id="save-draft">
-                  Сохранить черновик
-                </button>
-                <button type="button" class="btn btn-outline-neutral-600 px-24" id="save-template">
-                  Сохранить как шаблон
-                </button>
                 <button type="button" class="btn btn-outline-primary-600 px-24" id="preview-btn" data-bs-toggle="modal" data-bs-target="#previewModal">
                   Предпросмотр
                 </button>
@@ -609,10 +431,10 @@
           <div class="sticky-preview">
             <div class="card radius-16">
               <div class="card-header py-16 px-24 border-bottom d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">Предпросмотр УПД</h4>
+                <h4 class="mb-0">Предпросмотр акта</h4>
                 <div class="d-flex" style="gap: 8px;">
                   <button type="button" class="btn btn-sm btn-outline-primary-600" data-bs-toggle="modal" data-bs-target="#previewModal">
-                    Открыть
+                    Предпросмотр
                   </button>
                 </div>
               </div>
@@ -672,7 +494,7 @@
   <div class="modal-dialog" style="max-width: 98vw; width: 1200px; margin: 20px auto;">
     <div class="modal-content radius-16" style="overflow: hidden;">
       <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
-        <h5 class="modal-title">Предпросмотр УПД</h5>
+        <h5 class="modal-title">Предпросмотр акта</h5>
         <div class="d-flex gap-12 align-items-center">
           <button type="button" class="btn btn-sm btn-primary-600" id="modal-download-pdf">
             Скачать PDF
@@ -771,22 +593,22 @@
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content radius-16">
       <div class="modal-header bg-neutral-50 py-12 px-24 border-bottom">
-        <h5 class="modal-title">Выберите товар или услугу</h5>
+        <h5 class="modal-title">Выберите работу или услугу</h5>
       </div>
       <div class="modal-body p-24">
         <div class="mb-16">
-          <input type="text" class="form-control" id="search-product-modal" placeholder="Поиск по названию или артикулу...">
+          <input type="text" class="form-control" id="search-product-modal" placeholder="Поиск по названию...">
         </div>
         <div id="products-modal-list">
           <div class="text-center py-24 text-secondary-light">
             <iconify-icon icon="mdi:loading" class="spin text-2xl"></iconify-icon>
-            <p class="mt-8">Загрузка товаров...</p>
+            <p class="mt-8">Загрузка услуг...</p>
           </div>
         </div>
         <div id="no-products-message" style="display: none;" class="text-center py-24">
           <iconify-icon icon="mdi:package-variant" class="text-secondary-light text-4xl"></iconify-icon>
-          <p class="mt-8 text-secondary-light">Товары не найдены</p>
-          <a href="/dashboard/products" class="btn btn-sm btn-primary-600 mt-8">Добавить товар</a>
+          <p class="mt-8 text-secondary-light">Услуги не найдены</p>
+          <a href="/dashboard/products" class="btn btn-sm btn-primary-600 mt-8">Добавить услугу</a>
         </div>
       </div>
       <div class="modal-footer">
@@ -812,7 +634,7 @@
           <span class="w-80-px h-80-px bg-success-100 rounded-circle d-flex justify-content-center align-items-center mx-auto mb-16">
             <iconify-icon icon="mdi:check-circle" class="text-success-600 text-4xl"></iconify-icon>
           </span>
-          <h5 class="fw-semibold mb-8">Ваш УПД сохранен</h5>
+          <h5 class="fw-semibold mb-8">Ваш Акт сохранен</h5>
           <p class="text-secondary-light mb-0">
             Для скачивания документа необходимо войти в аккаунт или зарегистрироваться.<br>
             <strong>Ваш документ уже ждет вас в личном кабинете!</strong>
@@ -864,7 +686,7 @@
                     <circle cx="10" cy="10" r="8" fill="#3b82f6" fill-opacity="0.2"/>
                     <path d="M6 10L9 13L14 7" stroke="#3b82f6" stroke-width="2" fill="none"/>
                   </svg>
-                  <span class="text-white" style="font-size: 0.875rem;">5 бесплатных УПД в месяц</span>
+                  <span class="text-white" style="font-size: 0.875rem;">5 бесплатных документов в месяц</span>
                 </div>
                 <div class="d-flex align-items-start gap-12">
                   <svg width="20" height="20" style="min-width: 20px; margin-top: 2px;">
@@ -878,14 +700,7 @@
                     <circle cx="10" cy="10" r="8" fill="#3b82f6" fill-opacity="0.2"/>
                     <path d="M6 10L9 13L14 7" stroke="#3b82f6" stroke-width="2" fill="none"/>
                   </svg>
-                  <span class="text-white" style="font-size: 0.875rem;">Справочники организаций и товаров</span>
-                </div>
-                <div class="d-flex align-items-start gap-12">
-                  <svg width="20" height="20" style="min-width: 20px; margin-top: 2px;">
-                    <circle cx="10" cy="10" r="8" fill="#FBBF24" fill-opacity="0.2"/>
-                    <path d="M6 10L9 13L14 7" stroke="#FBBF24" stroke-width="2" fill="none"/>
-                  </svg>
-                  <span class="text-white" style="font-size: 0.875rem;">ИИ-проверка документов</span>
+                  <span class="text-white" style="font-size: 0.875rem;">Справочники организаций и услуг</span>
                 </div>
               </div>
             </div>
@@ -973,14 +788,14 @@
 
 <!-- Pass Jinja2 variables to JavaScript -->
 <script>
-    window.UPD_CONFIG = {
+    window.AKT_CONFIG = {
         editDocumentId: '{{ edit_document_id | default("") }}',
         apiUrl: '/api/v1'
     };
 </script>
 
-<!-- UPD Constructor Main JS (extracted from inline) -->
-<script src="/static/js/upd-constructor/upd-main.js?v=3.4"></script>
+<!-- Akt Constructor Main JS -->
+<script src="/static/js/akt-constructor.js?v=1.1"></script>
 
 <!-- Support Widget -->
 {% include 'components/support_widget.html' %}
