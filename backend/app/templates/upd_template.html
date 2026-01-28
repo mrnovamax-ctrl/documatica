@@ -17,11 +17,28 @@ xmlns="http://www.w3.org/TR/REC-html40">
     vertical-align: middle;
 }
 .stamp-img {
-    max-width: 80px;
-    max-height: 80px;
+    max-width: 60px;
+    max-height: 60px;
     object-fit: contain;
     vertical-align: middle;
-    opacity: 0.9;
+    opacity: 0.85;
+}
+/* Контейнер для подписи с печатью */
+.signature-with-stamp {
+    position: relative;
+    display: inline-block;
+}
+.signature-with-stamp .signature-img {
+    position: relative;
+    z-index: 1;
+}
+.signature-with-stamp .stamp-img {
+    position: absolute;
+    left: 25px;
+    top: -15px;
+    z-index: 2;
+    max-width: 55px;
+    max-height: 55px;
 }
 .stamp-container {
     position: relative;
@@ -1199,13 +1216,13 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl73>&nbsp;</td>
   <td class=xl65></td>
   <td colspan=14 class=xl100 width=191 style='width:144pt'>Руководитель организации<br>или иное уполномоченное лицо</td>
-  <td colspan=10 class=xl83 width=62 style='width:47pt'>{% if seller_signer and seller_signer.signature_image %}<img src="{{ seller_signer.signature_image }}" class="signature-img">{% endif %}</td>
+  <td colspan=10 class=xl83 width=62 style='width:47pt'>{% if seller_signer and seller_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ seller_signer.signature_image }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
   <td colspan=16 class=xl83 width=168 style='width:127pt'>{% if seller_signer %}{{ seller_signer.full_name }}{% endif %}</td>
   <td class=xl65></td>
   <td class=xl65></td>
   <td colspan=9 class=xl90 width=166 style='width:125pt'>Главный бухгалтер<br>или иное уполномоченное лицо</td>
-  <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if accountant_signature %}<img src="{{ accountant_signature }}" class="signature-img">{% endif %}</td>
+  <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if accountant_signature %}<span class="signature-with-stamp"><img src="{{ accountant_signature }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
   <td colspan=9 class=xl83 width=181 style='width:136pt'>{% if accountant_name %}{{ accountant_name }}{% endif %}</td>
   <td colspan=6 class=xl65></td>
@@ -1393,7 +1410,7 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl83 width=11 style='width:8pt'>&nbsp;</td>
   <td class=xl83 width=5 style='width:4pt'>&nbsp;</td>
   <td class=xl83 width=5 style='width:4pt'>&nbsp;</td>
-  <td colspan=3 class=xl83 style='width:43pt'>{% if seller_signer and seller_signer.signature_image %}<img src="{{ seller_signer.signature_image }}" class="signature-img">{% endif %}</td>
+  <td colspan=3 class=xl83 style='width:43pt'>{% if seller_signer and seller_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ seller_signer.signature_image }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
   <td colspan=12 class=xl83 width=169 style='width:127pt'>{% if seller_signer %}{{ seller_signer.full_name }}{% endif %}</td>
   <td class=xl65></td>
@@ -1404,7 +1421,7 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl65></td>
   <td class=xl73>&nbsp;</td>
   <td class=xl65></td>
-  <td colspan=3 class=xl83 style='width:43pt'>{% if buyer_signer and buyer_signer.signature_image %}<img src="{{ buyer_signer.signature_image }}" class="signature-img">{% endif %}</td>
+  <td colspan=3 class=xl83 style='width:43pt'>{% if buyer_signer and buyer_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ buyer_signer.signature_image }}" class="signature-img">{% if buyer_stamp_image %}<img src="{{ buyer_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
   <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if buyer_signer %}{{ buyer_signer.full_name }}{% endif %}</td>
   <td class=xl65></td>
@@ -1590,7 +1607,7 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl83 width=11 style='width:8pt'>&nbsp;</td>
   <td class=xl83 width=2 style='width:2pt'>&nbsp;</td>
   <td class=xl65></td>
-  <td colspan=12 class=xl83 width=169 style='width:127pt'>{% if seller_signer and seller_signer.signature_image %}<img src="{{ seller_signer.signature_image }}" class="signature-img">{% endif %}</td>
+  <td colspan=12 class=xl83 width=169 style='width:127pt'>{% if seller_signer and seller_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ seller_signer.signature_image }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
   <td class=xl65></td>
   <td class=xl65></td>
@@ -1599,7 +1616,7 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl65></td>
   <td class=xl73>&nbsp;</td>
   <td class=xl65></td>
-  <td colspan=3 class=xl83 style='width:43pt'>{% if buyer_signer and buyer_signer.signature_image %}<img src="{{ buyer_signer.signature_image }}" class="signature-img">{% endif %}</td>
+  <td colspan=3 class=xl83 style='width:43pt'>{% if buyer_signer and buyer_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ buyer_signer.signature_image }}" class="signature-img">{% if buyer_stamp_image %}<img src="{{ buyer_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
   <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if buyer_signer %}{{ buyer_signer.full_name }}{% endif %}</td>
   <td class=xl65></td>
