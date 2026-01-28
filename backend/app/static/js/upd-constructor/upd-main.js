@@ -508,6 +508,11 @@ $(document).ready(function() {
             // Сохраняем выбранную организацию для использования подписи и печати
             selectedSellerOrg = org;
             
+            // DEBUG: проверяем наличие печати и подписи
+            console.log('[DEBUG] Selected org:', org.name);
+            console.log('[DEBUG] Has stamp:', !!org.stamp_base64, 'length:', (org.stamp_base64 || '').length);
+            console.log('[DEBUG] Has signature:', !!org.director_signature, 'length:', (org.director_signature || '').length);
+            
             // Отключаем transitions при массовом заполнении полей
             document.body.classList.add('no-transitions');
             
@@ -1892,6 +1897,11 @@ $(document).ready(function() {
     $('#previewModal').on('shown.bs.modal', async function() {
         const iframe = document.getElementById('preview-iframe');
         const requestData = collectFormData();
+        
+        // DEBUG: проверяем что отправляется в preview
+        console.log('[DEBUG] Preview request - seller_stamp_image:', !!requestData.seller_stamp_image, 'length:', (requestData.seller_stamp_image || '').length);
+        console.log('[DEBUG] Preview request - seller_signer:', requestData.seller_signer);
+        console.log('[DEBUG] selectedSellerOrg:', selectedSellerOrg?.name, 'stamp:', !!selectedSellerOrg?.stamp_base64);
         
         try {
             const API_URL = '';
