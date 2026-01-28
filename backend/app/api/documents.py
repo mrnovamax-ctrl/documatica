@@ -323,6 +323,11 @@ async def preview_upd(request: UPDPreviewRequest):
     Предпросмотр УПД - возвращает HTML (для отладки)
     """
     try:
+        # DEBUG: логируем что приходит
+        print(f"[DEBUG] seller_stamp_image received: {bool(request.seller_stamp_image)}, len={len(request.seller_stamp_image or '')}")
+        if request.seller_signer:
+            print(f"[DEBUG] seller_signer.signature_image: {bool(request.seller_signer.signature_image)}")
+        
         template = jinja_env.get_template("upd_template.html")
         
         # Подготовка данных с безопасными значениями по умолчанию
