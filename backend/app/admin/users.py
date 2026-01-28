@@ -2,75 +2,66 @@
 Admin Users - управление пользователями
 """
 
-import json
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Any
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
+from sqlalchemy.orm import Session
+from sqlalchemy import func, desc
 
+from app.database import get_db
+from app.models import User
 from app.core.templates import templates
 from app.admin.context import require_admin, get_admin_context
 
 router = APIRouter()
 
-# Путь к данным
-DATA_DIR = Path(__file__).parent.parent.parent / "data"
+# Путь к документам
+DOCUMENTS_DIR = Path(__file__).parent.parent.parent / "documents"
 
 
-def load_users() -> List[Dict[str, Any]]:
-    """Загрузка списка пользователей"""
-    filepath = DATA_DIR / "users.json"
-    if not filepath.exists():
-        return []
-    
-    with open(filepath, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    
-    return data.get("users", [])
-
-
-def get_user_documents_count(user_email: str) -> int:
-    """Подсчёт документов пользователя"""
-    filepath = DATA_DIR / "documents.json"
-    if not filepath.exists():
-        return 0
-    
-    with open(filepath, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    
-    documents = data.get("documents", [])
-    return len([d for d in documents if d.get("user_email") == user_email])
+def get_user_documents_count_from_disk(user_id: int) -> int:
+    """Подсчёт документов пользователя по папкам на диске"""
+    # Документы хранятся в папках с UUID, связь через метаданные
+    # Пока возвращаем 0, т.к. нет прямой связи user_id -> document folder
+    return 0
 
 
 @router.get("/", response_class=HTMLResponse)
-async def users_list(request: Request, page: int = 1, per_page: int = 50):
-    """Список пользователей"""
+async def users_list(request: Request, page: int = 1, per_page: int = 50, db: Session = Depends(get_db)):
+    """Список пользователей из БД"""
     auth_check = require_admin(request)
     if auth_check:
         return auth_check
     
-    all_users = load_users()
-    
-    # Добавляем статистику для каждого пользователя
-    users_with_stats = []
-    for user in all_users:
-        user_copy = user.copy()
-        user_copy["documents_count"] = get_user_documents_count(user.get("email", ""))
-        users_with_stats.append(user_copy)
-    
-    # Сортируем по дате регистрации (новые первые)
-    users_with_stats.sort(
-        key=lambda u: u.get("created_at", ""), 
-        reverse=True
-    )
+    # Общее количество пользователей
+    total = db.query(func.count(User.id)).scalar() or 0
     
     # Пагинация
-    total = len(users_with_stats)
-    total_pages = (total + per_page - 1) // per_page
-    start = (page - 1) * per_page
-    end = start + per_page
-    users_page = users_with_stats[start:end]
+    total_pages = (total + per_page - 1) // per_page if total > 0 else 1
+    offset = (page - 1) * per_page
+    
+    # Получаем пользователей из БД, сортировка по дате регистрации (новые первые)
+    users_db = db.query(User).order_by(desc(User.created_at)).offset(offset).limit(per_page).all()
+    
+    # Преобразуем в формат для шаблона
+    users_page = []
+    for user in users_db:
+        users_page.append({
+            "id": user.id,
+            "email": user.email,
+            "name": user.name,
+            "tariff": user.subscription_plan,
+            "subscription_expires": user.subscription_expires.isoformat() if user.subscription_expires else None,
+            "is_verified": user.is_verified,
+            "created_at": user.created_at.isoformat() if user.created_at else None,
+            "last_login": user.last_login.isoformat() if user.last_login else None,
+            "free_generations_used": user.free_generations_used or 0,
+            "subscription_docs_used": user.subscription_docs_used or 0,
+            "purchased_docs_remaining": user.purchased_docs_remaining or 0,
+            "documents_count": (user.free_generations_used or 0) + (user.subscription_docs_used or 0),
+        })
     
     return templates.TemplateResponse(
         request=request,

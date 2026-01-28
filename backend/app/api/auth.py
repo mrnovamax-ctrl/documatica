@@ -19,7 +19,7 @@ from app.schemas.auth import (
     UserRegister, UserLogin, UserResponse, TokenResponse,
     VerifyEmail, ForgotPassword, ResetPassword, MessageResponse
 )
-from app.services.email import send_verification_email, send_password_reset_email
+from app.services.email import send_verification_email, send_password_reset_email, send_welcome_email
 
 router = APIRouter()
 
@@ -53,7 +53,7 @@ def generate_token() -> str:
     return secrets.token_urlsafe(32)
 
 
-@router.post("/register", response_model=TokenResponse)
+@router.post("/register", response_model=MessageResponse)
 async def register(data: UserRegister, response: Response, db: Session = Depends(get_db)):
     """Регистрация нового пользователя"""
     
@@ -63,7 +63,33 @@ async def register(data: UserRegister, response: Response, db: Session = Depends
     existing_user = db.query(User).filter(User.email == data.email.lower()).first()
     if existing_user:
         print(f"[REGISTER] ОТКАЗ: Email {data.email} уже зарегистрирован")
-        raise HTTPException(status_code=400, detail="Пользователь с таким email уже зарегистрирован")
+        
+        # Разные сообщения в зависимости от статуса верификации
+        if existing_user.is_verified:
+            # Пользователь подтверждён - предлагаем войти или восстановить пароль
+            raise HTTPException(
+                status_code=400, 
+                detail="Этот email уже зарегистрирован. Войдите в аккаунт или восстановите пароль."
+            )
+        else:
+            # Пользователь не подтвердил email - переотправляем письмо
+            verification_token = generate_token()
+            verification_expires = datetime.utcnow() + timedelta(hours=24)
+            existing_user.verification_token = verification_token
+            existing_user.verification_expires = verification_expires
+            db.commit()
+            
+            # Отправляем письмо повторно
+            try:
+                await send_verification_email(existing_user.email, verification_token)
+                print(f"[REGISTER] Повторно отправлено письмо подтверждения на {data.email}")
+            except Exception as e:
+                print(f"[REGISTER] Ошибка отправки письма: {e}")
+            
+            raise HTTPException(
+                status_code=400, 
+                detail="Этот email уже зарегистрирован, но не подтверждён. Мы отправили новое письмо для подтверждения."
+            )
     
     # Валидация пароля
     if len(data.password) < 6:
@@ -90,37 +116,12 @@ async def register(data: UserRegister, response: Response, db: Session = Depends
     # Отправляем письмо подтверждения
     send_verification_email(data.email, verification_token, data.name)
     
-    # Создаём токен доступа (АВТО-ЛОГИН после регистрации)
-    access_token = create_access_token(user.id)
+    print(f"[REGISTER] УСПЕХ: {data.email} зарегистрирован, ожидает подтверждения email")
     
-    # Устанавливаем httponly cookie
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        httponly=True,
-        max_age=ACCESS_TOKEN_EXPIRE_HOURS * 3600,
-        samesite="lax"
-    )
-    
-    # Обновляем last_login
-    user.last_login = datetime.utcnow()
-    db.commit()
-    
-    print(f"[REGISTER] УСПЕХ: {data.email} зарегистрирован и авторизован")
-    
-    return TokenResponse(
-        access_token=access_token,
-        token_type="bearer",
-        user=UserResponse(
-            id=user.id,
-            email=user.email,
-            name=user.name,
-            is_verified=user.is_verified,
-            free_generations_used=user.free_generations_used,
-            subscription_tier=user.subscription_tier,
-            subscription_status=user.subscription_status,
-            subscription_expires=user.subscription_expires
-        )
+    # Возвращаем успех без авто-логина (требуется подтверждение email)
+    return MessageResponse(
+        success=True,
+        message="Регистрация успешна! Проверьте почту для подтверждения."
     )
 
 
@@ -184,6 +185,9 @@ async def verify_email(data: VerifyEmail, db: Session = Depends(get_db)):
     user.verification_token_expires = None
     db.commit()
     
+    # Отправляем welcome письмо
+    send_welcome_email(user.email, user.name)
+    
     return MessageResponse(
         success=True,
         message="Email успешно подтверждён! Теперь вы можете войти."
@@ -221,6 +225,52 @@ async def resend_verification(data: ForgotPassword, db: Session = Depends(get_db
     return MessageResponse(
         success=True,
         message="Письмо отправлено! Проверьте почту."
+    )
+
+
+@router.post("/update-email", response_model=MessageResponse)
+async def update_email_before_verification(
+    data: dict,
+    db: Session = Depends(get_db)
+):
+    """Изменение email до подтверждения (для регистрации)"""
+    
+    old_email = data.get("old_email", "").lower()
+    new_email = data.get("new_email", "").lower()
+    
+    if not old_email or not new_email:
+        raise HTTPException(status_code=400, detail="Укажите оба email адреса")
+    
+    if old_email == new_email:
+        raise HTTPException(status_code=400, detail="Новый email совпадает со старым")
+    
+    # Находим пользователя по старому email
+    user = db.query(User).filter(User.email == old_email).first()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+    
+    if user.is_verified:
+        raise HTTPException(status_code=400, detail="Email уже подтверждён, изменение невозможно")
+    
+    # Проверяем, не занят ли новый email
+    existing = db.query(User).filter(User.email == new_email).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Этот email уже зарегистрирован")
+    
+    # Обновляем email и генерируем новый токен
+    verification_token = generate_token()
+    user.email = new_email
+    user.verification_token = verification_token
+    user.verification_token_expires = datetime.utcnow() + timedelta(hours=24)
+    db.commit()
+    
+    # Отправляем письмо на новый email
+    send_verification_email(new_email, verification_token, user.name)
+    
+    return MessageResponse(
+        success=True,
+        message="Email обновлён, письмо отправлено на новый адрес."
     )
 
 

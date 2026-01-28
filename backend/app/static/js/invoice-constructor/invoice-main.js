@@ -1093,7 +1093,9 @@ $(document).ready(function() {
             calculateTotals();
             updatePreview();
         } else {
-            alert('Должна остаться хотя бы одна позиция');
+            if (typeof toastWarning === 'function') {
+                toastWarning('Должна остаться хотя бы одна позиция');
+            }
         }
     });
 

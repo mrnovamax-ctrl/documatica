@@ -258,6 +258,7 @@ async def generate_upd(request: UPDRequest, return_base64: bool = False):
             "seller_signer": request.seller_signer.model_dump() if request.seller_signer else None,
             "seller_responsible": request.seller_responsible.model_dump() if request.seller_responsible else None,
             "economic_entity": request.economic_entity,
+            "seller_stamp_image": request.seller_stamp_image,
             
             # Подписант покупателя
             "receiving_date": format_date_short(request.receiving_date) if request.receiving_date else None,
@@ -365,6 +366,7 @@ async def preview_upd(request: UPDPreviewRequest):
             "seller_signer": request.seller_signer.model_dump() if request.seller_signer else None,
             "seller_responsible": request.seller_responsible.model_dump() if request.seller_responsible else None,
             "economic_entity": request.economic_entity,
+            "seller_stamp_image": request.seller_stamp_image,
             "receiving_date": format_date_short(request.receiving_date) if request.receiving_date else None,
             "other_receiving_info": request.other_receiving_info,
             "buyer_signer": request.buyer_signer.model_dump() if request.buyer_signer else None,
@@ -490,6 +492,7 @@ async def save_upd(
             "transfer_date": format_date_short(request.shipping_date) if request.shipping_date else None,
             "transfer_basis": request.contract_info,
             "seller_signer": request.seller_signer.model_dump() if request.seller_signer else None,
+            "seller_stamp_image": getattr(request, 'seller_stamp_image', None),
             "buyer_signer": request.buyer_signer.model_dump() if request.buyer_signer else None,
             "additional_info": request.other_shipping_info,
             "receipt_date": format_date_short(request.receiving_date) if request.receiving_date else None,
@@ -1145,4 +1148,516 @@ async def invoice_preview_saved(document_id: str):
             status_code=500,
             detail=f"Ошибка просмотра: {str(e)}"
         )
+
+
+# ==================== АКТ ВЫПОЛНЕННЫХ РАБОТ ====================
+
+def number_to_words_ru(number: float) -> str:
+    """Преобразование числа в слова (упрощенная версия для рублей)"""
+    if number == 0:
+        return "ноль"
+    
+    units = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять']
+    teens = ['десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 
+             'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать']
+    tens = ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 
+            'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто']
+    hundreds = ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот',
+                'шестьсот', 'семьсот', 'восемьсот', 'девятьсот']
+    
+    def three_digits(n, feminine=False):
+        if n == 0:
+            return ''
+        result = []
+        h = n // 100
+        t = (n % 100) // 10
+        u = n % 10
+        
+        if h > 0:
+            result.append(hundreds[h])
+        
+        if t == 1:
+            result.append(teens[u])
+        else:
+            if t > 0:
+                result.append(tens[t])
+            if u > 0:
+                if feminine and u in [1, 2]:
+                    result.append('одна' if u == 1 else 'две')
+                else:
+                    result.append(units[u])
+        
+        return ' '.join(result)
+    
+    integer_part = int(number)
+    
+    if integer_part == 0:
+        return "ноль"
+    
+    result = []
+    
+    # Миллионы
+    millions = integer_part // 1000000
+    if millions > 0:
+        result.append(three_digits(millions))
+        if millions % 10 == 1 and millions % 100 != 11:
+            result.append('миллион')
+        elif 2 <= millions % 10 <= 4 and (millions % 100 < 10 or millions % 100 >= 20):
+            result.append('миллиона')
+        else:
+            result.append('миллионов')
+    
+    # Тысячи
+    thousands = (integer_part % 1000000) // 1000
+    if thousands > 0:
+        result.append(three_digits(thousands, feminine=True))
+        if thousands % 10 == 1 and thousands % 100 != 11:
+            result.append('тысяча')
+        elif 2 <= thousands % 10 <= 4 and (thousands % 100 < 10 or thousands % 100 >= 20):
+            result.append('тысячи')
+        else:
+            result.append('тысяч')
+    
+    # Единицы
+    remainder = integer_part % 1000
+    if remainder > 0:
+        result.append(three_digits(remainder))
+    
+    return ' '.join(result).strip()
+
+
+@router.post("/akt/preview")
+async def akt_preview(request: Request):
+    """
+    Предпросмотр Акта выполненных работ - возвращает HTML
+    """
+    try:
+        data = await request.json()
+        template = jinja_env.get_template("akt_template.html")
+        
+        # Парсим дату документа
+        doc_date = data.get('document_date', '')
+        doc_date_day = ''
+        doc_date_month = ''
+        doc_date_year = ''
+        
+        if doc_date:
+            parts = doc_date.split('.')
+            if len(parts) == 3:
+                doc_date_day = parts[0]
+                months_ru = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+                             'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+                month_idx = int(parts[1]) - 1
+                doc_date_month = months_ru[month_idx] if 0 <= month_idx < 12 else parts[1]
+                doc_date_year = parts[2]
+        
+        # Подготовка данных
+        items = data.get('items', [])
+        vat_rate = data.get('vat_rate', '20')
+        
+        total_without_vat = sum(float(item.get('amount', 0)) for item in items)
+        
+        if vat_rate == 'none':
+            total_vat = 0
+            total_amount = total_without_vat
+        else:
+            vat_percent = float(vat_rate)
+            if data.get('vat_type') == 'included':
+                # НДС включен в цену
+                total_amount = total_without_vat
+                total_vat = total_amount * vat_percent / (100 + vat_percent)
+                total_without_vat = total_amount - total_vat
+            else:
+                # НДС сверху
+                total_vat = total_without_vat * vat_percent / 100
+                total_amount = total_without_vat + total_vat
+        
+        # Сумма прописью
+        total_amount_words = number_to_words_ru(total_amount)
+        total_vat_words = number_to_words_ru(total_vat)
+        
+        template_data = {
+            'document_number': data.get('document_number', ''),
+            'document_date_day': doc_date_day,
+            'document_date_month': doc_date_month,
+            'document_date_year': doc_date_year,
+            'contract_number': data.get('contract_number', ''),
+            'contract_date': data.get('contract_date', ''),
+            
+            'executor': {
+                'name': data.get('executor', {}).get('name', ''),
+                'inn': data.get('executor', {}).get('inn', ''),
+                'kpp': data.get('executor', {}).get('kpp', ''),
+                'address': data.get('executor', {}).get('address', ''),
+            },
+            
+            'customer': {
+                'name': data.get('customer', {}).get('name', ''),
+                'inn': data.get('customer', {}).get('inn', ''),
+                'kpp': data.get('customer', {}).get('kpp', ''),
+                'address': data.get('customer', {}).get('address', ''),
+            },
+            
+            'executor_signatory': data.get('executor_signatory', ''),
+            'customer_signatory': data.get('customer_signatory', ''),
+            
+            'items': items,
+            'vat_rate': vat_rate,
+            'total_without_vat': total_without_vat,
+            'total_vat': total_vat,
+            'total_amount': total_amount,
+            'total_amount_words': total_amount_words,
+            'total_vat_words': total_vat_words,
+            'notes': data.get('notes', ''),
+        }
+        
+        html_content = template.render(**template_data)
+        return HTMLResponse(content=html_content)
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ошибка предпросмотра: {str(e)}"
+        )
+
+
+@router.post("/akt/save")
+async def akt_save(
+    request: Request,
+    authorization: Optional[str] = Header(None),
+    access_token: Optional[str] = Cookie(None),
+    db: Session = Depends(get_db)
+):
+    """
+    Сохранение Акта выполненных работ
+    """
+    import traceback
+    try:
+        data = await request.json()
+        print(f"[AKT SAVE] Received data: {list(data.keys())}")
+        
+        # Проверяем авторизацию
+        user_id = get_user_id_from_token(authorization, access_token)
+        print(f"[AKT SAVE] User ID: {user_id}")
+        
+        if not user_id:
+            return JSONResponse(
+                status_code=401,
+                content={"success": False, "message": "Требуется авторизация", "require_auth": True}
+            )
+        
+        # Проверяем лимиты биллинга
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            return JSONResponse(
+                status_code=401,
+                content={"success": False, "message": "Пользователь не найден", "require_auth": True}
+            )
+        
+        billing = BillingService(db)
+        check = billing.check_can_generate(user)
+        print(f"[AKT SAVE] Billing check: can_generate={check['can_generate']}, message={check['message']}")
+        
+        if not check["can_generate"]:
+            return JSONResponse(
+                status_code=402,
+                content={"success": False, "message": check["message"], "limit_reached": True, "limits": check["limits"]}
+            )
+        
+        # Генерируем HTML
+        template = jinja_env.get_template("akt_template.html")
+        print("[AKT SAVE] Template loaded")
+        
+        # Парсим дату документа
+        doc_date = data.get('document_date', '')
+        doc_date_day = ''
+        doc_date_month = ''
+        doc_date_year = ''
+        
+        if doc_date:
+            parts = doc_date.split('.')
+            if len(parts) == 3:
+                doc_date_day = parts[0]
+                months_ru = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+                             'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+                month_idx = int(parts[1]) - 1
+                doc_date_month = months_ru[month_idx] if 0 <= month_idx < 12 else parts[1]
+                doc_date_year = parts[2]
+        
+        # Подготовка данных
+        items = data.get('items', [])
+        vat_rate = data.get('vat_rate', '20')
+        
+        total_without_vat = sum(float(item.get('amount', 0)) for item in items)
+        
+        if vat_rate == 'none':
+            total_vat = 0
+            total_amount = total_without_vat
+        else:
+            vat_percent = float(vat_rate)
+            if data.get('vat_type') == 'included':
+                total_amount = total_without_vat
+                total_vat = total_amount * vat_percent / (100 + vat_percent)
+                total_without_vat = total_amount - total_vat
+            else:
+                total_vat = total_without_vat * vat_percent / 100
+                total_amount = total_without_vat + total_vat
+        
+        total_amount_words = number_to_words_ru(total_amount)
+        total_vat_words = number_to_words_ru(total_vat)
+        
+        template_data = {
+            'document_number': data.get('document_number', ''),
+            'document_date_day': doc_date_day,
+            'document_date_month': doc_date_month,
+            'document_date_year': doc_date_year,
+            'contract_number': data.get('contract_number', ''),
+            'contract_date': data.get('contract_date', ''),
+            
+            'executor': {
+                'name': data.get('executor', {}).get('name', ''),
+                'inn': data.get('executor', {}).get('inn', ''),
+                'kpp': data.get('executor', {}).get('kpp', ''),
+                'address': data.get('executor', {}).get('address', ''),
+            },
+            
+            'customer': {
+                'name': data.get('customer', {}).get('name', ''),
+                'inn': data.get('customer', {}).get('inn', ''),
+                'kpp': data.get('customer', {}).get('kpp', ''),
+                'address': data.get('customer', {}).get('address', ''),
+            },
+            
+            'executor_signatory': data.get('executor_signatory', ''),
+            'customer_signatory': data.get('customer_signatory', ''),
+            
+            'items': items,
+            'vat_rate': vat_rate,
+            'total_without_vat': total_without_vat,
+            'total_vat': total_vat,
+            'total_amount': total_amount,
+            'total_amount_words': total_amount_words,
+            'total_vat_words': total_vat_words,
+            'notes': data.get('notes', ''),
+        }
+        
+        html_content = template.render(**template_data)
+        
+        # Создаём папку для документа
+        document_id = str(uuid.uuid4())
+        doc_folder = DOCUMENTS_DIR / document_id
+        doc_folder.mkdir(parents=True, exist_ok=True)
+        
+        # Сохраняем HTML
+        html_path = doc_folder / "document.html"
+        with open(html_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        
+        # Сохраняем данные формы
+        data_path = doc_folder / "data.json"
+        with open(data_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        
+        # Сохраняем метаданные (формат совместимый с УПД для отображения в списке)
+        metadata = {
+            "id": document_id,
+            "type": "akt",
+            "document_number": data.get('document_number', ''),
+            "document_date": doc_date,
+            "seller_name": data.get('executor', {}).get('name', ''),
+            "buyer_name": data.get('customer', {}).get('name', ''),
+            "total_amount": total_amount,
+            "user_id": user_id,
+            "created_at": datetime.now().isoformat(),
+        }
+        
+        meta_path = doc_folder / "metadata.json"
+        with open(meta_path, "w", encoding="utf-8") as f:
+            json.dump(metadata, f, ensure_ascii=False, indent=2)
+        
+        # Списываем генерацию
+        seller_inn = data.get('executor', {}).get('inn', '')
+        billing.consume_generation(user, seller_inn)
+        
+        # Генерируем PDF если возможно
+        pdf_url = None
+        if WEASYPRINT_AVAILABLE:
+            try:
+                pdf_path = doc_folder / "document.pdf"
+                WeasyHTML(string=html_content).write_pdf(str(pdf_path))
+                pdf_url = f"/api/v1/documents/akt/{document_id}/download"
+            except Exception as pdf_error:
+                print(f"[AKT] Ошибка генерации PDF: {pdf_error}")
+        
+        return JSONResponse(content={
+            "success": True,
+            "message": "Акт выполненных работ успешно сохранён",
+            "document_id": document_id,
+            "pdf_url": pdf_url,
+            "html_url": f"/api/v1/documents/akt/{document_id}/preview"
+        })
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        print(f"[AKT SAVE ERROR] {str(e)}")
+        print(traceback.format_exc())
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ошибка сохранения: {str(e)}"
+        )
+
+
+@router.get("/akt/{document_id}/download")
+async def akt_download(
+    document_id: str,
+    authorization: Optional[str] = Header(None),
+    access_token: Optional[str] = Cookie(None)
+):
+    """
+    Скачивание Акта выполненных работ в PDF
+    """
+    user_id = get_user_id_from_token(authorization, access_token)
+    
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Требуется авторизация")
+    
+    try:
+        doc_folder = DOCUMENTS_DIR / document_id
+        
+        if not doc_folder.exists():
+            raise HTTPException(status_code=404, detail="Документ не найден")
+        
+        # Читаем metadata.json
+        meta_path = doc_folder / "metadata.json"
+        if meta_path.exists():
+            with open(meta_path, "r", encoding="utf-8") as f:
+                meta = json.load(f)
+        else:
+            meta = {}
+        
+        akt_number = meta.get('document_number', document_id)
+        akt_date = meta.get('document_date', '')
+        filename = f"Akt_{akt_number}_{akt_date.replace('.', '')}"
+        
+        # Проверяем PDF
+        pdf_path = doc_folder / "document.pdf"
+        if pdf_path.exists():
+            from urllib.parse import quote
+            filename_encoded = quote(filename + ".pdf")
+            return StreamingResponse(
+                open(pdf_path, "rb"),
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f"attachment; filename*=UTF-8''{filename_encoded}"
+                }
+            )
+        
+        # Если PDF нет - генерируем из HTML
+        html_path = doc_folder / "document.html"
+        if not html_path.exists():
+            raise HTTPException(status_code=404, detail="HTML документа не найден")
+        
+        with open(html_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        
+        if WEASYPRINT_AVAILABLE:
+            pdf_buffer = io.BytesIO()
+            WeasyHTML(string=html_content).write_pdf(pdf_buffer)
+            pdf_buffer.seek(0)
+            
+            from urllib.parse import quote
+            filename_encoded = quote(filename + ".pdf")
+            return StreamingResponse(
+                pdf_buffer,
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f"attachment; filename*=UTF-8''{filename_encoded}"
+                }
+            )
+        else:
+            # Возвращаем HTML для печати
+            return HTMLResponse(
+                content=html_content,
+                headers={
+                    "Content-Disposition": f'inline; filename="{filename}.html"'
+                }
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ошибка скачивания: {str(e)}"
+        )
+
+
+@router.get("/akt/{document_id}/preview")
+async def akt_preview_saved(document_id: str):
+    """
+    Просмотр HTML сохранённого Акта
+    """
+    try:
+        doc_folder = DOCUMENTS_DIR / document_id
+        
+        if not doc_folder.exists():
+            raise HTTPException(status_code=404, detail="Документ не найден")
+        
+        html_path = doc_folder / "document.html"
+        if not html_path.exists():
+            raise HTTPException(status_code=404, detail="HTML документа не найден")
+        
+        with open(html_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        
+        return HTMLResponse(content=html_content)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ошибка просмотра: {str(e)}"
+        )
+
+
+@router.get("/akt/{document_id}/data")
+async def akt_get_data(
+    document_id: str,
+    authorization: Optional[str] = Header(None),
+    access_token: Optional[str] = Cookie(None)
+):
+    """
+    Получение данных Акта для редактирования
+    """
+    user_id = get_user_id_from_token(authorization, access_token)
+    
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Требуется авторизация")
+    
+    try:
+        doc_folder = DOCUMENTS_DIR / document_id
+        
+        if not doc_folder.exists():
+            raise HTTPException(status_code=404, detail="Документ не найден")
+        
+        data_path = doc_folder / "data.json"
+        if not data_path.exists():
+            raise HTTPException(status_code=404, detail="Данные документа не найдены")
+        
+        with open(data_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        
+        return JSONResponse(content={"success": True, "data": data})
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ошибка получения данных: {str(e)}"
+        )
+
 

@@ -1,0 +1,267 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Промокод {{ promocode.code }}{% endblock %}
+{% block page_title %}Промокод {{ promocode.code }}{% endblock %}
+
+{% block header_actions %}
+<div style="display: flex; gap: 12px; align-items: center;">
+  <a href="/admin/promocodes/{{ promocode.id }}/edit" class="admin-btn admin-btn-outline">
+    <iconify-icon icon="ri:edit-line" width="16"></iconify-icon>
+    Редактировать
+  </a>
+  <form action="/admin/promocodes/{{ promocode.id }}/toggle" method="POST" style="display: inline;">
+    <button type="submit" class="admin-btn {% if promocode.is_active %}admin-btn-warning{% else %}admin-btn-success{% endif %}">
+      {% if promocode.is_active %}
+      <iconify-icon icon="ri:toggle-fill" width="16"></iconify-icon>
+      Выключить
+      {% else %}
+      <iconify-icon icon="ri:toggle-line" width="16"></iconify-icon>
+      Включить
+      {% endif %}
+    </button>
+  </form>
+  <a href="/admin/promocodes/" class="admin-btn admin-btn-outline">
+    <iconify-icon icon="ri:arrow-left-line" width="16"></iconify-icon>
+    Назад
+  </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Promocode Info -->
+<div class="promo-detail-grid">
+  <!-- Main Info Card -->
+  <div class="promo-info-card">
+    <div class="promo-code-display">{{ promocode.code }}</div>
+    
+    <div class="promo-info-row">
+      <span class="promo-info-label">Тип:</span>
+      {% if promocode.promo_type == 'subscription' %}
+      <span class="admin-badge admin-badge-primary">
+        <iconify-icon icon="ri:vip-crown-line" width="14"></iconify-icon>
+        Подписка {{ promocode.subscription_days or 30 }} дн.
+        {% if promocode.subscription_price %} за {{ promocode.subscription_price }} руб.{% else %} (бесплатно){% endif %}
+      </span>
+      {% elif promocode.promo_type == 'documents' %}
+      <span class="admin-badge admin-badge-gold">
+        <iconify-icon icon="ri:file-list-3-line" width="14"></iconify-icon>
+        {{ promocode.documents_count or 10 }} документов
+      </span>
+      {% elif promocode.promo_type == 'discount' %}
+      <span class="admin-badge admin-badge-purple">
+        <iconify-icon icon="ri:percent-line" width="14"></iconify-icon>
+        Скидка {{ promocode.discount_percent }}%
+      </span>
+      {% endif %}
+    </div>
+    
+    <div class="promo-info-row">
+      <span class="promo-info-label">Статус:</span>
+      {% if promocode.is_active %}
+      <span class="admin-badge admin-badge-success">Активен</span>
+      {% else %}
+      <span class="admin-badge admin-badge-muted">Выключен</span>
+      {% endif %}
+    </div>
+    
+    <div class="promo-info-row">
+      <span class="promo-info-label">Многоразовый:</span>
+      <span>{% if promocode.is_reusable %}Да (разные аккаунты){% else %}Нет (одноразовый){% endif %}</span>
+    </div>
+    
+    {% if promocode.description %}
+    <div class="promo-info-row">
+      <span class="promo-info-label">Описание:</span>
+      <span>{{ promocode.description }}</span>
+    </div>
+    {% endif %}
+    
+    {% if promocode.max_uses %}
+    <div class="promo-info-row">
+      <span class="promo-info-label">Лимит:</span>
+      <span>{{ promocode.uses_count or 0 }} / {{ promocode.max_uses }} использований</span>
+    </div>
+    {% endif %}
+    
+    {% if promocode.valid_until %}
+    <div class="promo-info-row">
+      <span class="promo-info-label">Действует до:</span>
+      <span>{{ promocode.valid_until.strftime('%d.%m.%Y') }}</span>
+    </div>
+    {% endif %}
+    
+    <div class="promo-info-row">
+      <span class="promo-info-label">Создан:</span>
+      <span>{{ promocode.created_at.strftime('%d.%m.%Y %H:%M') if promocode.created_at else 'N/A' }}</span>
+    </div>
+  </div>
+  
+  <!-- Stats Card -->
+  <div class="promo-stats-card">
+    <div class="promo-stat">
+      <div class="promo-stat-value">{{ promocode.uses_count or 0 }}</div>
+      <div class="promo-stat-label">Активаций</div>
+    </div>
+  </div>
+</div>
+
+<!-- Usage History -->
+<div class="promo-history-section">
+  <h3 class="promo-history-title">
+    <iconify-icon icon="ri:history-line" width="20"></iconify-icon>
+    История активаций
+  </h3>
+  
+  <div class="admin-table-container">
+    <div class="admin-table-header" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px;">
+      <div class="admin-table-th">Пользователь</div>
+      <div class="admin-table-th">Email</div>
+      <div class="admin-table-th">Дата активации</div>
+    </div>
+    
+    {% for usage, user in usages %}
+    <div class="admin-table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; align-items: center;">
+      <div class="admin-table-cell">
+        <strong>{{ user.name or 'Без имени' }}</strong>
+        <div style="font-size: 11px; color: #94a3b8;">ID: {{ user.id }}</div>
+      </div>
+      <div class="admin-table-cell">
+        <a href="mailto:{{ user.email }}" style="color: #3b82f6;">{{ user.email }}</a>
+      </div>
+      <div class="admin-table-cell admin-text-muted">
+        {{ usage.activated_at.strftime('%d.%m.%Y %H:%M') if usage.activated_at else 'N/A' }}
+      </div>
+    </div>
+    {% else %}
+    <div class="admin-empty-state" style="padding: 48px;">
+      <iconify-icon icon="ri:user-unfollow-line" width="48" style="color: #cbd5e1;"></iconify-icon>
+      <div class="admin-empty-state-title">Нет активаций</div>
+      <div class="admin-empty-state-text">Промокод ещё никто не использовал</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Delete Button -->
+<div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0;">
+  <form action="/admin/promocodes/{{ promocode.id }}/delete" method="POST" onsubmit="return confirm('Удалить промокод {{ promocode.code }}? Это действие нельзя отменить.')">
+    <button type="submit" class="admin-btn admin-btn-danger">
+      <iconify-icon icon="ri:delete-bin-line" width="16"></iconify-icon>
+      Удалить промокод
+    </button>
+  </form>
+</div>
+
+<style>
+.promo-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.promo-info-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  padding: 32px;
+}
+
+.promo-code-display {
+  font-family: monospace;
+  font-size: 32px;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.promo-info-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.promo-info-row:last-child {
+  border-bottom: none;
+}
+
+.promo-info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  min-width: 120px;
+}
+
+.promo-stats-card {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 1.5rem;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo-stat-value {
+  font-size: 48px;
+  font-weight: 900;
+  color: white;
+  line-height: 1;
+}
+
+.promo-stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 8px;
+}
+
+.promo-history-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.promo-history-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-btn-danger {
+  background: #ef4444;
+  color: white;
+  border: none;
+}
+
+.admin-btn-danger:hover {
+  background: #dc2626;
+}
+
+.admin-btn-warning {
+  background: #f59e0b;
+  color: white;
+  border: none;
+}
+
+.admin-btn-success {
+  background: #10b981;
+  color: white;
+  border: none;
+}
+</style>
+{% endblock %}

@@ -13,6 +13,48 @@ from app.core.templates import templates
 from app.core.content import reload_content
 from app.admin.context import require_admin, get_admin_context
 
+
+# Кастомный Dumper для корректного экранирования строк
+class SafeStringDumper(yaml.SafeDumper):
+    pass
+
+def str_representer(dumper, data):
+    """Используем кавычки для строк со спецсимволами или длинных строк"""
+    # Всегда используем кавычки для строк с проблемными символами
+    needs_quotes = (
+        ':' in data or          # Двоеточие - ключевой символ YAML
+        '\n' in data or         # Перенос строки
+        '#' in data or          # Комментарий
+        '&' in data or          # Anchor
+        '*' in data or          # Alias
+        '!' in data or          # Tag
+        '|' in data or          # Literal block
+        '>' in data or          # Folded block
+        "'" in data or          # Кавычка
+        '"' in data or          # Двойная кавычка
+        '[' in data or          # Начало списка
+        ']' in data or          # Конец списка
+        '{' in data or          # Начало словаря
+        '}' in data or          # Конец словаря
+        ',' in data or          # Запятая
+        len(data) > 80 or       # Длинные строки (YAML может их разбить)
+        data.startswith(' ') or # Пробел в начале
+        data.endswith(' ')      # Пробел в конце
+    )
+    if needs_quotes:
+        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
+    return dumper.represent_scalar('tag:yaml.org,2002:str', data)
+
+SafeStringDumper.add_representer(str, str_representer)
+
+
+def safe_yaml_dump(data, stream=None, **kwargs):
+    """Безопасный YAML dump с кавычками для строк с двоеточиями"""
+    kwargs.setdefault('allow_unicode', True)
+    kwargs.setdefault('default_flow_style', False)
+    kwargs.setdefault('sort_keys', False)
+    return yaml.dump(data, stream, Dumper=SafeStringDumper, **kwargs)
+
 router = APIRouter()
 
 # Путь к контенту
@@ -117,7 +159,7 @@ def save_content_file(path: str, data: Dict[str, Any]) -> bool:
         yaml_path.parent.mkdir(parents=True, exist_ok=True)
     
     with open(yaml_path, "w", encoding="utf-8") as f:
-        yaml.dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+        safe_yaml_dump(data, f)
     
     # Очищаем кэш контента
     reload_content()
@@ -197,7 +239,7 @@ async def content_edit(request: Request, path: str):
             active_menu="content",
             content_path=path,
             content=content,
-            content_yaml=yaml.dump(content, allow_unicode=True, default_flow_style=False, sort_keys=False),
+            content_yaml=safe_yaml_dump(content),
         )
     )
 
@@ -206,7 +248,6 @@ async def content_edit(request: Request, path: str):
 async def content_save(
     request: Request, 
     path: str,
-    yaml_content: str = Form(...)
 ):
     """Сохранение контента"""
     auth_check = require_admin(request)
@@ -215,12 +256,21 @@ async def content_save(
     
     error = None
     success = None
+    form_data = await request.form()
+    edit_mode = form_data.get("edit_mode", "visual")
     
     try:
-        # Парсим YAML
-        data = yaml.safe_load(yaml_content)
-        if data is None:
-            data = {}
+        if edit_mode == "yaml":
+            # YAML режим - парсим как раньше
+            yaml_content = form_data.get("yaml_content", "")
+            data = yaml.safe_load(yaml_content)
+            if data is None:
+                data = {}
+        else:
+            # Visual режим - мержим данные формы с существующими
+            existing_data = load_content_file(path)
+            form_parsed = parse_form_to_dict(form_data)
+            data = merge_content_data(existing_data, form_parsed)
         
         # Сохраняем
         save_content_file(path, data)
@@ -230,6 +280,8 @@ async def content_save(
         error = f"Ошибка парсинга YAML: {e}"
     except Exception as e:
         error = f"Ошибка сохранения: {e}"
+        import traceback
+        traceback.print_exc()
     
     content = load_content_file(path) if success else {}
     
@@ -242,8 +294,64 @@ async def content_save(
             active_menu="content",
             content_path=path,
             content=content,
-            content_yaml=yaml_content,
+            content_yaml=safe_yaml_dump(content) if content else "",
             error=error,
             success=success,
         )
     )
+
+
+def merge_content_data(existing: Dict[str, Any], form_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Мержит данные из формы с существующими, сохраняя поля которых нет в форме"""
+    result = existing.copy() if existing else {}
+    
+    for key, value in form_data.items():
+        if isinstance(value, dict) and key in result and isinstance(result[key], dict):
+            # Мержим словари (meta, page, cta)
+            result[key].update(value)
+        else:
+            # Заменяем массивы и простые значения
+            result[key] = value
+    
+    return result
+
+
+def parse_form_to_dict(form_data) -> Dict[str, Any]:
+    """Преобразование данных формы в словарь для YAML"""
+    result = {}
+    
+    # Группируем поля по префиксам
+    for key, value in form_data.multi_items():
+        if key in ("edit_mode", "yaml_content"):
+            continue
+        
+        # Парсим ключ вида "meta__title" или "features__0__title"
+        parts = key.split("__")
+        
+        if len(parts) == 2:
+            # Простое поле: meta__title -> result["meta"]["title"]
+            section, field = parts
+            if section not in result:
+                result[section] = {}
+            result[section][field] = value
+            
+        elif len(parts) == 3:
+            # Массив: features__0__title -> result["features"][0]["title"]
+            section, index, field = parts
+            index = int(index)
+            
+            if section not in result:
+                result[section] = []
+            
+            # Расширяем массив если нужно
+            while len(result[section]) <= index:
+                result[section].append({})
+            
+            result[section][index][field] = value
+    
+    # Очищаем пустые элементы массивов
+    for key in ["features", "benefits", "faq", "related", "sections"]:
+        if key in result:
+            result[key] = [item for item in result[key] if any(v.strip() for v in item.values() if v)]
+    
+    return result

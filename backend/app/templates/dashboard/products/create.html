@@ -107,11 +107,11 @@ document.getElementById('product-form').addEventListener('submit', async functio
     } else {
       const err = await response.json();
       console.error('Ошибка от сервера:', err);
-      alert(err.detail || 'Ошибка сохранения');
+      toastError(err.detail || 'Ошибка сохранения');
     }
   } catch (error) {
     console.error('Ошибка сохранения:', error);
-    alert('Ошибка сохранения: ' + error.message);
+    toastError('Ошибка сохранения: ' + error.message);
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = '<iconify-icon icon="mdi:content-save" class="me-1"></iconify-icon>Сохранить';

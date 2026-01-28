@@ -21,7 +21,7 @@ sections:
         description: "Подтверждение оказания услуг"
         url: "/akt/"
         icon: "check-circle"
-        coming_soon: true
+        featured: false
         
   - title: "Налоговые документы"
     menu_items:

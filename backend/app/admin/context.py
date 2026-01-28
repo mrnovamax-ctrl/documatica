@@ -117,6 +117,7 @@ def get_admin_context(
             {"id": "content", "title": "Контент", "url": "/admin/content/", "icon": "ri-file-text-line"},
             {"id": "articles", "title": "Статьи", "url": "/admin/articles/", "icon": "ri-article-line"},
             {"id": "users", "title": "Пользователи", "url": "/admin/users/", "icon": "ri-user-line"},
+            {"id": "promocodes", "title": "Промокоды", "url": "/admin/promocodes/", "icon": "ri-price-tag-3-line"},
         ],
         **kwargs
     }

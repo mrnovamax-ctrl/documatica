@@ -1,0 +1,54 @@
+{% extends "base_admin.html" %}
+
+{% block header_actions %}
+<button class="btn btn-primary rounded-2xl px-6 py-2 font-bold text-sm">
+  Добавить
+</button>
+{% endblock %}
+
+{% block content %}
+<div class="admin-section">
+  <div class="admin-table-container">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Имя</th>
+          <th>Подписка</th>
+          <th>Кредиты</th>
+          <th>Дата регистрации</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.name or '-' }}</td>
+          <td>
+            <span class="badge bg-{{ 'blue-600' if user.subscription_type != 'free' else 'slate-200' }} rounded-full px-3 py-1 text-xs">
+              {{ user.subscription_type | title }}
+            </span>
+          </td>
+          <td>{{ user.credits }}</td>
+          <td>{{ user.created_at.strftime('%d.%m.%Y') }}</td>
+          <td>
+            <button class="btn btn-sm btn-ghost">
+              <iconify-icon icon="solar:pen-bold"></iconify-icon>
+            </button>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-slate-400 py-8">
+            Нет пользователей
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

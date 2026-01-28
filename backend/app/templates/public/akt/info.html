@@ -1,0 +1,77 @@
+{% extends "base_public.html" %}
+
+{% set page = content.page | default({}) %}
+{% set meta = content.meta | default({}) %}
+{% set sections = content.sections | default([]) %}
+{% set cta = content.cta | default({}) %}
+{% set related = content.related | default([]) %}
+
+{% block title %}{{ meta.title | default('Образец заполнения Акта — Documatica') }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ meta.description | default('Образец заполнения акта выполненных работ с пояснениями') }}">
+<meta name="keywords" content="{{ meta.keywords | default('образец акта, пример заполнения акта') }}">
+{% if meta.canonical %}
+<link rel="canonical" href="{{ site_url }}{{ meta.canonical }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="upd-hero-v12" style="padding: 80px 0;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 0 24px; text-align: center;">
+    <span class="upd-hero-tag-v12">{{ page.tag | default('Инструкция') }}</span>
+    <h1 class="upd-hero-title-v12" style="font-size: clamp(2rem, 5vw, 3rem);">
+      {{ page.h1 | default('Образец заполнения Акта') }}
+    </h1>
+    <p class="upd-hero-desc-v12">
+      {{ page.intro | default('Подробная инструкция по заполнению акта выполненных работ') }}
+    </p>
+  </div>
+</section>
+
+<!-- Content Sections -->
+{% if sections %}
+<section style="padding: 0 0 80px 0;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 0 24px;">
+    {% for section in sections %}
+    <div style="margin-bottom: 48px; background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px;">
+      <h2 class="docu-h3" style="margin-bottom: 24px; color: #0f172a;">{{ section.title }}</h2>
+      <div class="docu-body" style="line-height: 1.8; color: #475569;">
+        {{ section.content | safe }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- CTA -->
+<section style="padding: 80px 0; background: #f8fafc;">
+  <div style="max-width: 800px; margin: 0 auto; padding: 0 24px; text-align: center;">
+    <h2 class="docu-h2" style="margin-bottom: 16px;">{{ cta.title | default('Готовы создать Акт?') }}</h2>
+    <p class="docu-lead" style="margin-bottom: 32px;">{{ cta.description | default('Создайте документ за 2 минуты с автозаполнением реквизитов') }}</p>
+    <a href="{{ cta.url | default('/dashboard/akt/create/') }}" class="docu-btn-primary" style="padding: 20px 48px; font-size: 14px;">
+      {{ cta.text | default('Создать Акт бесплатно') }}
+    </a>
+  </div>
+</section>
+
+<!-- Related -->
+{% if related %}
+<section style="padding: 80px 0; background: white;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 0 24px;">
+    <h2 class="docu-tag-muted" style="text-align: center; margin-bottom: 48px;">Смотрите также</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+      {% for item in related %}
+      <a href="{{ item.url }}" style="display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #f8fafc; border-radius: 12px; text-decoration: none; color: #0f172a; font-weight: 600;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        {{ item.title }}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

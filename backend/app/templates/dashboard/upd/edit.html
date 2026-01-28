@@ -153,7 +153,7 @@ document.getElementById('btn-download-pdf').addEventListener('click', async func
     }
     
   } catch (error) {
-    alert('Ошибка: ' + error.message);
+    toastError('Ошибка: ' + error.message);
   } finally {
     btn.disabled = false;
     btn.innerHTML = originalText;

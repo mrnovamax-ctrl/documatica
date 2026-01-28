@@ -168,11 +168,11 @@ document.getElementById('logo-file').addEventListener('change', async function(e
       preview.innerHTML = `<img src="${data.url}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
       document.getElementById('remove-logo-btn').style.display = 'inline-block';
     } else {
-      alert('Ошибка загрузки логотипа');
+      toastError('Ошибка загрузки логотипа');
     }
   } catch (error) {
     console.error('Error uploading logo:', error);
-    alert('Ошибка загрузки файла');
+    toastError('Ошибка загрузки файла');
   }
 });
 
@@ -217,12 +217,12 @@ async function loadContractor() {
       document.getElementById('loading').style.display = 'none';
       document.getElementById('contractor-form').style.display = 'block';
     } else {
-      alert('Контрагент не найден');
+      toastWarning('Контрагент не найден');
       window.location.href = '/dashboard/contractors/';
     }
   } catch (error) {
     console.error('Error loading contractor:', error);
-    alert('Ошибка загрузки: ' + error.message);
+    toastError('Ошибка загрузки: ' + error.message);
   }
 }
 
@@ -248,11 +248,11 @@ document.getElementById('search-btn').addEventListener('click', async function()
       document.querySelector('[name="ogrn"]').value = data.ogrn || '';
       document.querySelector('[name="director"]').value = data.director_name || '';
     } else {
-      alert('Компания не найдена');
+      toastWarning('Компания не найдена');
     }
   } catch (error) {
     console.error('Error searching company:', error);
-    alert('Ошибка поиска');
+    toastError('Ошибка поиска');
   } finally {
     this.disabled = false;
     this.innerHTML = '<iconify-icon icon="mdi:magnify"></iconify-icon> Найти';
@@ -263,7 +263,7 @@ document.getElementById('search-btn').addEventListener('click', async function()
 document.getElementById('search-bank-btn').addEventListener('click', async function() {
   const bik = document.querySelector('[name="bank_bik"]').value;
   if (!bik || bik.length !== 9) {
-    alert('БИК должен содержать 9 цифр');
+    toastWarning('БИК должен содержать 9 цифр');
     return;
   }
   
@@ -279,11 +279,11 @@ document.getElementById('search-bank-btn').addEventListener('click', async funct
       document.querySelector('[name="bank_name"]').value = data.name || '';
       document.querySelector('[name="bank_corr_account"]').value = data.correspondent_account || '';
     } else {
-      alert('Банк не найден');
+      toastWarning('Банк не найден');
     }
   } catch (error) {
     console.error('Error searching bank:', error);
-    alert('Ошибка поиска банка');
+    toastError('Ошибка поиска банка');
   } finally {
     this.disabled = false;
     this.innerHTML = '<iconify-icon icon="mdi:magnify"></iconify-icon>';
@@ -321,11 +321,11 @@ document.getElementById('contractor-form').addEventListener('submit', async func
       window.location.href = '/dashboard/contractors/';
     } else {
       const err = await response.json();
-      alert(err.detail || 'Ошибка сохранения');
+      toastError(err.detail || 'Ошибка сохранения');
     }
   } catch (error) {
     console.error('Error saving contractor:', error);
-    alert('Ошибка сохранения: ' + error.message);
+    toastError('Ошибка сохранения: ' + error.message);
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = '<iconify-icon icon="mdi:content-save" class="me-1"></iconify-icon>Сохранить';

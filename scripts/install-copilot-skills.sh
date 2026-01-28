@@ -1,83 +1,49 @@
 #!/bin/bash
 # Copilot Skills Pack Installer
 # Устанавливает набор AI-скиллов для VS Code Copilot
+# 
+# Использование:
+#   curl -sSL https://raw.githubusercontent.com/mrnovamax-ctrl/copilot-skills-pack/main/install.sh | bash
+#
 set -e
 
 SKILLS_DIR=".github/skills"
-mkdir -p "$SKILLS_DIR"
+REPO_URL="https://github.com/mrnovamax-ctrl/copilot-skills-pack.git"
 
 echo "======================================"
 echo "  Copilot Skills Pack Installer"
 echo "======================================"
 echo ""
+echo "Skills included:"
+echo "  - v12-style (Design System, 50+ components)"
+echo "  - git-commit (Conventional Commits)"
+echo "  - refactor (Code Improvement)"
+echo "  - prd (Product Requirements)"
+echo "  - webapp-testing (Playwright)"
+echo "  - web-design-reviewer (Design Review)"
+echo ""
 
-# v12-style (Documatica Design System)
-if [ ! -d "$SKILLS_DIR/v12-style" ]; then
-  echo "[1/6] Installing v12-style (Design System)..."
-  git clone --depth 1 --quiet https://github.com/mrnovamax-ctrl/documatica-v12-skill.git /tmp/v12-skill 2>/dev/null || true
-  if [ -d "/tmp/v12-skill" ]; then
-    cp -r /tmp/v12-skill "$SKILLS_DIR/v12-style"
-    rm -rf /tmp/v12-skill
-    echo "      Done!"
-  else
-    echo "      Skipped (repo not available)"
+# Clone the pack
+echo "[1/2] Downloading skills pack..."
+rm -rf /tmp/copilot-skills-pack
+git clone --depth 1 --quiet "$REPO_URL" /tmp/copilot-skills-pack
+
+# Copy skills
+echo "[2/2] Installing skills..."
+mkdir -p "$SKILLS_DIR"
+
+for skill in git-commit prd refactor v12-style webapp-testing web-design-reviewer; do
+  if [ -d "/tmp/copilot-skills-pack/$skill" ]; then
+    cp -r "/tmp/copilot-skills-pack/$skill" "$SKILLS_DIR/"
+    echo "      + $skill"
   fi
-else
-  echo "[1/6] v12-style already installed"
-fi
+done
 
-# Clone awesome-copilot once
-echo "[2/6] Fetching awesome-copilot repository..."
-rm -rf /tmp/awesome-copilot
-git clone --depth 1 --quiet https://github.com/github/awesome-copilot.git /tmp/awesome-copilot
-
-# git-commit
-if [ ! -d "$SKILLS_DIR/git-commit" ]; then
-  echo "[3/6] Installing git-commit (Conventional Commits)..."
-  cp -r /tmp/awesome-copilot/skills/git-commit "$SKILLS_DIR/"
-  echo "      Done!"
-else
-  echo "[3/6] git-commit already installed"
-fi
-
-# refactor
-if [ ! -d "$SKILLS_DIR/refactor" ]; then
-  echo "[4/6] Installing refactor (Code Improvement)..."
-  cp -r /tmp/awesome-copilot/skills/refactor "$SKILLS_DIR/"
-  echo "      Done!"
-else
-  echo "[4/6] refactor already installed"
-fi
-
-# prd
-if [ ! -d "$SKILLS_DIR/prd" ]; then
-  echo "[5/6] Installing prd (Product Requirements)..."
-  cp -r /tmp/awesome-copilot/skills/prd "$SKILLS_DIR/"
-  echo "      Done!"
-else
-  echo "[5/6] prd already installed"
-fi
-
-# webapp-testing
-if [ ! -d "$SKILLS_DIR/webapp-testing" ]; then
-  echo "[6/6] Installing webapp-testing (Playwright)..."
-  cp -r /tmp/awesome-copilot/skills/webapp-testing "$SKILLS_DIR/"
-  echo "      Done!"
-else
-  echo "[6/6] webapp-testing already installed"
-fi
-
-# web-design-reviewer
-if [ ! -d "$SKILLS_DIR/web-design-reviewer" ]; then
-  echo "[7/6] Installing web-design-reviewer..."
-  cp -r /tmp/awesome-copilot/skills/web-design-reviewer "$SKILLS_DIR/"
-  echo "      Done!"
-else
-  echo "[7/6] web-design-reviewer already installed"
-fi
+# Copy README
+cp /tmp/copilot-skills-pack/README.md "$SKILLS_DIR/" 2>/dev/null || true
 
 # Cleanup
-rm -rf /tmp/awesome-copilot
+rm -rf /tmp/copilot-skills-pack
 
 echo ""
 echo "======================================"

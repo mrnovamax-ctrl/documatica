@@ -358,11 +358,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response.ok) {
         window.location.href = '/dashboard/documents/';
       } else {
-        alert('Ошибка при удалении документа');
+        toastError('Ошибка при удалении документа');
       }
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Ошибка при удалении документа');
+      toastError('Ошибка при удалении документа');
     }
   });
 });

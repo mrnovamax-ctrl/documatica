@@ -1,0 +1,62 @@
+# Акт выполненных работ - Конфигурация страниц
+# Этот файл определяет все публичные страницы раздела Акт
+
+# Лендинги (используют шаблон landing.html)
+landings:
+  ooo:
+    breadcrumb: "Для ООО"
+    content_file: "akt/ooo"
+    
+  ip:
+    breadcrumb: "Для ИП"
+    content_file: "akt/ip"
+    
+  samozanyatye:
+    breadcrumb: "Для самозанятых"
+    content_file: "akt/samozanyatye"
+    
+  uslug:
+    breadcrumb: "Оказанных услуг"
+    content_file: "akt/uslug"
+    
+  rabot:
+    breadcrumb: "Выполненных работ"
+    content_file: "akt/rabot"
+    
+  s-nds:
+    breadcrumb: "С НДС"
+    content_file: "akt/s-nds"
+    
+  bez-nds:
+    breadcrumb: "Без НДС"
+    content_file: "akt/bez-nds"
+    
+  "2026":
+    breadcrumb: "Форма 2026"
+    content_file: "akt/2026"
+
+# Информационные страницы (используют шаблон info.html)
+info_pages:
+  obrazec-zapolneniya:
+    breadcrumb: "Образец заполнения"
+    content_file: "akt/obrazec-zapolneniya"
+    aliases:
+      - "obrazec"
+
+# Страницы скачивания (используют шаблон download.html)
+downloads:
+  blank-excel:
+    breadcrumb: "Скачать Excel"
+    title: "Скачать бланк Акта Excel бесплатно — Documatica"
+    description: "Скачайте пустой бланк акта выполненных работ в формате Excel (.xlsx) бесплатно. Актуальная форма 2026 года."
+    h1: "Скачать бланк Акта Excel"
+    format: "Excel (.xlsx)"
+    file_url: "/static/blanks/akt-blank-2026.xlsx"
+    
+  blank-word:
+    breadcrumb: "Скачать Word"
+    title: "Скачать бланк Акта Word бесплатно — Documatica"
+    description: "Скачайте пустой бланк акта выполненных работ в формате Word (.docx) бесплатно. Актуальная форма 2026 года."
+    h1: "Скачать бланк Акта Word"
+    format: "Word (.docx)"
+    file_url: "/static/blanks/akt-blank-2026.docx"

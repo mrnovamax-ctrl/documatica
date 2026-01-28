@@ -39,13 +39,13 @@ services:
       - DEBUG=0
       - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/documatica
       - SECRET_KEY=${SECRET_KEY:-documatica-secret-key-change-in-production}
-      # SMTP настройки - Yandex
-      - SMTP_HOST=smtp.yandex.ru
-      - SMTP_PORT=587
-      - SMTP_USER=mr.novamax@yandex.ru
-      - SMTP_PASSWORD=frzvstfntuvfrucc
-      - SMTP_FROM=mr.novamax@yandex.ru
-      - SMTP_FROM_NAME=Documatica
+      # SMTP настройки - Mail.ru (корпоративная почта)
+      - SMTP_HOST=smtp.mail.ru
+      - SMTP_PORT=465
+      - SMTP_USER=info@oplatanalogov.ru
+      - SMTP_PASSWORD=PBYK72gdM8L0VxJeVvJR
+      - SMTP_FROM=info@oplatanalogov.ru
+      - SMTP_FROM_NAME=Оплата налогов
       - BASE_URL=https://oplatanalogov.ru
       # Т-Банк эквайринг (боевой)
       - TBANK_TERMINAL_KEY=1768827606544
@@ -75,8 +75,7 @@ services:
       - traefik.http.routers.documatica.tls=true
       - traefik.http.routers.documatica.tls.certresolver=mytlschallenge
       - traefik.http.services.documatica.loadbalancer.server.port=8000
-      # Security headers
-      - traefik.http.middlewares.documatica-headers.headers.SSLRedirect=true
+      # Security headers (SSLRedirect removed - Traefik handles HTTPS at entrypoint level)
       - traefik.http.middlewares.documatica-headers.headers.STSSeconds=315360000
       - traefik.http.middlewares.documatica-headers.headers.browserXSSFilter=true
       - traefik.http.middlewares.documatica-headers.headers.contentTypeNosniff=true

@@ -11,7 +11,49 @@
 {% endblock %}
 
 {% block content %}
-<!-- Alerts -->
+<style>
+.content-editor-form { display: flex; flex-direction: column; gap: 2rem; }
+.editor-section { background: white; border: 1px solid #e2e8f0; border-radius: 1rem; overflow: hidden; }
+.editor-section-header { background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 0.75rem; }
+.editor-section-header h3 { margin: 0; font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #334155; }
+.editor-section-header .section-icon { color: #3b82f6; }
+.editor-section-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+.field-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.field-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+.field-hint { font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem; }
+.field-input { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.9375rem; color: #1e293b; transition: all 0.2s; background: #f8fafc; width: 100%; box-sizing: border-box; }
+.field-input:focus { outline: none; border-color: #3b82f6; background: white; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+.field-textarea { min-height: 100px; resize: vertical; font-family: inherit; }
+.field-textarea-large { min-height: 200px; }
+.field-textarea-html { min-height: 300px; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; }
+.repeater-container { display: flex; flex-direction: column; gap: 1rem; }
+.repeater-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; }
+.repeater-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0; }
+.repeater-item-number { font-size: 0.75rem; font-weight: 700; color: #3b82f6; background: #eff6ff; padding: 0.25rem 0.75rem; border-radius: 1rem; }
+.repeater-item-remove { background: none; border: none; color: #ef4444; cursor: pointer; padding: 0.25rem; border-radius: 0.25rem; transition: all 0.2s; }
+.repeater-item-remove:hover { background: #fef2f2; }
+.repeater-item-fields { display: flex; flex-direction: column; gap: 1rem; }
+.repeater-add-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; background: #eff6ff; border: 2px dashed #3b82f6; border-radius: 0.5rem; color: #3b82f6; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all 0.2s; }
+.repeater-add-btn:hover { background: #dbeafe; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 768px) { .field-row { grid-template-columns: 1fr; } }
+.editor-tabs { display: flex; gap: 0.5rem; }
+.editor-tab { padding: 0.5rem 1rem; border: 1px solid #e2e8f0; background: white; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.375rem; }
+.editor-tab.active { background: #3b82f6; border-color: #3b82f6; color: white; }
+.editor-tab:hover:not(.active) { background: #f1f5f9; }
+.editor-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: white; border: 1px solid #e2e8f0; border-radius: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+.editor-toolbar-left { display: flex; align-items: center; gap: 1rem; }
+.editor-file-badge { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #f1f5f9; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; color: #475569; }
+.editor-preview-link { display: flex; align-items: center; gap: 0.375rem; font-size: 0.875rem; color: #3b82f6; text-decoration: none; }
+.editor-preview-link:hover { text-decoration: underline; }
+.yaml-editor-container { display: none; }
+.yaml-editor-container.active { display: block; }
+.visual-editor-container { display: block; }
+.visual-editor-container.hidden { display: none; }
+.yaml-textarea { width: 100%; min-height: 600px; padding: 1rem; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.875rem; line-height: 1.6; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #1e293b; color: #e2e8f0; resize: vertical; box-sizing: border-box; }
+.editor-toolbar-right { display: flex; gap: 0.75rem; align-items: center; }
+</style>
+
 {% if success %}
 <div class="admin-alert admin-alert-success">
   <iconify-icon icon="ri:checkbox-circle-line" width="22"></iconify-icon>
@@ -26,60 +68,470 @@
 </div>
 {% endif %}
 
-<!-- Editor Card -->
-<div class="admin-editor-card">
-  <form method="POST" action="/admin/content/{{ content_path }}/">
-    <!-- Toolbar -->
-    <div class="admin-editor-toolbar">
-      <div class="admin-editor-info">
-        <div class="admin-file-badge">
-          <iconify-icon icon="ri:file-code-line" width="18"></iconify-icon>
-          {{ content_path }}.yaml
-        </div>
-        <a href="/{{ content_path.split('/')[0] }}/" target="_blank" class="admin-preview-link">
-          <iconify-icon icon="ri:external-link-line" width="16"></iconify-icon>
-          Предпросмотр страницы
-        </a>
+<form method="POST" action="/admin/content/{{ content_path }}/" id="contentForm">
+  <div class="editor-toolbar">
+    <div class="editor-toolbar-left">
+      <div class="editor-file-badge">
+        <iconify-icon icon="ri:file-text-line" width="18"></iconify-icon>
+        {{ content_path }}.yaml
+      </div>
+      <a href="/{{ content_path.split('/')[0] }}/" target="_blank" class="editor-preview-link">
+        <iconify-icon icon="ri:external-link-line" width="16"></iconify-icon>
+        Предпросмотр
+      </a>
+    </div>
+    <div class="editor-toolbar-right">
+      <div class="editor-tabs">
+        <button type="button" class="editor-tab active" data-mode="visual">
+          <iconify-icon icon="ri:layout-grid-line" width="16"></iconify-icon>
+          Поля
+        </button>
+        <button type="button" class="editor-tab" data-mode="yaml">
+          <iconify-icon icon="ri:code-line" width="16"></iconify-icon>
+          YAML
+        </button>
       </div>
       <button type="submit" class="admin-btn-primary">
         <iconify-icon icon="ri:save-line" width="18"></iconify-icon>
         Сохранить
       </button>
     </div>
+  </div>
+
+  <div class="visual-editor-container content-editor-form" id="visualEditor">
     
-    <!-- Editor -->
-    <textarea 
-      name="yaml_content" 
-      class="admin-yaml-editor"
-      spellcheck="false"
-    >{{ content_yaml }}</textarea>
-  </form>
-</div>
+    <!-- META Section -->
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:search-line" class="section-icon" width="20"></iconify-icon>
+        <h3>SEO / Meta</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="field-group">
+          <label class="field-label">Title (заголовок в браузере и поиске)</label>
+          <input type="text" name="meta__title" class="field-input" 
+                 value="{{ content.meta.title if content.meta else '' }}"
+                 placeholder="Заголовок страницы | Documatica">
+          <div class="field-hint">50-60 символов для оптимального отображения в Google</div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Description (описание для поисковиков)</label>
+          <textarea name="meta__description" class="field-input field-textarea" 
+                    placeholder="Краткое описание страницы">{{ content.meta.description if content.meta else '' }}</textarea>
+          <div class="field-hint">150-160 символов</div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Keywords</label>
+            <input type="text" name="meta__keywords" class="field-input" 
+                   value="{{ content.meta.keywords if content.meta else '' }}"
+                   placeholder="ключевое, слово">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Canonical URL</label>
+            <input type="text" name="meta__canonical" class="field-input" 
+                   value="{{ content.meta.canonical if content.meta else '' }}"
+                   placeholder="/akt/">
+          </div>
+        </div>
+      </div>
+    </div>
 
-<!-- Help -->
-<div class="admin-yaml-help">
-  <h4>Структура YAML-файла</h4>
-  <code>meta:
-  title: "SEO заголовок страницы"
-  description: "Мета-описание для поисковиков"
-  keywords: "ключевые, слова"
+    <!-- PAGE Section -->
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:layout-top-line" class="section-icon" width="20"></iconify-icon>
+        <h3>Заголовок страницы</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">H1 (главный заголовок)</label>
+            <input type="text" name="page__h1" class="field-input" 
+                   value="{{ content.page.h1 if content.page else '' }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Тег/метка</label>
+            <input type="text" name="page__tag" class="field-input" 
+                   value="{{ content.page.tag if content.page else '' }}">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Вводный текст (intro)</label>
+          <textarea name="page__intro" class="field-input field-textarea">{{ content.page.intro if content.page else '' }}</textarea>
+        </div>
+      </div>
+    </div>
 
-page:
-  h1: "Заголовок H1 на странице"
-  intro: "Вводный текст под заголовком"
+    <!-- FEATURES Section -->
+    {% if content.features is defined or content.benefits is defined %}
+    {% set features_list = content.features if content.features is defined else content.benefits %}
+    {% set features_key = 'features' if content.features is defined else 'benefits' %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:star-line" class="section-icon" width="20"></iconify-icon>
+        <h3>Преимущества / Фичи</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="repeater-container" id="featuresRepeater" data-key="{{ features_key }}">
+          {% for feature in features_list %}
+          <div class="repeater-item" data-index="{{ loop.index0 }}">
+            <div class="repeater-item-header">
+              <span class="repeater-item-number">Фича #{{ loop.index }}</span>
+              <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+                <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+              </button>
+            </div>
+            <div class="repeater-item-fields">
+              <div class="field-row">
+                <div class="field-group">
+                  <label class="field-label">Заголовок</label>
+                  <input type="text" name="{{ features_key }}__{{ loop.index0 }}__title" class="field-input" value="{{ feature.title }}">
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Иконка (mdi:icon-name)</label>
+                  <input type="text" name="{{ features_key }}__{{ loop.index0 }}__icon" class="field-input" value="{{ feature.icon }}" placeholder="mdi:check">
+                </div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Описание</label>
+                <textarea name="{{ features_key }}__{{ loop.index0 }}__description" class="field-input field-textarea">{{ feature.description }}</textarea>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="repeater-add-btn" onclick="addFeature()">
+          <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+          Добавить
+        </button>
+      </div>
+    </div>
+    {% endif %}
 
-features:
-  - title: "Название фичи"
-    description: "Описание"
-    icon: "mdi:check"
+    <!-- SECTIONS (Text blocks) -->
+    {% if content.sections is defined %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:article-line" class="section-icon" width="20"></iconify-icon>
+        <h3>Текстовые блоки</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="repeater-container" id="sectionsRepeater">
+          {% for section in content.sections %}
+          <div class="repeater-item" data-index="{{ loop.index0 }}">
+            <div class="repeater-item-header">
+              <span class="repeater-item-number">Блок #{{ loop.index }}</span>
+              <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+                <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+              </button>
+            </div>
+            <div class="repeater-item-fields">
+              <div class="field-group">
+                <label class="field-label">Заголовок блока</label>
+                <input type="text" name="sections__{{ loop.index0 }}__title" class="field-input" value="{{ section.title }}">
+              </div>
+              <div class="field-group">
+                <label class="field-label">Контент (HTML)</label>
+                <textarea name="sections__{{ loop.index0 }}__content" class="field-input field-textarea field-textarea-html">{{ section.content }}</textarea>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="repeater-add-btn" onclick="addSection()">
+          <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+          Добавить блок
+        </button>
+      </div>
+    </div>
+    {% endif %}
 
-faq:
-  - question: "Вопрос?"
-    answer: "Ответ в HTML формате"
+    <!-- FAQ Section -->
+    {% if content.faq is defined %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:question-line" class="section-icon" width="20"></iconify-icon>
+        <h3>FAQ (Вопросы и ответы)</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="repeater-container" id="faqRepeater">
+          {% for item in content.faq %}
+          <div class="repeater-item" data-index="{{ loop.index0 }}">
+            <div class="repeater-item-header">
+              <span class="repeater-item-number">Вопрос #{{ loop.index }}</span>
+              <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+                <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+              </button>
+            </div>
+            <div class="repeater-item-fields">
+              <div class="field-group">
+                <label class="field-label">Вопрос</label>
+                <input type="text" name="faq__{{ loop.index0 }}__question" class="field-input" value="{{ item.question }}">
+              </div>
+              <div class="field-group">
+                <label class="field-label">Ответ (HTML)</label>
+                <textarea name="faq__{{ loop.index0 }}__answer" class="field-input field-textarea field-textarea-html">{{ item.answer }}</textarea>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="repeater-add-btn" onclick="addFaq()">
+          <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+          Добавить вопрос
+        </button>
+      </div>
+    </div>
+    {% endif %}
 
-cta:
-  title: "Призыв к действию"
-  text: "Текст кнопки"
-  url: "/dashboard/"</code>
-</div>
+    <!-- CTA Section -->
+    {% if content.cta is defined %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:megaphone-line" class="section-icon" width="20"></iconify-icon>
+        <h3>CTA (Призыв к действию)</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Заголовок CTA</label>
+            <input type="text" name="cta__title" class="field-input" value="{{ content.cta.title if content.cta else '' }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Текст кнопки</label>
+            <input type="text" name="cta__text" class="field-input" value="{{ content.cta.text if content.cta else '' }}">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">URL кнопки</label>
+            <input type="text" name="cta__url" class="field-input" value="{{ content.cta.url if content.cta else '' }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Подтекст</label>
+            <input type="text" name="cta__subtext" class="field-input" value="{{ content.cta.subtext if content.cta else '' }}">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Описание</label>
+          <input type="text" name="cta__description" class="field-input" value="{{ content.cta.description if content.cta else '' }}">
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- RELATED Section -->
+    {% if content.related is defined %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:links-line" class="section-icon" width="20"></iconify-icon>
+        <h3>Связанные страницы</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="repeater-container" id="relatedRepeater">
+          {% for item in content.related %}
+          <div class="repeater-item" data-index="{{ loop.index0 }}">
+            <div class="repeater-item-header">
+              <span class="repeater-item-number">Ссылка #{{ loop.index }}</span>
+              <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+                <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+              </button>
+            </div>
+            <div class="repeater-item-fields field-row">
+              <div class="field-group">
+                <label class="field-label">Название</label>
+                <input type="text" name="related__{{ loop.index0 }}__title" class="field-input" value="{{ item.title }}">
+              </div>
+              <div class="field-group">
+                <label class="field-label">URL</label>
+                <input type="text" name="related__{{ loop.index0 }}__url" class="field-input" value="{{ item.url }}">
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="repeater-add-btn" onclick="addRelated()">
+          <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+          Добавить ссылку
+        </button>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <!-- YAML Editor -->
+  <div class="yaml-editor-container" id="yamlEditor">
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:code-line" class="section-icon" width="20"></iconify-icon>
+        <h3>YAML редактор (для продвинутых)</h3>
+      </div>
+      <div class="editor-section-body">
+        <textarea name="yaml_content" class="yaml-textarea" id="yamlTextarea">{{ content_yaml }}</textarea>
+      </div>
+    </div>
+  </div>
+
+  <input type="hidden" name="edit_mode" id="editModeInput" value="visual">
+</form>
+
+<script>
+document.querySelectorAll('.editor-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    const mode = this.dataset.mode;
+    document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const visualEditor = document.getElementById('visualEditor');
+    const yamlEditor = document.getElementById('yamlEditor');
+    const editModeInput = document.getElementById('editModeInput');
+    if (mode === 'yaml') {
+      visualEditor.classList.add('hidden');
+      yamlEditor.classList.add('active');
+      editModeInput.value = 'yaml';
+    } else {
+      visualEditor.classList.remove('hidden');
+      yamlEditor.classList.remove('active');
+      editModeInput.value = 'visual';
+    }
+  });
+});
+
+function removeRepeaterItem(btn) {
+  if (confirm('Удалить этот элемент?')) {
+    btn.closest('.repeater-item').remove();
+    reindexRepeater(btn.closest('.repeater-container'));
+  }
+}
+
+function reindexRepeater(container) {
+  const key = container.dataset.key || container.id.replace('Repeater', '').toLowerCase();
+  container.querySelectorAll('.repeater-item').forEach((item, idx) => {
+    item.dataset.index = idx;
+    const label = item.querySelector('.repeater-item-number');
+    if (label) {
+      label.textContent = label.textContent.split('#')[0] + '#' + (idx + 1);
+    }
+    item.querySelectorAll('input, textarea').forEach(input => {
+      const parts = input.name.split('__');
+      if (parts.length >= 2) {
+        parts[1] = idx;
+        input.name = parts.join('__');
+      }
+    });
+  });
+}
+
+function addFeature() {
+  const container = document.getElementById('featuresRepeater');
+  const key = container.dataset.key || 'features';
+  const index = container.querySelectorAll('.repeater-item').length;
+  const html = `
+    <div class="repeater-item" data-index="${index}">
+      <div class="repeater-item-header">
+        <span class="repeater-item-number">Фича #${index + 1}</span>
+        <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+          <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+        </button>
+      </div>
+      <div class="repeater-item-fields">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Заголовок</label>
+            <input type="text" name="${key}__${index}__title" class="field-input">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Иконка</label>
+            <input type="text" name="${key}__${index}__icon" class="field-input" placeholder="mdi:check">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Описание</label>
+          <textarea name="${key}__${index}__description" class="field-input field-textarea"></textarea>
+        </div>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+}
+
+function addSection() {
+  const container = document.getElementById('sectionsRepeater');
+  const index = container.querySelectorAll('.repeater-item').length;
+  const html = `
+    <div class="repeater-item" data-index="${index}">
+      <div class="repeater-item-header">
+        <span class="repeater-item-number">Блок #${index + 1}</span>
+        <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+          <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+        </button>
+      </div>
+      <div class="repeater-item-fields">
+        <div class="field-group">
+          <label class="field-label">Заголовок блока</label>
+          <input type="text" name="sections__${index}__title" class="field-input">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Контент (HTML)</label>
+          <textarea name="sections__${index}__content" class="field-input field-textarea field-textarea-html"></textarea>
+        </div>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+}
+
+function addFaq() {
+  const container = document.getElementById('faqRepeater');
+  const index = container.querySelectorAll('.repeater-item').length;
+  const html = `
+    <div class="repeater-item" data-index="${index}">
+      <div class="repeater-item-header">
+        <span class="repeater-item-number">Вопрос #${index + 1}</span>
+        <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+          <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+        </button>
+      </div>
+      <div class="repeater-item-fields">
+        <div class="field-group">
+          <label class="field-label">Вопрос</label>
+          <input type="text" name="faq__${index}__question" class="field-input">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Ответ (HTML)</label>
+          <textarea name="faq__${index}__answer" class="field-input field-textarea field-textarea-html"></textarea>
+        </div>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+}
+
+function addRelated() {
+  const container = document.getElementById('relatedRepeater');
+  const index = container.querySelectorAll('.repeater-item').length;
+  const html = `
+    <div class="repeater-item" data-index="${index}">
+      <div class="repeater-item-header">
+        <span class="repeater-item-number">Ссылка #${index + 1}</span>
+        <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+          <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+        </button>
+      </div>
+      <div class="repeater-item-fields field-row">
+        <div class="field-group">
+          <label class="field-label">Название</label>
+          <input type="text" name="related__${index}__title" class="field-input">
+        </div>
+        <div class="field-group">
+          <label class="field-label">URL</label>
+          <input type="text" name="related__${index}__url" class="field-input">
+        </div>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+}
+</script>
 {% endblock %}

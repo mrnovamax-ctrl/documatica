@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Акт выполненных работ № {{ document_number }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 10mm 15mm 20mm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 12pt;
+            line-height: 1.4;
+            color: #000;
+            background: #fff;
+        }
+        
+        .document {
+            width: 100%;
+            max-width: 190mm;
+            margin: 0 auto;
+            padding: 10mm;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .header .doc-title {
+            font-size: 14pt;
+            font-weight: bold;
+        }
+        
+        .header .doc-number {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .header .doc-date {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .parties {
+            margin-bottom: 20px;
+            text-align: justify;
+            text-indent: 27pt;
+        }
+        
+        .parties p {
+            margin-bottom: 8px;
+        }
+        
+        .table-wrapper {
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11pt;
+        }
+        
+        table th, table td {
+            border: 1px solid #000;
+            padding: 5px 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        table th {
+            font-weight: normal;
+            background: #f8f8f8;
+        }
+        
+        table td.text-left {
+            text-align: left;
+        }
+        
+        table td.text-right {
+            text-align: right;
+        }
+        
+        .totals-row td {
+            font-weight: bold;
+        }
+        
+        .totals-section {
+            margin: 20px 0;
+        }
+        
+        .totals-section table {
+            width: 100%;
+            border: none;
+        }
+        
+        .totals-section td {
+            border: none;
+            padding: 3px 8px;
+        }
+        
+        .totals-section td.label {
+            text-align: right;
+            width: 80%;
+        }
+        
+        .totals-section td.value {
+            text-align: left;
+            border-bottom: 1px solid #000;
+        }
+        
+        .amount-words {
+            margin: 20px 0;
+            text-align: justify;
+            text-indent: 27pt;
+        }
+        
+        .acceptance-text {
+            margin: 20px 0;
+            text-align: justify;
+            text-indent: 27pt;
+        }
+        
+        .signatures {
+            margin-top: 40px;
+        }
+        
+        .signatures-table {
+            width: 100%;
+            border: none;
+        }
+        
+        .signatures-table td {
+            border: none;
+            padding: 5px;
+            vertical-align: top;
+        }
+        
+        .signature-block {
+            width: 45%;
+        }
+        
+        .signature-block .title {
+            font-weight: normal;
+            margin-bottom: 30px;
+        }
+        
+        .signature-line {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        
+        .signature-field {
+            border-bottom: 1px solid #000;
+            min-width: 80px;
+            height: 20px;
+        }
+        
+        .signature-label {
+            font-size: 10pt;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .mp {
+            text-align: center;
+            font-size: 10pt;
+            color: #999;
+            margin-top: 20px;
+        }
+        
+        @media print {
+            .document {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <!-- Header -->
+        <div class="header">
+            <h1>Акт выполненных</h1>
+            <div class="doc-title">работ (услуг) N {{ document_number }}</div>
+            <div class="doc-date">от "{{ document_date_day }}" {{ document_date_month }} {{ document_date_year }} г.</div>
+        </div>
+        
+        <!-- Parties -->
+        <div class="parties">
+            <p>Исполнитель: {{ executor.name }}{% if executor.inn %}, ИНН {{ executor.inn }}{% endif %}{% if executor.kpp %}, КПП {{ executor.kpp }}{% endif %}{% if executor.address %}, {{ executor.address }}{% endif %}</p>
+            <p>Заказчик: {{ customer.name }}{% if customer.inn %}, ИНН {{ customer.inn }}{% endif %}{% if customer.kpp %}, КПП {{ customer.kpp }}{% endif %}{% if customer.address %}, {{ customer.address }}{% endif %}</p>
+            {% if contract_number %}
+            <p>Основание: Договор № {{ contract_number }}{% if contract_date %} от {{ contract_date }}{% endif %}</p>
+            {% endif %}
+        </div>
+        
+        <!-- Works Table -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30px;">N</th>
+                        <th>Наименование работы (услуги)</th>
+                        <th style="width: 70px;">Кол-во</th>
+                        <th style="width: 60px;">Ед. изм.</th>
+                        <th style="width: 80px;">Цена</th>
+                        <th style="width: 90px;">Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td class="text-left">{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.unit }}</td>
+                        <td class="text-right">{{ "%.2f"|format(item.price) }}</td>
+                        <td class="text-right">{{ "%.2f"|format(item.amount) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Totals -->
+        <div class="totals-section">
+            <table>
+                <tr>
+                    <td class="label">Итого:</td>
+                    <td class="value" style="width: 120px;">{{ "%.2f"|format(total_without_vat) }}</td>
+                </tr>
+                {% if vat_rate != 'none' %}
+                <tr>
+                    <td class="label">В том числе НДС ({{ vat_rate }}%):</td>
+                    <td class="value">{{ "%.2f"|format(total_vat) }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Всего (с учетом НДС):</td>
+                    <td class="value">{{ "%.2f"|format(total_amount) }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td class="label">НДС:</td>
+                    <td class="value">Без налога</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+        
+        <!-- Amount in words -->
+        <div class="amount-words">
+            <p>Всего оказано услуг (выполнено работ) на сумму: {{ total_amount_words }} руб.{% if vat_rate != 'none' %}, в том числе НДС - {{ total_vat_words }} руб.{% endif %}</p>
+        </div>
+        
+        <!-- Acceptance text -->
+        <div class="acceptance-text">
+            <p>Вышеперечисленные работы (услуги) выполнены (оказаны) полностью и в срок. Заказчик претензий по объему, качеству и срокам выполнения работ (оказания услуг) не имеет.</p>
+            {% if notes %}
+            <p>{{ notes }}</p>
+            {% endif %}
+        </div>
+        
+        <!-- Signatures -->
+        <div class="signatures">
+            <table class="signatures-table">
+                <tr>
+                    <td class="signature-block">
+                        <p class="title">Заказчик:</p>
+                        <p>______/{{ customer_signatory or '_______________' }}</p>
+                        <p class="signature-label" style="margin-left: 20px;">(подпись/Ф.И.О.)</p>
+                        <p class="mp">М.П.</p>
+                    </td>
+                    <td style="width: 10%;"></td>
+                    <td class="signature-block">
+                        <p class="title">Исполнитель:</p>
+                        <p>______/{{ executor_signatory or '_______________' }}</p>
+                        <p class="signature-label" style="margin-left: 20px;">(подпись/Ф.И.О.)</p>
+                        <p class="mp">М.П.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

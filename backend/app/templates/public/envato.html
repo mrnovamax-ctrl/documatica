@@ -1,0 +1,657 @@
+{% extends "base_public.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/home.css?v=2.0">
+<link rel="stylesheet" href="/static/css/envato.css?v=2.0">
+{% endblock %}
+
+{% block content %}
+
+<!-- ============================================================
+     HERO: Product Showcase
+     ============================================================ -->
+<section class="envato-hero">
+    <div class="envato-hero__pattern"></div>
+    <div class="envato-hero__gradient"></div>
+    <div class="envato-container">
+        <div class="envato-hero__grid">
+            <div class="envato-hero__content">
+                <div class="envato-hero__badge">
+                    <span class="badge-dot"></span>
+                    <span>New Release</span>
+                </div>
+                <h1 class="envato-hero__title">
+                    Documatica<br>
+                    <span class="text-gradient">UI Kit v12.0</span>
+                </h1>
+                <p class="envato-hero__subtitle">
+                    Premium Document Management System with 53+ Components, 
+                    AI-Ready Design System, and GitHub Copilot Integration Skill.
+                </p>
+                <div class="envato-hero__price">
+                    <span class="price-value">{{ price }}</span>
+                    <span class="price-note">One-time payment / Lifetime updates</span>
+                </div>
+                <div class="envato-hero__actions">
+                    <a href="#preview" class="btn-envato btn-envato--primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        Live Preview
+                    </a>
+                    <a href="#purchase" class="btn-envato btn-envato--gold">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        Purchase Now
+                    </a>
+                </div>
+                <div class="envato-hero__stats">
+                    <div class="stat-item">
+                        <span class="stat-value">{{ components_count }}</span>
+                        <span class="stat-label">Components</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">{{ pages_count }}</span>
+                        <span class="stat-label">Pages</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">100%</span>
+                        <span class="stat-label">Responsive</span>
+                    </div>
+                </div>
+            </div>
+            <div class="envato-hero__visual">
+                <div class="mockup-browser">
+                    <div class="mockup-browser__bar">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="mockup-browser__content">
+                        <div class="mockup-preview">
+                            <div class="mockup-sidebar"></div>
+                            <div class="mockup-main">
+                                <div class="mockup-card"></div>
+                                <div class="mockup-card mockup-card--wide"></div>
+                                <div class="mockup-grid">
+                                    <div class="mockup-card mockup-card--sm"></div>
+                                    <div class="mockup-card mockup-card--sm"></div>
+                                    <div class="mockup-card mockup-card--sm"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-badge floating-badge--top">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                    <span>Design System</span>
+                </div>
+                <div class="floating-badge floating-badge--bottom">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                    <span>AI-Powered</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     TECH STACK: Framework Compatibility
+     ============================================================ -->
+<section class="envato-section envato-section--dark">
+    <div class="envato-container">
+        <div class="tech-stack">
+            <span class="tech-stack__label">Works with</span>
+            <div class="tech-stack__logos">
+                <div class="tech-logo">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0L1.75 6v12L12 24l10.25-6V6L12 0zm-1.775 18l-4.5-7.5h3l1.5 2.5 1.5-2.5h3l-4.5 7.5z"/></svg>
+                    <span>Bootstrap 5</span>
+                </div>
+                <div class="tech-logo">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z"/></svg>
+                    <span>React Ready</span>
+                </div>
+                <div class="tech-logo">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 22.525H0l12-21.05 12 21.05z"/></svg>
+                    <span>Vue.js</span>
+                </div>
+                <div class="tech-logo">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.146 0h3.924v18.166c-2.013.382-3.491.535-5.096.535-4.791 0-7.288-2.166-7.288-6.32 0-4.002 2.65-6.6 6.753-6.6.637 0 1.121.05 1.707.203V0zm0 9.143a3.894 3.894 0 0 0-1.325-.204c-1.988 0-3.134 1.223-3.134 3.365 0 2.09 1.096 3.236 3.109 3.236.433 0 .79-.025 1.35-.102V9.142zM21.314 6.06v9.098c0 3.134-.229 4.638-.917 5.937-.637 1.249-1.478 2.039-3.211 2.905l-3.644-1.733c1.733-.815 2.574-1.53 3.109-2.625.561-1.121.739-2.421.739-5.835V6.059h3.924zM17.39 0h3.924v3.924H17.39V0z"/></svg>
+                    <span>Django/Jinja</span>
+                </div>
+                <div class="tech-logo">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"/></svg>
+                    <span>Tailwind</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     FEATURES: Why Choose This Template
+     ============================================================ -->
+<section class="envato-section" id="features">
+    <div class="envato-container">
+        <div class="section-header-envato">
+            <span class="section-tag-envato">Features</span>
+            <h2 class="section-title-envato">Everything You Need<br><span class="text-gradient">To Build Faster</span></h2>
+            <p class="section-subtitle-envato">A complete design system with premium components, tokens, and AI-powered development skill.</p>
+        </div>
+        
+        <div class="features-grid-envato">
+            <!-- Feature 1 -->
+            <div class="feature-card-envato">
+                <div class="feature-card-envato__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                </div>
+                <h3 class="feature-card-envato__title">53+ Premium Components</h3>
+                <p class="feature-card-envato__text">Buttons, forms, cards, tables, modals, navigation, hero sections, pricing, testimonials, and more.</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="feature-card-envato">
+                <div class="feature-card-envato__icon feature-card-envato__icon--gold">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                </div>
+                <h3 class="feature-card-envato__title">AI Copilot Skill</h3>
+                <p class="feature-card-envato__text">GitHub Copilot integration skill that understands your design system and generates consistent code.</p>
+                <span class="feature-card-envato__badge">Exclusive</span>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="feature-card-envato">
+                <div class="feature-card-envato__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                </div>
+                <h3 class="feature-card-envato__title">Design Tokens</h3>
+                <p class="feature-card-envato__text">CSS custom properties for colors, spacing, typography, and effects. Easy customization.</p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="feature-card-envato">
+                <div class="feature-card-envato__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </div>
+                <h3 class="feature-card-envato__title">Modern Stack</h3>
+                <p class="feature-card-envato__text">Built with Bootstrap 5, Inter font, pure CSS animations. No jQuery dependencies.</p>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="feature-card-envato">
+                <div class="feature-card-envato__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <h3 class="feature-card-envato__title">Fully Responsive</h3>
+                <p class="feature-card-envato__text">Pixel-perfect on all devices. Mobile-first approach with smooth breakpoints.</p>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="feature-card-envato">
+                <div class="feature-card-envato__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                </div>
+                <h3 class="feature-card-envato__title">Clean Documentation</h3>
+                <p class="feature-card-envato__text">Comprehensive docs with code examples, component API, and customization guides.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SHOWCASE: Component Preview
+     ============================================================ -->
+<section class="envato-section envato-section--alt" id="preview">
+    <div class="envato-container">
+        <div class="section-header-envato">
+            <span class="section-tag-envato">Components</span>
+            <h2 class="section-title-envato">Beautiful<br><span class="text-gradient">Out of the Box</span></h2>
+        </div>
+        
+        <div class="showcase-tabs">
+            <button class="showcase-tab active" data-tab="buttons">Buttons</button>
+            <button class="showcase-tab" data-tab="forms">Forms</button>
+            <button class="showcase-tab" data-tab="cards">Cards</button>
+            <button class="showcase-tab" data-tab="tables">Tables</button>
+        </div>
+        
+        <div class="showcase-preview">
+            <!-- Buttons Preview -->
+            <div class="showcase-panel active" id="panel-buttons">
+                <div class="showcase-demo">
+                    <div class="demo-buttons">
+                        <button class="demo-btn demo-btn--primary">Primary Action</button>
+                        <button class="demo-btn demo-btn--outline">Secondary</button>
+                        <button class="demo-btn demo-btn--gold">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            AI Generate
+                        </button>
+                        <button class="demo-btn demo-btn--ghost">Ghost Button</button>
+                    </div>
+                </div>
+                <div class="showcase-code">
+                    <pre><code>&lt;button class="btn btn--primary"&gt;
+  Primary Action
+&lt;/button&gt;
+
+&lt;button class="btn btn--gold"&gt;
+  &lt;svg&gt;...&lt;/svg&gt;
+  AI Generate
+&lt;/button&gt;</code></pre>
+                </div>
+            </div>
+            
+            <!-- Forms Preview -->
+            <div class="showcase-panel" id="panel-forms">
+                <div class="showcase-demo">
+                    <div class="demo-form">
+                        <div class="demo-input-group">
+                            <label class="demo-label">Company Name</label>
+                            <input type="text" class="demo-input" placeholder="Enter company name" value="Acme Corporation">
+                        </div>
+                        <div class="demo-input-group">
+                            <label class="demo-label">Tax ID (INN)</label>
+                            <input type="text" class="demo-input" placeholder="10 or 12 digits" value="7707083893">
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-code">
+                    <pre><code>&lt;div class="form-group"&gt;
+  &lt;label class="form-label"&gt;
+    Company Name
+  &lt;/label&gt;
+  &lt;input class="form-input" 
+         type="text"&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+            
+            <!-- Cards Preview -->
+            <div class="showcase-panel" id="panel-cards">
+                <div class="showcase-demo">
+                    <div class="demo-cards">
+                        <div class="demo-card">
+                            <div class="demo-card__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                            </div>
+                            <h4 class="demo-card__title">Invoice Generator</h4>
+                            <p class="demo-card__text">Create professional invoices in seconds</p>
+                        </div>
+                        <div class="demo-card demo-card--dark">
+                            <span class="demo-card__badge">Pro</span>
+                            <h4 class="demo-card__title">Enterprise Plan</h4>
+                            <p class="demo-card__text">Unlimited documents</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-code">
+                    <pre><code>&lt;div class="card"&gt;
+  &lt;div class="card__icon"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;h4&gt;Invoice Generator&lt;/h4&gt;
+  &lt;p&gt;Create invoices&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+            
+            <!-- Tables Preview -->
+            <div class="showcase-panel" id="panel-tables">
+                <div class="showcase-demo">
+                    <div class="demo-table-wrap">
+                        <table class="demo-table">
+                            <thead>
+                                <tr>
+                                    <th>Document</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-001</td>
+                                    <td><span class="demo-status demo-status--success">Paid</span></td>
+                                    <td>$1,250.00</td>
+                                </tr>
+                                <tr>
+                                    <td>INV-002</td>
+                                    <td><span class="demo-status demo-status--pending">Pending</span></td>
+                                    <td>$890.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="showcase-code">
+                    <pre><code>&lt;table class="data-table"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Document&lt;/th&gt;
+      &lt;th&gt;Status&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  ...
+&lt;/table&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     AI SKILL: Copilot Integration
+     ============================================================ -->
+<section class="envato-section">
+    <div class="envato-container">
+        <div class="ai-skill-block">
+            <div class="ai-skill-block__content">
+                <div class="ai-skill-block__badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span>Included Free</span>
+                </div>
+                <h2 class="ai-skill-block__title">GitHub Copilot<br><span class="text-gold">Design Skill</span></h2>
+                <p class="ai-skill-block__text">
+                    Train your AI assistant to understand your design system. Generate consistent, 
+                    on-brand components with natural language prompts. The skill includes all 53 
+                    component references, design tokens, and usage patterns.
+                </p>
+                <ul class="ai-skill-block__list">
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Understands your color palette and spacing
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Generates consistent button styles
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Creates forms matching your system
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Works with VS Code Agent Mode
+                    </li>
+                </ul>
+            </div>
+            <div class="ai-skill-block__visual">
+                <div class="terminal-mockup">
+                    <div class="terminal-mockup__bar">
+                        <span class="terminal-dot terminal-dot--red"></span>
+                        <span class="terminal-dot terminal-dot--yellow"></span>
+                        <span class="terminal-dot terminal-dot--green"></span>
+                        <span class="terminal-title">GitHub Copilot</span>
+                    </div>
+                    <div class="terminal-mockup__content">
+                        <div class="terminal-line terminal-line--user">
+                            <span class="terminal-prompt">You:</span>
+                            <span class="terminal-text">Create a pricing card with gold accent</span>
+                        </div>
+                        <div class="terminal-line terminal-line--ai">
+                            <span class="terminal-prompt">Copilot:</span>
+                            <span class="terminal-text typing">Generating component using v12 design tokens...</span>
+                        </div>
+                        <div class="terminal-code-block">
+                            <code>&lt;div class="pricing-card--featured"&gt;</code>
+                            <code>  &lt;span class="badge--gold"&gt;Pro&lt;/span&gt;</code>
+                            <code>  &lt;h3&gt;$49/mo&lt;/h3&gt;</code>
+                            <code>&lt;/div&gt;</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     PAGES: What's Included
+     ============================================================ -->
+<section class="envato-section envato-section--dark">
+    <div class="envato-container">
+        <div class="section-header-envato">
+            <span class="section-tag-envato section-tag-envato--light">Pages</span>
+            <h2 class="section-title-envato section-title-envato--light">{{ pages_count }} Ready-Made<br><span class="text-gold">Page Templates</span></h2>
+        </div>
+        
+        <div class="pages-grid">
+            <div class="page-card">
+                <div class="page-card__preview page-card__preview--dashboard"></div>
+                <span class="page-card__title">Dashboard</span>
+            </div>
+            <div class="page-card">
+                <div class="page-card__preview page-card__preview--form"></div>
+                <span class="page-card__title">Document Form</span>
+            </div>
+            <div class="page-card">
+                <div class="page-card__preview page-card__preview--list"></div>
+                <span class="page-card__title">Documents List</span>
+            </div>
+            <div class="page-card">
+                <div class="page-card__preview page-card__preview--landing"></div>
+                <span class="page-card__title">Landing Page</span>
+            </div>
+            <div class="page-card">
+                <div class="page-card__preview page-card__preview--auth"></div>
+                <span class="page-card__title">Auth Pages</span>
+            </div>
+            <div class="page-card">
+                <div class="page-card__preview page-card__preview--pricing"></div>
+                <span class="page-card__title">Pricing</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section class="envato-section">
+    <div class="envato-container">
+        <div class="section-header-envato">
+            <span class="section-tag-envato">Reviews</span>
+            <h2 class="section-title-envato">Loved by<br><span class="text-gradient">Developers</span></h2>
+        </div>
+        
+        <div class="testimonials-grid-envato">
+            <div class="testimonial-card-envato">
+                <div class="testimonial-card-envato__stars">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <p class="testimonial-card-envato__text">"The AI Copilot skill is a game-changer. I just describe what I need and it generates perfect components matching the design system."</p>
+                <div class="testimonial-card-envato__author">
+                    <div class="author-avatar-envato">MK</div>
+                    <div class="author-info-envato">
+                        <span class="author-name-envato">Mike K.</span>
+                        <span class="author-role-envato">Full-Stack Developer</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card-envato">
+                <div class="testimonial-card-envato__stars">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <p class="testimonial-card-envato__text">"Clean code, beautiful design, excellent documentation. Saved me weeks of work on my SaaS project. Best purchase this year!"</p>
+                <div class="testimonial-card-envato__author">
+                    <div class="author-avatar-envato">AS</div>
+                    <div class="author-info-envato">
+                        <span class="author-name-envato">Anna S.</span>
+                        <span class="author-role-envato">Startup Founder</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card-envato">
+                <div class="testimonial-card-envato__stars">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <p class="testimonial-card-envato__text">"The rounded corners and whitespace are just perfect. Finally a template that doesn't look like every other Bootstrap theme."</p>
+                <div class="testimonial-card-envato__author">
+                    <div class="author-avatar-envato">JD</div>
+                    <div class="author-info-envato">
+                        <span class="author-name-envato">James D.</span>
+                        <span class="author-role-envato">UI/UX Designer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     PRICING / CTA
+     ============================================================ -->
+<section class="envato-section envato-section--gradient" id="purchase">
+    <div class="envato-container">
+        <div class="cta-block-envato">
+            <div class="cta-block-envato__content">
+                <span class="cta-badge">Limited Time Offer</span>
+                <h2 class="cta-title-envato">Get Documatica UI Kit<br><span class="text-gold">+ AI Copilot Skill</span></h2>
+                <p class="cta-text-envato">One-time payment. Lifetime updates. 6 months support.</p>
+                
+                <div class="cta-price-envato">
+                    <span class="cta-price-envato__value">{{ price }}</span>
+                    <span class="cta-price-envato__original">$79</span>
+                </div>
+                
+                <div class="cta-includes">
+                    <div class="cta-include-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>53+ Components</span>
+                    </div>
+                    <div class="cta-include-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>25+ Page Templates</span>
+                    </div>
+                    <div class="cta-include-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>AI Copilot Skill</span>
+                    </div>
+                    <div class="cta-include-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Lifetime Updates</span>
+                    </div>
+                </div>
+                
+                <a href="https://themeforest.net/" class="btn-envato btn-envato--massive btn-envato--gold" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    Purchase on ThemeForest
+                </a>
+                
+                <p class="cta-guarantee">30-day money-back guarantee. No questions asked.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="envato-section">
+    <div class="envato-container">
+        <div class="section-header-envato">
+            <span class="section-tag-envato">FAQ</span>
+            <h2 class="section-title-envato">Common<br><span class="text-gradient">Questions</span></h2>
+        </div>
+        
+        <div class="faq-list-envato">
+            <details class="faq-item-envato">
+                <summary class="faq-question-envato">
+                    What is the AI Copilot Skill?
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="faq-answer-envato">
+                    It's a custom GitHub Copilot configuration that teaches the AI your design system. When you ask Copilot to generate code, it will use your color palette, spacing, and component patterns automatically. It's like having a developer who already knows your codebase.
+                </div>
+            </details>
+            
+            <details class="faq-item-envato">
+                <summary class="faq-question-envato">
+                    Can I use this with React/Vue/Angular?
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="faq-answer-envato">
+                    Yes! The template is built with pure HTML/CSS which can be easily converted to any framework. The CSS is framework-agnostic and uses standard BEM naming. Many customers use it with React, Vue, and even mobile frameworks.
+                </div>
+            </details>
+            
+            <details class="faq-item-envato">
+                <summary class="faq-question-envato">
+                    Do you provide support?
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="faq-answer-envato">
+                    Yes, we provide 6 months of support via Envato's support system. We typically respond within 24 hours on business days. Extended support can be purchased for additional 12 months.
+                </div>
+            </details>
+            
+            <details class="faq-item-envato">
+                <summary class="faq-question-envato">
+                    How do updates work?
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="faq-answer-envato">
+                    You get lifetime updates for free. When we release new components or pages, you can download them from ThemeForest. We regularly update the template with new features and improvements.
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Tab switching for showcase
+document.querySelectorAll('.showcase-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        // Remove active from all tabs
+        document.querySelectorAll('.showcase-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.showcase-panel').forEach(p => p.classList.remove('active'));
+        
+        // Add active to clicked tab
+        tab.classList.add('active');
+        const panelId = 'panel-' + tab.dataset.tab;
+        document.getElementById(panelId).classList.add('active');
+    });
+});
+
+// Typing animation for terminal
+const typingElement = document.querySelector('.typing');
+if (typingElement) {
+    const text = typingElement.textContent;
+    typingElement.textContent = '';
+    let i = 0;
+    
+    function typeWriter() {
+        if (i < text.length) {
+            typingElement.textContent += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50);
+        }
+    }
+    
+    // Start animation when visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setTimeout(typeWriter, 500);
+                observer.disconnect();
+            }
+        });
+    });
+    
+    observer.observe(typingElement);
+}
+</script>
+{% endblock %}

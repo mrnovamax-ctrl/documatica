@@ -15,7 +15,7 @@
     <div class="admin-stat-label">Пользователей</div>
     <div class="admin-stat-sub">
       <span class="highlight green">{{ stats.users.paid }}</span> платных,
-      <span>{{ stats.users.free }}</span> бесплатных
+      <span>{{ stats.users.verified }}</span> верифицированных
     </div>
   </div>
   
@@ -43,64 +43,67 @@
     </div>
   </div>
   
-  <!-- Organizations -->
+  <!-- New Users -->
   <div class="admin-stat-card">
     <div class="admin-stat-icon purple">
-      <iconify-icon icon="ri:building-line" width="26"></iconify-icon>
+      <iconify-icon icon="ri:user-add-line" width="26"></iconify-icon>
     </div>
-    <div class="admin-stat-value">{{ stats.organizations }}</div>
-    <div class="admin-stat-label">Организаций</div>
+    <div class="admin-stat-value">{{ stats.users.month }}</div>
+    <div class="admin-stat-label">Новых за месяц</div>
     <div class="admin-stat-sub">
-      {{ stats.contractors }} контрагентов
+      +{{ stats.users.today }} сегодня, +{{ stats.users.week }} за неделю
     </div>
   </div>
 </div>
 
 <!-- Details Section -->
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
-  <!-- Documents by Type -->
+  <!-- Payments Stats -->
   <div class="admin-detail-card">
     <div class="admin-detail-header">
-      <div class="admin-detail-icon admin-stat-icon blue">
-        <iconify-icon icon="ri:pie-chart-line" width="20"></iconify-icon>
+      <div class="admin-detail-icon admin-stat-icon green">
+        <iconify-icon icon="ri:money-dollar-circle-line" width="20"></iconify-icon>
       </div>
-      <div class="admin-detail-title">Документы по типам</div>
+      <div class="admin-detail-title">Платежи</div>
     </div>
     
-    {% for doc_type, count in stats.documents.by_type.items() %}
     <div class="admin-detail-row">
-      <div class="admin-detail-row-label">
-        <iconify-icon 
-          icon="{% if doc_type == 'upd' %}ri:file-list-3-line{% elif doc_type == 'invoice' %}ri:bill-line{% else %}ri:file-line{% endif %}" 
-          width="18"
-        ></iconify-icon>
-        <span style="text-transform: uppercase; font-weight: 600; font-size: 12px; letter-spacing: 0.05em;">{{ doc_type }}</span>
-      </div>
-      <div class="admin-detail-row-value" style="color: #3b82f6; font-size: 18px;">{{ count }}</div>
+      <span class="admin-detail-row-label">Всего платежей</span>
+      <span class="admin-detail-row-value">{{ stats.payments.total_count }}</span>
     </div>
-    {% else %}
-    <div style="padding: 24px; text-align: center; color: #94a3b8;">
-      Нет данных
+    
+    <div class="admin-detail-row">
+      <span class="admin-detail-row-label">Общая выручка</span>
+      <span class="admin-detail-row-value" style="color: #10b981; font-weight: 800;">{{ stats.payments.total_revenue|int }} руб</span>
     </div>
-    {% endfor %}
+    
+    <div class="admin-detail-row">
+      <span class="admin-detail-row-label">Платежей за месяц</span>
+      <span class="admin-detail-row-value">{{ stats.payments.month_count }}</span>
+    </div>
+    
+    <div class="admin-detail-row">
+      <span class="admin-detail-row-label">Выручка за месяц</span>
+      <span class="admin-detail-row-value" style="color: #10b981;">{{ stats.payments.month_revenue|int }} руб</span>
+    </div>
   </div>
   
   <!-- Quick Info -->
   <div class="admin-detail-card">
     <div class="admin-detail-header">
-      <div class="admin-detail-icon admin-stat-icon green">
+      <div class="admin-detail-icon admin-stat-icon blue">
         <iconify-icon icon="ri:information-line" width="20"></iconify-icon>
       </div>
       <div class="admin-detail-title">Информация о системе</div>
     </div>
     
     <div class="admin-detail-row">
-      <span class="admin-detail-row-label">Товаров/услуг в базе</span>
-      <span class="admin-detail-row-value">{{ stats.products }}</span>
+      <span class="admin-detail-row-label">Бесплатных аккаунтов</span>
+      <span class="admin-detail-row-value">{{ stats.users.free }}</span>
     </div>
     
     <div class="admin-detail-row">
-      <span class="admin-detail-row-label">Файлов на диске</span>
+      <span class="admin-detail-row-label">Файлов документов на диске</span>
       <span class="admin-detail-row-value">{{ stats.files_on_disk }}</span>
     </div>
     

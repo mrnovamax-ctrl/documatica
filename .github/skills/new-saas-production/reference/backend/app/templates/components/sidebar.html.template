@@ -1,0 +1,34 @@
+<!-- Dashboard Sidebar -->
+<aside class="dashboard-sidebar">
+  <div class="sidebar-header">
+    <a href="/dashboard" class="sidebar-logo">
+      <span class="sidebar-logo-text">{{PROJECT_TITLE}}</span>
+    </a>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <a href="/dashboard" class="sidebar-nav-item {% if request.url.path == '/dashboard' %}active{% endif %}">
+      <iconify-icon icon="solar:widget-5-bold"></iconify-icon>
+      <span>Главная</span>
+    </a>
+    
+    <!-- Add your menu items here -->
+    
+    <a href="/dashboard/settings" class="sidebar-nav-item {% if '/dashboard/settings' in request.url.path %}active{% endif %}">
+      <iconify-icon icon="solar:settings-bold"></iconify-icon>
+      <span>Настройки</span>
+    </a>
+    
+    <a href="/dashboard/billing" class="sidebar-nav-item {% if '/dashboard/billing' in request.url.path %}active{% endif %}">
+      <iconify-icon icon="solar:card-bold"></iconify-icon>
+      <span>Оплата</span>
+    </a>
+  </nav>
+  
+  <div class="sidebar-footer">
+    <a href="/logout" class="sidebar-nav-item">
+      <iconify-icon icon="solar:logout-2-bold"></iconify-icon>
+      <span>Выйти</span>
+    </a>
+  </div>
+</aside>

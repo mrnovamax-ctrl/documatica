@@ -1,0 +1,52 @@
+"""
+Database Configuration
+"""
+
+import json
+from pathlib import Path
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+from app.core.config import settings
+
+# SQLAlchemy setup
+engine = create_engine(settings.DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+# JSON storage path (for MVP)
+DATA_DIR = Path(__file__).parent.parent / "data"
+DATA_DIR.mkdir(exist_ok=True)
+
+
+def get_db():
+    """Database session dependency"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+def init_db():
+    """Initialize database tables"""
+    from app.models import User, Payment  # noqa
+    Base.metadata.create_all(bind=engine)
+
+
+# JSON helpers for MVP
+def load_json(filename: str) -> list:
+    """Load data from JSON file"""
+    filepath = DATA_DIR / filename
+    if filepath.exists():
+        with open(filepath, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_json(filename: str, data: list):
+    """Save data to JSON file"""
+    filepath = DATA_DIR / filename
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)

@@ -214,6 +214,7 @@ $(document).ready(function() {
     // Storage for loaded data
     let organizationsList = [];
     let contractorsList = [];
+    let selectedSellerOrg = null;  // Сохраняем выбранную организацию для подписи и печати
     
     // ============== DADATA АВТОЗАПОЛНЕНИЕ ==============
     
@@ -504,6 +505,9 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const org = organizationsList.find(o => o.id === id);
         if (org) {
+            // Сохраняем выбранную организацию для использования подписи и печати
+            selectedSellerOrg = org;
+            
             // Отключаем transitions при массовом заполнении полей
             document.body.classList.add('no-transitions');
             
@@ -514,9 +518,9 @@ $(document).ready(function() {
             $('#seller-address').val(org.address || '');
             
             // Fill seller signer fields if available
-            if (org.director_name) {
+            if (org.director_name || org.director) {
                 $('#released-position').val('Генеральный директор');
-                $('#released-by').val(org.director_name);
+                $('#released-by').val(org.director_name || org.director);
             }
             if (org.responsible_name) {
                 $('#responsible-position').val(org.responsible_position || '');
@@ -1046,7 +1050,9 @@ $(document).ready(function() {
             calculateTotals();
             updatePreview();
         } else {
-            alert('Должна остаться хотя бы одна позиция');
+            if (typeof toastWarning === 'function') {
+                toastWarning('Должна остаться хотя бы одна позиция');
+            }
         }
     });
 
@@ -1387,12 +1393,14 @@ $(document).ready(function() {
             contract_info: $('#transfer-basis').val() || null,
             transport_info: $('#transport-info').val() || null,
             seller_signer: $('#released-by').val() ? {
-                position: '',
+                position: $('#released-position').val() || 'Директор',
                 full_name: $('#released-by').val(),
-                basis: 'Устав'
+                basis: 'Устав',
+                signature_image: selectedSellerOrg?.director_signature || null
             } : null,
+            seller_stamp_image: selectedSellerOrg?.stamp_base64 || null,
             buyer_signer: $('#received-by').val() ? {
-                position: '',
+                position: $('#received-position').val() || 'Директор',
                 full_name: $('#received-by').val(),
                 basis: 'Устав'
             } : null
@@ -1856,13 +1864,15 @@ $(document).ready(function() {
             seller_signer: $('#released-by').val() ? {
                 position: $('#released-position').val() || 'Директор',
                 full_name: $('#released-by').val(),
-                basis: 'Устав'
+                basis: 'Устав',
+                signature_image: selectedSellerOrg?.director_signature || null
             } : null,
             seller_responsible: $('#responsible-name').val() ? {
                 position: $('#responsible-position').val() || null,
                 full_name: $('#responsible-name').val()
             } : null,
             economic_entity: $('#economic-entity').val() || null,
+            seller_stamp_image: selectedSellerOrg?.stamp_base64 || null,
             receiving_date: $('#receiving-date').val() ? convertDateToISO($('#receiving-date').val()) : null,
             other_receiving_info: $('#other-receiving-info').val() || null,
             buyer_signer: $('#received-by').val() ? {

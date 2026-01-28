@@ -1,0 +1,67 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+<section class="py-24">
+  <div class="container">
+    <div class="text-center mb-16">
+      <span class="docu-tag mb-4">{{ page_type | upper }}</span>
+      <h1 class="docu-h1">{{ title }}</h1>
+    </div>
+    
+    <!-- Content based on page_type -->
+    {% if page_type == 'features' %}
+    <div class="row g-4">
+      <!-- Features content -->
+    </div>
+    {% elif page_type == 'pricing' %}
+    <div class="row g-4 justify-content-center">
+      <!-- Pricing cards -->
+      <div class="col-lg-4">
+        <div class="pricing-card bg-white border border-slate-100 rounded-[2.5rem] p-10 h-100">
+          <span class="docu-tag-muted mb-4">Базовый</span>
+          <div class="price mb-6">
+            <span class="text-4xl font-black text-slate-900">0</span>
+            <span class="text-slate-500"> руб/мес</span>
+          </div>
+          <ul class="pricing-features list-unstyled mb-8">
+            <li class="d-flex align-items-center gap-3 mb-3">
+              <iconify-icon icon="solar:check-circle-bold" class="text-green-500"></iconify-icon>
+              <span class="text-slate-600">Базовый функционал</span>
+            </li>
+          </ul>
+          <a href="/register" class="btn btn-outline-primary w-100 rounded-2xl py-3 font-bold">
+            Начать бесплатно
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="pricing-card bg-blue-600 rounded-[2.5rem] p-10 h-100 position-relative">
+          <span class="position-absolute top-4 right-4 bg-docu-gold text-slate-900 text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full">
+            Популярный
+          </span>
+          <span class="docu-tag text-white opacity-75 mb-4">Pro</span>
+          <div class="price mb-6">
+            <span class="text-4xl font-black text-white">990</span>
+            <span class="text-blue-200"> руб/мес</span>
+          </div>
+          <ul class="pricing-features list-unstyled mb-8">
+            <li class="d-flex align-items-center gap-3 mb-3">
+              <iconify-icon icon="solar:check-circle-bold" class="text-white"></iconify-icon>
+              <span class="text-white">Все функции</span>
+            </li>
+            <li class="d-flex align-items-center gap-3 mb-3">
+              <iconify-icon icon="solar:check-circle-bold" class="text-white"></iconify-icon>
+              <span class="text-white">Приоритетная поддержка</span>
+            </li>
+          </ul>
+          <a href="/register" class="btn btn-light w-100 rounded-2xl py-3 font-bold">
+            Выбрать Pro
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

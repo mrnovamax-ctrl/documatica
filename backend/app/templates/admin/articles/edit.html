@@ -400,11 +400,11 @@ document.getElementById('imageFileInput').addEventListener('change', async funct
       preview.querySelector('img').src = result.url;
       progress.style.display = 'none';
     } else {
-      alert('Ошибка загрузки: ' + (result.error || 'Неизвестная ошибка'));
+      toastError('Ошибка загрузки: ' + (result.error || 'Неизвестная ошибка'));
       progress.style.display = 'none';
     }
   } catch (error) {
-    alert('Ошибка загрузки изображения');
+    toastError('Ошибка загрузки изображения');
     progress.style.display = 'none';
   }
 });

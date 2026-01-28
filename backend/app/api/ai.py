@@ -332,3 +332,169 @@ async def analyze_upd(
             summary="Анализ завершён (формат ответа нестандартный)",
             raw_response=content
         )
+
+
+# ============== АКТ АНАЛИЗ ==============
+
+class AnalyzeAktRequest(BaseModel):
+    """Запрос на анализ Акта выполненных работ"""
+    model_config = {"extra": "ignore"}
+    
+    akt_number: Optional[str] = ""
+    akt_date: Optional[str] = ""
+    contract_number: Optional[str] = ""
+    contract_date: Optional[str] = ""
+    
+    executor_name: Optional[str] = ""
+    executor_inn: Optional[str] = ""
+    executor_kpp: Optional[str] = ""
+    executor_address: Optional[str] = ""
+    
+    customer_name: Optional[str] = ""
+    customer_inn: Optional[str] = ""
+    customer_kpp: Optional[str] = ""
+    customer_address: Optional[str] = ""
+    
+    items: Optional[List[dict]] = []
+    notes: Optional[str] = ""
+
+
+AKT_SYSTEM_PROMPT = """Ты - опытный бухгалтер и юрист, специализирующийся на первичной документации.
+Твоя задача - проверить Акт выполненных работ (оказанных услуг) на ошибки и несоответствия.
+
+Проверь:
+1. Наличие всех обязательных реквизитов (номер, дата, стороны)
+2. Корректность ИНН (10 или 12 цифр)
+3. Наличие КПП для юридических лиц
+4. Корректность наименований работ/услуг
+5. Наличие единиц измерения и цен
+6. Соответствие акта договору (если указан)
+
+Ответь ТОЛЬКО в формате JSON:
+{
+  "errors": [{"field": "название поля", "message": "описание ошибки"}],
+  "warnings": [{"field": "название поля", "message": "описание предупреждения"}],
+  "suggestions": [{"field": "название поля", "message": "рекомендация"}],
+  "summary": "краткое заключение"
+}
+
+Если ошибок нет, верни пустые массивы для errors и warnings."""
+
+
+def format_akt_for_analysis(request: AnalyzeAktRequest) -> str:
+    """Форматирует данные акта для анализа"""
+    lines = [
+        "=== АКТ ВЫПОЛНЕННЫХ РАБОТ (ОКАЗАННЫХ УСЛУГ) ===",
+        f"Номер: {request.akt_number}",
+        f"Дата: {request.akt_date}",
+        f"Договор: № {request.contract_number} от {request.contract_date}" if request.contract_number else "Договор: не указан",
+        "",
+        "--- ИСПОЛНИТЕЛЬ ---",
+        f"Наименование: {request.executor_name}",
+        f"ИНН: {request.executor_inn}",
+        f"КПП: {request.executor_kpp}" if request.executor_kpp else "",
+        f"Адрес: {request.executor_address}" if request.executor_address else "",
+        "",
+        "--- ЗАКАЗЧИК ---",
+        f"Наименование: {request.customer_name}",
+        f"ИНН: {request.customer_inn}",
+        f"КПП: {request.customer_kpp}" if request.customer_kpp else "",
+        f"Адрес: {request.customer_address}" if request.customer_address else "",
+        "",
+        "--- РАБОТЫ/УСЛУГИ ---"
+    ]
+    
+    total = 0
+    for i, item in enumerate(request.items or [], 1):
+        name = item.get('name', 'Не указано')
+        qty = item.get('quantity', 0)
+        unit = item.get('unit', 'шт')
+        price = item.get('price', 0)
+        amount = item.get('amount', qty * price)
+        total += amount
+        lines.append(f"{i}. {name} - {qty} {unit} x {price} руб. = {amount} руб.")
+    
+    lines.append(f"\nИТОГО: {total} руб.")
+    
+    if request.notes:
+        lines.append(f"\nПримечания: {request.notes}")
+    
+    return "\n".join(lines)
+
+
+@router.post("/analyze-akt", response_model=AnalyzeUPDResponse)
+async def analyze_akt(
+    request: AnalyzeAktRequest,
+    current_user: User = Depends(get_current_user_db),
+    db: Session = Depends(get_db)
+):
+    """Анализ Акта выполненных работ через OpenAI GPT"""
+    api_key = getattr(settings, 'OPENAI_API_KEY', None)
+    
+    if not api_key:
+        raise HTTPException(status_code=500, detail="OpenAI API не настроен")
+    
+    document_text = format_akt_for_analysis(request)
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://api.openai.com/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": "gpt-4o-mini",
+                    "messages": [
+                        {"role": "system", "content": AKT_SYSTEM_PROMPT},
+                        {"role": "user", "content": f"Проанализируй этот Акт:\n\n{document_text}"}
+                    ],
+                    "temperature": 0.3,
+                    "max_tokens": 2000
+                },
+                timeout=60.0
+            )
+            
+            if response.status_code != 200:
+                raise HTTPException(
+                    status_code=502, 
+                    detail=f"OpenAI API вернул ошибку: {response.status_code}"
+                )
+            
+            result = response.json()
+            
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=504, detail="Превышено время ожидания ответа от ИИ")
+    except httpx.HTTPError as e:
+        raise HTTPException(status_code=502, detail=f"Ошибка соединения с OpenAI: {str(e)}")
+    
+    try:
+        import json
+        import re
+        
+        content = result["choices"][0]["message"]["content"]
+        json_match = re.search(r'\{[\s\S]*\}', content)
+        if json_match:
+            parsed = json.loads(json_match.group())
+        else:
+            parsed = json.loads(content)
+        
+        return AnalyzeUPDResponse(
+            success=True,
+            errors=parsed.get("errors", []),
+            warnings=parsed.get("warnings", []),
+            suggestions=parsed.get("suggestions", []),
+            summary=parsed.get("summary", "Анализ завершён"),
+            raw_response=content
+        )
+        
+    except (json.JSONDecodeError, KeyError, IndexError) as e:
+        return AnalyzeUPDResponse(
+            success=True,
+            errors=[],
+            warnings=[],
+            suggestions=[{"field": "general", "message": content, "severity": "info"}],
+            summary="Анализ завершён (формат ответа нестандартный)",
+            raw_response=content
+        )

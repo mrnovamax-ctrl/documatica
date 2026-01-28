@@ -1,0 +1,36 @@
+<!-- Public Header -->
+<header class="site-header">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg">
+      <!-- Logo -->
+      <a href="/" class="docu-logo">
+        <span class="docu-logo-bold">{{PROJECT_TITLE}}</span>
+      </a>
+      
+      <!-- Mobile Toggle -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <!-- Navigation -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/features">Возможности</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pricing">Тарифы</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Войти</a>
+          </li>
+          <li class="nav-item">
+            <a href="/register" class="btn btn-primary rounded-2xl px-6 py-2 text-sm font-bold">
+              Начать
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>

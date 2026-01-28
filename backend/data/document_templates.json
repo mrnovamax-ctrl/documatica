@@ -63,5 +63,153 @@
     "user_id": 6,
     "created_at": "2026-01-24T09:38:31.536147",
     "updated_at": "2026-01-24T09:38:31.536147"
+  },
+  {
+    "id": "311e08d8-f547-48f7-b723-3c579502751b",
+    "name": "ИП Рыковский Александр Николаевич - ООО \"НАТУРА АУРИ\"",
+    "doc_type": "upd",
+    "data": {
+      "document_number": "5",
+      "document_date": "2026-01-27",
+      "status": 1,
+      "correction_number": null,
+      "correction_date": null,
+      "seller": {
+        "name": "ИП Рыковский Александр Николаевич",
+        "inn": "614210773906",
+        "kpp": null,
+        "address": "Ростовская обл, г Белая Калитва"
+      },
+      "buyer": {
+        "name": "ООО \"НАТУРА АУРИ\"",
+        "inn": "1013007291",
+        "kpp": "101301001",
+        "address": "Респ Карелия, г Медвежьегорск, ул Первомайская, д 51"
+      },
+      "consignor": "ИП Рыковский Александр Николаевич, Ростовская обл, г Белая Калитва",
+      "consignee": "ООО \"НАТУРА АУРИ\", Респ Карелия, г Медвежьегорск, ул Первомайская, д 51",
+      "payment_document": "5 от 27.01.2026г.",
+      "shipping_document": "5 от 27.01.2026",
+      "items": [
+        {
+          "row_number": 1,
+          "name": "Пеллеты топлевные",
+          "unit_code": "796",
+          "unit_name": "кг",
+          "quantity": 4000,
+          "price": 16.25,
+          "amount_without_vat": 65000,
+          "vat_rate": "Без НДС",
+          "vat_amount": 0,
+          "amount_with_vat": 65000,
+          "country_code": "643",
+          "country_name": "Россия"
+        }
+      ],
+      "total_amount_without_vat": 65000,
+      "total_vat_amount": 0,
+      "total_amount_with_vat": 65000,
+      "currency_code": "643",
+      "currency_name": "Российский рубль",
+      "gov_contract_id": null,
+      "contract_info": "Основной договор ",
+      "transport_info": null,
+      "shipping_date": null,
+      "other_shipping_info": null,
+      "seller_signer": {
+        "position": "Индивидуальный предприниматель",
+        "full_name": "Рыковский Александр Николаевич",
+        "basis": "Устав"
+      },
+      "seller_responsible": null,
+      "economic_entity": "ИП Рыковский Александр Николаевич, ИНН 614210773906",
+      "receiving_date": null,
+      "other_receiving_info": null,
+      "buyer_signer": {
+        "position": "Директор",
+        "full_name": "Искрин Артур Викторович",
+        "basis": "Устав"
+      },
+      "buyer_responsible": {
+        "position": "Директор",
+        "full_name": "Искрин Артур Викторович"
+      },
+      "buyer_economic_entity": "ООО \"НАТУРА АУРИ\", ИНН 1013007291"
+    },
+    "user_id": 23,
+    "created_at": "2026-01-27T15:47:17.290808",
+    "updated_at": "2026-01-27T15:47:17.290808"
+  },
+  {
+    "id": "b586818f-2264-4215-9f24-f7e3840f57ff",
+    "name": "ИП Чупраков Анатолий Егорович - ООО \"МЭЗ \"АМУРСКИЙ\"",
+    "doc_type": "upd",
+    "data": {
+      "document_number": "15",
+      "document_date": "2025-11-11",
+      "status": 1,
+      "correction_number": null,
+      "correction_date": null,
+      "seller": {
+        "name": "ИП Чупраков Анатолий Егорович",
+        "inn": "281701016600",
+        "kpp": null,
+        "address": "Амурская область, Константиновский район, Верхнеполтавский, с Верхняя Полтавка"
+      },
+      "buyer": {
+        "name": "ООО \"МЭЗ \"АМУРСКИЙ\"",
+        "inn": "2804017230",
+        "kpp": "280401001",
+        "address": "676854, Амурская обл, г Белогорск, ул Производственная, зд 18"
+      },
+      "consignor": "ИП Чупраков Анатолий Егорович, Амурская область, Константиновский район, Верхнеполтавский, с Верхняя Полтавка",
+      "consignee": null,
+      "payment_document": null,
+      "shipping_document": null,
+      "items": [
+        {
+          "row_number": 1,
+          "name": "Бобы Сои",
+          "unit_code": "796",
+          "unit_name": "кг",
+          "quantity": 998380,
+          "price": 26,
+          "amount_without_vat": 23598072.727272727,
+          "vat_rate": "10%",
+          "vat_amount": 2359807.2727272734,
+          "amount_with_vat": 25957880,
+          "country_code": "643",
+          "country_name": "Россия"
+        }
+      ],
+      "total_amount_without_vat": 23598072.727272727,
+      "total_vat_amount": 2359807.2727272734,
+      "total_amount_with_vat": 25957880,
+      "currency_code": "643",
+      "currency_name": "Российский рубль",
+      "gov_contract_id": null,
+      "contract_info": "Договор купли - продажи №274 м от 03.10.2025 ",
+      "transport_info": null,
+      "shipping_date": "2025-11-11",
+      "other_shipping_info": null,
+      "seller_signer": {
+        "position": "ИП Глава КФХ",
+        "full_name": "чупраков анатолий егорович",
+        "basis": "Устав"
+      },
+      "seller_responsible": {
+        "position": "ИП Глава КФХ ",
+        "full_name": "чупраков анатолий егорович"
+      },
+      "economic_entity": null,
+      "receiving_date": null,
+      "other_receiving_info": null,
+      "buyer_signer": null,
+      "buyer_responsible": null,
+      "buyer_economic_entity": null
+    },
+    "user_id": 30,
+    "created_at": "2026-01-28T02:56:28.141493",
+    "updated_at": "2026-01-28T02:56:28.141493"
   }
 ]

@@ -33,20 +33,27 @@
     <!-- Tariff -->
     <div class="admin-table-cell">
       {% set tariff = user.tariff or 'free' %}
-      {% if tariff == 'pro' %}
+      {% if tariff == 'subscription' %}
       <span class="admin-badge admin-badge-gold">
         <iconify-icon icon="ri:vip-crown-line" width="14"></iconify-icon>
-        Pro
+        Подписка
       </span>
-      {% elif tariff == 'business' %}
+      {% if user.subscription_expires %}
+      <div style="font-size: 10px; color: #64748b; margin-top: 2px;">до {{ user.subscription_expires[:10] }}</div>
+      {% endif %}
+      {% elif tariff == 'pay_per_doc' %}
       <span class="admin-badge admin-badge-purple">
-        <iconify-icon icon="ri:building-line" width="14"></iconify-icon>
-        Business
+        <iconify-icon icon="ri:file-list-3-line" width="14"></iconify-icon>
+        Пакет
       </span>
+      {% if user.purchased_docs_remaining %}
+      <div style="font-size: 10px; color: #64748b; margin-top: 2px;">{{ user.purchased_docs_remaining }} док.</div>
+      {% endif %}
       {% else %}
       <span class="admin-badge admin-badge-muted">
         Free
       </span>
+      <div style="font-size: 10px; color: #64748b; margin-top: 2px;">{{ user.free_generations_used or 0 }}/5</div>
       {% endif %}
     </div>
     

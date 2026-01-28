@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
   } catch (error) {
     console.error('Ошибка загрузки товара:', error);
-    alert('Ошибка загрузки товара: ' + error.message);
+    toastError('Ошибка загрузки товара: ' + error.message);
   }
 });
 
@@ -129,11 +129,11 @@ document.getElementById('product-form').addEventListener('submit', async functio
       window.location.href = '/dashboard/products/';
     } else {
       const err = await response.json();
-      alert(err.detail || 'Ошибка сохранения');
+      toastError(err.detail || 'Ошибка сохранения');
     }
   } catch (error) {
     console.error('Ошибка сохранения:', error);
-    alert('Ошибка сохранения: ' + error.message);
+    toastError('Ошибка сохранения: ' + error.message);
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = '<iconify-icon icon="mdi:content-save" class="me-1"></iconify-icon>Сохранить';

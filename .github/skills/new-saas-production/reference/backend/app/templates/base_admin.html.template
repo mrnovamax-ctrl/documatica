@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin{% endblock %} - {{PROJECT_TITLE}}</title>
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Iconify -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.0">
+  <link rel="stylesheet" href="/static/css/admin.css?v=1.0">
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body class="admin-body">
+  <div class="admin-wrapper">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <a href="/admin" class="admin-logo">
+          <span class="admin-logo-text">{{PROJECT_TITLE}}</span>
+          <span class="admin-badge">Admin</span>
+        </a>
+      </div>
+      
+      <nav class="admin-nav">
+        <a href="/admin" class="admin-nav-item {% if request.url.path == '/admin' %}active{% endif %}">
+          <iconify-icon icon="solar:widget-5-bold"></iconify-icon>
+          <span>Dashboard</span>
+        </a>
+        <a href="/admin/users" class="admin-nav-item {% if '/admin/users' in request.url.path %}active{% endif %}">
+          <iconify-icon icon="solar:users-group-rounded-bold"></iconify-icon>
+          <span>Пользователи</span>
+        </a>
+        <a href="/admin/payments" class="admin-nav-item {% if '/admin/payments' in request.url.path %}active{% endif %}">
+          <iconify-icon icon="solar:card-bold"></iconify-icon>
+          <span>Платежи</span>
+        </a>
+        <a href="/admin/content" class="admin-nav-item {% if '/admin/content' in request.url.path %}active{% endif %}">
+          <iconify-icon icon="solar:document-text-bold"></iconify-icon>
+          <span>Контент</span>
+        </a>
+      </nav>
+      
+      <div class="admin-sidebar-footer">
+        <a href="/" class="admin-nav-item">
+          <iconify-icon icon="solar:arrow-left-bold"></iconify-icon>
+          <span>На сайт</span>
+        </a>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <div class="admin-main">
+      <header class="admin-header">
+        <h1 class="admin-page-title">{% block page_title %}{{ title }}{% endblock %}</h1>
+        <div class="admin-header-actions">
+          {% block header_actions %}{% endblock %}
+        </div>
+      </header>
+      
+      <main class="admin-content">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  
+  <!-- JS -->
+  <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+
+</html>

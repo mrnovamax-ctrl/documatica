@@ -6,6 +6,7 @@
 
 | Skill | Назначение | Триггеры |
 |-------|------------|----------|
+| **new-saas-production** | SaaS бойлерплейт генератор | `create new project`, `bootstrap saas`, `start new saas` |
 | **v12-style** | Documatica Design System v12.0 | `create UI`, `design component`, `style form` |
 | **git-commit** | Conventional Commits | `commit changes`, `/commit` |
 | **refactor** | Паттерны рефакторинга | `refactor this`, `clean up code` |

@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import List, Dict
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse
 
 from app.core.templates import templates
 from app.core.content import load_content
@@ -15,6 +15,14 @@ router = APIRouter()
 
 # Путь к данным
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
+STATIC_DIR = Path(__file__).parent.parent / "static"
+
+
+# Верификация домена Mail.ru
+@router.get("/mailru-domainsZDnkw0eMC2tYYqi.html", response_class=PlainTextResponse)
+async def mailru_verification():
+    """Файл верификации домена для Mail.ru"""
+    return "mailru-domain: sZDnkw0eMC2tYYqi"
 
 
 def get_latest_articles(limit: int = 5) -> List[Dict]:

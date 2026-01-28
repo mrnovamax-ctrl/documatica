@@ -1,0 +1,28 @@
+"""
+Home Page
+"""
+
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+
+from app.core.templates import templates
+from app.core.content import load_content
+
+router = APIRouter()
+
+
+@router.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    """Homepage"""
+    content = load_content("home")
+    
+    return templates.TemplateResponse(
+        request=request,
+        name="public/home.html",
+        context={
+            "title": content.get("title", "{{PROJECT_TITLE}}"),
+            "hero": content.get("hero", {}),
+            "features": content.get("features", []),
+            "pricing": content.get("pricing", []),
+        }
+    )

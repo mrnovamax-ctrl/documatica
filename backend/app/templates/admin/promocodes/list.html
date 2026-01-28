@@ -1,0 +1,151 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Промокоды{% endblock %}
+{% block page_title %}Промокоды{% endblock %}
+
+{% block header_actions %}
+<div class="admin-header-meta" style="display: flex; gap: 24px; align-items: center;">
+  <span>Всего: <strong>{{ total_promocodes }}</strong></span>
+  <span>Активных: <strong>{{ active_promocodes }}</strong></span>
+  <span>Активаций: <strong>{{ total_usages }}</strong></span>
+  <a href="/admin/promocodes/create" class="admin-btn admin-btn-primary">
+    <iconify-icon icon="ri:add-line" width="16"></iconify-icon>
+    Создать промокод
+  </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Promocodes Table -->
+<div class="admin-table-container">
+  <!-- Table Header -->
+  <div class="admin-table-header" style="display: grid; grid-template-columns: 1fr 1fr 1fr 100px 100px 120px; gap: 16px;">
+    <div class="admin-table-th">Код</div>
+    <div class="admin-table-th">Тип</div>
+    <div class="admin-table-th">Описание</div>
+    <div class="admin-table-th">Использований</div>
+    <div class="admin-table-th">Статус</div>
+    <div class="admin-table-th">Действия</div>
+  </div>
+  
+  <!-- Table Body -->
+  {% for promo in promocodes %}
+  <div class="admin-table-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr 100px 100px 120px; gap: 16px; align-items: center;">
+    <!-- Code -->
+    <div class="admin-table-cell">
+      <a href="/admin/promocodes/{{ promo.id }}" style="font-family: monospace; font-size: 16px; font-weight: 700; color: #3b82f6; text-decoration: none;">
+        {{ promo.code }}
+      </a>
+      <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">
+        Создан: {{ promo.created_at.strftime('%d.%m.%Y') if promo.created_at else 'N/A' }}
+      </div>
+    </div>
+    
+    <!-- Type -->
+    <div class="admin-table-cell">
+      {% if promo.promo_type == 'subscription' %}
+      <span class="admin-badge admin-badge-primary">
+        <iconify-icon icon="ri:vip-crown-line" width="14"></iconify-icon>
+        Подписка {{ promo.subscription_days or 30 }} дн.
+      </span>
+      {% if promo.subscription_price %}
+      <div style="font-size: 11px; color: #64748b; margin-top: 4px;">за {{ promo.subscription_price }} руб.</div>
+      {% else %}
+      <div style="font-size: 11px; color: #10b981; margin-top: 4px;">Бесплатно</div>
+      {% endif %}
+      {% elif promo.promo_type == 'documents' %}
+      <span class="admin-badge admin-badge-gold">
+        <iconify-icon icon="ri:file-list-3-line" width="14"></iconify-icon>
+        {{ promo.documents_count or 10 }} документов
+      </span>
+      {% elif promo.promo_type == 'discount' %}
+      <span class="admin-badge admin-badge-purple">
+        <iconify-icon icon="ri:percent-line" width="14"></iconify-icon>
+        Скидка {{ promo.discount_percent }}%
+      </span>
+      {% endif %}
+    </div>
+    
+    <!-- Description -->
+    <div class="admin-table-cell admin-text-muted" style="font-size: 13px;">
+      {{ promo.description or '-' }}
+      {% if promo.valid_until %}
+      <div style="font-size: 11px; color: #f59e0b; margin-top: 4px;">
+        До {{ promo.valid_until.strftime('%d.%m.%Y') }}
+      </div>
+      {% endif %}
+    </div>
+    
+    <!-- Uses -->
+    <div class="admin-table-cell" style="text-align: center;">
+      <span style="font-size: 18px; font-weight: 800; color: #0f172a;">{{ promo.uses_count or 0 }}</span>
+      {% if promo.max_uses %}
+      <span style="color: #94a3b8;">/ {{ promo.max_uses }}</span>
+      {% endif %}
+    </div>
+    
+    <!-- Status -->
+    <div class="admin-table-cell">
+      {% if promo.is_active %}
+      <span class="admin-badge admin-badge-success">
+        <iconify-icon icon="ri:checkbox-circle-fill" width="14"></iconify-icon>
+        Активен
+      </span>
+      {% else %}
+      <span class="admin-badge admin-badge-muted">
+        <iconify-icon icon="ri:close-circle-line" width="14"></iconify-icon>
+        Выключен
+      </span>
+      {% endif %}
+    </div>
+    
+    <!-- Actions -->
+    <div class="admin-table-cell" style="display: flex; gap: 8px;">
+      <a href="/admin/promocodes/{{ promo.id }}/edit" class="admin-btn-icon" title="Редактировать">
+        <iconify-icon icon="ri:edit-line" width="18"></iconify-icon>
+      </a>
+      <form action="/admin/promocodes/{{ promo.id }}/toggle" method="POST" style="display: inline;">
+        <button type="submit" class="admin-btn-icon" title="{% if promo.is_active %}Выключить{% else %}Включить{% endif %}">
+          {% if promo.is_active %}
+          <iconify-icon icon="ri:toggle-fill" width="18" style="color: #10b981;"></iconify-icon>
+          {% else %}
+          <iconify-icon icon="ri:toggle-line" width="18" style="color: #94a3b8;"></iconify-icon>
+          {% endif %}
+        </button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div class="admin-empty-state">
+    <iconify-icon icon="ri:price-tag-3-line" width="64"></iconify-icon>
+    <div class="admin-empty-state-title">Промокоды не найдены</div>
+    <div class="admin-empty-state-text">Создайте первый промокод для привлечения клиентов</div>
+    <a href="/admin/promocodes/create" class="admin-btn admin-btn-primary" style="margin-top: 16px;">
+      <iconify-icon icon="ri:add-line" width="16"></iconify-icon>
+      Создать промокод
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+<style>
+.admin-btn-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-icon:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+</style>
+{% endblock %}

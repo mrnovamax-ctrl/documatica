@@ -173,14 +173,13 @@ async def create_payment(
         }
     }
     
-    # Генерируем токен (без Receipt и DATA)
-    token_data = {
-        "TerminalKey": terminal_key,
-        "Amount": amount,
-        "OrderId": order_id,
-        "Description": description
-    }
-    init_data["Token"] = generate_token(token_data, terminal_password)
+    # Генерируем токен из ВСЕХ полей первого уровня (кроме вложенных объектов)
+    # По документации Т-Банка нужно включать все поля, не только базовые
+    init_data["Token"] = generate_token(init_data, terminal_password)
+    
+    # Логирование для отладки
+    print(f"[PAYMENT] T-Bank Init URL: {get_api_url()}/Init")
+    print(f"[PAYMENT] T-Bank Init request: {init_data}")
     
     try:
         async with httpx.AsyncClient() as client:
@@ -189,6 +188,10 @@ async def create_payment(
                 json=init_data,
                 timeout=30.0
             )
+            # Логирование ответа
+            print(f"[PAYMENT] T-Bank Init response status: {response.status_code}")
+            print(f"[PAYMENT] T-Bank Init response body: {response.text}")
+            
             # Проверяем HTTP статус
             if response.status_code != 200:
                 payment.status = "error"

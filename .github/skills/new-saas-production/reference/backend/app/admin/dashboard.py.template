@@ -1,0 +1,32 @@
+"""
+Admin Dashboard
+"""
+
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+from sqlalchemy.orm import Session
+
+from app.core.templates import templates
+from app.database import get_db
+from app.models import User, Payment
+
+router = APIRouter()
+
+
+@router.get("/", response_class=HTMLResponse)
+async def admin_dashboard(request: Request):
+    """Admin dashboard with stats"""
+    # TODO: Add admin auth check
+    
+    return templates.TemplateResponse(
+        request=request,
+        name="admin/dashboard.html",
+        context={
+            "title": "Админ-панель",
+            "stats": {
+                "users": 0,
+                "payments": 0,
+                "revenue": 0
+            }
+        }
+    )

@@ -1,0 +1,207 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}{% if is_edit %}Редактировать{% else %}Создать{% endif %} промокод{% endblock %}
+{% block page_title %}{% if is_edit %}Редактировать промокод {{ promocode.code }}{% else %}Создать промокод{% endif %}{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/promocodes/" class="admin-btn admin-btn-outline">
+  <iconify-icon icon="ri:arrow-left-line" width="16"></iconify-icon>
+  Назад к списку
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="admin-form-container">
+  {% if error %}
+  <div class="admin-alert admin-alert-error" style="margin-bottom: 24px;">
+    <iconify-icon icon="ri:error-warning-line" width="20"></iconify-icon>
+    {{ error }}
+  </div>
+  {% endif %}
+  
+  <form method="POST" action="{% if is_edit %}/admin/promocodes/{{ promocode.id }}/edit{% else %}/admin/promocodes/create{% endif %}">
+    
+    <!-- Code -->
+    <div class="admin-form-group">
+      <label class="admin-form-label">Код промокода</label>
+      {% if is_edit %}
+      <input type="text" class="admin-form-input" value="{{ promocode.code }}" disabled style="background: #f1f5f9; text-transform: uppercase; font-family: monospace; font-weight: 700;">
+      <div class="admin-form-hint">Код нельзя изменить после создания</div>
+      {% else %}
+      <input type="text" name="code" class="admin-form-input" placeholder="BESTCLIENT" required style="text-transform: uppercase; font-family: monospace; font-weight: 700;">
+      <div class="admin-form-hint">Латинские буквы и цифры, без пробелов</div>
+      {% endif %}
+    </div>
+    
+    <!-- Type -->
+    <div class="admin-form-group">
+      <label class="admin-form-label">Тип промокода</label>
+      {% if is_edit %}
+      <input type="text" class="admin-form-input" value="{% if promocode.promo_type == 'subscription' %}Подписка{% elif promocode.promo_type == 'documents' %}Документы{% else %}Скидка{% endif %}" disabled style="background: #f1f5f9;">
+      {% else %}
+      <select name="promo_type" id="promo_type" class="admin-form-input" required onchange="toggleTypeFields()">
+        <option value="">Выберите тип</option>
+        <option value="subscription">Подписка (активирует подписку)</option>
+        <option value="documents">Документы (добавляет документы)</option>
+        <option value="discount">Скидка (на оплату)</option>
+      </select>
+      {% endif %}
+    </div>
+    
+    <!-- Type-specific fields -->
+    <div id="subscription-fields" class="admin-form-group" style="display: {% if is_edit and promocode.promo_type == 'subscription' %}block{% else %}none{% endif %};">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <label class="admin-form-label">Дней подписки</label>
+          <input type="number" name="subscription_days" class="admin-form-input" value="{{ promocode.subscription_days if is_edit and promocode else 30 }}" min="1" placeholder="30">
+        </div>
+        <div>
+          <label class="admin-form-label">Цена (руб.)</label>
+          <input type="number" name="subscription_price" class="admin-form-input" value="{{ promocode.subscription_price if is_edit and promocode else '' }}" min="0" placeholder="0 = бесплатно">
+          <div class="admin-form-hint">0 или пусто = бесплатная подписка</div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="documents-fields" class="admin-form-group" style="display: {% if is_edit and promocode.promo_type == 'documents' %}block{% else %}none{% endif %};">
+      <label class="admin-form-label">Количество документов</label>
+      <input type="number" name="documents_count" class="admin-form-input" value="{{ promocode.documents_count if is_edit and promocode else 10 }}" min="1" placeholder="10">
+    </div>
+    
+    <div id="discount-fields" class="admin-form-group" style="display: {% if is_edit and promocode.promo_type == 'discount' %}block{% else %}none{% endif %};">
+      <label class="admin-form-label">Процент скидки</label>
+      <input type="number" name="discount_percent" class="admin-form-input" value="{{ promocode.discount_percent if is_edit and promocode else 10 }}" min="1" max="100" placeholder="10">
+    </div>
+    
+    <!-- Description -->
+    <div class="admin-form-group">
+      <label class="admin-form-label">Описание (для админки)</label>
+      <input type="text" name="description" class="admin-form-input" value="{{ promocode.description if is_edit and promocode else '' }}" placeholder="Промокод для партнёров">
+    </div>
+    
+    <!-- Settings -->
+    <div class="admin-form-group">
+      <label class="admin-form-label">Настройки</label>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" name="is_reusable" value="true" {% if not is_edit or promocode.is_reusable %}checked{% endif %} style="width: 20px; height: 20px;">
+            <span>Многоразовый (разные аккаунты)</span>
+          </label>
+        </div>
+        {% if is_edit %}
+        <div>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" name="is_active" value="true" {% if promocode.is_active %}checked{% endif %} style="width: 20px; height: 20px;">
+            <span>Активен</span>
+          </label>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Limits -->
+    <div class="admin-form-group">
+      <label class="admin-form-label">Ограничения</label>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <label class="admin-form-label-sm">Макс. использований</label>
+          <input type="number" name="max_uses" class="admin-form-input" value="{{ promocode.max_uses if is_edit and promocode and promocode.max_uses else '' }}" min="1" placeholder="Без лимита">
+          <div class="admin-form-hint">Пусто = без ограничений</div>
+        </div>
+        <div>
+          <label class="admin-form-label-sm">Действует до</label>
+          <input type="date" name="valid_until" class="admin-form-input" value="{{ promocode.valid_until.strftime('%Y-%m-%d') if is_edit and promocode and promocode.valid_until else '' }}">
+          <div class="admin-form-hint">Пусто = бессрочно</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Submit -->
+    <div class="admin-form-actions" style="margin-top: 32px; display: flex; gap: 16px;">
+      <button type="submit" class="admin-btn admin-btn-primary">
+        <iconify-icon icon="{% if is_edit %}ri:save-line{% else %}ri:add-line{% endif %}" width="16"></iconify-icon>
+        {% if is_edit %}Сохранить{% else %}Создать промокод{% endif %}
+      </button>
+      <a href="/admin/promocodes/" class="admin-btn admin-btn-outline">Отмена</a>
+    </div>
+  </form>
+</div>
+
+<style>
+.admin-form-container {
+  max-width: 600px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  padding: 32px;
+}
+
+.admin-form-group {
+  margin-bottom: 24px;
+}
+
+.admin-form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.admin-form-label-sm {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.admin-form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.admin-form-input:focus {
+  border-color: #3b82f6;
+}
+
+.admin-form-hint {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+.admin-alert-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 12px;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 500;
+}
+</style>
+
+<script>
+function toggleTypeFields() {
+  const type = document.getElementById('promo_type').value;
+  
+  document.getElementById('subscription-fields').style.display = type === 'subscription' ? 'block' : 'none';
+  document.getElementById('documents-fields').style.display = type === 'documents' ? 'block' : 'none';
+  document.getElementById('discount-fields').style.display = type === 'discount' ? 'block' : 'none';
+}
+</script>
+{% endblock %}

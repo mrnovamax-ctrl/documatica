@@ -146,11 +146,11 @@ async function deleteTemplate(id) {
       location.reload();
     } else {
       const err = await response.json();
-      alert(err.detail || 'Ошибка удаления');
+      toastError(err.detail || 'Ошибка удаления');
     }
   } catch (error) {
     console.error('Error deleting template:', error);
-    alert('Ошибка удаления');
+    toastError('Ошибка удаления');
   }
 }
 </script>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body_class %}public-page{% endblock %}
+
+{% block body %}
+<!-- Header -->
+{% include "components/header.html" %}
+
+<!-- Main Content -->
+<main class="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- Footer -->
+{% include "components/footer.html" %}
+{% endblock %}

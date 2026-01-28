@@ -11,12 +11,13 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload
+from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload, promocodes
 from app.pages import router as pages_router
 from app.dashboard import router as dashboard_router
 from app.admin import router as admin_router
 from app.database import init_db
 from app.core.redirects import RedirectMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 
 # Пути к статике и шаблонам
 STATIC_DIR = Path(__file__).parent / "static"
@@ -42,6 +43,29 @@ app.add_middleware(
 
 # 301 редиректы со старых URL
 app.add_middleware(RedirectMiddleware)
+
+
+# Middleware для управления кэшированием
+class CacheControlMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        path = request.url.path
+        
+        # Статические файлы с версией - кэшируем надолго
+        if path.startswith("/static/") and ("?v=" in str(request.url) or "?ver=" in str(request.url)):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        # Статические файлы без версии - короткий кэш
+        elif path.startswith("/static/"):
+            response.headers["Cache-Control"] = "public, max-age=3600"
+        # HTML страницы - не кэшировать
+        elif not path.startswith("/api/"):
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+        
+        return response
+
+app.add_middleware(CacheControlMiddleware)
 
 # Статические файлы
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
@@ -105,6 +129,12 @@ app.include_router(
     billing.router,
     prefix="/api/v1",
     tags=["billing"]
+)
+
+app.include_router(
+    promocodes.router,
+    prefix="/api/v1",
+    tags=["promocodes"]
 )
 
 app.include_router(

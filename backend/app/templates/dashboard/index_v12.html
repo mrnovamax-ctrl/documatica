@@ -177,21 +177,36 @@ document.addEventListener('DOMContentLoaded', function() {
           docs.slice(0, 10).forEach(doc => {
             const sum = parseFloat(doc.total_amount) || 0;
             
+            // Определяем URL редактирования в зависимости от типа документа
+            let editUrl = `/dashboard/upd/edit/${doc.id}/`;
+            if (doc.type === 'invoice') {
+              editUrl = `/dashboard/invoice/edit/${doc.id}/`;
+            } else if (doc.type === 'akt') {
+              editUrl = `/dashboard/akt/edit/${doc.id}/`;
+            }
+            
+            // Определяем тип документа для отображения
+            let docTypeLabel = 'УПД';
+            const typeMap = {'upd': 'УПД', 'invoice': 'Счет', 'akt': 'Акт'};
+            if (doc.type && typeMap[doc.type]) {
+              docTypeLabel = typeMap[doc.type];
+            }
+            
             const row = document.createElement('tr');
             row.innerHTML = `
-              <td><a href="/dashboard/upd/edit/${doc.id}/" style="color: #3b82f6; text-decoration: none; font-weight: 700;">${doc.document_number || '-'}</a></td>
+              <td><a href="${editUrl}" style="color: #3b82f6; text-decoration: none; font-weight: 700;">${doc.document_number || '-'}</a></td>
               <td class="secondary">${formatDate(doc.document_date)}</td>
               <td>${doc.buyer_name || '-'}</td>
               <td>${formatMoney(sum)} р.</td>
               <td>
                 <span class="status-indicator-v12">
                   <span class="dot success"></span>
-                  Создан
+                  ${docTypeLabel}
                 </span>
               </td>
               <td>
                 <div style="display: flex; gap: 4px;">
-                  <button class="btn-outline-v12 btn-sm" title="Редактировать" onclick="window.location.href='/dashboard/upd/edit/${doc.id}'/">
+                  <button class="btn-outline-v12 btn-sm" title="Редактировать" onclick="window.location.href='${editUrl}'">
                     <iconify-icon icon="mdi:pencil"></iconify-icon>
                   </button>
                   <button class="btn-outline-v12 btn-sm" title="Удалить" onclick="deleteDoc('${doc.id}')">
@@ -235,7 +250,17 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function formatDate(dateStr) {
     if (!dateStr) return '-';
+    
+    // Если дата уже в формате DD.MM.YYYY - вернуть как есть
+    if (/^\d{2}\.\d{2}\.\d{4}$/.test(dateStr)) {
+      return dateStr;
+    }
+    
+    // Попытка парсинга ISO формата
     const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+      return dateStr; // Если не удалось распарсить, вернуть как есть
+    }
     return date.toLocaleDateString('ru-RU');
   }
   
@@ -257,11 +282,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response.ok) {
         location.reload();
       } else {
-        alert('Ошибка при удалении документа');
+        toastError('Ошибка при удалении документа');
       }
     } catch (error) {
       console.error('Error deleting document:', error);
-      alert('Ошибка при удалении документа');
+      toastError('Ошибка при удалении документа');
     }
   }
 });

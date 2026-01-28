@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block body_class %}error-page{% endblock %}
+
+{% block body %}
+<div class="error-container">
+  <div class="error-content text-center py-24">
+    <span class="error-code text-9xl font-black text-slate-200">404</span>
+    <h1 class="docu-h2 mt-8 mb-4">Страница не найдена</h1>
+    <p class="docu-body mb-8">
+      Запрашиваемая страница не существует или была перемещена.
+    </p>
+    <a href="/" class="btn btn-primary rounded-2xl px-8 py-4 font-bold">
+      На главную
+    </a>
+  </div>
+</div>
+{% endblock %}

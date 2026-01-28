@@ -1,0 +1,34 @@
+"""
+Dashboard Settings Page
+"""
+
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+
+from app.core.templates import templates
+
+router = APIRouter()
+
+
+@router.get("/settings", response_class=HTMLResponse)
+async def dashboard_settings(request: Request):
+    """User settings page"""
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard/settings.html",
+        context={
+            "title": "Настройки"
+        }
+    )
+
+
+@router.get("/billing", response_class=HTMLResponse)
+async def dashboard_billing(request: Request):
+    """Billing and subscription page"""
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard/billing.html",
+        context={
+            "title": "Оплата и подписка"
+        }
+    )

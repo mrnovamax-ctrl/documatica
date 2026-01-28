@@ -2,133 +2,135 @@
 Admin Dashboard - главная страница со статистикой
 """
 
-import json
 from pathlib import Path
 from datetime import datetime, timedelta
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
+from sqlalchemy.orm import Session
+from sqlalchemy import func
 
+from app.database import get_db
+from app.models import User, Payment
 from app.core.templates import templates
 from app.admin.context import require_admin, get_admin_context
 
 router = APIRouter()
 
-# Пути к данным
-DATA_DIR = Path(__file__).parent.parent.parent / "data"
+# Пути к данным (для документов на диске)
 DOCUMENTS_DIR = Path(__file__).parent.parent.parent / "documents"
 
 
-def load_json(filename: str) -> dict:
-    """Загрузка JSON файла"""
-    filepath = DATA_DIR / filename
-    if filepath.exists():
-        with open(filepath, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
-
-
-def get_statistics() -> dict:
-    """Получение статистики для дашборда"""
-    # Пользователи
-    users_data = load_json("users.json")
-    users = users_data.get("users", [])
-    total_users = len(users)
-    
-    # Платные аккаунты (у кого tariff != 'free')
-    paid_users = len([u for u in users if u.get("tariff") not in (None, "free", "starter")])
-    
-    # Документы
-    docs_data = load_json("documents.json")
-    documents = docs_data.get("documents", [])
-    total_documents = len(documents)
-    
-    # Документы по типам
-    doc_types = {}
-    for doc in documents:
-        doc_type = doc.get("type", "unknown")
-        doc_types[doc_type] = doc_types.get(doc_type, 0) + 1
-    
-    # Документы за последние периоды
-    now = datetime.now()
+def get_statistics(db: Session) -> dict:
+    """Получение статистики для дашборда из БД"""
+    now = datetime.utcnow()
     today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
     week_start = today_start - timedelta(days=7)
     month_start = today_start - timedelta(days=30)
     
+    # === Пользователи из БД ===
+    total_users = db.query(func.count(User.id)).scalar() or 0
+    
+    # Платные аккаунты (с активной подпиской)
+    paid_users = db.query(func.count(User.id)).filter(
+        User.subscription_plan == "subscription",
+        User.subscription_expires > now
+    ).scalar() or 0
+    
+    # Новые пользователи за периоды
+    users_today = db.query(func.count(User.id)).filter(
+        User.created_at >= today_start
+    ).scalar() or 0
+    
+    users_week = db.query(func.count(User.id)).filter(
+        User.created_at >= week_start
+    ).scalar() or 0
+    
+    users_month = db.query(func.count(User.id)).filter(
+        User.created_at >= month_start
+    ).scalar() or 0
+    
+    # Верифицированные пользователи
+    verified_users = db.query(func.count(User.id)).filter(
+        User.is_verified == True
+    ).scalar() or 0
+    
+    # === Документы ===
+    # Считаем папки в директории documents
+    total_documents = 0
     docs_today = 0
     docs_week = 0
     docs_month = 0
     
-    for doc in documents:
-        created_str = doc.get("created_at", "")
-        if created_str:
-            try:
-                created = datetime.fromisoformat(created_str.replace("Z", "+00:00"))
-                created = created.replace(tzinfo=None)  # Убираем timezone для сравнения
-                if created >= today_start:
-                    docs_today += 1
-                if created >= week_start:
-                    docs_week += 1
-                if created >= month_start:
-                    docs_month += 1
-            except Exception:
-                pass
-    
-    # Организации
-    orgs_data = load_json("organizations.json")
-    # organizations.json может быть списком или объектом с ключом
-    if isinstance(orgs_data, list):
-        total_orgs = len(orgs_data)
-    else:
-        total_orgs = len(orgs_data.get("organizations", []))
-    
-    # Контрагенты
-    contractors_data = load_json("contractors.json")
-    if isinstance(contractors_data, list):
-        total_contractors = len(contractors_data)
-    else:
-        total_contractors = len(contractors_data.get("contractors", []))
-    
-    # Товары/услуги
-    products_data = load_json("products.json")
-    if isinstance(products_data, list):
-        total_products = len(products_data)
-    else:
-        total_products = len(products_data.get("products", []))
-    
-    # Файлы документов на диске
-    total_files = 0
     if DOCUMENTS_DIR.exists():
-        total_files = len(list(DOCUMENTS_DIR.glob("*")))
+        for doc_folder in DOCUMENTS_DIR.iterdir():
+            if doc_folder.is_dir():
+                total_documents += 1
+                # Проверяем дату создания папки
+                try:
+                    folder_time = datetime.fromtimestamp(doc_folder.stat().st_ctime)
+                    if folder_time >= today_start:
+                        docs_today += 1
+                    if folder_time >= week_start:
+                        docs_week += 1
+                    if folder_time >= month_start:
+                        docs_month += 1
+                except Exception:
+                    pass
+    
+    # === Платежи из БД ===
+    total_payments = db.query(func.count(Payment.id)).filter(
+        Payment.status == "confirmed"
+    ).scalar() or 0
+    
+    total_revenue = db.query(func.sum(Payment.amount)).filter(
+        Payment.status == "confirmed"
+    ).scalar() or 0
+    
+    payments_month = db.query(func.count(Payment.id)).filter(
+        Payment.status == "confirmed",
+        Payment.confirmed_at >= month_start
+    ).scalar() or 0
+    
+    revenue_month = db.query(func.sum(Payment.amount)).filter(
+        Payment.status == "confirmed",
+        Payment.confirmed_at >= month_start
+    ).scalar() or 0
     
     return {
         "users": {
             "total": total_users,
             "paid": paid_users,
             "free": total_users - paid_users,
+            "verified": verified_users,
+            "today": users_today,
+            "week": users_week,
+            "month": users_month,
         },
         "documents": {
             "total": total_documents,
             "today": docs_today,
             "week": docs_week,
             "month": docs_month,
-            "by_type": doc_types,
         },
-        "organizations": total_orgs,
-        "contractors": total_contractors,
-        "products": total_products,
-        "files_on_disk": total_files,
+        "payments": {
+            "total_count": total_payments,
+            "total_revenue": float(total_revenue) if total_revenue else 0,
+            "month_count": payments_month,
+            "month_revenue": float(revenue_month) if revenue_month else 0,
+        },
+        "files_on_disk": total_documents,
     }
 
 
 @router.get("/", response_class=HTMLResponse)
-async def admin_dashboard(request: Request):
+async def admin_dashboard(request: Request, db: Session = Depends(get_db)):
     """Главная страница админки со статистикой"""
     # Проверка авторизации
     auth_check = require_admin(request)
     if auth_check:
         return auth_check
     
-    stats = get_statistics()
+    stats = get_statistics(db)
     
     return templates.TemplateResponse(
         request=request,

@@ -74,7 +74,245 @@
       <span class="status-text">256-bit Encryption</span>
     </div>
   </div>
+  
+  <!-- Email Verification Modal -->
+  <div id="verification-modal" class="verification-modal-overlay" style="display: none;">
+    <div class="verification-modal-v12">
+      <div class="verification-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <div class="verification-status">
+        <div class="status-dot"></div>
+        <span>Verification Required</span>
+      </div>
+      <h2 class="verification-title">Подтвердите<br><span>email</span></h2>
+      <p class="verification-text">Мы отправили ссылку для подтверждения на адрес:</p>
+      <p class="verification-email" id="sent-email">email@example.com</p>
+      <p class="verification-hint">Проверьте папку "Входящие" и "Спам". Ссылка действительна 24 часа.</p>
+      
+      <div class="verification-actions">
+        <button type="button" id="resend-btn" class="verification-btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          Отправить ещё раз
+        </button>
+        <button type="button" id="change-email-btn" class="verification-btn-secondary">
+          Изменить email
+        </button>
+      </div>
+      
+      <!-- Change Email Form -->
+      <div id="change-email-form" class="change-email-form" style="display: none;">
+        <div class="auth-field-v12">
+          <label class="auth-label-v12">Новый Email</label>
+          <input type="email" class="auth-input-v12" id="new-email-input" placeholder="new@email.com" required>
+        </div>
+        <div class="change-email-actions">
+          <button type="button" id="confirm-change-email" class="verification-btn-primary">Изменить</button>
+          <button type="button" id="cancel-change-email" class="verification-btn-secondary">Отмена</button>
+        </div>
+      </div>
+      
+      <div class="verification-footer">
+        <span>Grid Core v12.0</span>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+/* Verification Modal */
+.verification-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.verification-modal-v12 {
+  background: white;
+  border-radius: 3rem;
+  padding: 3rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modalSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideIn {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.verification-icon {
+  margin-bottom: 1.5rem;
+}
+
+.verification-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.verification-status .status-dot {
+  width: 8px;
+  height: 8px;
+  background: #FBBF24;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+}
+
+.verification-status span {
+  font-size: 9px;
+  font-weight: 900;
+  color: #3b82f6;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+}
+
+.verification-title {
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+  color: #0f172a;
+  margin: 0 0 1.5rem 0;
+}
+
+.verification-title span {
+  color: #3b82f6;
+}
+
+.verification-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #64748b;
+  margin: 0 0 0.5rem 0;
+}
+
+.verification-email {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 1rem 0;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  border-radius: 0.75rem;
+  word-break: break-all;
+}
+
+.verification-hint {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0 0 2rem 0;
+}
+
+.verification-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.verification-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.verification-btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+}
+
+.verification-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.verification-btn-secondary {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.verification-btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.change-email-form {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.change-email-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.change-email-actions button {
+  flex: 1;
+}
+
+.verification-footer {
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.verification-footer span {
+  font-size: 9px;
+  font-weight: 900;
+  color: #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+</style>
 
 <script>
 // Проверяем, авторизован ли пользователь
@@ -100,21 +338,51 @@
   }
 })();
 
+let registeredEmail = '';
+
+// Функция отправки цели в Яндекс.Метрику
+function trackRegistrationMetrika(email, name) {
+  if (typeof ym !== 'undefined') {
+    // Отправляем цель с дополнительными параметрами
+    ym(76440544, 'reachGoal', 'user_registered', {
+      email: email,
+      name: name,
+      registration_date: new Date().toISOString().split('T')[0]
+    });
+    
+    // Отправляем параметры визита для сегментации
+    ym(76440544, 'params', {
+      user_email: email,
+      user_name: name,
+      registration_completed: true
+    });
+    
+    console.log('Метрика: цель user_registered достигнута');
+  } else {
+    console.warn('Яндекс.Метрика не загружена');
+  }
+}
+
 document.getElementById('register-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   
   const formData = new FormData(this);
+  const email = formData.get('email');
   
   if (formData.get('password') !== formData.get('password_confirm')) {
-    alert('Пароли не совпадают');
+    toastError('Пароли не совпадают');
     return;
   }
   
   const data = {
     name: formData.get('name'),
-    email: formData.get('email'),
+    email: email,
     password: formData.get('password')
   };
+  
+  const btn = this.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Регистрация...';
   
   try {
     const response = await fetch('/api/v1/auth/register', {
@@ -123,16 +391,107 @@ document.getElementById('register-form').addEventListener('submit', async functi
       body: JSON.stringify(data)
     });
     
+    const result = await response.json();
+    
     if (response.ok) {
-      window.location.href = '/dashboard/';
+      // Отправляем цель в Метрику
+      trackRegistrationMetrika(email, data.name);
+      
+      // Показываем модальное окно подтверждения email
+      registeredEmail = email;
+      document.getElementById('sent-email').textContent = email;
+      document.getElementById('verification-modal').style.display = 'flex';
     } else {
-      const error = await response.json();
-      alert(error.detail || 'Ошибка регистрации');
+      toastError(result.detail || 'Ошибка регистрации');
+      btn.disabled = false;
+      btn.innerHTML = 'Создать аккаунт <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
     }
   } catch (error) {
     console.error('Register error:', error);
-    alert('Ошибка регистрации');
+    toastError('Ошибка регистрации');
+    btn.disabled = false;
+    btn.innerHTML = 'Создать аккаунт <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
   }
+});
+
+// Resend verification email
+document.getElementById('resend-btn').addEventListener('click', async function() {
+  const btn = this;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Отправка...';
+  
+  try {
+    const response = await fetch('/api/v1/auth/resend-verification', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: registeredEmail })
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      toastSuccess('Письмо отправлено повторно');
+    } else {
+      toastError(result.detail || 'Ошибка отправки');
+    }
+  } catch (error) {
+    toastError('Ошибка соединения');
+  }
+  
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Отправить ещё раз';
+});
+
+// Show change email form
+document.getElementById('change-email-btn').addEventListener('click', function() {
+  document.getElementById('change-email-form').style.display = 'block';
+  this.style.display = 'none';
+});
+
+// Cancel change email
+document.getElementById('cancel-change-email').addEventListener('click', function() {
+  document.getElementById('change-email-form').style.display = 'none';
+  document.getElementById('change-email-btn').style.display = 'block';
+});
+
+// Confirm change email
+document.getElementById('confirm-change-email').addEventListener('click', async function() {
+  const newEmail = document.getElementById('new-email-input').value;
+  
+  if (!newEmail || !newEmail.includes('@')) {
+    toastError('Введите корректный email');
+    return;
+  }
+  
+  const btn = this;
+  btn.disabled = true;
+  btn.textContent = 'Обновление...';
+  
+  try {
+    // Сначала обновляем email
+    const response = await fetch('/api/v1/auth/update-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ old_email: registeredEmail, new_email: newEmail })
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      registeredEmail = newEmail;
+      document.getElementById('sent-email').textContent = newEmail;
+      document.getElementById('change-email-form').style.display = 'none';
+      document.getElementById('change-email-btn').style.display = 'block';
+      toastSuccess('Email обновлён, письмо отправлено');
+    } else {
+      toastError(result.detail || 'Ошибка обновления email');
+    }
+  } catch (error) {
+    toastError('Ошибка соединения');
+  }
+  
+  btn.disabled = false;
+  btn.textContent = 'Изменить';
 });
 </script>
 {% endblock %}

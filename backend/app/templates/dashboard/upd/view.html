@@ -499,10 +499,10 @@ document.getElementById('btn-delete').addEventListener('click', async function()
     if (response.ok) {
       window.location.href = '/dashboard/documents/';
     } else {
-      alert('Ошибка удаления документа');
+      toastError('Ошибка удаления документа');
     }
   } catch (error) {
-    alert('Ошибка: ' + error.message);
+    toastError('Ошибка: ' + error.message);
   }
 });
 

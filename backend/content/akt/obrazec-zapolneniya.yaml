@@ -1,0 +1,102 @@
+meta:
+  title: "Образец заполнения Акта выполненных работ 2026 — Documatica"
+  description: "Подробный образец заполнения акта выполненных работ с пояснениями. Пример акта для ООО и ИП."
+  keywords: "образец акта, пример заполнения акта, акт выполненных работ образец"
+  canonical: "/akt/obrazec-zapolneniya/"
+
+page:
+  h1: "Образец заполнения Акта выполненных работ"
+  tag: "Инструкция"
+  intro: |
+    Подробный образец заполнения акта выполненных работ с пояснениями по каждому полю.
+    Актуальная форма 2026 года.
+
+sections:
+  - title: "1. Шапка документа"
+    content: |
+      <p>В шапке акта указывается:</p>
+      <ul>
+        <li><strong>Название документа</strong> — "Акт выполненных работ" или "Акт оказанных услуг"</li>
+        <li><strong>Номер документа</strong> — порядковый номер в вашей нумерации</li>
+        <li><strong>Дата составления</strong> — день подписания акта сторонами</li>
+      </ul>
+      <p><em>Пример: Акт № 15 от 26 января 2026 г.</em></p>
+      
+  - title: "2. Реквизиты Исполнителя"
+    content: |
+      <p>Укажите данные организации или ИП, которые выполнили работы:</p>
+      <ul>
+        <li><strong>Наименование</strong> — полное или сокращенное название (ООО "Ромашка" или ИП Иванов И.И.)</li>
+        <li><strong>ИНН</strong> — 10 цифр для юрлица, 12 цифр для ИП</li>
+        <li><strong>КПП</strong> — только для юридических лиц</li>
+        <li><strong>Адрес</strong> — юридический адрес организации</li>
+      </ul>
+      
+  - title: "3. Реквизиты Заказчика"
+    content: |
+      <p>Укажите данные организации или ИП, для которых выполнены работы:</p>
+      <ul>
+        <li><strong>Наименование</strong> — полное или сокращенное название</li>
+        <li><strong>ИНН</strong> — идентификационный номер налогоплательщика</li>
+        <li><strong>КПП</strong> — для юридических лиц</li>
+        <li><strong>Адрес</strong> — юридический адрес</li>
+      </ul>
+      
+  - title: "4. Таблица с перечнем работ/услуг"
+    content: |
+      <p>Заполните таблицу с перечнем выполненных работ:</p>
+      <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+        <tr style="background: #f1f5f9;">
+          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">№</th>
+          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Наименование работ</th>
+          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Ед. изм.</th>
+          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Кол-во</th>
+          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Цена</th>
+          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Сумма</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #e2e8f0; padding: 8px;">1</td>
+          <td style="border: 1px solid #e2e8f0; padding: 8px;">Разработка сайта по договору № 10 от 01.01.2026</td>
+          <td style="border: 1px solid #e2e8f0; padding: 8px;">шт.</td>
+          <td style="border: 1px solid #e2e8f0; padding: 8px;">1</td>
+          <td style="border: 1px solid #e2e8f0; padding: 8px;">100 000,00</td>
+          <td style="border: 1px solid #e2e8f0; padding: 8px;">100 000,00</td>
+        </tr>
+      </table>
+      <p><strong>Важно:</strong> Описывайте работы конкретно. "Услуги по договору" — плохо. "Разработка сайта" — хорошо.</p>
+      
+  - title: "5. Итоговая сумма и НДС"
+    content: |
+      <p>В итогах укажите:</p>
+      <ul>
+        <li><strong>Итого</strong> — общая сумма всех работ</li>
+        <li><strong>НДС</strong> — сумма налога (если вы плательщик НДС) или "Без НДС"</li>
+        <li><strong>Всего к оплате</strong> — итоговая сумма с НДС или без</li>
+        <li><strong>Сумма прописью</strong> — например, "Сто тысяч рублей 00 копеек"</li>
+      </ul>
+      
+  - title: "6. Подписи сторон"
+    content: |
+      <p>Акт подписывают обе стороны:</p>
+      <ul>
+        <li><strong>Исполнитель</strong> — директор или уполномоченное лицо</li>
+        <li><strong>Заказчик</strong> — директор или уполномоченное лицо</li>
+      </ul>
+      <p>Печати не обязательны с 2015 года, но могут использоваться при наличии.</p>
+      <p><strong>Подпись заказчика означает, что работы приняты без претензий.</strong></p>
+
+cta:
+  title: "Создать Акт онлайн"
+  description: "Заполните форму — мы сформируем документ автоматически"
+  text: "Создать Акт бесплатно"
+  url: "/dashboard/akt/create/"
+
+related:
+  - title: "Генератор Акта онлайн"
+    url: "/akt/"
+  - title: "Акт для ООО"
+    url: "/akt/ooo/"
+  - title: "Акт для ИП"
+    url: "/akt/ip/"
+  - title: "Скачать бланк Excel"
+    url: "/akt/blank-excel/"

@@ -10,7 +10,7 @@ from app.core.templates import templates
 router = APIRouter()
 
 
-@router.get("/about/", response_class=HTMLResponse)
+@router.get("/about", response_class=HTMLResponse)
 async def about_page(request: Request):
     """Страница О нас / О компании"""
     return templates.TemplateResponse(

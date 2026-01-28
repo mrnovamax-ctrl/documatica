@@ -1,0 +1,64 @@
+# {{PROJECT_TITLE}}
+
+{{DESCRIPTION}}
+
+## Quick Start
+
+```bash
+# 1. Copy environment file
+cp .env.example .env
+
+# 2. Generate secret key and update .env
+openssl rand -hex 32
+
+# 3. Start with Docker
+docker-compose up -d
+
+# 4. Open in browser
+open http://localhost:8000
+```
+
+## Structure
+
+```
+{{PROJECT_NAME}}/
+├── backend/          # FastAPI application
+│   ├── app/
+│   │   ├── api/      # REST API endpoints
+│   │   ├── pages/    # Public pages
+│   │   ├── dashboard/# Client cabinet
+│   │   ├── admin/    # Admin panel
+│   │   └── templates/# Jinja2 templates
+│   └── content/      # YAML content files
+├── nginx/            # Nginx configuration
+└── scripts/          # Deploy scripts
+```
+
+## URLs
+
+| URL | Description |
+|-----|-------------|
+| `/` | Public homepage |
+| `/login` | User login |
+| `/register` | User registration |
+| `/dashboard` | Client cabinet |
+| `/admin` | Admin panel |
+| `/docs` | API documentation |
+
+## Payment Integration
+
+T-Bank acquiring is pre-configured. Set these in `.env`:
+- `TBANK_TERMINAL_KEY` - Terminal key from merchant.tbank.ru
+- `TBANK_PASSWORD` - Terminal password
+- `TBANK_PRODUCTION` - Set `true` for production
+
+For testing, use `TBANK_MOCK=true`.
+
+## Design System
+
+Uses Documatica v12.0 Design System.
+See `/static/css/documatica.css`.
+
+## License
+
+Copyright {{YEAR}} {{PROJECT_TITLE}}. All rights reserved.

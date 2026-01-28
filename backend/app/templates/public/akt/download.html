@@ -1,0 +1,95 @@
+{% extends "base_public.html" %}
+
+{% block title %}{{ config.title | default('Скачать бланк Акта — Documatica') }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ config.description | default('Скачайте бланк акта выполненных работ бесплатно') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="upd-hero-v12" style="padding: 80px 0;">
+  <div style="max-width: 800px; margin: 0 auto; padding: 0 24px; text-align: center;">
+    <span class="upd-hero-tag-v12">Скачать бланк</span>
+    <h1 class="upd-hero-title-v12" style="font-size: clamp(2rem, 5vw, 3rem);">
+      {{ config.h1 | default('Скачать бланк Акта') }}
+    </h1>
+    <p class="upd-hero-desc-v12">
+      {{ config.description | default('Скачайте пустой бланк акта выполненных работ бесплатно') }}
+    </p>
+  </div>
+</section>
+
+<!-- Download Card -->
+<section style="padding: 0 0 80px 0;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 0 24px;">
+    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 24px; padding: 48px; text-align: center;">
+      
+      <div style="width: 80px; height: 80px; background: #f1f5f9; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="18" x2="12" y2="12"></line>
+          <line x1="9" y1="15" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      
+      <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 8px;">
+        {{ config.h1 | default('Бланк Акта') }}
+      </h2>
+      
+      <p style="color: #64748b; margin-bottom: 24px;">
+        Формат: <strong>{{ config.format | default('Excel (.xlsx)') }}</strong>
+      </p>
+      
+      <a href="{{ config.file_url | default('#') }}" class="docu-btn-primary" style="padding: 16px 48px; display: inline-flex; align-items: center; gap: 8px;" download>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Скачать бесплатно
+      </a>
+      
+      <p style="color: #94a3b8; font-size: 12px; margin-top: 16px;">
+        Файл будет загружен на ваш компьютер
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Alternative -->
+<section style="padding: 0 0 80px 0;">
+  <div style="max-width: 800px; margin: 0 auto; padding: 0 24px; text-align: center;">
+    <h2 class="docu-h3" style="margin-bottom: 16px;">Или создайте акт онлайн</h2>
+    <p class="docu-body" style="margin-bottom: 24px;">
+      Не нужно скачивать и заполнять вручную — создайте документ в онлайн-генераторе за 2 минуты
+    </p>
+    <a href="/dashboard/akt/create/" class="header-btn-outline-v12">
+      Создать Акт онлайн
+    </a>
+  </div>
+</section>
+
+<!-- Related -->
+<section style="padding: 80px 0; background: #f8fafc;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 0 24px;">
+    <h2 class="docu-tag-muted" style="text-align: center; margin-bottom: 48px;">Смотрите также</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+      <a href="/akt/" style="display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: white; border-radius: 12px; text-decoration: none; color: #0f172a; font-weight: 600;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        Генератор Акта онлайн
+      </a>
+      <a href="/akt/obrazec/" style="display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: white; border-radius: 12px; text-decoration: none; color: #0f172a; font-weight: 600;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        Образец заполнения
+      </a>
+      <a href="/akt/2026/" style="display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: white; border-radius: 12px; text-decoration: none; color: #0f172a; font-weight: 600;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        Форма 2026 года
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -110,3 +110,55 @@ class GlobalINNLimit(Base):
     
     def __repr__(self):
         return f"<GlobalINNLimit inn={self.inn} used={self.free_generations_used}>"
+
+
+class Promocode(Base):
+    """Промокоды"""
+    __tablename__ = "promocodes"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    code = Column(String(50), unique=True, index=True, nullable=False)  # Код промокода
+    
+    # Тип промокода
+    promo_type = Column(String(50), nullable=False)  # subscription, discount, documents
+    
+    # Параметры
+    subscription_days = Column(Integer, nullable=True)  # Дней подписки (для subscription)
+    subscription_price = Column(Integer, nullable=True)  # Цена подписки по промокоду
+    discount_percent = Column(Integer, nullable=True)  # Процент скидки (для discount)
+    documents_count = Column(Integer, nullable=True)  # Кол-во документов (для documents)
+    
+    # Ограничения
+    is_active = Column(Boolean, default=True)
+    is_reusable = Column(Boolean, default=True)  # Многоразовый (можно на разных аккаунтах)
+    max_uses = Column(Integer, nullable=True)  # Макс. использований (null = без лимита)
+    uses_count = Column(Integer, default=0)  # Текущее кол-во использований
+    valid_from = Column(DateTime, nullable=True)
+    valid_until = Column(DateTime, nullable=True)
+    
+    # Метаданные
+    description = Column(String(255), nullable=True)  # Описание для админки
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Связи
+    usages = relationship("PromocodeUsage", back_populates="promocode")
+    
+    def __repr__(self):
+        return f"<Promocode {self.code} type={self.promo_type}>"
+
+
+class PromocodeUsage(Base):
+    """История использования промокодов"""
+    __tablename__ = "promocode_usages"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    promocode_id = Column(Integer, ForeignKey("promocodes.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    
+    activated_at = Column(DateTime, default=datetime.utcnow)
+    
+    promocode = relationship("Promocode", back_populates="usages")
+    user = relationship("User")
+    
+    def __repr__(self):
+        return f"<PromocodeUsage promo={self.promocode_id} user={self.user_id}>"
