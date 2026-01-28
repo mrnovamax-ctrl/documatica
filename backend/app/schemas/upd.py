@@ -208,6 +208,8 @@ class UPDPreviewRequest(BaseModel):
     seller_responsible: Optional[PreviewSignerInfo] = Field(None, description="Ответственный продавца")
     economic_entity: Optional[str] = Field(None, description="Экономический субъект")
     seller_stamp_image: Optional[str] = Field(None, description="Печать продавца (base64 или URL)")
+    accountant_name: Optional[str] = Field(None, description="ФИО главного бухгалтера")
+    accountant_signature: Optional[str] = Field(None, description="Подпись бухгалтера (base64)")
     
     receiving_date: Optional[date] = Field(None, description="Дата получения")
     other_receiving_info: Optional[str] = Field(None, description="Иные сведения")

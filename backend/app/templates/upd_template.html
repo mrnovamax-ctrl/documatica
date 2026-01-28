@@ -1205,9 +1205,9 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl65></td>
   <td class=xl65></td>
   <td colspan=9 class=xl90 width=166 style='width:125pt'>Главный бухгалтер<br>или иное уполномоченное лицо</td>
-  <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if seller_signer and seller_signer.signature_image %}<img src="{{ seller_signer.signature_image }}" class="signature-img">{% endif %}</td>
+  <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if accountant_signature %}<img src="{{ accountant_signature }}" class="signature-img">{% endif %}</td>
   <td class=xl65></td>
-  <td colspan=9 class=xl83 width=181 style='width:136pt'>{% if seller_signer %}{{ seller_signer.full_name }}{% endif %}</td>
+  <td colspan=9 class=xl83 width=181 style='width:136pt'>{% if accountant_name %}{{ accountant_name }}{% endif %}</td>
   <td colspan=6 class=xl65></td>
  </tr>
  <tr class=xl65 height=9 style='height:7.15pt'>
