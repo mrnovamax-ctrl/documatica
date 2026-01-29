@@ -737,8 +737,8 @@
             </div>
             <div class="card-body p-24">
               <div class="row g-16">
-                <!-- Статус УПД - радиобаттоны -->
-                <div class="col-12">
+                <!-- Статус УПД - автоматически определяется по НДС (скрыто) -->
+                <div class="col-12 d-none" id="upd-status-wrapper">
                   <label class="form-label fw-medium mb-8">Статус УПД</label>
                   <div class="d-flex align-items-center flex-wrap gap-28">
                     <div class="form-check checked-primary d-flex align-items-center gap-2">
@@ -749,6 +749,14 @@
                       <input class="form-check-input" type="radio" name="upd-status" id="upd-status-2" value="2">
                       <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="upd-status-2">2 - передаточный документ (акт)</label>
                     </div>
+                  </div>
+                </div>
+                <!-- Информация о статусе УПД -->
+                <div class="col-12">
+                  <div class="alert alert-secondary-100 py-8 px-16 radius-8 mb-0 d-flex align-items-center gap-8">
+                    <span class="text-secondary-light text-sm">Статус УПД:</span>
+                    <span id="upd-status-display" class="fw-semibold text-primary-600">1 - счет-фактура и передаточный документ</span>
+                    <span class="text-secondary-light text-xs ms-8">(определяется автоматически по ставке НДС)</span>
                   </div>
                 </div>
                 <!-- Номер и дата -->
@@ -2090,13 +2098,10 @@ $(document).ready(function() {
         if (org.vat_type) {
             if (org.vat_type === 'without' || org.vat_type === 'none') {
                 $('#default-vat').val('none');
-                // Без НДС - статус 2 (только передаточный документ)
-                $('input[name="upd-status"][value="2"]').prop('checked', true);
             } else {
                 $('#default-vat').val(org.vat_type);
-                // Есть НДС - статус 1 (счет-фактура и передаточный документ)
-                $('input[name="upd-status"][value="1"]').prop('checked', true);
             }
+            updateStatusDisplay();
         }
         
         sessionStorage.removeItem('selectedOrganization');
@@ -2121,8 +2126,21 @@ $(document).ready(function() {
         sessionStorage.removeItem('selectedContractor');
     }
     
+    // Функция обновления отображения статуса УПД
+    function updateStatusDisplay() {
+        const vatRate = $('#default-vat').val();
+        if (vatRate === 'none') {
+            $('input[name="upd-status"][value="2"]').prop('checked', true);
+            $('#upd-status-display').text('2 - передаточный документ (акт)');
+        } else {
+            $('input[name="upd-status"][value="1"]').prop('checked', true);
+            $('#upd-status-display').text('1 - счет-фактура и передаточный документ');
+        }
+    }
+    
     // Пересчет при изменении настроек НДС
     $('#default-vat, #default-vat-type').on('change', function() {
+        updateStatusDisplay();
         calculateTotals();
         updatePreview();
     });
@@ -2594,6 +2612,13 @@ $(document).ready(function() {
         }
     }
     
+    // Определение типа организации по ИНН (10 цифр = ООО, 12 цифр = ИП)
+    function getOrgTypeByInn(inn) {
+        if (!inn) return 'ooo';
+        const cleanInn = inn.toString().replace(/\D/g, '');
+        return cleanInn.length === 12 ? 'ip' : 'ooo';
+    }
+    
     // Собираем данные формы (вынесено в отдельную функцию)
     function collectFormDataForSubmit() {
         const items = [];
@@ -2681,6 +2706,7 @@ $(document).ready(function() {
             currency_name: 'Российский рубль',
             contract_info: $('#transfer-basis').val() || null,
             transport_info: $('#transport-info').val() || null,
+            seller_org_type: getOrgTypeByInn($('#seller-inn').val()),
             seller_signer: $('#released-by').val() ? {
                 position: '',
                 full_name: $('#released-by').val(),
@@ -3104,6 +3130,7 @@ $(document).ready(function() {
             gov_contract_id: $('#gov-contract-id').val() || null,
             contract_info: $('#transfer-basis').val() || null,
             transport_info: $('#transport-info').val() || null,
+            seller_org_type: getOrgTypeByInn($('#seller-inn').val()),
             shipping_date: $('#shipping-date').val() ? convertDateToISO($('#shipping-date').val()) : null,
             other_shipping_info: $('#other-shipping-info').val() || null,
             seller_signer: $('#released-by').val() ? {

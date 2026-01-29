@@ -91,7 +91,7 @@ $(document).ready(function() {
                     if (result.success && result.data) {
                         setTimeout(function() {
                             loadFormDataForEdit(result.data);
-                            showNotification('success', 'Документ загружен для редактирования');
+                            toastSuccess('Документ загружен для редактирования');
                         }, 500);
                     }
                 }
@@ -105,7 +105,15 @@ $(document).ready(function() {
     let organizationsList = [];
     let contractorsList = [];
     let productsList = [];
+    let selectedExecutorOrg = null;  // Для хранения выбранной организации (подпись, печать)
     
+    // Определение типа организации по ИНН (10 цифр = ООО, 12 цифр = ИП)
+    function getOrgTypeByInn(inn) {
+        if (!inn) return 'ooo';
+        const cleanInn = inn.toString().replace(/\D/g, '');
+        return cleanInn.length === 12 ? 'ip' : 'ooo';
+    }
+
     // ============== DADATA АВТОЗАПОЛНЕНИЕ ==============
     
     async function searchCompanyByInn(inn, targetType) {
@@ -163,7 +171,7 @@ $(document).ready(function() {
             $('#executor-name, #executor-inn, #executor-kpp, #executor-address').removeClass('bg-success-100');
         }, 2000);
         
-        showNotification('success', `Данные компании "${company.name}" загружены`);
+        toastSuccess(`Данные компании "${company.name}" загружены`);
         updatePreview();
     }
     
@@ -180,7 +188,7 @@ $(document).ready(function() {
             $('#customer-name, #customer-inn, #customer-kpp, #customer-address').removeClass('bg-success-100');
         }, 2000);
         
-        showNotification('success', `Данные компании "${company.name}" загружены`);
+        toastSuccess(`Данные компании "${company.name}" загружены`);
         updatePreview();
     }
     
@@ -399,12 +407,20 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const org = organizationsList.find(o => o.id === id);
         if (org) {
+            // Сохраняем выбранную организацию для использования подписи и печати
+            selectedExecutorOrg = org;
+            
             document.body.classList.add('no-transitions');
             
             $('#executor-name').val(org.name);
             $('#executor-inn').val(org.inn);
             $('#executor-kpp').val(org.kpp || '');
             $('#executor-address').val(org.address || '');
+            
+            // Заполняем подписанта если есть
+            if (org.director_name) {
+                $('#executor-signatory').val(org.director_name);
+            }
             
             bootstrap.Modal.getInstance(document.getElementById('selectCompanyModal')).hide();
             $('#save-executor-btn').removeClass('show');
@@ -584,7 +600,7 @@ $(document).ready(function() {
             calculateTotals();
             updatePreview();
         } else {
-            showNotification('warning', 'Должна быть хотя бы одна позиция');
+            toastWarning('Должна быть хотя бы одна позиция');
         }
     });
     
@@ -727,6 +743,9 @@ $(document).ready(function() {
                 address: $('#executor-address').val()
             },
             executor_signatory: $('#executor-signatory').val(),
+            executor_org_type: getOrgTypeByInn($('#executor-inn').val()),
+            executor_stamp_image: selectedExecutorOrg?.stamp_base64 || null,
+            executor_signature: selectedExecutorOrg?.director_signature || null,
             
             customer: {
                 name: $('#customer-name').val(),
@@ -744,6 +763,68 @@ $(document).ready(function() {
         };
     }
     
+    // ============== DRAFT SAVING ==============
+    
+    // Сохранение документа как pending для неавторизованного пользователя (на сервере)
+    async function savePendingDocument(requestData) {
+        try {
+            const response = await fetch('/api/v1/drafts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    document_type: 'akt',
+                    document_data: requestData
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('documatica_draft_token', data.draft_token);
+                localStorage.setItem('documatica_pending_document', JSON.stringify(requestData));
+                return data.draft_token;
+            }
+        } catch (error) {
+            console.error('Ошибка сохранения черновика:', error);
+        }
+        
+        localStorage.setItem('documatica_pending_document', JSON.stringify(requestData));
+        return null;
+    }
+    
+    // Обновление UI модалки при сохранении черновика
+    function updateModalSaveStatus(success, draftToken) {
+        // Обновляем оба возможных элемента статуса
+        const statusIds = ['draft-save-status', 'draft-save-status-auth'];
+        
+        statusIds.forEach(id => {
+            const statusEl = document.getElementById(id);
+            if (!statusEl) return;
+            
+            if (success) {
+                statusEl.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span style="color: #166534; font-weight: 600;">Черновик сохранён на сервере</span>
+                    </div>
+                `;
+            } else {
+                statusEl.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16v-4M12 8h.01"></path>
+                        </svg>
+                        <span style="color: #92400e; font-weight: 600;">Черновик сохранён локально</span>
+                    </div>
+                `;
+            }
+        });
+    }
+    
     // ============== FORM SUBMIT ==============
     
     $('#akt-form').on('submit', async function(e) {
@@ -753,19 +834,19 @@ $(document).ready(function() {
         
         // Валидация
         if (!formData.document_number) {
-            showNotification('danger', 'Укажите номер акта');
+            toastError('Укажите номер акта');
             return;
         }
         if (!formData.executor.name) {
-            showNotification('danger', 'Укажите наименование исполнителя');
+            toastError('Укажите наименование исполнителя');
             return;
         }
         if (!formData.customer.name) {
-            showNotification('danger', 'Укажите наименование заказчика');
+            toastError('Укажите наименование заказчика');
             return;
         }
         if (formData.items.length === 0) {
-            showNotification('danger', 'Добавьте хотя бы одну позицию');
+            toastError('Добавьте хотя бы одну позицию');
             return;
         }
         
@@ -775,10 +856,31 @@ $(document).ready(function() {
         
         try {
             const token = localStorage.getItem('documatica_token');
-            const headers = { 'Content-Type': 'application/json' };
-            if (token) {
-                headers['Authorization'] = 'Bearer ' + token;
+            
+            // Если нет токена - сохраняем как черновик и показываем модалку
+            if (!token) {
+                submitBtn.prop('disabled', false).html(originalText);
+                
+                // Показываем модалку сразу
+                const modal = new bootstrap.Modal(document.getElementById('guestRegistrationModal'));
+                modal.show();
+                
+                // Сохраняем черновик на сервере
+                const draftToken = await savePendingDocument(formData);
+                updateModalSaveStatus(!!draftToken, draftToken);
+                
+                // Добавляем draft_token к ссылкам OAuth
+                if (draftToken) {
+                    const yandexLinks = document.querySelectorAll('#guestRegistrationModal a[href*="/auth/yandex/login"]');
+                    yandexLinks.forEach(link => {
+                        link.href = `/auth/yandex/login?draft_token=${draftToken}&redirect_to=/dashboard/akt/create/`;
+                    });
+                }
+                return;
             }
+            
+            const headers = { 'Content-Type': 'application/json' };
+            headers['Authorization'] = 'Bearer ' + token;
             
             const response = await fetch(`${API_URL}/documents/akt/save`, {
                 method: 'POST',
@@ -796,7 +898,7 @@ $(document).ready(function() {
             const result = await response.json();
             
             if (result.success) {
-                showNotification('success', 'Акт успешно сохранен!');
+                toastSuccess('Акт успешно сохранен!');
                 
                 if (result.pdf_url) {
                     window.open(result.pdf_url, '_blank');
@@ -807,13 +909,13 @@ $(document).ready(function() {
                 const modal = new bootstrap.Modal(document.getElementById('guestRegistrationModal'));
                 modal.show();
             } else if (result.limit_reached) {
-                showNotification('warning', result.message || 'Достигнут лимит документов');
+                toastWarning(result.message || 'Достигнут лимит документов');
             } else {
-                showNotification('danger', result.message || 'Ошибка сохранения');
+                toastError(result.message || 'Ошибка сохранения');
             }
         } catch (error) {
             console.error('Save error:', error);
-            showNotification('danger', 'Ошибка соединения с сервером');
+            toastError('Ошибка соединения с сервером');
         } finally {
             submitBtn.prop('disabled', false).html(originalText);
         }
@@ -866,7 +968,26 @@ $(document).ready(function() {
             const result = await response.json();
             
             if (response.ok) {
-                showNotification('success', 'Проверьте почту для подтверждения аккаунта');
+                // Привязываем черновик к пользователю
+                const draftToken = localStorage.getItem('documatica_draft_token');
+                if (draftToken && result.access_token) {
+                    try {
+                        await fetch('/api/v1/drafts/claim', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${result.access_token}`
+                            },
+                            body: JSON.stringify({ draft_token: draftToken })
+                        });
+                        localStorage.removeItem('documatica_draft_token');
+                        localStorage.removeItem('documatica_pending_document');
+                    } catch (err) {
+                        console.error('Ошибка привязки черновика:', err);
+                    }
+                }
+                
+                toastSuccess('Проверьте почту для подтверждения аккаунта');
                 bootstrap.Modal.getInstance(document.getElementById('guestRegistrationModal')).hide();
             } else {
                 $('#guest-reg-alert').text(result.detail || 'Ошибка регистрации').removeClass('d-none');
@@ -1029,19 +1150,6 @@ $(document).ready(function() {
     });
     
     // ============== HELPERS ==============
-    
-    // Показать уведомление (как в УПД)
-    function showNotification(type, message) {
-        const bgClass = type === 'success' ? 'bg-success-100 text-success-main' : 
-                       type === 'warning' ? 'bg-warning-100 text-warning-main' :
-                       'bg-danger-100 text-danger-main';
-        const icon = type === 'success' ? 'mdi:check-circle' : 
-                    type === 'warning' ? 'mdi:alert' :
-                    'mdi:alert-circle';
-        const toast = $(`<div class="position-fixed top-0 end-0 m-24 p-16 ${bgClass} shadow-lg radius-12" style="z-index: 9999; max-width: 400px;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="${icon}" class="text-xl"></iconify-icon><span>${message}</span></div></div>`);
-        $('body').append(toast);
-        setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 4000);
-    }
     
     function showInputError(inputId, message) {
         const container = $(`#${inputId}-error-container`);

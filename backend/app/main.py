@@ -11,7 +11,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload, promocodes
+from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload, promocodes, oauth, drafts
 from app.pages import router as pages_router
 from app.dashboard import router as dashboard_router
 from app.admin import router as admin_router
@@ -153,6 +153,19 @@ app.include_router(
     upload.router,
     prefix="/api/v1",
     tags=["upload"]
+)
+
+# Черновики документов гостей (без авторизации)
+app.include_router(
+    drafts.router,
+    tags=["drafts"]
+)
+
+# OAuth роутеры (на уровне /auth/ для callback)
+app.include_router(
+    oauth.router,
+    prefix="/auth",
+    tags=["oauth"]
 )
 
 # ===== SSR роутеры =====

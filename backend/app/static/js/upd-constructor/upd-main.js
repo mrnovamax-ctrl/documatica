@@ -5,6 +5,44 @@ $(document).ready(function() {
         document.body.classList.remove('no-transitions');
     }, 100);
     
+    // ============== DRAFT RESTORE ==============
+    // Check if we have a draft_token in URL (after OAuth redirect)
+    async function checkAndRestoreDraft() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const draftToken = urlParams.get('draft_token');
+        
+        if (draftToken) {
+            try {
+                const response = await fetch(`/api/v1/drafts/${draftToken}`);
+                if (response.ok) {
+                    const draft = await response.json();
+                    console.log('[DRAFT] Restored draft from server:', draft.document_type);
+                    
+                    // Store data in localStorage for form restoration
+                    localStorage.setItem('documatica_pending_document', JSON.stringify(draft.document_data));
+                    
+                    // Clear draft_token from URL
+                    const newUrl = window.location.pathname;
+                    window.history.replaceState({}, '', newUrl);
+                    
+                    // Reload page to apply restored data
+                    // (form will pick up from localStorage)
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('[DRAFT] Error restoring draft:', error);
+            }
+        }
+    }
+    
+    // Check for draft token in URL (after OAuth redirect)
+    const hasToken = localStorage.getItem('documatica_token') || document.cookie.includes('access_token=');
+    const hasDraftInUrl = new URLSearchParams(window.location.search).get('draft_token');
+    if (hasToken && hasDraftInUrl) {
+        checkAndRestoreDraft();
+    }
+    // ============== END DRAFT RESTORE ==============
+    
     // Initialize date picker
     flatpickr('.date-picker', {
         dateFormat: 'd.m.Y',
@@ -154,14 +192,14 @@ $(document).ready(function() {
                     const formData = await response.json();
                     setTimeout(function() {
                         loadFormDataForEdit(formData);
-                        showNotification('success', 'Документ загружен для редактирования');
+                        toastSuccess('Документ загружен для редактирования');
                     }, 500);
                 } else {
-                    showNotification('danger', 'Не удалось загрузить данные документа');
+                    toastError('Не удалось загрузить данные документа');
                 }
             } catch (error) {
                 console.error('Error loading document:', error);
-                showNotification('danger', 'Ошибка загрузки документа');
+                toastError('Ошибка загрузки документа');
             }
         })();
     }
@@ -178,14 +216,14 @@ $(document).ready(function() {
                     const template = await response.json();
                     setTimeout(function() {
                         loadTemplateData(template.data);
-                        showNotification('success', 'Шаблон загружен! Измените данные и создайте документ.');
+                        toastSuccess('Шаблон загружен! Измените данные и создайте документ.');
                     }, 500);
                 } else {
-                    showNotification('danger', 'Не удалось загрузить шаблон');
+                    toastError('Не удалось загрузить шаблон');
                 }
             } catch (error) {
                 console.error('Error loading template:', error);
-                showNotification('danger', 'Ошибка загрузки шаблона');
+                toastError('Ошибка загрузки шаблона');
             }
         })();
     } else if (templateId === 'true') {
@@ -195,7 +233,7 @@ $(document).ready(function() {
             setTimeout(function() {
                 loadTemplateData(JSON.parse(templateData));
                 localStorage.removeItem('upd_use_template');
-                showNotification('success', 'Шаблон загружен! Измените данные и создайте документ.');
+                toastSuccess('Шаблон загружен! Измените данные и создайте документ.');
             }, 500);
         }
     }
@@ -206,7 +244,7 @@ $(document).ready(function() {
         if (draftData) {
             setTimeout(function() {
                 loadTemplateData(JSON.parse(draftData));
-                showNotification('success', 'Черновик загружен!');
+                toastSuccess('Черновик загружен!');
             }, 500);
         }
     }
@@ -277,7 +315,7 @@ $(document).ready(function() {
             $('#seller-name, #seller-inn, #seller-kpp, #seller-address').removeClass('bg-success-100');
         }, 2000);
         
-        showNotification('success', `Данные компании "${company.name}" загружены`);
+        toastSuccess(`Данные компании "${company.name}" загружены`);
     }
     
     // Заполнение полей покупателя
@@ -295,7 +333,7 @@ $(document).ready(function() {
             $('#buyer-name, #buyer-inn, #buyer-kpp, #buyer-address').removeClass('bg-success-100');
         }, 2000);
         
-        showNotification('success', `Данные компании "${company.name}" загружены`);
+        toastSuccess(`Данные компании "${company.name}" загружены`);
     }
     
     // Обработчики кнопок поиска по ИНН
@@ -500,6 +538,28 @@ $(document).ready(function() {
         );
     }
     
+    // Определение типа организации по ИНН (10 цифр = ООО, 12 цифр = ИП)
+    function getOrgTypeByInn(inn) {
+        if (!inn) return 'ooo';
+        const cleanInn = inn.toString().replace(/\D/g, '');
+        return cleanInn.length === 12 ? 'ip' : 'ooo';
+    }
+    
+    // Обновление отображения типа организации
+    function updateOrgTypeDisplay(inn) {
+        const orgType = getOrgTypeByInn(inn);
+        const badge = $('#seller-org-type-badge');
+        if (badge.length) {
+            if (orgType === 'ip') {
+                badge.text('ИП').removeClass('bg-primary-100 text-primary-600').addClass('bg-warning-100 text-warning-600');
+            } else {
+                badge.text('ООО').removeClass('bg-warning-100 text-warning-600').addClass('bg-primary-100 text-primary-600');
+            }
+            badge.removeClass('d-none');
+        }
+        return orgType;
+    }
+    
     // Select organization from modal
     $(document).on('click', '.organization-item', function() {
         const id = $(this).data('id');
@@ -507,6 +567,9 @@ $(document).ready(function() {
         if (org) {
             // Сохраняем выбранную организацию для использования подписи и печати
             selectedSellerOrg = org;
+            
+            // Определяем тип организации
+            updateOrgTypeDisplay(org.inn);
             
             // Отключаем transitions при массовом заполнении полей
             document.body.classList.add('no-transitions');
@@ -809,6 +872,17 @@ $(document).ready(function() {
     
     // Пересчет при изменении настроек НДС
     $('#default-vat, #default-vat-type').on('change', function() {
+        // Автоматический статус УПД по НДС
+        const vatRate = $('#default-vat').val();
+        if (vatRate === 'none') {
+            // Без НДС - статус 2 (только передаточный документ)
+            $('input[name="upd-status"][value="2"]').prop('checked', true);
+            $('#upd-status-display').text('2 - передаточный документ (акт)');
+        } else {
+            // Любой НДС (включая 0%) - статус 1 (счет-фактура)
+            $('input[name="upd-status"][value="1"]').prop('checked', true);
+            $('#upd-status-display').text('1 - счет-фактура и передаточный документ');
+        }
         calculateTotals();
         updatePreview();
     });
@@ -1040,6 +1114,7 @@ $(document).ready(function() {
             </div>
         `;
         $('#products-container').append(newRow);
+        calculateTotals();
         updatePreview();
     });
 
@@ -1097,7 +1172,7 @@ $(document).ready(function() {
                 total = subtotal;
             }
             
-            $(this).find('.product-total').text(formatCurrency(total));
+            $(this).find('.product-total').val(formatCurrency(total));
             
             totalWithoutVat += subtotal;
             totalVat += vat;
@@ -1161,9 +1236,61 @@ $(document).ready(function() {
         return !!token;
     }
 
-    // Сохранение документа как pending для неавторизованного пользователя
-    function savePendingDocument(requestData) {
+    // Сохранение документа как pending для неавторизованного пользователя (на сервере)
+    async function savePendingDocument(requestData) {
+        try {
+            const response = await fetch('/api/v1/drafts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    document_type: 'upd',
+                    document_data: requestData
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                // Сохраняем токен черновика
+                localStorage.setItem('documatica_draft_token', data.draft_token);
+                localStorage.setItem('documatica_pending_document', JSON.stringify(requestData));
+                return data.draft_token;
+            }
+        } catch (error) {
+            console.error('Ошибка сохранения черновика:', error);
+        }
+        
+        // Fallback - сохраняем только в localStorage
         localStorage.setItem('documatica_pending_document', JSON.stringify(requestData));
+        return null;
+    }
+    
+    // Обновление UI модалки при сохранении черновика
+    function updateModalSaveStatus(success, draftToken) {
+        const statusEl = document.getElementById('draft-save-status');
+        if (!statusEl) return;
+        
+        if (success) {
+            statusEl.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span style="color: #166534; font-weight: 600;">Черновик сохранён на сервере</span>
+                </div>
+            `;
+        } else {
+            statusEl.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4M12 8h.01"></path>
+                    </svg>
+                    <span style="color: #92400e; font-weight: 600;">Черновик сохранён локально</span>
+                </div>
+            `;
+        }
     }
 
     // Form submit - генерация PDF через API
@@ -1181,10 +1308,22 @@ $(document).ready(function() {
         
         // Проверяем авторизацию
         if (!isUserAuthenticated()) {
-            // Сохраняем документ в localStorage для восстановления после авторизации
-            savePendingDocument(requestData);
-            // Показываем модалку авторизации
+            // Показываем модалку сразу (с индикатором загрузки)
             $('#authRequiredModal').modal('show');
+            
+            // Сохраняем документ на сервере
+            const draftToken = await savePendingDocument(requestData);
+            
+            // Обновляем статус в модалке
+            updateModalSaveStatus(!!draftToken, draftToken);
+            
+            // Добавляем draft_token к ссылкам OAuth
+            if (draftToken) {
+                const yandexLinks = document.querySelectorAll('#authRequiredModal a[href*="/auth/yandex/login"]');
+                yandexLinks.forEach(link => {
+                    link.href = `/auth/yandex/login?draft_token=${draftToken}&redirect_to=/dashboard/upd/create/`;
+                });
+            }
             return;
         }
         
@@ -1198,9 +1337,26 @@ $(document).ready(function() {
         const token = localStorage.getItem('documatica_token') || getCookie('access_token');
         
         if (!token) {
-            // Гость - сохраняем данные формы в localStorage и показываем модалку
-            localStorage.setItem('pending_upd_data', JSON.stringify(requestData));
+            // Гость - показываем модалку сразу
             $('#guestRegistrationModal').modal('show');
+            
+            // Сохраняем данные на сервере
+            const draftToken = await savePendingDocument(requestData);
+            localStorage.setItem('pending_upd_data', JSON.stringify(requestData));
+            
+            // Обновляем статус в модалке
+            const statusEl = document.querySelector('#guestRegistrationModal #draft-save-status');
+            if (statusEl) {
+                updateModalSaveStatus(!!draftToken, draftToken);
+            }
+            
+            // Добавляем draft_token к ссылкам OAuth
+            if (draftToken) {
+                const yandexLinks = document.querySelectorAll('#guestRegistrationModal a[href*="/auth/yandex/login"]');
+                yandexLinks.forEach(link => {
+                    link.href = `/auth/yandex/login?draft_token=${draftToken}&redirect_to=/dashboard/upd/create/`;
+                });
+            }
             return;
         }
         
@@ -1255,7 +1411,7 @@ $(document).ready(function() {
                     }, 500);
                 };
                 
-                showNotification('success', 'Для сохранения в PDF выберите "Сохранить как PDF" в диалоге печати');
+                toastSuccess('Для сохранения в PDF выберите "Сохранить как PDF" в диалоге печати');
             } else {
                 // Скачиваем PDF
                 const blob = await response.blob();
@@ -1267,7 +1423,7 @@ $(document).ready(function() {
                 a.click();
                 window.URL.revokeObjectURL(url);
                 a.remove();
-                showNotification('success', 'УПД успешно сгенерирован и скачан!');
+                toastSuccess('УПД успешно сгенерирован и скачан!');
             }
             
             // Сохраняем документ в личном кабинете
@@ -1284,6 +1440,10 @@ $(document).ready(function() {
                 if (saveResponse.ok) {
                     const saveResult = await saveResponse.json();
                     console.log('Документ сохранён:', saveResult.document_id);
+                    
+                    // Сохраняем ID документа и активируем кнопку XLS
+                    window.savedDocumentId = saveResult.document_id;
+                    $('#export-xls-btn').prop('disabled', false).attr('title', 'Скачать Excel файл');
                 }
             } catch (saveError) {
                 console.log('Не удалось сохранить документ:', saveError);
@@ -1291,7 +1451,7 @@ $(document).ready(function() {
             
         } catch (error) {
             console.error('Error:', error);
-            showNotification('danger', 'Ошибка: ' + error.message);
+            toastError('Ошибка: ' + error.message);
         } finally {
             submitBtn.prop('disabled', false).html(originalText);
         }
@@ -1399,6 +1559,7 @@ $(document).ready(function() {
                 signature_image: selectedSellerOrg?.director_signature || null
             } : null,
             seller_stamp_image: selectedSellerOrg?.stamp_base64 || null,
+            seller_org_type: getOrgTypeByInn($('#seller-inn').val()),
             accountant_name: selectedSellerOrg?.accountant_name || null,
             accountant_signature: selectedSellerOrg?.accountant_signature || null,
             buyer_signer: $('#received-by').val() ? {
@@ -1417,15 +1578,6 @@ $(document).ready(function() {
             return `${parts[2]}-${parts[1]}-${parts[0]}`;
         }
         return dateStr;
-    }
-    
-    // Показать уведомление
-    function showNotification(type, message) {
-        const bgClass = type === 'success' ? 'bg-success-100 text-success-main' : 'bg-danger-100 text-danger-main';
-        const icon = type === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle';
-        const toast = $(`<div class="position-fixed top-0 end-0 m-24 p-16 ${bgClass} shadow-lg" style="z-index: 9999; max-width: 400px;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="${icon}" class="text-xl"></iconify-icon><span>${message}</span></div></div>`);
-        $('body').append(toast);
-        setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 4000);
     }
     
     // Функция показа ошибки под инпутом
@@ -1705,14 +1857,14 @@ $(document).ready(function() {
             });
             
             if (response.ok) {
-                showNotification('success', 'Шаблон успешно сохранен!');
+                toastSuccess('Шаблон успешно сохранен!');
             } else {
                 const err = await response.json();
-                showNotification('error', err.detail || 'Ошибка сохранения шаблона');
+                toastError(err.detail || 'Ошибка сохранения шаблона');
             }
         } catch (error) {
             console.error('Error saving template:', error);
-            showNotification('error', 'Ошибка сохранения: ' + error.message);
+            toastError('Ошибка сохранения: ' + error.message);
         } finally {
             btn.prop('disabled', false).html('Сохранить как шаблон');
         }
@@ -1722,7 +1874,7 @@ $(document).ready(function() {
     $('#save-draft').on('click', function() {
         const formData = collectFormData();
         localStorage.setItem('upd_draft', JSON.stringify(formData));
-        showNotification('success', 'Черновик сохранен!');
+        toastSuccess('Черновик сохранен!');
     });
 
     // Initial calculations
@@ -1875,6 +2027,7 @@ $(document).ready(function() {
             } : null,
             economic_entity: $('#economic-entity').val() || null,
             seller_stamp_image: selectedSellerOrg?.stamp_base64 || null,
+            seller_org_type: getOrgTypeByInn($('#seller-inn').val()),
             accountant_name: selectedSellerOrg?.accountant_name || null,
             accountant_signature: selectedSellerOrg?.accountant_signature || null,
             receiving_date: $('#receiving-date').val() ? convertDateToISO($('#receiving-date').val()) : null,
@@ -2376,21 +2529,52 @@ $(document).ready(function() {
             
             // Показываем уведомление
             alertBox.removeClass('alert-danger').addClass('alert-success')
-                .removeClass('d-none').text('Регистрация успешна! Генерируем PDF...');
+                .removeClass('d-none').text('Регистрация успешна! Сохраняем документ...');
             
-            // Восстанавливаем данные формы из localStorage и генерируем PDF
+            // Привязываем черновик к новому аккаунту и конвертируем в документ
+            const draftToken = localStorage.getItem('documatica_draft_token');
+            if (draftToken) {
+                try {
+                    const claimResponse = await fetch('/api/v1/drafts/claim', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${data.access_token}`
+                        },
+                        body: JSON.stringify({ draft_token: draftToken })
+                    });
+                    
+                    if (claimResponse.ok) {
+                        const claimData = await claimResponse.json();
+                        console.log('[DRAFT] Claimed and converted:', claimData.document_id);
+                        // Очищаем токен черновика
+                        localStorage.removeItem('documatica_draft_token');
+                        localStorage.removeItem('pending_upd_data');
+                        localStorage.removeItem('documatica_pending_document');
+                        
+                        // Редиректим в дашборд где виден документ
+                        alertBox.text('Документ сохранён! Переход в личный кабинет...');
+                        setTimeout(() => {
+                            window.location.href = '/dashboard/';
+                        }, 1000);
+                        return;
+                    }
+                } catch (claimError) {
+                    console.error('[DRAFT] Claim error:', claimError);
+                }
+            }
+            
+            // Fallback - старое поведение если нет черновика
             const pendingData = localStorage.getItem('pending_upd_data');
             if (pendingData) {
                 const requestData = JSON.parse(pendingData);
-                // Очищаем временные данные
                 localStorage.removeItem('pending_upd_data');
-                // Генерируем PDF с авторизованным токеном
                 await generateAndDownloadPDF(requestData);
             }
             
-            // Перезагружаем страницу через 1 секунду, чтобы обновить интерфейс
+            // Перезагружаем страницу
             setTimeout(() => {
-                window.location.reload();
+                window.location.href = '/dashboard/';
             }, 1000);
             
         } catch (error) {
@@ -2514,5 +2698,50 @@ $(document).ready(function() {
         });
     }
     // ============== END CANVAS MAGNIFIER ==============
+    
+    // ============== XLS EXPORT ==============
+    $('#export-xls-btn').on('click', async function() {
+        if (!window.savedDocumentId) {
+            toastError('Сначала создайте документ (нажмите "Скачать PDF")');
+            return;
+        }
+        
+        const btn = $(this);
+        const originalText = btn.html();
+        btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-8"></span>Генерация XLS...');
+        
+        try {
+            const token = localStorage.getItem('documatica_token') || getCookie('access_token');
+            const response = await fetch(`/api/v1/documents/saved/${window.savedDocumentId}/export-excel?format=xls`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': token ? `Bearer ${token}` : ''
+                },
+                credentials: 'include'
+            });
+            
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `УПД_${window.savedDocumentId.substring(0, 8)}.xls`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                toastSuccess('XLS файл успешно скачан!');
+            } else {
+                const err = await response.json();
+                toastError(err.detail || 'Ошибка экспорта в XLS');
+            }
+        } catch (error) {
+            toastError('Ошибка: ' + error.message);
+        } finally {
+            btn.prop('disabled', false).html(originalText);
+        }
+    });
+    // ============== END XLS EXPORT ==============
     
 });

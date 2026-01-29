@@ -164,9 +164,9 @@
         }
         
         .signature-line {
-            display: flex;
-            align-items: flex-end;
-            gap: 10px;
+            display: inline-block;
+            width: 80px;
+            border-bottom: 1px solid #000;
         }
         
         .signature-field {
@@ -181,11 +181,33 @@
             color: #666;
         }
         
-        .mp {
-            text-align: center;
-            font-size: 10pt;
-            color: #999;
-            margin-top: 20px;
+        /* Изображение подписи */
+        .signature-img {
+            max-height: 40px;
+            max-width: 100px;
+            vertical-align: middle;
+            opacity: 0.85;
+        }
+        
+        /* Контейнер для подписи с печатью */
+        .signature-with-stamp {
+            position: relative;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .signature-with-stamp .signature-img {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .signature-with-stamp .stamp-img {
+            position: absolute;
+            left: 30px;
+            top: -50px;
+            z-index: 2;
+            max-width: 144px;
+            max-height: 144px;
         }
         
         @media print {
@@ -285,16 +307,20 @@
                 <tr>
                     <td class="signature-block">
                         <p class="title">Заказчик:</p>
-                        <p>______/{{ customer_signatory or '_______________' }}</p>
+                        <p><span class="signature-line"></span>/{{ customer_signatory or '_______________' }}</p>
                         <p class="signature-label" style="margin-left: 20px;">(подпись/Ф.И.О.)</p>
-                        <p class="mp">М.П.</p>
                     </td>
                     <td style="width: 10%;"></td>
                     <td class="signature-block">
-                        <p class="title">Исполнитель:</p>
-                        <p>______/{{ executor_signatory or '_______________' }}</p>
+                        <p class="title">{% if executor_org_type == 'ip' %}Индивидуальный предприниматель:{% else %}Исполнитель:{% endif %}</p>
+                        <p>
+                            <span class="signature-with-stamp">
+                                {% if executor_signature %}<img src="{{ executor_signature }}" class="signature-img">{% else %}<span class="signature-line"></span>{% endif %}
+                                {% if executor_stamp_image %}<img src="{{ executor_stamp_image }}" class="stamp-img">{% endif %}
+                            </span>
+                            /{{ executor_signatory or '_______________' }}
+                        </p>
                         <p class="signature-label" style="margin-left: 20px;">(подпись/Ф.И.О.)</p>
-                        <p class="mp">М.П.</p>
                     </td>
                 </tr>
             </table>

@@ -55,6 +55,8 @@ async def users_list(request: Request, page: int = 1, per_page: int = 50, db: Se
             "tariff": user.subscription_plan,
             "subscription_expires": user.subscription_expires.isoformat() if user.subscription_expires else None,
             "is_verified": user.is_verified,
+            "auth_provider": getattr(user, 'auth_provider', 'email') or 'email',
+            "yandex_id": getattr(user, 'yandex_id', None),
             "created_at": user.created_at.isoformat() if user.created_at else None,
             "last_login": user.last_login.isoformat() if user.last_login else None,
             "free_generations_used": user.free_generations_used or 0,

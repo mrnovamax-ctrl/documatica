@@ -160,6 +160,44 @@ td, th {
   font-size: 8pt;
 }
 
+/* Стили для подписи и печати */
+.signature-img {
+  max-width: 100px;
+  max-height: 40px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.stamp-img {
+  max-width: 144px;
+  max-height: 144px;
+  object-fit: contain;
+  vertical-align: middle;
+  opacity: 0.85;
+}
+
+/* Контейнер для подписи с печатью */
+.signature-with-stamp {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.signature-with-stamp .signature-img {
+  position: relative;
+  z-index: 1;
+}
+
+.signature-with-stamp .stamp-img {
+  position: absolute;
+  left: 30px;
+  top: -50px;
+  z-index: 2;
+  max-width: 144px;
+  max-height: 144px;
+}
+}
+
 @media print {
   body {
     -webkit-print-color-adjust: exact;
@@ -307,26 +345,30 @@ td, th {
 <div class="signature-section">
   <table class="signature-table" style="width: 100%;">
     <tr>
-      <td style="width: 50%;">
+      <td style="width: 60%;">
         <div style="margin-bottom: 20px;">
-          <strong>Генеральный директор</strong>
-          <span class="signature-line"></span>
+          <strong>{% if supplier_org_type == 'ip' %}Индивидуальный предприниматель{% else %}Генеральный директор{% endif %}</strong>
+          <span class="signature-with-stamp">
+            {% if director_signature %}<img src="{{ director_signature }}" class="signature-img">{% else %}<span class="signature-line"></span>{% endif %}
+            {% if supplier_stamp_image %}<img src="{{ supplier_stamp_image }}" class="stamp-img">{% endif %}
+          </span>
           {{ signers.director if signers else (supplier.director_name or '________________') }}
         </div>
       </td>
-      <td style="width: 50%; text-align: right;" rowspan="2">
-        <div class="stamp-area">М.П.</div>
-      </td>
     </tr>
+    {% if supplier_org_type != 'ip' %}
     <tr>
       <td>
         <div>
           <strong>Главный бухгалтер</strong>
-          <span class="signature-line"></span>
+          <span class="signature-with-stamp">
+            {% if accountant_signature %}<img src="{{ accountant_signature }}" class="signature-img">{% else %}<span class="signature-line"></span>{% endif %}
+          </span>
           {{ signers.accountant if signers else (supplier.accountant_name or '________________') }}
         </div>
       </td>
     </tr>
+    {% endif %}
   </table>
 </div>
 

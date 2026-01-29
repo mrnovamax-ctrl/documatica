@@ -132,6 +132,13 @@ async def login(data: UserLogin, response: Response, db: Session = Depends(get_d
     
     user = db.query(User).filter(User.email == data.email.lower()).first()
     
+    # Проверка для OAuth пользователей
+    if user and not user.password_hash:
+        raise HTTPException(
+            status_code=401, 
+            detail="Этот аккаунт создан через Яндекс. Используйте кнопку 'Войти через Яндекс'."
+        )
+    
     if not user or not verify_password(data.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Неверный email или пароль")
     
@@ -394,4 +401,36 @@ async def get_current_user_db(
     if not user:
         raise HTTPException(status_code=404, detail="Пользователь не найден")
     
+    return user
+
+
+async def get_current_user_optional(
+    authorization: Optional[str] = Header(None),
+    access_token: Optional[str] = Cookie(None),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    """
+    Получить текущего пользователя или None если не авторизован.
+    Используется для эндпоинтов где авторизация опциональна.
+    """
+    
+    token = None
+    
+    # Сначала пробуем Header Authorization
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization.replace("Bearer ", "")
+    # Если нет Header, берём из cookie
+    elif access_token:
+        token = access_token
+    
+    if not token:
+        return None
+    
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id = int(payload.get("sub"))
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+        return None
+    
+    user = db.query(User).filter(User.id == user_id).first()
     return user

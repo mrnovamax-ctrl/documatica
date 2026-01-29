@@ -29,6 +29,7 @@ from app.schemas.upd import UPDRequest, UPDResponse, UPDPreviewRequest
 from app.database import get_db
 from app.models import User
 from app.services.billing import BillingService
+from app.services.excel_export import ExcelExportService
 
 router = APIRouter()
 
@@ -259,6 +260,7 @@ async def generate_upd(request: UPDRequest, return_base64: bool = False):
             "seller_responsible": request.seller_responsible.model_dump() if request.seller_responsible else None,
             "economic_entity": request.economic_entity,
             "seller_stamp_image": request.seller_stamp_image,
+            "seller_org_type": getattr(request, 'seller_org_type', 'ooo'),
             
             # Подписант покупателя
             "receiving_date": format_date_short(request.receiving_date) if request.receiving_date else None,
@@ -367,6 +369,7 @@ async def preview_upd(request: UPDPreviewRequest):
             "seller_responsible": request.seller_responsible.model_dump() if request.seller_responsible else None,
             "economic_entity": request.economic_entity,
             "seller_stamp_image": request.seller_stamp_image,
+            "seller_org_type": getattr(request, 'seller_org_type', 'ooo'),
             "accountant_name": request.accountant_name,
             "accountant_signature": request.accountant_signature,
             "receiving_date": format_date_short(request.receiving_date) if request.receiving_date else None,
@@ -759,6 +762,76 @@ async def delete_saved_document(document_id: str):
         )
 
 
+@router.get("/saved/{document_id}/export-excel")
+async def export_saved_document_to_excel(
+    document_id: str,
+    format: str = "xls",
+    authorization: Optional[str] = Header(None),
+    access_token: Optional[str] = Cookie(None)
+):
+    """
+    Экспорт сохраненного документа в Excel (XLS или XLSX)
+    
+    Поддерживает два формата:
+    - **xls**: Быстрый экспорт через HTML с Office XML тегами (по умолчанию)
+    - **xlsx**: Качественный экспорт через openpyxl с точным форматированием
+    
+    **Требования**:
+    - Пользователь должен быть авторизован
+    - Пользователь должен быть владельцем документа
+    - Поддерживаются типы документов: УПД, Акт, Счет
+    
+    Args:
+        document_id: UUID документа
+        format: Формат экспорта ("xls" или "xlsx")
+        authorization: Bearer token из заголовка
+        access_token: Token из cookie
+    
+    Returns:
+        StreamingResponse с Excel файлом
+    
+    Raises:
+        HTTPException: 401 (не авторизован), 403 (доступ запрещен),
+                      404 (документ не найден), 422 (неподдерживаемый тип)
+    """
+    try:
+        # Проверка авторизации
+        user_id = get_user_id_from_token(authorization, access_token)
+        
+        if user_id is None:
+            raise HTTPException(
+                status_code=401,
+                detail="Требуется авторизация"
+            )
+        
+        # Валидация формата
+        if format not in ['xls', 'xlsx']:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Неподдерживаемый формат: {format}. Используйте 'xls' или 'xlsx'"
+            )
+        
+        # Создание сервиса экспорта
+        excel_service = ExcelExportService()
+        
+        # Экспорт в зависимости от формата
+        if format == 'xls':
+            return excel_service.export_to_xls(document_id, user_id)
+        else:  # xlsx
+            return excel_service.export_to_xlsx(document_id, user_id)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        print(f"Excel export error: {str(e)}")
+        print(traceback.format_exc())
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ошибка экспорта в Excel: {str(e)}"
+        )
+
+
 # ===== СЧЁТ НА ОПЛАТУ API =====
 
 def number_to_words_ru(number: float) -> str:
@@ -878,6 +951,10 @@ async def invoice_preview(request: dict):
             "total_without_vat": total_without_vat,
             "total_with_vat": total_with_vat,
             "amount_in_words": number_to_words_ru(total_with_vat).capitalize(),
+            "supplier_org_type": request.get('supplier_org_type', 'ooo'),
+            "supplier_stamp_image": request.get('supplier_stamp_image'),
+            "director_signature": request.get('director_signature'),
+            "accountant_signature": request.get('accountant_signature'),
         }
         
         html_content = template.render(**template_data)
@@ -965,6 +1042,10 @@ async def generate_invoice(
             "total_without_vat": total_without_vat,
             "total_with_vat": total_with_vat,
             "amount_in_words": number_to_words_ru(total_with_vat).capitalize(),
+            "supplier_org_type": request.get('supplier_org_type', 'ooo'),
+            "supplier_stamp_image": request.get('supplier_stamp_image'),
+            "director_signature": request.get('director_signature'),
+            "accountant_signature": request.get('accountant_signature'),
         }
         
         # Рендерим HTML
@@ -1302,6 +1383,9 @@ async def akt_preview(request: Request):
             
             'executor_signatory': data.get('executor_signatory', ''),
             'customer_signatory': data.get('customer_signatory', ''),
+            'executor_org_type': data.get('executor_org_type', 'ooo'),
+            'executor_stamp_image': data.get('executor_stamp_image'),
+            'executor_signature': data.get('executor_signature'),
             
             'items': items,
             'vat_rate': vat_rate,
@@ -1432,6 +1516,9 @@ async def akt_save(
             
             'executor_signatory': data.get('executor_signatory', ''),
             'customer_signatory': data.get('customer_signatory', ''),
+            'executor_org_type': data.get('executor_org_type', 'ooo'),
+            'executor_stamp_image': data.get('executor_stamp_image'),
+            'executor_signature': data.get('executor_signature'),
             
             'items': items,
             'vat_rate': vat_rate,

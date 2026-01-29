@@ -14,7 +14,8 @@
 
 4. **WeasyPrint не работает на Windows** - используем HTML-to-print fallback
 
-5. **API URL**: http://localhost:8000 / https://new.oplatanalogov.ru/
+5. **Production URL**: https://oplatanalogov.ru
+6. **Local URL**: http://localhost:8000
 
 ## Структура проекта
 

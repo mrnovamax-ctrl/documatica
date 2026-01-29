@@ -15,7 +15,8 @@
     <div class="admin-stat-label">Пользователей</div>
     <div class="admin-stat-sub">
       <span class="highlight green">{{ stats.users.paid }}</span> платных,
-      <span>{{ stats.users.verified }}</span> верифицированных
+      <span>{{ stats.users.verified }}</span> верифицированных,
+      <span style="color: #FC3F1D; font-weight: 700;">{{ stats.users.oauth or 0 }}</span> через Яндекс
     </div>
   </div>
   

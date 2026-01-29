@@ -54,6 +54,11 @@ def get_statistics(db: Session) -> dict:
         User.is_verified == True
     ).scalar() or 0
     
+    # OAuth пользователи (Яндекс)
+    oauth_users = db.query(func.count(User.id)).filter(
+        User.yandex_id.isnot(None)
+    ).scalar() or 0
+    
     # === Документы ===
     # Считаем папки в директории documents
     total_documents = 0
@@ -102,6 +107,7 @@ def get_statistics(db: Session) -> dict:
             "paid": paid_users,
             "free": total_users - paid_users,
             "verified": verified_users,
+            "oauth": oauth_users,
             "today": users_today,
             "week": users_week,
             "month": users_month,

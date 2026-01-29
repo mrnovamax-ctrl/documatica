@@ -17,8 +17,8 @@ xmlns="http://www.w3.org/TR/REC-html40">
     vertical-align: middle;
 }
 .stamp-img {
-    max-width: 60px;
-    max-height: 60px;
+    max-width: 144px;
+    max-height: 144px;
     object-fit: contain;
     vertical-align: middle;
     opacity: 0.85;
@@ -35,10 +35,10 @@ xmlns="http://www.w3.org/TR/REC-html40">
 .signature-with-stamp .stamp-img {
     position: absolute;
     left: 25px;
-    top: -15px;
+    top: -50px;
     z-index: 2;
-    max-width: 55px;
-    max-height: 55px;
+    max-width: 144px;
+    max-height: 144px;
 }
 .stamp-container {
     position: relative;
@@ -933,7 +933,7 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl68>&nbsp;</td>
   <td colspan=13 class=xl128 width=180 style='width:136pt'>Грузоотправитель и
   его адрес:</td>
-  <td colspan=33 class=xl125 width=363 style='width:275pt'>{% if consignor %}{{ consignor.name }}, {{ consignor.address }}{% else %}он же{% endif %}</td>
+  <td colspan=33 class=xl125 width=363 style='width:275pt'>{% if consignor %}{{ consignor }}{% else %}он же{% endif %}</td>
   <td colspan=2 class=xl126>(3)</td>
   <td colspan=7 class=xl128 width=135 style='width:101pt'>Валюта: наименование,
   код</td>
@@ -949,7 +949,7 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl68>&nbsp;</td>
   <td colspan=13 class=xl128 width=180 style='width:136pt'>Грузополучатель и
   его адрес:</td>
-  <td colspan=33 class=xl125 width=363 style='width:275pt'>{% if consignee %}{{ consignee.name }}, {{ consignee.address }}{% else %}{{ buyer.name }}, {{ buyer.address }}{% endif %}</td>
+  <td colspan=33 class=xl125 width=363 style='width:275pt'>{% if consignee %}{{ consignee }}{% else %}{{ buyer.name }}, {{ buyer.address }}{% endif %}</td>
   <td colspan=2 class=xl126>(4)</td>
   <td colspan=13 rowspan=2 class=xl129 width=230 style='width:173pt'>Идентификатор
   государственного контракта, договора (соглашения) (при наличии):</td>
@@ -1216,15 +1216,15 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl73>&nbsp;</td>
   <td class=xl65></td>
   <td colspan=14 class=xl100 width=191 style='width:144pt'>Руководитель организации<br>или иное уполномоченное лицо</td>
-  <td colspan=10 class=xl83 width=62 style='width:47pt'>{% if seller_signer and seller_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ seller_signer.signature_image }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
+  <td colspan=10 class=xl83 width=62 style='width:47pt'>{% if seller_org_type != 'ip' and seller_signer and seller_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ seller_signer.signature_image }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
-  <td colspan=16 class=xl83 width=168 style='width:127pt'>{% if seller_signer %}{{ seller_signer.full_name }}{% endif %}</td>
+  <td colspan=16 class=xl83 width=168 style='width:127pt'>{% if seller_org_type != 'ip' and seller_signer %}{{ seller_signer.full_name }}{% endif %}</td>
   <td class=xl65></td>
   <td class=xl65></td>
   <td colspan=9 class=xl90 width=166 style='width:125pt'>Главный бухгалтер<br>или иное уполномоченное лицо</td>
-  <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if accountant_signature %}<span class="signature-with-stamp"><img src="{{ accountant_signature }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
+  <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if seller_org_type != 'ip' and accountant_signature %}<span class="signature-with-stamp"><img src="{{ accountant_signature }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
-  <td colspan=9 class=xl83 width=181 style='width:136pt'>{% if accountant_name %}{{ accountant_name }}{% endif %}</td>
+  <td colspan=9 class=xl83 width=181 style='width:136pt'>{% if seller_org_type != 'ip' and accountant_name %}{{ accountant_name }}{% endif %}</td>
   <td colspan=6 class=xl65></td>
  </tr>
  <tr class=xl65 height=9 style='height:7.15pt'>
@@ -1248,9 +1248,9 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl73>&nbsp;</td>
   <td class=xl65></td>
   <td colspan=14 class=xl100 width=191 style='width:144pt'>Индивидуальный предприниматель<br>или иное уполномоченное лицо</td>
-  <td colspan=10 class=xl83 width=62 style='width:47pt'>&nbsp;</td>
+  <td colspan=10 class=xl83 width=62 style='width:47pt'>{% if seller_org_type == 'ip' and seller_signer and seller_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ seller_signer.signature_image }}" class="signature-img">{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
-  <td colspan=16 class=xl83 width=168 style='width:127pt'>&nbsp;</td>
+  <td colspan=16 class=xl83 width=168 style='width:127pt'>{% if seller_org_type == 'ip' and seller_signer %}{{ seller_signer.full_name }}{% endif %}</td>
   <td class=xl65></td>
   <td class=xl65></td>
   <td class=xl65></td>
@@ -1722,7 +1722,7 @@ td { padding: 0 !important; font-size: 6pt !important; }
  <tr height=14 style='height:10.9pt'>
   <td height=14 class=xl65 style='height:10.9pt'></td>
   <td class=xl65></td>
-  <td colspan=9 class=xl66>{% if seller_stamp_image %}<img src="{{ seller_stamp_image }}" class="stamp-img">{% else %}М.П.{% endif %}</td>
+  <td colspan=9 class=xl66>М.П.</td>
   <td class=xl65></td>
   <td class=xl65></td>
   <td class=xl65></td>

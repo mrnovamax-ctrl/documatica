@@ -86,6 +86,7 @@ class UPDRequest(BaseModel):
     seller_responsible: Optional[SignerInfo] = Field(None, description="Ответственный за правильность оформления (продавец)")
     economic_entity: Optional[str] = Field(None, description="Наименование экономического субъекта (продавец)")
     seller_stamp_image: Optional[str] = Field(None, description="Печать продавца (base64 или URL)")
+    seller_org_type: Optional[str] = Field(None, description="Тип организации продавца: ooo или ip")
     
     # Получение товара/услуги (подписант покупателя)
     receiving_date: Optional[date] = Field(None, description="Дата получения/приемки")
@@ -208,6 +209,7 @@ class UPDPreviewRequest(BaseModel):
     seller_responsible: Optional[PreviewSignerInfo] = Field(None, description="Ответственный продавца")
     economic_entity: Optional[str] = Field(None, description="Экономический субъект")
     seller_stamp_image: Optional[str] = Field(None, description="Печать продавца (base64 или URL)")
+    seller_org_type: Optional[str] = Field(None, description="Тип организации продавца: ooo или ip")
     accountant_name: Optional[str] = Field(None, description="ФИО главного бухгалтера")
     accountant_signature: Optional[str] = Field(None, description="Подпись бухгалтера (base64)")
     

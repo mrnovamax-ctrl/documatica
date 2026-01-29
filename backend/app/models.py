@@ -15,7 +15,7 @@ class User(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, index=True, nullable=False)
-    password_hash = Column(String(255), nullable=False)
+    password_hash = Column(String(255), nullable=True)  # Nullable for OAuth users
     name = Column(String(255), nullable=True)
     
     # Статус верификации
@@ -26,6 +26,10 @@ class User(Base):
     # Сброс пароля
     reset_token = Column(String(255), nullable=True)
     reset_token_expires = Column(DateTime, nullable=True)
+    
+    # OAuth провайдеры
+    yandex_id = Column(String(100), unique=True, nullable=True, index=True)
+    auth_provider = Column(String(50), default="email")  # email, yandex
     
     # Метаданные
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -162,3 +166,38 @@ class PromocodeUsage(Base):
     
     def __repr__(self):
         return f"<PromocodeUsage promo={self.promocode_id} user={self.user_id}>"
+
+
+class GuestDraft(Base):
+    """Черновики документов гостей (неавторизованных пользователей)"""
+    __tablename__ = "guest_drafts"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    draft_token = Column(String(64), unique=True, index=True, nullable=False)  # Уникальный токен для доступа
+    
+    # Тип документа
+    document_type = Column(String(50), nullable=False)  # upd, akt, invoice
+    
+    # Данные документа (JSON)
+    document_data = Column(Text, nullable=False)
+    
+    # Связь с пользователем (после регистрации)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    
+    # Идентификация гостя
+    session_id = Column(String(100), nullable=True)  # Для связи с сессией браузера
+    ip_address = Column(String(45), nullable=True)  # IPv4/IPv6
+    
+    # Статус
+    is_claimed = Column(Boolean, default=False)  # Привязан к пользователю
+    is_converted = Column(Boolean, default=False)  # Сгенерирован PDF
+    
+    # Метаданные
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    expires_at = Column(DateTime, nullable=True)  # Когда истечёт (7 дней)
+    
+    user = relationship("User")
+    
+    def __repr__(self):
+        return f"<GuestDraft {self.draft_token[:8]}... type={self.document_type}>"

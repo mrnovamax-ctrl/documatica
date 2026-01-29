@@ -26,8 +26,15 @@
   <div class="admin-table-row admin-table-row-5col">
     <!-- Email -->
     <div class="admin-table-cell">
-      <div class="admin-user-email">{{ user.email }}</div>
-      <div class="admin-user-id">ID: {{ user.id }}</div>
+      <div class="admin-user-email">
+        {{ user.email }}
+        {% if user.auth_provider == 'yandex' %}
+        <span class="admin-badge admin-badge-yandex" style="display: inline-flex; align-items: center; gap: 3px; margin-left: 6px; padding: 2px 6px; font-size: 9px; background: #FC3F1D; color: white; border-radius: 4px;">
+          <span style="font-weight: 700;">Y</span>
+        </span>
+        {% endif %}
+      </div>
+      <div class="admin-user-id">ID: {{ user.id }}{% if user.name %} / {{ user.name }}{% endif %}</div>
     </div>
     
     <!-- Tariff -->

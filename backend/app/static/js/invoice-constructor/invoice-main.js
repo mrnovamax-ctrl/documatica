@@ -154,14 +154,14 @@ $(document).ready(function() {
                     const formData = await response.json();
                     setTimeout(function() {
                         loadFormDataForEdit(formData);
-                        showNotification('success', 'Документ загружен для редактирования');
+                        toastSuccess('Документ загружен для редактирования');
                     }, 500);
                 } else {
-                    showNotification('danger', 'Не удалось загрузить данные документа');
+                    toastError('Не удалось загрузить данные документа');
                 }
             } catch (error) {
                 console.error('Error loading document:', error);
-                showNotification('danger', 'Ошибка загрузки документа');
+                toastError('Ошибка загрузки документа');
             }
         })();
     }
@@ -178,14 +178,14 @@ $(document).ready(function() {
                     const template = await response.json();
                     setTimeout(function() {
                         loadTemplateData(template.data);
-                        showNotification('success', 'Шаблон загружен! Измените данные и создайте документ.');
+                        toastSuccess('Шаблон загружен! Измените данные и создайте документ.');
                     }, 500);
                 } else {
-                    showNotification('danger', 'Не удалось загрузить шаблон');
+                    toastError('Не удалось загрузить шаблон');
                 }
             } catch (error) {
                 console.error('Error loading template:', error);
-                showNotification('danger', 'Ошибка загрузки шаблона');
+                toastError('Ошибка загрузки шаблона');
             }
         })();
     } else if (templateId === 'true') {
@@ -195,7 +195,7 @@ $(document).ready(function() {
             setTimeout(function() {
                 loadTemplateData(JSON.parse(templateData));
                 localStorage.removeItem('invoice_use_template');
-                showNotification('success', 'Шаблон загружен! Измените данные и создайте документ.');
+                toastSuccess('Шаблон загружен! Измените данные и создайте документ.');
             }, 500);
         }
     }
@@ -206,7 +206,7 @@ $(document).ready(function() {
         if (draftData) {
             setTimeout(function() {
                 loadTemplateData(JSON.parse(draftData));
-                showNotification('success', 'Черновик загружен!');
+                toastSuccess('Черновик загружен!');
             }, 500);
         }
     }
@@ -214,6 +214,14 @@ $(document).ready(function() {
     // Storage for loaded data
     let organizationsList = [];
     let contractorsList = [];
+    let selectedSupplierOrg = null;  // Для хранения выбранной организации (подпись, печать)
+    
+    // Определение типа организации по ИНН (10 цифр = ООО, 12 цифр = ИП)
+    function getOrgTypeByInn(inn) {
+        if (!inn) return 'ooo';
+        const cleanInn = inn.toString().replace(/\D/g, '');
+        return cleanInn.length === 12 ? 'ip' : 'ooo';
+    }
     
     // ============== DADATA АВТОЗАПОЛНЕНИЕ ==============
     
@@ -276,7 +284,7 @@ $(document).ready(function() {
             $('#supplier-name, #supplier-inn, #supplier-kpp, #supplier-address').removeClass('bg-success-100');
         }, 2000);
         
-        showNotification('success', `Данные компании "${company.name}" загружены`);
+        toastSuccess(`Данные компании "${company.name}" загружены`);
     }
     
     // Заполнение полей покупателя
@@ -294,7 +302,7 @@ $(document).ready(function() {
             $('#buyer-name, #buyer-inn, #buyer-kpp, #buyer-address').removeClass('bg-success-100');
         }, 2000);
         
-        showNotification('success', `Данные компании "${company.name}" загружены`);
+        toastSuccess(`Данные компании "${company.name}" загружены`);
     }
     
     // Обработчики кнопок поиска по ИНН
@@ -345,7 +353,7 @@ $(document).ready(function() {
     $('#bank-bik-search').on('click', async function() {
         const bik = $('#bank-bik').val();
         if (!bik || bik.length !== 9) {
-            showNotification('danger', 'Введите корректный БИК (9 цифр)');
+            toastError('Введите корректный БИК (9 цифр)');
             return;
         }
         
@@ -358,13 +366,13 @@ $(document).ready(function() {
                     $('#bank-name').val(bank.value);
                     $('#bank-bik').val(bank.data.bic);
                     $('#bank-corr').val(bank.data.correspondent_account || '');
-                    showNotification('success', 'Банк найден');
+                    toastSuccess('Банк найден');
                 } else {
-                    showNotification('danger', 'Банк не найден');
+                    toastError('Банк не найден');
                 }
             }
         } catch (error) {
-            showNotification('danger', 'Ошибка поиска банка');
+            toastError('Ошибка поиска банка');
         }
     });
     
@@ -531,6 +539,9 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const org = organizationsList.find(o => o.id === id);
         if (org) {
+            // Сохраняем выбранную организацию для использования подписи и печати
+            selectedSupplierOrg = org;
+            
             // Отключаем transitions при массовом заполнении полей
             document.body.classList.add('no-transitions');
             
@@ -1204,9 +1215,64 @@ $(document).ready(function() {
         return !!token;
     }
 
-    // Сохранение документа как pending для неавторизованного пользователя
-    function savePendingDocument(requestData) {
+    // Сохранение документа как pending для неавторизованного пользователя (на сервере)
+    async function savePendingDocument(requestData) {
+        try {
+            const response = await fetch('/api/v1/drafts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    document_type: 'invoice',
+                    document_data: requestData
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('documatica_draft_token', data.draft_token);
+                localStorage.setItem('documatica_pending_document', JSON.stringify(requestData));
+                return data.draft_token;
+            }
+        } catch (error) {
+            console.error('Ошибка сохранения черновика:', error);
+        }
+        
         localStorage.setItem('documatica_pending_document', JSON.stringify(requestData));
+        return null;
+    }
+    
+    // Обновление UI модалки при сохранении черновика
+    function updateModalSaveStatus(success, draftToken) {
+        // Обновляем оба возможных элемента статуса (authRequiredModal и guestRegistrationModal)
+        const statusIds = ['draft-save-status', 'draft-save-status-auth'];
+        
+        statusIds.forEach(id => {
+            const statusEl = document.getElementById(id);
+            if (!statusEl) return;
+            
+            if (success) {
+                statusEl.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span style="color: #166534; font-weight: 600;">Черновик сохранён на сервере</span>
+                    </div>
+                `;
+            } else {
+                statusEl.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16v-4M12 8h.01"></path>
+                        </svg>
+                        <span style="color: #92400e; font-weight: 600;">Черновик сохранён локально</span>
+                    </div>
+                `;
+            }
+        });
     }
 
     // Form submit - генерация PDF через API
@@ -1224,10 +1290,20 @@ $(document).ready(function() {
         
         // Проверяем авторизацию
         if (!isUserAuthenticated()) {
-            // Сохраняем документ в localStorage для восстановления после авторизации
-            savePendingDocument(requestData);
-            // Показываем модалку авторизации
+            // Показываем модалку сразу
             $('#authRequiredModal').modal('show');
+            
+            // Сохраняем документ на сервере
+            const draftToken = await savePendingDocument(requestData);
+            updateModalSaveStatus(!!draftToken, draftToken);
+            
+            // Добавляем draft_token к ссылкам OAuth
+            if (draftToken) {
+                const yandexLinks = document.querySelectorAll('#authRequiredModal a[href*="/auth/yandex/login"]');
+                yandexLinks.forEach(link => {
+                    link.href = `/auth/yandex/login?draft_token=${draftToken}&redirect_to=/dashboard/invoice/create/`;
+                });
+            }
             return;
         }
         
@@ -1241,9 +1317,21 @@ $(document).ready(function() {
         const token = localStorage.getItem('documatica_token') || getCookie('access_token');
         
         if (!token) {
-            // Гость - сохраняем данные формы в localStorage и показываем модалку
-            localStorage.setItem('pending_invoice_data', JSON.stringify(requestData));
+            // Показываем модалку сразу
             $('#guestRegistrationModal').modal('show');
+            
+            // Сохраняем данные на сервере
+            const draftToken = await savePendingDocument(requestData);
+            localStorage.setItem('pending_invoice_data', JSON.stringify(requestData));
+            updateModalSaveStatus(!!draftToken, draftToken);
+            
+            // Добавляем draft_token к ссылкам OAuth
+            if (draftToken) {
+                const yandexLinks = document.querySelectorAll('#guestRegistrationModal a[href*="/auth/yandex/login"]');
+                yandexLinks.forEach(link => {
+                    link.href = `/auth/yandex/login?draft_token=${draftToken}&redirect_to=/dashboard/invoice/create/`;
+                });
+            }
             return;
         }
         
@@ -1306,7 +1394,7 @@ $(document).ready(function() {
                     }, 500);
                 };
                 
-                showNotification('success', 'Для сохранения в PDF выберите "Сохранить как PDF" в диалоге печати');
+                toastSuccess('Для сохранения в PDF выберите "Сохранить как PDF" в диалоге печати');
             } else {
                 // Скачиваем PDF
                 const blob = await response.blob();
@@ -1318,12 +1406,12 @@ $(document).ready(function() {
                 a.click();
                 window.URL.revokeObjectURL(url);
                 a.remove();
-                showNotification('success', 'Счёт успешно сгенерирован и скачан!');
+                toastSuccess('Счёт успешно сгенерирован и скачан!');
             }
             
         } catch (error) {
             console.error('Error:', error);
-            showNotification('danger', 'Ошибка: ' + error.message);
+            toastError('Ошибка: ' + error.message);
         } finally {
             submitBtn.prop('disabled', false).html(originalText);
         }
@@ -1426,6 +1514,10 @@ $(document).ready(function() {
                 director: $('#signer-director').val() || null,
                 accountant: $('#signer-accountant').val() || null
             },
+            supplier_org_type: getOrgTypeByInn($('#supplier-inn').val()),
+            supplier_stamp_image: selectedSupplierOrg?.stamp_base64 || null,
+            director_signature: selectedSupplierOrg?.director_signature || null,
+            accountant_signature: selectedSupplierOrg?.accountant_signature || null,
             buyer: {
                 name: $('#buyer-name').val(),
                 inn: $('#buyer-inn').val(),
@@ -1451,15 +1543,6 @@ $(document).ready(function() {
             return `${parts[2]}-${parts[1]}-${parts[0]}`;
         }
         return dateStr;
-    }
-    
-    // Показать уведомление
-    function showNotification(type, message) {
-        const bgClass = type === 'success' ? 'bg-success-100 text-success-main' : 'bg-danger-100 text-danger-main';
-        const icon = type === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle';
-        const toast = $(`<div class="position-fixed top-0 end-0 m-24 p-16 ${bgClass} shadow-lg" style="z-index: 9999; max-width: 400px;"><div class="d-flex align-items-center gap-8"><iconify-icon icon="${icon}" class="text-xl"></iconify-icon><span>${message}</span></div></div>`);
-        $('body').append(toast);
-        setTimeout(() => toast.fadeOut(300, function() { $(this).remove(); }), 4000);
     }
     
     // Функция показа ошибки под инпутом
@@ -1739,14 +1822,14 @@ $(document).ready(function() {
             });
             
             if (response.ok) {
-                showNotification('success', 'Шаблон успешно сохранен!');
+                toastSuccess('Шаблон успешно сохранен!');
             } else {
                 const err = await response.json();
-                showNotification('error', err.detail || 'Ошибка сохранения шаблона');
+                toastError(err.detail || 'Ошибка сохранения шаблона');
             }
         } catch (error) {
             console.error('Error saving template:', error);
-            showNotification('error', 'Ошибка сохранения: ' + error.message);
+            toastError('Ошибка сохранения: ' + error.message);
         } finally {
             btn.prop('disabled', false).html('Сохранить как шаблон');
         }
@@ -1756,7 +1839,7 @@ $(document).ready(function() {
     $('#save-draft').on('click', function() {
         const formData = collectFormData();
         localStorage.setItem('invoice_draft', JSON.stringify(formData));
-        showNotification('success', 'Черновик сохранен!');
+        toastSuccess('Черновик сохранен!');
     });
 
     // Initial calculations
@@ -1841,6 +1924,10 @@ $(document).ready(function() {
                 director: $('#signer-director').val() || null,
                 accountant: $('#signer-accountant').val() || null
             },
+            supplier_org_type: getOrgTypeByInn($('#supplier-inn').val()),
+            supplier_stamp_image: selectedSupplierOrg?.stamp_base64 || null,
+            director_signature: selectedSupplierOrg?.director_signature || null,
+            accountant_signature: selectedSupplierOrg?.accountant_signature || null,
             buyer: {
                 name: $('#buyer-name').val() || 'Покупатель',
                 inn: $('#buyer-inn').val() || '0000000000',
@@ -2353,6 +2440,25 @@ $(document).ready(function() {
             
             // Устанавливаем cookie для httponly
             document.cookie = `access_token=${data.access_token}; path=/; max-age=${24*60*60}; SameSite=Lax`;
+            
+            // Привязываем черновик к пользователю
+            const draftToken = localStorage.getItem('documatica_draft_token');
+            if (draftToken) {
+                try {
+                    await fetch('/api/v1/drafts/claim', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${data.access_token}`
+                        },
+                        body: JSON.stringify({ draft_token: draftToken })
+                    });
+                    localStorage.removeItem('documatica_draft_token');
+                    localStorage.removeItem('documatica_pending_document');
+                } catch (err) {
+                    console.error('Ошибка привязки черновика:', err);
+                }
+            }
             
             // Закрываем модалку
             $('#guestRegistrationModal').modal('hide');

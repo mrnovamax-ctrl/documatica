@@ -2101,6 +2101,68 @@ body {
   transform: translateY(-1px);
 }
 
+/* OAuth Divider */
+.auth-divider-v12 {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  gap: 16px;
+}
+
+.auth-divider-v12::before,
+.auth-divider-v12::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.auth-divider-v12 span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* OAuth Buttons */
+.auth-oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 1.5rem;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.auth-oauth-btn.yandex-btn {
+  background: #FC3F1D;
+  color: white;
+  border-color: #FC3F1D;
+}
+
+.auth-oauth-btn.yandex-btn:hover {
+  background: #E53517;
+  border-color: #E53517;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(252, 63, 29, 0.35);
+}
+
+.auth-oauth-btn.yandex-btn:active {
+  transform: translateY(0);
+}
+
+.auth-oauth-btn svg {
+  flex-shrink: 0;
+}
+
 /* Auth Footer */
 .auth-footer-v12 {
   text-align: center;

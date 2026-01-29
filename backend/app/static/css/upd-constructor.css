@@ -4,6 +4,13 @@
    Extracted from inline styles for better performance
    ======================================== */
 
+/* Стили для readonly поля суммы товара */
+.product-total[readonly] {
+  background-color: #f1f5f9 !important;
+  color: #64748b !important;
+  cursor: not-allowed !important;
+}
+
 /* Отключение transitions при массовом заполнении полей */
 .no-transitions,
 .no-transitions * {
