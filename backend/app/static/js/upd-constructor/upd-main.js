@@ -1729,6 +1729,10 @@ $(document).ready(function() {
     function loadFormDataForEdit(data) {
         if (!data) return;
         
+        console.log('Loading form data for edit:', data);
+        console.log('correction_number:', data.correction_number);
+        console.log('correction_date:', data.correction_date);
+        
         // Конвертация даты YYYY-MM-DD в DD.MM.YYYY
         function convertDateFromISO(dateStr) {
             if (!dateStr) return '';
