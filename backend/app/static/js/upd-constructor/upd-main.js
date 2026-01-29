@@ -1541,6 +1541,11 @@ $(document).ready(function() {
         const correctionNumber = $('#correction-number').val()?.trim();
         const correctionDate = $('#correction-date').val()?.trim();
         
+        console.log('BEFORE SAVE - correction-number field value:', $('#correction-number').val());
+        console.log('BEFORE SAVE - correction-date field value:', $('#correction-date').val());
+        console.log('BEFORE SAVE - correctionNumber (trimmed):', correctionNumber);
+        console.log('BEFORE SAVE - correctionDate (trimmed):', correctionDate);
+        
         return {
             document_number: $('#upd-number').val(),
             document_date: convertDateToISO($('#upd-date').val()),
