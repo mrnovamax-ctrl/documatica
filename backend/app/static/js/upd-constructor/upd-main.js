@@ -1740,6 +1740,8 @@ $(document).ready(function() {
         // Document info - заполняем номер и дату
         $('#upd-number').val(data.document_number || '');
         $('#upd-date').val(convertDateFromISO(data.document_date) || '');
+        $('#correction-number').val(data.correction_number || '');
+        $('#correction-date').val(convertDateFromISO(data.correction_date) || '');
         if (data.status) {
             $(`input[name="upd-status"][value="${data.status}"]`).prop('checked', true);
         }
