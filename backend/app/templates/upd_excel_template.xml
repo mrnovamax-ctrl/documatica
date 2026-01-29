@@ -8305,7 +8305,7 @@
     <Cell ss:MergeAcross="1" ss:StyleID="m2840180544960"><Data ss:Type="String">{{ item.unit_name or "шт" }}</Data></Cell>
     <Cell ss:MergeAcross="1" ss:StyleID="m2840180544980"/>
     <Cell ss:MergeAcross="2" ss:StyleID="m2840180541680"><Data ss:Type="Number">{{ item.quantity }}</Data></Cell>
-    <Cell ss:MergeAcross="9" ss:StyleID="m2840180541700"><Data ss:Type="String">{{ "%.2f"|format(item.price_without_vat|float) }}</Data></Cell>
+    <Cell ss:MergeAcross="9" ss:StyleID="m2840180541700"><Data ss:Type="String">{{ "%.2f"|format((item.price_without_vat or item.price or 0)|float) }}</Data></Cell>
     <Cell ss:MergeAcross="7" ss:StyleID="m2840180541720"><Data ss:Type="String">{{ "%.2f"|format(item.amount_without_vat|float) }}</Data></Cell>
     <Cell ss:MergeAcross="3" ss:StyleID="m2840180541740"/>
     <Cell ss:MergeAcross="1" ss:StyleID="m2840180541760"><Data ss:Type="String">{{ item.vat_rate or "Без НДС" }}</Data></Cell>
