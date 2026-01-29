@@ -1538,11 +1538,14 @@ $(document).ready(function() {
         });
         
         // Формируем запрос к API
+        const correctionNumber = $('#correction-number').val()?.trim();
+        const correctionDate = $('#correction-date').val()?.trim();
+        
         return {
             document_number: $('#upd-number').val(),
             document_date: convertDateToISO($('#upd-date').val()),
-            correction_number: $('#correction-number').val() || null,
-            correction_date: $('#correction-date').val() ? convertDateToISO($('#correction-date').val()) : null,
+            correction_number: correctionNumber || null,
+            correction_date: correctionDate ? convertDateToISO(correctionDate) : null,
             status: parseInt($('input[name="upd-status"]:checked').val()) || 1,
             seller: {
                 name: $('#seller-name').val(),
@@ -1748,6 +1751,10 @@ $(document).ready(function() {
         $('#upd-date').val(convertDateFromISO(data.document_date) || '');
         $('#correction-number').val(data.correction_number || '');
         $('#correction-date').val(convertDateFromISO(data.correction_date) || '');
+        
+        console.log('Filled correction-number input:', $('#correction-number').val());
+        console.log('Filled correction-date input:', $('#correction-date').val());
+        
         if (data.status) {
             $(`input[name="upd-status"][value="${data.status}"]`).prop('checked', true);
         }
