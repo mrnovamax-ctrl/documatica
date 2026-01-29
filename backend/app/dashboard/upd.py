@@ -38,7 +38,7 @@ async def upd_create(request: Request, preset: Optional[str] = None):
     
     return templates.TemplateResponse(
         request=request,
-        name="dashboard/upd/create.html",
+        name="dashboard/upd/create_v12.html",
         context=get_dashboard_context(
             request=request,
             title="Создать УПД — Documatica",
@@ -60,7 +60,7 @@ async def upd_edit(request: Request, document_id: str = Path(...)):
     
     return templates.TemplateResponse(
         request=request,
-        name="dashboard/upd/create.html",
+        name="dashboard/upd/create_v12.html",
         context=get_dashboard_context(
             request=request,
             title="Редактировать УПД — Documatica",
