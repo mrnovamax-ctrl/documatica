@@ -1541,6 +1541,8 @@ $(document).ready(function() {
         return {
             document_number: $('#upd-number').val(),
             document_date: convertDateToISO($('#upd-date').val()),
+            correction_number: $('#correction-number').val() || null,
+            correction_date: $('#correction-date').val() ? convertDateToISO($('#correction-date').val()) : null,
             status: parseInt($('input[name="upd-status"]:checked').val()) || 1,
             seller: {
                 name: $('#seller-name').val(),
