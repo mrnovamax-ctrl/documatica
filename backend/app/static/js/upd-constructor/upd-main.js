@@ -1519,6 +1519,7 @@ $(document).ready(function() {
                 unit_name: $(this).find('.product-unit').val() || 'шт',
                 quantity: qty,
                 price: price,
+                price_without_vat: price,  // Для XLS экспорта
                 amount_without_vat: amountWithoutVat,
                 vat_rate: vatRateStr,
                 vat_amount: vatAmount,
