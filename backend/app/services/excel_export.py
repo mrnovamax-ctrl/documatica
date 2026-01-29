@@ -330,9 +330,12 @@ class ExcelExportService:
                 'currency_name': form_data.get('currency_name', 'Российский рубль'),
                 'currency_code': form_data.get('currency_code', '643'),
                 'gov_contract_id': form_data.get('gov_contract_id') or '',
+                'contract_info': form_data.get('contract_info') or '',
                 'payment_document': form_data.get('payment_document') or '',
                 'shipping_document': form_data.get('shipping_document') or '',
+                'transport_info': form_data.get('transport_info') or '',
                 'seller_signer': form_data.get('seller_signer', {}),
+                'buyer_signer': form_data.get('buyer_signer', {}),
             }
             
             # Рендерим XML через Jinja2
