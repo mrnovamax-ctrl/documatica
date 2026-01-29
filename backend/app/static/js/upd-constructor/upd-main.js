@@ -1565,6 +1565,8 @@ $(document).ready(function() {
             total_amount_with_vat: totalWithVat,
             currency_code: '643',
             currency_name: 'Российский рубль',
+            payment_document: $('#payment-document').val() || null,
+            shipping_document: $('#shipping-document').val() || null,
             contract_info: $('#transfer-basis').val() || null,
             transport_info: $('#transport-info').val() || null,
             seller_signer: $('#released-by').val() ? {
