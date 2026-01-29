@@ -554,12 +554,12 @@
               <button type="button" class="form-btn-secondary-v12" id="save-draft">Сохранить черновик</button>
               <button type="button" class="form-btn-secondary-v12" id="save-template">Сохранить как шаблон</button>
               <button type="button" class="form-btn-secondary-v12" id="preview-btn">Предпросмотр</button>
-              <button type="button" class="form-btn-secondary-v12" id="export-xls-btn" style="display: none;">
-                Скачать XLS
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-              </button>
               <button type="submit" class="form-btn-primary-v12">
                 Скачать PDF
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              </button>
+              <button type="button" class="form-btn-secondary-v12" id="export-xls-btn" disabled title="Сначала создайте документ">
+                Скачать XLS
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
               </button>
             </div>
@@ -874,8 +874,8 @@ $(document).ready(function() {
             const saveResult = await saveResponse.json();
             savedDocumentId = saveResult.document_id;
             
-            // Показываем кнопку XLS после успешного сохранения
-            $('#export-xls-btn').fadeIn();
+            // Активируем кнопку XLS после успешного сохранения
+            $('#export-xls-btn').prop('disabled', false).attr('title', 'Скачать Excel файл');
             
             // Теперь генерируем PDF
             const response = await fetch('/api/v1/documents/upd/generate', {
