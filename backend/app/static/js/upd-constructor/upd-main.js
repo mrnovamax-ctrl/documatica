@@ -1541,11 +1541,6 @@ $(document).ready(function() {
         const correctionNumber = $('#correction-number').val()?.trim();
         const correctionDate = $('#correction-date').val()?.trim();
         
-        console.log('BEFORE SAVE - correction-number field value:', $('#correction-number').val());
-        console.log('BEFORE SAVE - correction-date field value:', $('#correction-date').val());
-        console.log('BEFORE SAVE - correctionNumber (trimmed):', correctionNumber);
-        console.log('BEFORE SAVE - correctionDate (trimmed):', correctionDate);
-        
         return {
             document_number: $('#upd-number').val(),
             document_date: convertDateToISO($('#upd-date').val()),
@@ -1737,10 +1732,6 @@ $(document).ready(function() {
     function loadFormDataForEdit(data) {
         if (!data) return;
         
-        console.log('Loading form data for edit:', data);
-        console.log('correction_number:', data.correction_number);
-        console.log('correction_date:', data.correction_date);
-        
         // Конвертация даты YYYY-MM-DD в DD.MM.YYYY
         function convertDateFromISO(dateStr) {
             if (!dateStr) return '';
@@ -1756,9 +1747,6 @@ $(document).ready(function() {
         $('#upd-date').val(convertDateFromISO(data.document_date) || '');
         $('#correction-number').val(data.correction_number || '');
         $('#correction-date').val(convertDateFromISO(data.correction_date) || '');
-        
-        console.log('Filled correction-number input:', $('#correction-number').val());
-        console.log('Filled correction-date input:', $('#correction-date').val());
         
         if (data.status) {
             $(`input[name="upd-status"][value="${data.status}"]`).prop('checked', true);
