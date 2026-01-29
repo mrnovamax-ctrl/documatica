@@ -1443,7 +1443,16 @@ $(document).ready(function() {
                     
                     // Сохраняем ID документа и активируем кнопку XLS
                     window.savedDocumentId = saveResult.document_id;
-                    $('#export-xls-btn').prop('disabled', false).attr('title', 'Скачать Excel файл');
+                    
+                    const xlsBtn = $('#export-xls-btn');
+                    console.log('XLS button found:', xlsBtn.length > 0);
+                    
+                    if (xlsBtn.length > 0) {
+                        xlsBtn.prop('disabled', false).attr('title', 'Скачать Excel файл');
+                        console.log('XLS button activated');
+                    } else {
+                        console.error('XLS button not found in DOM');
+                    }
                 }
             } catch (saveError) {
                 console.log('Не удалось сохранить документ:', saveError);
