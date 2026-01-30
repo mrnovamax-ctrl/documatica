@@ -1293,6 +1293,61 @@ $(document).ready(function() {
         }
     }
 
+    // ============== SAVE DRAFT BUTTON ==============
+    // Кнопка "Сохранить черновик"
+    $('#save-draft-btn').on('click', async function(e) {
+        e.preventDefault();
+        
+        const btn = $(this);
+        const originalText = btn.html();
+        btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-8"></span>Сохранение...');
+        
+        try {
+            const requestData = collectFormDataForSubmit();
+            const token = localStorage.getItem('documatica_token') || getCookie('access_token');
+            
+            if (!token) {
+                toastError('Необходима авторизация для сохранения документа');
+                btn.prop('disabled', false).html(originalText);
+                return;
+            }
+            
+            // Проверяем, есть ли уже сохранённый documentId (для обновления)
+            const existingDocId = window.savedDocumentId || null;
+            
+            const response = await fetch('/api/v1/documents/upd/save' + (existingDocId ? `?document_id=${existingDocId}` : ''), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include',
+                body: JSON.stringify(requestData)
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || 'Ошибка сохранения');
+            }
+            
+            const result = await response.json();
+            
+            // Сохраняем document_id для последующих обновлений
+            window.savedDocumentId = result.document_id;
+            
+            // Активируем кнопку XLS (теперь можно экспортировать)
+            $('#export-xls-btn').prop('disabled', false).attr('title', 'Скачать в формате Excel 2003');
+            
+            toastSuccess(result.message || 'Черновик успешно сохранён');
+            
+        } catch (error) {
+            toastError('Ошибка: ' + error.message);
+        } finally {
+            btn.prop('disabled', false).html(originalText);
+        }
+    });
+    // ============== END SAVE DRAFT BUTTON ==============
+
     // Form submit - генерация PDF через API
     $('#upd-form').on('submit', async function(e) {
         e.preventDefault();
@@ -2830,5 +2885,107 @@ $(document).ready(function() {
         }
     });
     // ============== END XLS EXPORT ==============
+    
+    // ============== DEVELOPER MODE ==============
+    // Маппинг frontend селекторов на backend field names
+    const FIELD_MAPPING = {
+        '#upd-number': 'document_number',
+        '#upd-date': 'document_date',
+        '#correction-number': 'correction_number',
+        '#correction-date': 'correction_date',
+        'input[name="upd-status"]': 'status',
+        '#seller-name': 'seller.name',
+        '#seller-inn': 'seller.inn',
+        '#seller-kpp': 'seller.kpp',
+        '#seller-address': 'seller.address',
+        '#buyer-name': 'buyer.name',
+        '#buyer-inn': 'buyer.inn',
+        '#buyer-kpp': 'buyer.kpp',
+        '#buyer-address': 'buyer.address',
+        '#consignor-address': 'consignor',
+        '#consignee-address': 'consignee',
+        '#currency-code': 'currency_code',
+        '#currency-name': 'currency_name',
+        '#gov-contract-id': 'gov_contract_id',
+        '#payment-document': 'payment_document',
+        '#shipping-document': 'shipping_document',
+        '#transfer-basis': 'contract_info',
+        '#transport-info': 'transport_info',
+        '#shipping-date': 'shipping_date',
+        '#receiving-date': 'receiving_date',
+        '#other-shipping-info': 'other_shipping_info',
+        '#other-receiving-info': 'other_receiving_info',
+        '#released-by': 'seller_signer.full_name',
+        '#released-position': 'seller_signer.position',
+        '#responsible-position': 'seller_responsible.position',
+        '#responsible-name': 'seller_responsible.full_name',
+        '#economic-entity': 'economic_entity',
+        '#received-by': 'buyer_signer.full_name',
+        '#received-position': 'buyer_signer.position',
+        '#buyer-responsible-position': 'buyer_responsible.position',
+        '#buyer-responsible-name': 'buyer_responsible.full_name',
+        '#buyer-economic-entity': 'buyer_economic_entity',
+        // Default values for items (not saved to backend directly)
+        '#default-vat': 'default_vat_rate',
+        '#default-vat-type': 'default_vat_type',
+        '#default-country': 'default_country',
+        '#default-country-code': 'default_country_code'
+    };
+
+    // Функция переключения Developer Mode
+    function toggleDevMode() {
+        const isActive = localStorage.getItem('devMode') === 'true';
+        
+        if (isActive) {
+            // Выключить
+            $('.dev-field-id').remove();
+            localStorage.setItem('devMode', 'false');
+            console.log('🔧 Developer Mode: OFF');
+        } else {
+            // Включить
+            let foundCount = 0;
+            let addedCount = 0;
+            
+            Object.keys(FIELD_MAPPING).forEach(selector => {
+                const fieldId = FIELD_MAPPING[selector];
+                const $field = $(selector);
+                
+                if ($field.length > 0) {
+                    foundCount++;
+                    
+                    // Создаём badge с ID
+                    const $badge = $(`<span class="dev-field-id" style="display: inline-block; margin-left: 8px; padding: 2px 8px; background: #e2e8f0; color: #475569; font-size: 11px; font-family: 'Courier New', monospace; border-radius: 4px; user-select: all; vertical-align: middle;">${fieldId}</span>`);
+                    
+                    // Проверяем, не добавлен ли уже
+                    if ($field.next('.dev-field-id').length === 0) {
+                        $field.after($badge);
+                        addedCount++;
+                    }
+                }
+            });
+            
+            localStorage.setItem('devMode', 'true');
+            console.log('🔧 Developer Mode: ON');
+            console.log(`📋 Fields found: ${foundCount}, Badges added: ${addedCount}`);
+        }
+    }
+
+    // Hotkey: Ctrl+Shift+D
+    $(document).on('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+            e.preventDefault();
+            toggleDevMode();
+        }
+    });
+
+    // Автовключение если был активен
+    if (localStorage.getItem('devMode') === 'true') {
+        // Увеличенная задержка для полной загрузки DOM
+        setTimeout(function() {
+            console.log('🔧 Auto-enabling Developer Mode...');
+            toggleDevMode();
+        }, 1500);
+    }
+    // ============== END DEVELOPER MODE ==============
     
 });
