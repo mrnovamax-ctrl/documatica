@@ -255,5 +255,31 @@
     "user_id": 48,
     "created_at": "2026-01-29T09:20:10.834020",
     "updated_at": "2026-01-29T09:20:10.834020"
+  },
+  {
+    "id": "1c184d04-141b-4b17-8967-2efd418d7665",
+    "org_type": "ooo",
+    "name": "Машиностроения\" Публичное акционерное общество \"Уральский Завод Тяжелого",
+    "inn": "6663005798",
+    "kpp": "668601001",
+    "ogrn": "",
+    "address": "620012, Свердловская область, Екатеринбург, площадь 1-й Пятилетки",
+    "logo_url": "",
+    "director": "",
+    "bank_name": "Банк ГПБ (АО)",
+    "bank_bik": "044525823",
+    "bank_account": "40702810100000068121",
+    "bank_corr_account": "30101810200000000823",
+    "phone": "+73433366581",
+    "email": "",
+    "contact_person": "",
+    "receiver_position": null,
+    "receiver_name": null,
+    "responsible_position": null,
+    "responsible_name": null,
+    "economic_entity": null,
+    "user_id": 65,
+    "created_at": "2026-01-30T11:40:17.633778",
+    "updated_at": "2026-01-30T11:40:17.633778"
   }
 ]

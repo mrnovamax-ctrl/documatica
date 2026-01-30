@@ -42,6 +42,10 @@ class Settings:
     
     # Debug режим
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
+    
+    # Feature Flags
+    # Новая логика сохранения документов: один UUID, обновление вместо создания новых версий
+    FEATURE_NEW_SAVE_LOGIC: bool = os.getenv("FEATURE_NEW_SAVE_LOGIC", "false").lower() == "true"
 
 
 settings = Settings()

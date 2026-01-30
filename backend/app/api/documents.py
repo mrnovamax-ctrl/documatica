@@ -411,6 +411,7 @@ async def list_templates():
 @router.post("/upd/save")
 async def save_upd(
     request: UPDRequest,
+    document_id: Optional[str] = None,  # Для обновления существующего документа
     authorization: Optional[str] = Header(None),
     access_token: Optional[str] = Cookie(None),
     db: Session = Depends(get_db)
@@ -418,13 +419,38 @@ async def save_upd(
     """
     Сохранение УПД в личном кабинете.
     Проверяет лимиты пользователя и списывает генерацию.
+    
+    Если включен FEATURE_NEW_SAVE_LOGIC и передан document_id - обновляет существующий документ.
     """
+    from app.core.config import settings
+    
     try:
         # Получаем user_id из токена (может быть None для неавторизованных)
         user_id = get_user_id_from_token(authorization, access_token)
         
-        # Если пользователь авторизован - проверяем и списываем лимит
-        if user_id:
+        # Проверяем, нужно ли обновить существующий документ (новая логика)
+        if settings.FEATURE_NEW_SAVE_LOGIC and document_id:
+            # Проверяем существование документа
+            doc_folder = DOCUMENTS_DIR / document_id
+            if doc_folder.exists():
+                # Проверяем владельца
+                metadata_path = doc_folder / "metadata.json"
+                if metadata_path.exists():
+                    metadata = json.loads(metadata_path.read_text(encoding='utf-8'))
+                    if metadata.get("user_id") != user_id:
+                        raise HTTPException(status_code=403, detail="Доступ запрещён")
+                
+                # Обновляем документ без биллинга (уже был оплачен при создании)
+                doc_id = document_id
+            else:
+                # Документ не найден - создаём новый
+                doc_id = str(uuid.uuid4())
+        else:
+            # Старая логика - всегда создаём новый UUID
+            doc_id = str(uuid.uuid4())
+        
+        # Если пользователь авторизован И создаём новый документ - проверяем и списываем лимит
+        if user_id and (not settings.FEATURE_NEW_SAVE_LOGIC or not document_id or document_id == doc_id):
             user = db.query(User).filter(User.id == user_id).first()
             if user:
                 billing = BillingService(db)
@@ -454,9 +480,6 @@ async def save_upd(
                             "message": "Не удалось списать генерацию"
                         }
                     )
-        
-        # Генерируем уникальный ID документа
-        doc_id = str(uuid.uuid4())
         
         # Создаём папку для документа
         doc_folder = DOCUMENTS_DIR / doc_id
@@ -516,27 +539,46 @@ async def save_upd(
         form_data_path.write_text(json.dumps(form_data, ensure_ascii=False, indent=2, default=str), encoding='utf-8')
         
         # Сохраняем метаданные
-        metadata = {
-            "id": doc_id,
-            "type": "upd",
+        metadata_path = doc_folder / "metadata.json"
+        # Если обновляем существующий - загружаем старые метаданные
+        if settings.FEATURE_NEW_SAVE_LOGIC and document_id and document_id == doc_id:
+            if metadata_path.exists():
+                metadata = json.loads(metadata_path.read_text(encoding='utf-8'))
+                metadata["updated_at"] = datetime.now().isoformat()
+            else:
+                metadata = {
+                    "id": doc_id,
+                    "type": "upd",
+                    "created_at": datetime.now().isoformat()
+                }
+        else:
+            metadata = {
+                "id": doc_id,
+                "type": "upd",
+                "created_at": datetime.now().isoformat()
+            }
+        
+        # Обновляем актуальные данные
+        metadata.update({
             "user_id": user_id,  # Привязка к пользователю
             "document_number": request.document_number,
             "document_date": str(request.document_date),
-            "created_at": datetime.now().isoformat(),
             "seller_name": request.seller.name,
             "buyer_name": request.buyer.name,
             "total_amount": float(request.total_amount_with_vat),
             "status": request.status
-        }
+        })
         
-        metadata_path = doc_folder / "metadata.json"
         metadata_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding='utf-8')
+        
+        is_update = settings.FEATURE_NEW_SAVE_LOGIC and document_id and document_id == doc_id
         
         return {
             "success": True,
-            "message": "Документ успешно сохранён",
+            "message": "Документ успешно обновлён" if is_update else "Документ успешно сохранён",
             "document_id": doc_id,
-            "document_number": request.document_number
+            "document_number": request.document_number,
+            "is_update": is_update
         }
         
     except Exception as e:
@@ -645,6 +687,124 @@ async def get_saved_document_form_data(document_id: str):
         raise HTTPException(
             status_code=500,
             detail=f"Ошибка получения данных формы: {str(e)}"
+        )
+
+
+@router.post("/upd/update/{document_id}")
+async def update_upd(
+    document_id: str,
+    request: UPDRequest,
+    authorization: Optional[str] = Header(None),
+    access_token: Optional[str] = Cookie(None),
+    db: Session = Depends(get_db)
+):
+    """
+    Обновление существующего УПД без создания новой версии.
+    Используется с FEATURE_NEW_SAVE_LOGIC флагом.
+    """
+    from app.core.config import settings
+    
+    try:
+        # Проверяем существование документа
+        doc_folder = DOCUMENTS_DIR / document_id
+        if not doc_folder.exists():
+            raise HTTPException(status_code=404, detail="Документ не найден")
+        
+        # Получаем user_id из токена
+        user_id = get_user_id_from_token(authorization, access_token)
+        
+        # Проверяем владельца документа
+        metadata_path = doc_folder / "metadata.json"
+        if metadata_path.exists():
+            metadata = json.loads(metadata_path.read_text(encoding='utf-8'))
+            if metadata.get("user_id") != user_id:
+                raise HTTPException(status_code=403, detail="Доступ запрещён")
+        
+        # Генерируем HTML
+        template = jinja_env.get_template("upd_template.html")
+        template_data = {
+            "document_number": request.document_number,
+            "document_date": format_date_short(request.document_date),
+            "correction_number": request.correction_number,
+            "correction_date": format_date_short(request.correction_date) if request.correction_date else None,
+            "status": request.status,
+            "seller": request.seller.model_dump(),
+            "buyer": request.buyer.model_dump(),
+            "consignor": request.consignor,
+            "consignee": request.consignee,
+            "items": [
+                {
+                    **item.model_dump(),
+                    "quantity": float(item.quantity),
+                    "price": float(item.price),
+                    "amount_without_vat": float(item.amount_without_vat),
+                    "vat_amount": float(item.vat_amount),
+                    "amount_with_vat": float(item.amount_with_vat),
+                }
+                for item in request.items
+            ],
+            "total_amount_without_vat": float(request.total_amount_without_vat),
+            "total_vat_amount": float(request.total_vat_amount),
+            "total_amount_with_vat": float(request.total_amount_with_vat),
+            "currency_code": request.currency_code,
+            "currency_name": request.currency_name,
+            "payment_document": request.payment_document,
+            "contract_info": request.contract_info,
+            "transport_info": request.transport_info,
+            "government_contract_id": request.gov_contract_id,
+            "transfer_date": format_date_short(request.shipping_date) if request.shipping_date else None,
+            "transfer_basis": request.contract_info,
+            "seller_signer": request.seller_signer.model_dump() if request.seller_signer else None,
+            "seller_stamp_image": getattr(request, 'seller_stamp_image', None),
+            "buyer_signer": request.buyer_signer.model_dump() if request.buyer_signer else None,
+            "additional_info": request.other_shipping_info,
+            "receipt_date": format_date_short(request.receiving_date) if request.receiving_date else None,
+            "responsible_person": None,
+        }
+        
+        html_content = template.render(**template_data)
+        
+        # Обновляем HTML
+        html_path = doc_folder / "document.html"
+        html_path.write_text(html_content, encoding='utf-8')
+        
+        # Обновляем form_data
+        form_data = request.model_dump(mode='json')
+        form_data_path = doc_folder / "form_data.json"
+        form_data_path.write_text(json.dumps(form_data, ensure_ascii=False, indent=2, default=str), encoding='utf-8')
+        
+        # Обновляем метаданные
+        if metadata_path.exists():
+            metadata = json.loads(metadata_path.read_text(encoding='utf-8'))
+        else:
+            metadata = {"id": document_id, "type": "upd"}
+        
+        metadata.update({
+            "user_id": user_id,
+            "document_number": request.document_number,
+            "document_date": str(request.document_date),
+            "updated_at": datetime.now().isoformat(),
+            "seller_name": request.seller.name,
+            "buyer_name": request.buyer.name,
+            "total_amount": float(request.total_amount_with_vat),
+            "status": request.status
+        })
+        
+        metadata_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding='utf-8')
+        
+        return {
+            "success": True,
+            "message": "Документ успешно обновлён",
+            "document_id": document_id,
+            "document_number": request.document_number
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ошибка обновления документа: {str(e)}"
         )
 
 
