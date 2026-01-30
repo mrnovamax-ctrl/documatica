@@ -1563,12 +1563,17 @@ $(document).ready(function() {
             total_amount_without_vat: totalWithoutVat,
             total_vat_amount: totalVat,
             total_amount_with_vat: totalWithVat,
-            currency_code: '643',
-            currency_name: 'Российский рубль',
+            currency_code: $('#currency-code').val() || '643',
+            currency_name: $('#currency-name').val() || 'Российский рубль',
+            gov_contract_id: $('#gov-contract-id').val() || null,
             payment_document: $('#payment-document').val() || null,
             shipping_document: $('#shipping-document').val() || null,
             contract_info: $('#transfer-basis').val() || null,
             transport_info: $('#transport-info').val() || null,
+            shipping_date: $('#shipping-date').val() ? convertDateToISO($('#shipping-date').val()) : null,
+            receiving_date: $('#receiving-date').val() ? convertDateToISO($('#receiving-date').val()) : null,
+            other_shipping_info: $('#other-shipping-info').val() || null,
+            other_receiving_info: $('#other-receiving-info').val() || null,
             seller_signer: $('#released-by').val() ? {
                 position: $('#released-position').val() || 'Директор',
                 full_name: $('#released-by').val(),
@@ -1791,11 +1796,17 @@ $(document).ready(function() {
             $('#released-by').val(data.seller_signer.full_name || '');
         }
         
+        // Shipping date
+        $('#shipping-date').val(convertDateFromISO(data.shipping_date) || '');
+        
         // Buyer signer
         if (data.buyer_signer) {
             $('#received-position').val(data.buyer_signer.position || '');
             $('#received-by').val(data.buyer_signer.full_name || '');
         }
+        
+        // Receiving date
+        $('#receiving-date').val(convertDateFromISO(data.receiving_date) || '');
         
         // Products
         if (data.items && data.items.length > 0) {
