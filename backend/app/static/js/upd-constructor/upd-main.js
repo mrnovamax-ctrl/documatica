@@ -1541,6 +1541,24 @@ $(document).ready(function() {
         const correctionNumber = $('#correction-number').val()?.trim();
         const correctionDate = $('#correction-date').val()?.trim();
         
+        // Грузоотправитель
+        let consignorValue = null;
+        const consignorType = $('input[name="consignor-type"]:checked').val();
+        if (consignorType === 'same') {
+            consignorValue = $('#seller-name').val() + ', ' + $('#seller-address').val();
+        } else if (consignorType === 'manual') {
+            consignorValue = $('#consignor-address').val() || null;
+        }
+        
+        // Грузополучатель
+        let consigneeValue = null;
+        const consigneeType = $('input[name="consignee-type"]:checked').val();
+        if (consigneeType === 'same') {
+            consigneeValue = $('#buyer-name').val() + ', ' + $('#buyer-address').val();
+        } else if (consigneeType === 'manual') {
+            consigneeValue = $('#consignee-address').val() || null;
+        }
+        
         return {
             document_number: $('#upd-number').val(),
             document_date: convertDateToISO($('#upd-date').val()),
@@ -1559,6 +1577,8 @@ $(document).ready(function() {
                 kpp: $('#buyer-kpp').val() || null,
                 address: $('#buyer-address').val()
             },
+            consignor: consignorValue,
+            consignee: consigneeValue,
             items: items,
             total_amount_without_vat: totalWithoutVat,
             total_vat_amount: totalVat,
@@ -1580,6 +1600,11 @@ $(document).ready(function() {
                 basis: 'Устав',
                 signature_image: selectedSellerOrg?.director_signature || null
             } : null,
+            seller_responsible: $('#responsible-name').val() ? {
+                position: $('#responsible-position').val() || null,
+                full_name: $('#responsible-name').val()
+            } : null,
+            economic_entity: $('#economic-entity').val() || null,
             seller_stamp_image: selectedSellerOrg?.stamp_base64 || null,
             seller_org_type: getOrgTypeByInn($('#seller-inn').val()),
             accountant_name: selectedSellerOrg?.accountant_name || null,
@@ -1588,7 +1613,12 @@ $(document).ready(function() {
                 position: $('#received-position').val() || 'Директор',
                 full_name: $('#received-by').val(),
                 basis: 'Устав'
-            } : null
+            } : null,
+            buyer_responsible: $('#buyer-responsible-name').val() ? {
+                position: $('#buyer-responsible-position').val() || null,
+                full_name: $('#buyer-responsible-name').val()
+            } : null,
+            buyer_economic_entity: $('#buyer-economic-entity').val() || null
         };
     }
     
@@ -1796,6 +1826,13 @@ $(document).ready(function() {
             $('#released-by').val(data.seller_signer.full_name || '');
         }
         
+        // Seller responsible
+        if (data.seller_responsible) {
+            $('#responsible-position').val(data.seller_responsible.position || '');
+            $('#responsible-name').val(data.seller_responsible.full_name || '');
+        }
+        $('#economic-entity').val(data.economic_entity || '');
+        
         // Shipping date
         $('#shipping-date').val(convertDateFromISO(data.shipping_date) || '');
         
@@ -1805,8 +1842,27 @@ $(document).ready(function() {
             $('#received-by').val(data.buyer_signer.full_name || '');
         }
         
+        // Buyer responsible
+        if (data.buyer_responsible) {
+            $('#buyer-responsible-position').val(data.buyer_responsible.position || '');
+            $('#buyer-responsible-name').val(data.buyer_responsible.full_name || '');
+        }
+        $('#buyer-economic-entity').val(data.buyer_economic_entity || '');
+        
         // Receiving date
         $('#receiving-date').val(convertDateFromISO(data.receiving_date) || '');
+        
+        // Consignor (грузоотправитель)
+        if (data.consignor) {
+            $('#consignor-manual').prop('checked', true);
+            $('#consignor-address').val(data.consignor).prop('disabled', false);
+        }
+        
+        // Consignee (грузополучатель)
+        if (data.consignee) {
+            $('#consignee-manual').prop('checked', true);
+            $('#consignee-address').val(data.consignee).prop('disabled', false);
+        }
         
         // Products
         if (data.items && data.items.length > 0) {
