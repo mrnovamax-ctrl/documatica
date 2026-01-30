@@ -1295,7 +1295,7 @@ $(document).ready(function() {
 
     // ============== SAVE DRAFT BUTTON ==============
     // Кнопка "Сохранить черновик"
-    $('#save-draft-btn').on('click', async function(e) {
+    $('#save-draft').on('click', async function(e) {
         e.preventDefault();
         
         const btn = $(this);
