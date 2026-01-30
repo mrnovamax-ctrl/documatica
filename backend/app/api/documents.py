@@ -11,7 +11,7 @@ from datetime import datetime
 import uuid
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Header, Cookie, Request, Depends
+from fastapi import APIRouter, HTTPException, Header, Cookie, Request, Depends, Query
 from fastapi.responses import StreamingResponse, JSONResponse, HTMLResponse
 from jinja2 import Environment, FileSystemLoader
 import jwt
@@ -411,7 +411,7 @@ async def list_templates():
 @router.post("/upd/save")
 async def save_upd(
     request: UPDRequest,
-    document_id: Optional[str] = None,  # Для обновления существующего документа
+    document_id: Optional[str] = Query(None),  # Для обновления существующего документа
     authorization: Optional[str] = Header(None),
     access_token: Optional[str] = Cookie(None),
     db: Session = Depends(get_db)
