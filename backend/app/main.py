@@ -11,7 +11,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload, promocodes, oauth, drafts
+from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload, promocodes, oauth, drafts, contact
 from app.pages import router as pages_router
 from app.dashboard import router as dashboard_router
 from app.admin import router as admin_router
@@ -153,6 +153,13 @@ app.include_router(
     upload.router,
     prefix="/api/v1",
     tags=["upload"]
+)
+
+# Contact - форма обратной связи
+app.include_router(
+    contact.router,
+    prefix="/api/v1",
+    tags=["contact"]
 )
 
 # Черновики документов гостей (без авторизации)

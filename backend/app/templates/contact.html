@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Контакты — Documatica</title>
+  <meta name="description" content="Свяжитесь с нами для получения помощи по работе с документами">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
+  
+  <!-- v12 Design System -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.9">
+  
+  <!-- Iconify -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  
+  <style>
+    .contact-hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      background-image: 
+        radial-gradient(circle, rgba(59, 130, 246, 0.3) 1px, transparent 1px),
+        linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      background-size: 32px 32px, 100% 100%;
+      padding: 80px 0 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .contact-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: -60px;
+    }
+    
+    .contact-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 40px;
+      box-shadow: 0 20px 60px -20px rgba(15, 23, 42, 0.15);
+    }
+    
+    .contact-info-item {
+      display: flex;
+      gap: 20px;
+      padding: 24px;
+      border-radius: 1rem;
+      background: #f8fafc;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+    
+    .contact-info-item:hover {
+      background: #f1f5f9;
+      transform: translateX(4px);
+    }
+    
+    .contact-info-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .contact-info-icon iconify-icon {
+      font-size: 24px;
+      color: white;
+    }
+    
+    @media (max-width: 968px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      
+      .contact-hero {
+        padding: 60px 0 80px;
+      }
+      
+      .contact-card {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Header -->
+  {% include 'components/header_v12.html' %}
+  
+  <!-- Hero Section -->
+  <section class="contact-hero">
+    <div class="docu-container">
+      <div class="text-center">
+        <h1 class="docu-h1" style="color: white; margin-bottom: 16px;">Свяжитесь с нами</h1>
+        <p class="docu-text-lg" style="color: #cbd5e1; max-width: 600px; margin: 0 auto;">
+          Мы всегда готовы помочь вам с любыми вопросами по работе с документами
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Content -->
+  <section class="docu-section">
+    <div class="docu-container">
+      <div class="contact-grid">
+        
+        <!-- Contact Form -->
+        <div class="contact-card">
+          <h2 class="docu-h3" style="margin-bottom: 8px;">Напишите нам</h2>
+          <p class="docu-text" style="color: #64748b; margin-bottom: 32px;">
+            Заполните форму, и мы свяжемся с вами в ближайшее время
+          </p>
+          
+          <form id="contactForm">
+            <div style="margin-bottom: 20px;">
+              <label class="docu-label">Ваше имя <span style="color: #ef4444;">*</span></label>
+              <input type="text" name="name" class="docu-input" required placeholder="Иван Иванов">
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+              <label class="docu-label">Email <span style="color: #ef4444;">*</span></label>
+              <input type="email" name="email" class="docu-input" required placeholder="ivan@example.com">
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+              <label class="docu-label">Телефон</label>
+              <input type="tel" name="phone" class="docu-input" placeholder="+7 (999) 123-45-67">
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+              <label class="docu-label">Тема обращения</label>
+              <select name="subject" class="docu-input">
+                <option value="general">Общий вопрос</option>
+                <option value="technical">Техническая поддержка</option>
+                <option value="billing">Вопрос по оплате</option>
+                <option value="feature">Предложение функции</option>
+                <option value="other">Другое</option>
+              </select>
+            </div>
+            
+            <div style="margin-bottom: 28px;">
+              <label class="docu-label">Сообщение <span style="color: #ef4444;">*</span></label>
+              <textarea name="message" class="docu-input" required rows="5" placeholder="Опишите ваш вопрос или пожелание..."></textarea>
+            </div>
+            
+            <button type="submit" class="docu-btn-primary" style="width: 100%;">
+              <iconify-icon icon="mdi:send" style="font-size: 20px;"></iconify-icon>
+              Отправить сообщение
+            </button>
+            
+            <div id="formMessage" style="margin-top: 16px; padding: 12px; border-radius: 8px; display: none;"></div>
+          </form>
+        </div>
+        
+        <!-- Contact Info -->
+        <div>
+          <div class="contact-card" style="margin-bottom: 24px;">
+            <h2 class="docu-h3" style="margin-bottom: 24px;">Контактная информация</h2>
+            
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <iconify-icon icon="mdi:email"></iconify-icon>
+              </div>
+              <div>
+                <div style="font-weight: 600; color: #0f172a; margin-bottom: 4px;">Email</div>
+                <a href="mailto:hello@novatechno.ru" style="color: #3b82f6; text-decoration: none;">
+                  hello@novatechno.ru
+                </a>
+              </div>
+            </div>
+            
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <iconify-icon icon="mdi:telegram"></iconify-icon>
+              </div>
+              <div>
+                <div style="font-weight: 600; color: #0f172a; margin-bottom: 4px;">Telegram</div>
+                <a href="https://t.me/mrnovamax" target="_blank" style="color: #3b82f6; text-decoration: none;">
+                  @mrnovamax
+                </a>
+              </div>
+            </div>
+            
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <iconify-icon icon="mdi:clock-outline"></iconify-icon>
+              </div>
+              <div>
+                <div style="font-weight: 600; color: #0f172a; margin-bottom: 4px;">Режим работы</div>
+                <div style="color: #64748b; font-size: 14px;">Пн-Пт: 9:00 - 18:00 МСК</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- FAQ Card -->
+          <div class="contact-card">
+            <h3 class="docu-h4" style="margin-bottom: 12px;">Часто задаваемые вопросы</h3>
+            <p class="docu-text-sm" style="color: #64748b; margin-bottom: 16px;">
+              Возможно, ответ на ваш вопрос уже есть в нашем справочном центре
+            </p>
+            <a href="/docs" class="docu-btn-outline" style="width: 100%; display: inline-flex; align-items: center; justify-content: center;">
+              <iconify-icon icon="mdi:book-open-variant" style="font-size: 18px;"></iconify-icon>
+              Перейти в справку
+            </a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  {% include 'components/footer_v12.html' %}
+  
+  <!-- Telegram Widget -->
+  <script>
+    // Telegram виджет для техподдержки
+    (function() {
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = 'https://telegram.org/js/telegram-widget.js?22';
+      script.setAttribute('data-telegram-login', 'mrnovamax');
+      script.setAttribute('data-size', 'large');
+      script.setAttribute('data-userpic', 'false');
+      script.setAttribute('data-request-access', 'write');
+      document.body.appendChild(script);
+    })();
+  </script>
+  
+  <!-- Telegram chat button (floating) -->
+  <a href="https://t.me/mrnovamax" target="_blank" style="position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px; background: linear-gradient(135deg, #229ED9 0%, #0088cc 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(34, 158, 217, 0.4); z-index: 1000; text-decoration: none; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <iconify-icon icon="mdi:telegram" style="font-size: 32px; color: white;"></iconify-icon>
+  </a>
+  
+  <!-- Contact Form Script -->
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const messageDiv = document.getElementById('formMessage');
+      const originalBtnText = submitBtn.innerHTML;
+      
+      // Disable button
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<iconify-icon icon="mdi:loading" class="spin"></iconify-icon> Отправка...';
+      
+      // Collect form data
+      const formData = {
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value || '',
+        subject: form.subject.options[form.subject.selectedIndex].text,
+        message: form.message.value
+      };
+      
+      try {
+        const response = await fetch('/api/v1/contact/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          messageDiv.style.display = 'block';
+          messageDiv.style.background = '#dcfce7';
+          messageDiv.style.color = '#166534';
+          messageDiv.style.border = '1px solid #86efac';
+          messageDiv.textContent = '✓ Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.';
+          form.reset();
+        } else {
+          throw new Error(result.detail || 'Ошибка отправки');
+        }
+      } catch (error) {
+        messageDiv.style.display = 'block';
+        messageDiv.style.background = '#fee2e2';
+        messageDiv.style.color = '#991b1b';
+        messageDiv.style.border = '1px solid #fca5a5';
+        messageDiv.textContent = '✕ ' + error.message;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      }
+    });
+    
+    // Spinning animation for loading icon
+    const style = document.createElement('style');
+    style.textContent = '@keyframes spin { to { transform: rotate(360deg); } } .spin { animation: spin 1s linear infinite; }';
+    document.head.appendChild(style);
+  </script>
+  
+</body>
+</html>
