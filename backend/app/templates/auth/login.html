@@ -141,7 +141,10 @@ document.getElementById('login-form').addEventListener('submit', async function(
       const maxAge = remember ? 30 * 24 * 60 * 60 : 24 * 60 * 60; // 30 дней или 1 день
       document.cookie = `access_token=${result.access_token}; path=/; max-age=${maxAge}; SameSite=Lax`;
       
-      window.location.href = '/dashboard/';
+      // Редиректим на redirect параметр или dashboard
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect');
+      window.location.href = redirect || '/dashboard/';
     } else {
       const error = await response.json();
       toastError(error.detail || 'Неверный email или пароль');

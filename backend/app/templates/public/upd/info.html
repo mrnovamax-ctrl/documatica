@@ -560,7 +560,7 @@ function checkAuthAndDownload(button) {
 function showAuthModal(pdfType) {
   // Обновляем ссылки в модалке с redirect параметром
   const redirectUrl = `/upd/obrazec-zapolneniya/?download=${pdfType}`;
-  document.getElementById('modal-yandex-btn').href = `/auth/yandex/login?redirect=${encodeURIComponent(redirectUrl)}`;
+  document.getElementById('modal-yandex-btn').href = `/auth/yandex/login?redirect_to=${encodeURIComponent(redirectUrl)}`;
   document.getElementById('modal-register-btn').href = `/register?redirect=${encodeURIComponent(redirectUrl)}`;
   document.getElementById('modal-login-btn').href = `/login?redirect=${encodeURIComponent(redirectUrl)}`;
   

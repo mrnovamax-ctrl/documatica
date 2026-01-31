@@ -338,8 +338,10 @@
       headers: { 'Authorization': 'Bearer ' + token }
     }).then(response => {
       if (response.ok) {
-        // Токен валиден - редиректим на дашборд
-        window.location.href = '/dashboard/';
+        // Токен валиден - редиректим
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get('redirect');
+        window.location.href = redirect || '/dashboard/';
       }
     }).catch(() => {});
   }
