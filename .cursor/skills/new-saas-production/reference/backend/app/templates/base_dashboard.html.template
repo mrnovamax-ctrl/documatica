@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard{% endblock %} - {{PROJECT_TITLE}}</title>
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Iconify -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.0">
+  <link rel="stylesheet" href="/static/css/dashboard.css?v=1.0">
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    {% include "components/sidebar.html" %}
+    
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <!-- Header -->
+      <header class="dashboard-header">
+        <div class="dashboard-header-left">
+          <h1 class="dashboard-page-title">{% block page_title %}{{ title }}{% endblock %}</h1>
+        </div>
+        <div class="dashboard-header-right">
+          {% block header_actions %}{% endblock %}
+        </div>
+      </header>
+      
+      <!-- Content -->
+      <main class="dashboard-content">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  
+  <!-- JS -->
+  <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+  {% block extra_js %}{% endblock %}
+  <script src="/static/js/app.js"></script>
+</body>
+
+</html>

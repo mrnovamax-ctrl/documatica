@@ -1,315 +1,302 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Контакты — Documatica</title>
-  <meta name="description" content="Свяжитесь с нами для получения помощи по работе с документами">
+{% extends "base_public.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/home.css?v=2.0">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section" style="padding: 120px 0 100px; min-height: auto;">
+  <div class="hero-pattern"></div>
+  <div class="hero-gradient"></div>
   
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/static/img/favicon.png">
-  
-  <!-- v12 Design System -->
-  <link rel="stylesheet" href="/static/css/documatica.css?v=12.9">
-  
-  <!-- Iconify -->
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-  
-  <style>
-    .contact-hero {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      background-image: 
-        radial-gradient(circle, rgba(59, 130, 246, 0.3) 1px, transparent 1px),
-        linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      background-size: 32px 32px, 100% 100%;
-      padding: 80px 0 100px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .contact-hero::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-    }
-    
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      margin-top: -60px;
-    }
-    
-    .contact-card {
-      background: white;
-      border-radius: 2rem;
-      padding: 40px;
-      box-shadow: 0 20px 60px -20px rgba(15, 23, 42, 0.15);
-    }
-    
-    .contact-info-item {
-      display: flex;
-      gap: 20px;
-      padding: 24px;
-      border-radius: 1rem;
-      background: #f8fafc;
-      margin-bottom: 16px;
-      transition: all 0.3s;
-    }
-    
-    .contact-info-item:hover {
-      background: #f1f5f9;
-      transform: translateX(4px);
-    }
-    
-    .contact-info-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    
-    .contact-info-icon iconify-icon {
-      font-size: 24px;
-      color: white;
-    }
-    
-    @media (max-width: 968px) {
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-      
-      .contact-hero {
-        padding: 60px 0 80px;
-      }
-      
-      .contact-card {
-        padding: 28px;
-      }
-    }
-  </style>
-</head>
-<body>
-  
-  <!-- Header -->
-  {% include 'components/header_v12.html' %}
-  
-  <!-- Hero Section -->
-  <section class="contact-hero">
-    <div class="docu-container">
-      <div class="text-center">
-        <h1 class="docu-h1" style="color: white; margin-bottom: 16px;">Свяжитесь с нами</h1>
-        <p class="docu-text-lg" style="color: #cbd5e1; max-width: 600px; margin: 0 auto;">
-          Мы всегда готовы помочь вам с любыми вопросами по работе с документами
-        </p>
+  <div class="container position-relative" style="z-index: 10;">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <span class="docu-tag" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); display: inline-block; margin-bottom: 24px;">Контакты</span>
+        <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 24px;">Свяжитесь с <span class="hero-accent">нами</span></h1>
+        <p class="hero-subtitle" style="margin: 0 auto;">Мы всегда рады помочь вам с любыми вопросами о Documatica</p>
       </div>
     </div>
-  </section>
-  
-  <!-- Contact Content -->
-  <section class="docu-section">
-    <div class="docu-container">
-      <div class="contact-grid">
+  </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="about-section">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 1200px; margin: 0 auto;">
+      
+      <!-- Contact Form -->
+      <div>
+        <h2 class="docu-h2" style="margin-bottom: 8px;">Напишите нам</h2>
+        <p class="docu-body" style="color: #64748b; margin-bottom: 32px;">Заполните форму, и мы ответим вам в течение 24 часов</p>
         
-        <!-- Contact Form -->
-        <div class="contact-card">
-          <h2 class="docu-h3" style="margin-bottom: 8px;">Напишите нам</h2>
-          <p class="docu-text" style="color: #64748b; margin-bottom: 32px;">
-            Заполните форму, и мы свяжемся с вами в ближайшее время
-          </p>
+        <form id="contactForm" style="display: flex; flex-direction: column; gap: 20px;">
+          <!-- Name -->
+          <div>
+            <label for="name" class="docu-label" style="display: block; margin-bottom: 8px; font-weight: 500; color: #1e293b;">Ваше имя *</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              required 
+              class="docu-input" 
+              style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px; transition: all 0.2s;"
+              placeholder="Иван Иванов"
+            >
+          </div>
           
-          <form id="contactForm">
-            <div style="margin-bottom: 20px;">
-              <label class="docu-label">Ваше имя <span style="color: #ef4444;">*</span></label>
-              <input type="text" name="name" class="docu-input" required placeholder="Иван Иванов">
-            </div>
-            
-            <div style="margin-bottom: 20px;">
-              <label class="docu-label">Email <span style="color: #ef4444;">*</span></label>
-              <input type="email" name="email" class="docu-input" required placeholder="ivan@example.com">
-            </div>
-            
-            <div style="margin-bottom: 20px;">
-              <label class="docu-label">Телефон</label>
-              <input type="tel" name="phone" class="docu-input" placeholder="+7 (999) 123-45-67">
-            </div>
-            
-            <div style="margin-bottom: 20px;">
-              <label class="docu-label">Тема обращения</label>
-              <select name="subject" class="docu-input">
-                <option value="general">Общий вопрос</option>
-                <option value="technical">Техническая поддержка</option>
-                <option value="billing">Вопрос по оплате</option>
-                <option value="feature">Предложение функции</option>
-                <option value="other">Другое</option>
-              </select>
-            </div>
-            
-            <div style="margin-bottom: 28px;">
-              <label class="docu-label">Сообщение <span style="color: #ef4444;">*</span></label>
-              <textarea name="message" class="docu-input" required rows="5" placeholder="Опишите ваш вопрос или пожелание..."></textarea>
-            </div>
-            
-            <button type="submit" class="docu-btn-primary" style="width: 100%;">
-              <iconify-icon icon="mdi:send" style="font-size: 20px;"></iconify-icon>
-              Отправить сообщение
-            </button>
-            
-            <div id="formMessage" style="margin-top: 16px; padding: 12px; border-radius: 8px; display: none;"></div>
-          </form>
-        </div>
+          <!-- Email -->
+          <div>
+            <label for="email" class="docu-label" style="display: block; margin-bottom: 8px; font-weight: 500; color: #1e293b;">Email *</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              class="docu-input" 
+              style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px; transition: all 0.2s;"
+              placeholder="ivan@example.com"
+            >
+          </div>
+          
+          <!-- Phone -->
+          <div>
+            <label for="phone" class="docu-label" style="display: block; margin-bottom: 8px; font-weight: 500; color: #1e293b;">Телефон</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              class="docu-input" 
+              style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px; transition: all 0.2s;"
+              placeholder="+7 (999) 123-45-67"
+            >
+          </div>
+          
+          <!-- Subject -->
+          <div>
+            <label for="subject" class="docu-label" style="display: block; margin-bottom: 8px; font-weight: 500; color: #1e293b;">Тема *</label>
+            <input 
+              type="text" 
+              id="subject" 
+              name="subject" 
+              required 
+              class="docu-input" 
+              style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px; transition: all 0.2s;"
+              placeholder="Вопрос по работе сервиса"
+            >
+          </div>
+          
+          <!-- Message -->
+          <div>
+            <label for="message" class="docu-label" style="display: block; margin-bottom: 8px; font-weight: 500; color: #1e293b;">Сообщение *</label>
+            <textarea 
+              id="message" 
+              name="message" 
+              required 
+              rows="6"
+              class="docu-input" 
+              style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px; transition: all 0.2s; resize: vertical; font-family: inherit;"
+              placeholder="Расскажите подробнее о вашем вопросе..."
+            ></textarea>
+          </div>
+          
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            class="btn-primary-massive" 
+            style="width: 100%; padding: 16px; font-size: 16px; font-weight: 600; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;"
+          >
+            Отправить сообщение
+          </button>
+        </form>
         
-        <!-- Contact Info -->
-        <div>
-          <div class="contact-card" style="margin-bottom: 24px;">
-            <h2 class="docu-h3" style="margin-bottom: 24px;">Контактная информация</h2>
-            
-            <div class="contact-info-item">
-              <div class="contact-info-icon">
-                <iconify-icon icon="mdi:email"></iconify-icon>
-              </div>
-              <div>
-                <div style="font-weight: 600; color: #0f172a; margin-bottom: 4px;">Email</div>
-                <a href="mailto:hello@novatechno.ru" style="color: #3b82f6; text-decoration: none;">
-                  hello@novatechno.ru
-                </a>
-              </div>
+        <!-- Success/Error Messages -->
+        <div id="formMessage" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none;"></div>
+      </div>
+      
+      <!-- Contact Info -->
+      <div>
+        <h2 class="docu-h2" style="margin-bottom: 8px;">Контактная информация</h2>
+        <p class="docu-body" style="color: #64748b; margin-bottom: 32px;">Выберите удобный способ связи</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <!-- Email -->
+          <div style="display: flex; gap: 16px; align-items: start;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="M22 7l-10 7L2 7"/>
+              </svg>
             </div>
-            
-            <div class="contact-info-item">
-              <div class="contact-info-icon">
-                <iconify-icon icon="mdi:telegram"></iconify-icon>
-              </div>
-              <div>
-                <div style="font-weight: 600; color: #0f172a; margin-bottom: 4px;">Telegram</div>
-                <a href="https://t.me/mrnovamax" target="_blank" style="color: #3b82f6; text-decoration: none;">
-                  @mrnovamax
-                </a>
-              </div>
-            </div>
-            
-            <div class="contact-info-item">
-              <div class="contact-info-icon">
-                <iconify-icon icon="mdi:clock-outline"></iconify-icon>
-              </div>
-              <div>
-                <div style="font-weight: 600; color: #0f172a; margin-bottom: 4px;">Режим работы</div>
-                <div style="color: #64748b; font-size: 14px;">Пн-Пт: 9:00 - 18:00 МСК</div>
-              </div>
+            <div>
+              <h3 class="docu-h3" style="margin-bottom: 4px; font-size: 18px;">Email</h3>
+              <a href="mailto:hello@oplatanalogov.ru" style="color: #3b82f6; text-decoration: none; font-size: 16px;">hello@oplatanalogov.ru</a>
+              <p class="docu-body" style="color: #64748b; margin-top: 4px; font-size: 14px;">Ответим в течение 24 часов</p>
             </div>
           </div>
           
-          <!-- FAQ Card -->
-          <div class="contact-card">
-            <h3 class="docu-h4" style="margin-bottom: 12px;">Часто задаваемые вопросы</h3>
-            <p class="docu-text-sm" style="color: #64748b; margin-bottom: 16px;">
-              Возможно, ответ на ваш вопрос уже есть в нашем справочном центре
-            </p>
-            <a href="/docs" class="docu-btn-outline" style="width: 100%; display: inline-flex; align-items: center; justify-content: center;">
-              <iconify-icon icon="mdi:book-open-variant" style="font-size: 18px;"></iconify-icon>
-              Перейти в справку
-            </a>
+          <!-- Telegram -->
+          <div style="display: flex; gap: 16px; align-items: start;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #0088cc 0%, #0077b5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="docu-h3" style="margin-bottom: 4px; font-size: 18px;">Telegram</h3>
+              <a href="https://t.me/mrnovamax" target="_blank" rel="noopener noreferrer" style="color: #0088cc; text-decoration: none; font-size: 16px;">@mrnovamax</a>
+              <p class="docu-body" style="color: #64748b; margin-top: 4px; font-size: 14px;">Техподдержка онлайн</p>
+            </div>
+          </div>
+          
+          <!-- Work Hours -->
+          <div style="display: flex; gap: 16px; align-items: start;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="docu-h3" style="margin-bottom: 4px; font-size: 18px;">Режим работы</h3>
+              <p style="color: #1e293b; font-size: 16px; margin: 0;">Пн-Пт: 9:00 - 18:00 (МСК)</p>
+              <p class="docu-body" style="color: #64748b; margin-top: 4px; font-size: 14px;">Суббота и воскресенье — выходные</p>
+            </div>
+          </div>
+          
+          <!-- Help Center -->
+          <div style="display: flex; gap: 16px; align-items: start;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="docu-h3" style="margin-bottom: 4px; font-size: 18px;">Справочный центр</h3>
+              <a href="/faq" style="color: #f59e0b; text-decoration: none; font-size: 16px;">Часто задаваемые вопросы</a>
+              <p class="docu-body" style="color: #64748b; margin-top: 4px; font-size: 14px;">Найдите ответ на ваш вопрос</p>
+            </div>
           </div>
         </div>
-        
       </div>
+      
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- Telegram Floating Button -->
+<a 
+  href="https://t.me/mrnovamax" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  style="position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px; background: linear-gradient(135deg, #0088cc 0%, #0077b5 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 136, 204, 0.4); z-index: 1000; transition: all 0.3s;"
+  onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 20px rgba(0, 136, 204, 0.6)';"
+  onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 136, 204, 0.4)';"
+  title="Написать в Telegram"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+  </svg>
+</a>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
   
-  <!-- Footer -->
-  {% include 'components/footer_v12.html' %}
+  const submitBtn = this.querySelector('button[type="submit"]');
+  const messageDiv = document.getElementById('formMessage');
+  const originalBtnText = submitBtn.textContent;
   
-  <!-- Telegram Widget -->
-  <script>
-    // Telegram виджет для техподдержки
-    (function() {
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = 'https://telegram.org/js/telegram-widget.js?22';
-      script.setAttribute('data-telegram-login', 'mrnovamax');
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-userpic', 'false');
-      script.setAttribute('data-request-access', 'write');
-      document.body.appendChild(script);
-    })();
-  </script>
+  // Disable button and show loading
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Отправка...';
+  messageDiv.style.display = 'none';
   
-  <!-- Telegram chat button (floating) -->
-  <a href="https://t.me/mrnovamax" target="_blank" style="position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px; background: linear-gradient(135deg, #229ED9 0%, #0088cc 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(34, 158, 217, 0.4); z-index: 1000; text-decoration: none; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-    <iconify-icon icon="mdi:telegram" style="font-size: 32px; color: white;"></iconify-icon>
-  </a>
+  // Collect form data
+  const formData = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value || '',
+    subject: document.getElementById('subject').value,
+    message: document.getElementById('message').value
+  };
   
-  <!-- Contact Form Script -->
-  <script>
-    document.getElementById('contactForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const form = e.target;
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const messageDiv = document.getElementById('formMessage');
-      const originalBtnText = submitBtn.innerHTML;
-      
-      // Disable button
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<iconify-icon icon="mdi:loading" class="spin"></iconify-icon> Отправка...';
-      
-      // Collect form data
-      const formData = {
-        name: form.name.value,
-        email: form.email.value,
-        phone: form.phone.value || '',
-        subject: form.subject.options[form.subject.selectedIndex].text,
-        message: form.message.value
-      };
-      
-      try {
-        const response = await fetch('/api/v1/contact/send', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
-        
-        const result = await response.json();
-        
-        if (response.ok) {
-          messageDiv.style.display = 'block';
-          messageDiv.style.background = '#dcfce7';
-          messageDiv.style.color = '#166534';
-          messageDiv.style.border = '1px solid #86efac';
-          messageDiv.textContent = '✓ Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.';
-          form.reset();
-        } else {
-          throw new Error(result.detail || 'Ошибка отправки');
-        }
-      } catch (error) {
-        messageDiv.style.display = 'block';
-        messageDiv.style.background = '#fee2e2';
-        messageDiv.style.color = '#991b1b';
-        messageDiv.style.border = '1px solid #fca5a5';
-        messageDiv.textContent = '✕ ' + error.message;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText;
-      }
+  try {
+    const response = await fetch('/api/v1/contact/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
     });
     
-    // Spinning animation for loading icon
-    const style = document.createElement('style');
-    style.textContent = '@keyframes spin { to { transform: rotate(360deg); } } .spin { animation: spin 1s linear infinite; }';
-    document.head.appendChild(style);
-  </script>
+    const result = await response.json();
+    
+    if (response.ok) {
+      // Success
+      messageDiv.style.display = 'block';
+      messageDiv.style.background = 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)';
+      messageDiv.style.color = '#065f46';
+      messageDiv.style.border = '1px solid #6ee7b7';
+      messageDiv.innerHTML = '<strong>✓ Спасибо!</strong> Ваше сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время.';
+      
+      // Reset form
+      this.reset();
+    } else {
+      // Error
+      throw new Error(result.detail || 'Ошибка отправки');
+    }
+  } catch (error) {
+    messageDiv.style.display = 'block';
+    messageDiv.style.background = 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)';
+    messageDiv.style.color = '#991b1b';
+    messageDiv.style.border = '1px solid #fca5a5';
+    messageDiv.innerHTML = '<strong>✗ Ошибка</strong> ' + error.message + '. Попробуйте написать нам напрямую на hello@oplatanalogov.ru';
+  } finally {
+    // Re-enable button
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalBtnText;
+  }
+});
+
+// Input focus effects
+document.querySelectorAll('.docu-input').forEach(input => {
+  input.addEventListener('focus', function() {
+    this.style.borderColor = '#3b82f6';
+    this.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+  });
+  input.addEventListener('blur', function() {
+    this.style.borderColor = '#e2e8f0';
+    this.style.boxShadow = 'none';
+  });
+});
+</script>
+
+<style>
+@media (max-width: 768px) {
+  section.about-section > .container > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
   
-</body>
-</html>
+  .about-hero__content {
+    padding: 60px 0 40px !important;
+  }
+  
+  a[href*="t.me"][style*="position: fixed"] {
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 56px !important;
+    height: 56px !important;
+  }
+  
+  a[href*="t.me"] svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+</style>
+{% endblock %}

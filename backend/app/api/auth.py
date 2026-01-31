@@ -434,3 +434,17 @@ async def get_current_user_optional(
     
     user = db.query(User).filter(User.id == user_id).first()
     return user
+
+
+@router.get("/check")
+async def check_auth(
+    authorization: Optional[str] = Header(None),
+    access_token: Optional[str] = Cookie(None),
+    db: Session = Depends(get_db)
+):
+    """
+    Простая проверка авторизации.
+    Возвращает {"authenticated": true} если пользователь авторизован, иначе {"authenticated": false}
+    """
+    user = await get_current_user_optional(authorization, access_token, db)
+    return {"authenticated": user is not None}

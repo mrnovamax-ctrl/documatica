@@ -1,0 +1,39 @@
+"""
+Application Configuration
+"""
+
+import os
+
+
+class Settings:
+    """Application settings from environment variables"""
+    
+    # Database
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL", 
+        "postgresql://postgres:postgres@localhost:5432/{{PROJECT_NAME}}"
+    )
+    
+    # Security
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "change-me-in-production")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440"))
+    
+    # T-Bank Payment
+    TBANK_TERMINAL_KEY: str = os.getenv("TBANK_TERMINAL_KEY", "")
+    TBANK_PASSWORD: str = os.getenv("TBANK_PASSWORD", "")
+    TBANK_PRODUCTION: bool = os.getenv("TBANK_PRODUCTION", "false").lower() == "true"
+    TBANK_MOCK: bool = os.getenv("TBANK_MOCK", "false").lower() == "true"
+    
+    # Email
+    SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.yandex.ru")
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_USER: str = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
+    SMTP_FROM_EMAIL: str = os.getenv("SMTP_FROM_EMAIL", "noreply@{{DOMAIN}}")
+    
+    # Application
+    BASE_URL: str = os.getenv("BASE_URL", "https://{{DOMAIN}}")
+    DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
+
+
+settings = Settings()

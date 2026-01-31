@@ -1,0 +1,36 @@
+"""
+Landing Pages
+"""
+
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+
+from app.core.templates import templates
+
+router = APIRouter()
+
+
+@router.get("/features", response_class=HTMLResponse)
+async def features_page(request: Request):
+    """Features landing page"""
+    return templates.TemplateResponse(
+        request=request,
+        name="public/landing.html",
+        context={
+            "title": "Возможности",
+            "page_type": "features"
+        }
+    )
+
+
+@router.get("/pricing", response_class=HTMLResponse)
+async def pricing_page(request: Request):
+    """Pricing page"""
+    return templates.TemplateResponse(
+        request=request,
+        name="public/landing.html",
+        context={
+            "title": "Тарифы",
+            "page_type": "pricing"
+        }
+    )

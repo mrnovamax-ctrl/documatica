@@ -1,0 +1,100 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-24 lg:py-32">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <span class="docu-tag mb-4">{{PROJECT_TITLE}}</span>
+        <h1 class="docu-h1 mb-6">
+          {{ hero.title | default('Заголовок вашего продукта') }}
+        </h1>
+        <p class="docu-lead mb-8">
+          {{ hero.subtitle | default('Краткое описание того, что делает ваш продукт и какую проблему решает.') }}
+        </p>
+        <div class="d-flex gap-4">
+          <a href="/register" class="btn btn-primary btn-lg rounded-2xl px-8 py-4 font-black uppercase tracking-widest text-sm">
+            Начать бесплатно
+          </a>
+          <a href="/features" class="btn btn-outline-secondary btn-lg rounded-2xl px-8 py-4 font-bold text-sm">
+            Узнать больше
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <!-- Hero Image/Animation -->
+        <div class="hero-image-placeholder bg-slate-100 rounded-[3rem] aspect-video"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-24 bg-white">
+  <div class="container">
+    <div class="text-center mb-16">
+      <span class="docu-tag-muted mb-4">Возможности</span>
+      <h2 class="docu-h2">Что вы получите</h2>
+    </div>
+    
+    <div class="row g-4">
+      {% for feature in features %}
+      <div class="col-md-4">
+        <div class="feature-card bg-slate-50 rounded-[2rem] p-8 h-100">
+          <div class="feature-icon w-16 h-16 bg-blue-600 rounded-2xl d-flex align-items-center justify-content-center mb-6">
+            <iconify-icon icon="{{ feature.icon | default('solar:star-bold') }}" class="text-white text-2xl"></iconify-icon>
+          </div>
+          <h3 class="docu-h3 mb-3">{{ feature.title }}</h3>
+          <p class="docu-body">{{ feature.description }}</p>
+        </div>
+      </div>
+      {% else %}
+      <!-- Default features if none provided -->
+      <div class="col-md-4">
+        <div class="feature-card bg-slate-50 rounded-[2rem] p-8 h-100">
+          <div class="feature-icon w-16 h-16 bg-blue-600 rounded-2xl d-flex align-items-center justify-content-center mb-6">
+            <iconify-icon icon="solar:bolt-bold" class="text-white text-2xl"></iconify-icon>
+          </div>
+          <h3 class="docu-h3 mb-3">Быстро</h3>
+          <p class="docu-body">Молниеносная скорость работы.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card bg-slate-50 rounded-[2rem] p-8 h-100">
+          <div class="feature-icon w-16 h-16 bg-blue-600 rounded-2xl d-flex align-items-center justify-content-center mb-6">
+            <iconify-icon icon="solar:shield-check-bold" class="text-white text-2xl"></iconify-icon>
+          </div>
+          <h3 class="docu-h3 mb-3">Безопасно</h3>
+          <p class="docu-body">Надежная защита ваших данных.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card bg-slate-50 rounded-[2rem] p-8 h-100">
+          <div class="feature-icon w-16 h-16 bg-blue-600 rounded-2xl d-flex align-items-center justify-content-center mb-6">
+            <iconify-icon icon="solar:hand-stars-bold" class="text-white text-2xl"></iconify-icon>
+          </div>
+          <h3 class="docu-h3 mb-3">Просто</h3>
+          <p class="docu-body">Интуитивный интерфейс.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section py-24">
+  <div class="container">
+    <div class="cta-card bg-slate-900 rounded-[3rem] p-12 lg:p-16 text-center">
+      <h2 class="docu-h2 text-white mb-6">Готовы начать?</h2>
+      <p class="docu-lead text-slate-400 mb-8">
+        Присоединяйтесь к тысячам довольных пользователей
+      </p>
+      <a href="/register" class="btn btn-primary btn-lg rounded-[2rem] px-12 py-5 font-black uppercase tracking-widest text-xs">
+        Создать аккаунт
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

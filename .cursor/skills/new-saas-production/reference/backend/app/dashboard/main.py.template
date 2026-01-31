@@ -1,0 +1,68 @@
+"""
+Dashboard Main Page
+"""
+
+from fastapi import APIRouter, Request, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
+
+from app.core.templates import templates
+from app.models import User
+from app.api.auth import get_current_user
+
+router = APIRouter()
+
+
+@router.get("/", response_class=HTMLResponse)
+async def dashboard_main(request: Request):
+    """Dashboard main page"""
+    # Check auth via cookie/session
+    # For now, render the template
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard/main.html",
+        context={
+            "title": "Личный кабинет"
+        }
+    )
+
+
+@router.get("/payment/success", response_class=HTMLResponse)
+async def payment_success(request: Request, order_id: str):
+    """Payment success page"""
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard/payment_result.html",
+        context={
+            "title": "Оплата успешна",
+            "success": True,
+            "order_id": order_id
+        }
+    )
+
+
+@router.get("/payment/fail", response_class=HTMLResponse)
+async def payment_fail(request: Request, order_id: str):
+    """Payment failed page"""
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard/payment_result.html",
+        context={
+            "title": "Ошибка оплаты",
+            "success": False,
+            "order_id": order_id
+        }
+    )
+
+
+@router.get("/payment/mock", response_class=HTMLResponse)
+async def payment_mock(request: Request, order_id: str, amount: int):
+    """Mock payment page for testing"""
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard/payment_mock.html",
+        context={
+            "title": "Тестовая оплата",
+            "order_id": order_id,
+            "amount": amount // 100  # Convert from kopecks
+        }
+    )

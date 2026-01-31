@@ -1,0 +1,54 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+<section class="py-24">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5">
+        <div class="auth-card bg-white border border-slate-100 rounded-[3rem] p-10 lg:p-12">
+          <div class="text-center mb-8">
+            <h1 class="docu-h3 mb-2">Регистрация</h1>
+            <p class="docu-body">Создайте аккаунт бесплатно</p>
+          </div>
+          
+          <form id="registerForm">
+            <div class="mb-4">
+              <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Имя</label>
+              <input type="text" name="name" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4">
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Email</label>
+              <input type="email" name="email" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4" required>
+            </div>
+            
+            <div class="mb-6">
+              <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Пароль</label>
+              <input type="password" name="password" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4" required minlength="8">
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 rounded-2xl py-4 font-black uppercase tracking-widest text-xs">
+              Создать аккаунт
+            </button>
+          </form>
+          
+          <div class="text-center mt-6">
+            <p class="text-slate-500 text-sm">
+              Уже есть аккаунт? 
+              <a href="/login" class="text-blue-600 font-bold">Войти</a>
+            </p>
+          </div>
+          
+          <div class="text-center mt-4">
+            <p class="text-slate-400 text-xs">
+              Регистрируясь, вы соглашаетесь с 
+              <a href="/terms" class="text-slate-500">условиями</a> и 
+              <a href="/privacy" class="text-slate-500">политикой конфиденциальности</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

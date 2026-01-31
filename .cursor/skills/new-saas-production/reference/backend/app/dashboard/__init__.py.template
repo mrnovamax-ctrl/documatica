@@ -1,0 +1,12 @@
+"""
+Dashboard Router (Client Cabinet)
+"""
+
+from fastapi import APIRouter
+
+from app.dashboard import main, settings
+
+router = APIRouter()
+
+router.include_router(main.router)
+router.include_router(settings.router)

@@ -1,0 +1,41 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+<section class="py-24">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5">
+        <div class="auth-card bg-white border border-slate-100 rounded-[3rem] p-10 lg:p-12">
+          <div class="text-center mb-8">
+            <h1 class="docu-h3 mb-2">Вход в аккаунт</h1>
+            <p class="docu-body">Введите ваши данные для входа</p>
+          </div>
+          
+          <form id="loginForm" action="/api/v1/auth/login" method="post">
+            <div class="mb-4">
+              <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Email</label>
+              <input type="email" name="username" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4" required>
+            </div>
+            
+            <div class="mb-6">
+              <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Пароль</label>
+              <input type="password" name="password" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 rounded-2xl py-4 font-black uppercase tracking-widest text-xs">
+              Войти
+            </button>
+          </form>
+          
+          <div class="text-center mt-6">
+            <p class="text-slate-500 text-sm">
+              Нет аккаунта? 
+              <a href="/register" class="text-blue-600 font-bold">Регистрация</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

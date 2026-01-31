@@ -1,0 +1,26 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+<section class="py-24">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1 class="docu-h2 mb-8">{{ title }}</h1>
+        
+        <div class="legal-content prose">
+          {% if content.sections %}
+            {% for section in content.sections %}
+            <h2 class="text-xl font-bold text-slate-900 mt-8 mb-4">{{ section.title }}</h2>
+            <div class="text-slate-600 leading-relaxed">
+              {{ section.text | safe }}
+            </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-slate-500">Контент не найден.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,155 @@
+"""
+T-Bank Payment API
+"""
+
+import hashlib
+import uuid
+from datetime import datetime
+from typing import Optional
+import httpx
+from fastapi import APIRouter, Depends, HTTPException, Request
+from sqlalchemy.orm import Session
+from pydantic import BaseModel
+
+from app.database import get_db
+from app.models import User, Payment
+from app.api.auth import get_current_user
+from app.core.config import settings
+
+router = APIRouter()
+
+# T-Bank API URLs
+TBANK_API_URL = "https://securepay.tinkoff.ru/v2"
+TBANK_TEST_API_URL = "https://rest-api-test.tinkoff.ru/v2"
+
+
+def get_api_url() -> str:
+    """Get API URL based on mode"""
+    if settings.TBANK_PRODUCTION:
+        return TBANK_API_URL
+    return TBANK_TEST_API_URL
+
+
+def generate_token(data: dict, password: str) -> str:
+    """Generate signature token for T-Bank API"""
+    filtered = {k: v for k, v in data.items() if not isinstance(v, (dict, list))}
+    filtered['Password'] = password
+    sorted_items = sorted(filtered.items())
+    concat = ''.join(str(v) for k, v in sorted_items)
+    return hashlib.sha256(concat.encode('utf-8')).hexdigest()
+
+
+# Schemas
+class CreatePaymentRequest(BaseModel):
+    amount: int  # in rubles
+    description: str
+    payment_type: str = "one_time"  # one_time, subscription
+
+
+class PaymentResponse(BaseModel):
+    success: bool
+    payment_id: Optional[str] = None
+    payment_url: Optional[str] = None
+    error: Optional[str] = None
+
+
+@router.post("/payment/create", response_model=PaymentResponse)
+async def create_payment(
+    request: CreatePaymentRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Create payment in T-Bank"""
+    
+    if not settings.TBANK_TERMINAL_KEY or not settings.TBANK_PASSWORD:
+        raise HTTPException(status_code=500, detail="Платежная система не настроена")
+    
+    order_id = str(uuid.uuid4())
+    amount_kopecks = request.amount * 100
+    
+    # Create payment record
+    payment = Payment(
+        user_id=current_user.id,
+        tbank_order_id=order_id,
+        amount=request.amount,
+        payment_type=request.payment_type,
+        status="pending"
+    )
+    db.add(payment)
+    db.commit()
+    
+    # Mock mode for testing
+    if settings.TBANK_MOCK:
+        payment.tbank_payment_id = f"MOCK-{order_id[:8]}"
+        payment.status = "created"
+        db.commit()
+        
+        return PaymentResponse(
+            success=True,
+            payment_id=order_id,
+            payment_url=f"{settings.BASE_URL}/dashboard/payment/mock?order_id={order_id}"
+        )
+    
+    # Real T-Bank API call
+    init_data = {
+        "TerminalKey": settings.TBANK_TERMINAL_KEY,
+        "Amount": amount_kopecks,
+        "OrderId": order_id,
+        "Description": request.description,
+        "SuccessURL": f"{settings.BASE_URL}/dashboard/payment/success?order_id={order_id}",
+        "FailURL": f"{settings.BASE_URL}/dashboard/payment/fail?order_id={order_id}",
+        "NotificationURL": f"{settings.BASE_URL}/api/v1/payment/webhook",
+    }
+    init_data["Token"] = generate_token(init_data, settings.TBANK_PASSWORD)
+    
+    async with httpx.AsyncClient() as client:
+        response = await client.post(f"{get_api_url()}/Init", json=init_data)
+        result = response.json()
+    
+    if result.get("Success"):
+        payment.tbank_payment_id = result.get("PaymentId")
+        payment.status = "created"
+        db.commit()
+        
+        return PaymentResponse(
+            success=True,
+            payment_id=order_id,
+            payment_url=result.get("PaymentURL")
+        )
+    else:
+        payment.status = "failed"
+        db.commit()
+        
+        return PaymentResponse(
+            success=False,
+            error=result.get("Message", "Ошибка создания платежа")
+        )
+
+
+@router.post("/payment/webhook")
+async def payment_webhook(request: Request, db: Session = Depends(get_db)):
+    """T-Bank webhook receiver"""
+    data = await request.json()
+    
+    order_id = data.get("OrderId")
+    status = data.get("Status")
+    
+    payment = db.query(Payment).filter(Payment.tbank_order_id == order_id).first()
+    
+    if payment:
+        if status == "CONFIRMED":
+            payment.status = "confirmed"
+            payment.confirmed_at = datetime.utcnow()
+            
+            # Apply credits/subscription to user
+            user = db.query(User).filter(User.id == payment.user_id).first()
+            if user and payment.payment_type == "credits":
+                user.credits += payment.amount // 10  # Example: 10 rubles = 1 credit
+        elif status == "CANCELLED":
+            payment.status = "cancelled"
+        elif status == "REFUNDED":
+            payment.status = "refunded"
+        
+        db.commit()
+    
+    return {"status": "ok"}

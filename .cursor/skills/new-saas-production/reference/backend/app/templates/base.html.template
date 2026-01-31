@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <title>{% block title %}{{ title | default('{{PROJECT_TITLE}}') }}{% endblock %}</title>
+  
+  {% block meta %}
+  <meta name="description" content="{{ description | default('{{DESCRIPTION}}') }}">
+  {% endblock %}
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ title | default('{{PROJECT_TITLE}}') }}">
+  <meta property="og:description" content="{{ description | default('{{DESCRIPTION}}') }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url }}">
+  
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.0">
+  {% block extra_css %}{% endblock %}
+  
+  <!-- Iconify -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+  {% block body %}{% endblock %}
+  
+  <!-- JS -->
+  <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
+  {% block extra_js %}{% endblock %}
+  <script src="/static/js/app.js"></script>
+</body>
+
+</html>

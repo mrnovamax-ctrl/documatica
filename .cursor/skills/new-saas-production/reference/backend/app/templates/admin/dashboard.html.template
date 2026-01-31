@@ -1,0 +1,56 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+<!-- Stats Grid -->
+<div class="admin-stats-grid">
+  <div class="admin-stat-card">
+    <iconify-icon icon="solar:users-group-rounded-bold" class="stat-icon"></iconify-icon>
+    <div class="stat-info">
+      <span class="stat-value">{{ stats.users | default(0) }}</span>
+      <span class="stat-label">Пользователей</span>
+    </div>
+  </div>
+  
+  <div class="admin-stat-card">
+    <iconify-icon icon="solar:card-bold" class="stat-icon"></iconify-icon>
+    <div class="stat-info">
+      <span class="stat-value">{{ stats.payments | default(0) }}</span>
+      <span class="stat-label">Платежей</span>
+    </div>
+  </div>
+  
+  <div class="admin-stat-card accent">
+    <iconify-icon icon="solar:wallet-money-bold" class="stat-icon"></iconify-icon>
+    <div class="stat-info">
+      <span class="stat-value">{{ stats.revenue | default(0) }} руб</span>
+      <span class="stat-label">Выручка</span>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="admin-section mt-8">
+  <div class="section-header">
+    <h2 class="section-title">Последняя активность</h2>
+  </div>
+  
+  <div class="admin-table-container">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Пользователь</th>
+          <th>Действие</th>
+          <th>Дата</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="3" class="text-center text-slate-400 py-8">
+            Нет данных
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

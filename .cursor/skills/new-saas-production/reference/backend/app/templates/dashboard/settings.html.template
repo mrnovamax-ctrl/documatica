@@ -1,0 +1,49 @@
+{% extends "base_dashboard.html" %}
+
+{% block content %}
+<div class="dashboard-section">
+  <div class="section-header">
+    <h2 class="section-title">Настройки профиля</h2>
+  </div>
+  
+  <div class="section-content">
+    <form id="settingsForm" class="settings-form">
+      <div class="form-section mb-8">
+        <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">Основные данные</h3>
+        
+        <div class="row g-4">
+          <div class="col-md-6">
+            <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Имя</label>
+            <input type="text" name="name" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4" value="{{ user.name | default('') }}">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Email</label>
+            <input type="email" name="email" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4" value="{{ user.email | default('') }}" readonly>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-section mb-8">
+        <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">Безопасность</h3>
+        
+        <div class="row g-4">
+          <div class="col-md-6">
+            <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Новый пароль</label>
+            <input type="password" name="new_password" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4" placeholder="Оставьте пустым, если не меняете">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label docu-micro text-slate-400 ms-2 mb-2">Подтвердите пароль</label>
+            <input type="password" name="confirm_password" class="form-control bg-slate-50 border-slate-100 rounded-2xl px-6 py-4">
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary rounded-2xl px-8 py-3 font-bold">
+          Сохранить изменения
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

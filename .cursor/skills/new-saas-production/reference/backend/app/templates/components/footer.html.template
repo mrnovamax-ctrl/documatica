@@ -1,0 +1,48 @@
+<!-- Footer -->
+<footer class="site-footer bg-slate-900 text-white py-16">
+  <div class="container">
+    <div class="row">
+      <!-- Logo & Description -->
+      <div class="col-lg-4 mb-8 lg:mb-0">
+        <a href="/" class="docu-logo mb-4 d-inline-block">
+          <span class="docu-logo-bold text-white">{{PROJECT_TITLE}}</span>
+        </a>
+        <p class="text-slate-400 text-sm">
+          {{DESCRIPTION}}
+        </p>
+      </div>
+      
+      <!-- Links -->
+      <div class="col-lg-2 col-md-4 mb-8 md:mb-0">
+        <h5 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Продукт</h5>
+        <ul class="list-unstyled">
+          <li><a href="/features" class="text-slate-300 hover:text-white text-sm d-block py-1">Возможности</a></li>
+          <li><a href="/pricing" class="text-slate-300 hover:text-white text-sm d-block py-1">Тарифы</a></li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-2 col-md-4 mb-8 md:mb-0">
+        <h5 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Компания</h5>
+        <ul class="list-unstyled">
+          <li><a href="/about" class="text-slate-300 hover:text-white text-sm d-block py-1">О нас</a></li>
+          <li><a href="/contacts" class="text-slate-300 hover:text-white text-sm d-block py-1">Контакты</a></li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-2 col-md-4">
+        <h5 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Документы</h5>
+        <ul class="list-unstyled">
+          <li><a href="/privacy" class="text-slate-300 hover:text-white text-sm d-block py-1">Конфиденциальность</a></li>
+          <li><a href="/terms" class="text-slate-300 hover:text-white text-sm d-block py-1">Условия</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Copyright -->
+    <div class="border-top border-slate-800 mt-12 pt-8">
+      <p class="text-slate-500 text-sm text-center mb-0">
+        {{YEAR}} {{PROJECT_TITLE}}. Все права защищены.
+      </p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,212 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}{{ user.email }}{% endblock %}
+{% block page_title %}
+<div style="display: flex; align-items: center; gap: 12px;">
+  <a href="/admin/users/" style="display: flex; align-items: center; color: #64748b; text-decoration: none;">
+    <iconify-icon icon="ri:arrow-left-line" width="24"></iconify-icon>
+  </a>
+  <span>{{ user.email }}</span>
+</div>
+{% endblock %}
+
+{% block header_actions %}
+<div style="display: flex; gap: 12px; align-items: center;">
+  <div style="font-size: 13px; color: #64748b;">
+    ID: <strong>{{ user.id }}</strong>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- User Info Cards -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+  <!-- Basic Info -->
+  <div style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem;">
+    <h3 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 1rem;">Основная информация</h3>
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Email</div>
+        <div style="font-weight: 600;">{{ user.email }}</div>
+      </div>
+      {% if user.name %}
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Имя</div>
+        <div style="font-weight: 600;">{{ user.name }}</div>
+      </div>
+      {% endif %}
+      {% if user.phone %}
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Телефон</div>
+        <div style="font-weight: 600;">{{ user.phone }}</div>
+      </div>
+      {% endif %}
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Авторизация</div>
+        <div style="font-weight: 600;">
+          {% if user.auth_provider == 'yandex' %}
+          <span style="display: inline-flex; align-items: center; gap: 6px;">
+            Яндекс 
+            <span style="background: #FC3F1D; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700;">Y</span>
+          </span>
+          {% else %}
+          Email
+          {% endif %}
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Статус</div>
+        <div>
+          {% if user.is_verified %}
+          <span class="admin-badge admin-badge-success">
+            <iconify-icon icon="ri:checkbox-circle-fill" width="14"></iconify-icon>
+            Подтверждён
+          </span>
+          {% else %}
+          <span class="admin-badge admin-badge-warning">
+            <iconify-icon icon="ri:time-line" width="14"></iconify-icon>
+            Не подтверждён
+          </span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscription Info -->
+  <div style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem;">
+    <h3 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 1rem;">Подписка</h3>
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Тариф</div>
+        <div>
+          {% if user.tariff == 'subscription' %}
+          <span class="admin-badge admin-badge-gold">
+            <iconify-icon icon="ri:vip-crown-line" width="14"></iconify-icon>
+            Подписка
+          </span>
+          {% elif user.tariff == 'pay_per_doc' %}
+          <span class="admin-badge admin-badge-purple">
+            <iconify-icon icon="ri:file-list-3-line" width="14"></iconify-icon>
+            Пакет документов
+          </span>
+          {% else %}
+          <span class="admin-badge admin-badge-muted">Free</span>
+          {% endif %}
+        </div>
+      </div>
+      {% if user.subscription_expires %}
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Истекает</div>
+        <div style="font-weight: 600;">{{ user.subscription_expires.strftime('%d.%m.%Y %H:%M') }}</div>
+      </div>
+      {% endif %}
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Бесплатных использовано</div>
+        <div style="font-weight: 600;">{{ user.free_generations_used }} / 5</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">По подписке использовано</div>
+        <div style="font-weight: 600;">{{ user.subscription_docs_used }}</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Куплено документов (остаток)</div>
+        <div style="font-weight: 600;">{{ user.purchased_docs_remaining }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Info -->
+  <div style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem;">
+    <h3 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 1rem;">Активность</h3>
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Дата регистрации</div>
+        <div style="font-weight: 600;">{{ user.created_at.strftime('%d.%m.%Y %H:%M') if user.created_at else 'N/A' }}</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Последний вход</div>
+        <div style="font-weight: 600;">
+          {% if user.last_login %}
+          {{ user.last_login.strftime('%d.%m.%Y %H:%M') }}
+          {% else %}
+          <span style="color: #cbd5e1;">Никогда</span>
+          {% endif %}
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Всего платежей</div>
+        <div style="font-weight: 600; color: #059669;">{{ total_payments|int }} ₽ <span style="color: #94a3b8; font-weight: 400;">({{ confirmed_payments_count }} шт)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payments History -->
+<div style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem;">
+  <h3 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 1.5rem;">История платежей</h3>
+  
+  {% if payments %}
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: separate; border-spacing: 0;">
+      <thead>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <th style="text-align: left; padding: 0.75rem; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">ID заказа</th>
+          <th style="text-align: left; padding: 0.75rem; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Тип</th>
+          <th style="text-align: left; padding: 0.75rem; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Сумма</th>
+          <th style="text-align: left; padding: 0.75rem; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Статус</th>
+          <th style="text-align: left; padding: 0.75rem; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Создан</th>
+          <th style="text-align: left; padding: 0.75rem; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Подтверждён</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for payment in payments %}
+        <tr style="border-bottom: 1px solid #f1f5f9;">
+          <td style="padding: 1rem 0.75rem; font-size: 13px; font-family: monospace; color: #64748b;">{{ payment.tbank_order_id[:12] }}...</td>
+          <td style="padding: 1rem 0.75rem; font-size: 13px;">
+            {% if payment.payment_type == 'subscription' %}
+            <span class="admin-badge admin-badge-gold" style="font-size: 10px;">Подписка</span>
+            {% elif payment.payment_type == 'pay_per_doc' %}
+            <span class="admin-badge admin-badge-purple" style="font-size: 10px;">{{ payment.documents_count }} док.</span>
+            {% else %}
+            <span class="admin-badge admin-badge-muted" style="font-size: 10px;">{{ payment.payment_type }}</span>
+            {% endif %}
+          </td>
+          <td style="padding: 1rem 0.75rem; font-size: 14px; font-weight: 600;">{{ payment.amount|int }} ₽</td>
+          <td style="padding: 1rem 0.75rem; font-size: 13px;">
+            {% if payment.status == 'confirmed' %}
+            <span class="admin-badge admin-badge-success" style="font-size: 10px;">Подтверждён</span>
+            {% elif payment.status == 'pending' %}
+            <span class="admin-badge admin-badge-warning" style="font-size: 10px;">Ожидание</span>
+            {% elif payment.status == 'rejected' %}
+            <span class="admin-badge admin-badge-danger" style="font-size: 10px;">Отклонён</span>
+            {% elif payment.status == 'refunded' %}
+            <span class="admin-badge admin-badge-muted" style="font-size: 10px;">Возврат</span>
+            {% else %}
+            <span class="admin-badge admin-badge-muted" style="font-size: 10px;">{{ payment.status }}</span>
+            {% endif %}
+            {% if payment.is_test %}
+            <span class="admin-badge" style="font-size: 9px; background: #fbbf24; color: #0f172a; margin-left: 4px;">TEST</span>
+            {% endif %}
+          </td>
+          <td style="padding: 1rem 0.75rem; font-size: 13px; color: #64748b;">{{ payment.created_at.strftime('%d.%m.%Y %H:%M') if payment.created_at else 'N/A' }}</td>
+          <td style="padding: 1rem 0.75rem; font-size: 13px; color: #64748b;">
+            {% if payment.confirmed_at %}
+            {{ payment.confirmed_at.strftime('%d.%m.%Y %H:%M') }}
+            {% else %}
+            —
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div style="text-align: center; padding: 3rem; color: #94a3b8;">
+    <iconify-icon icon="ri:bank-card-line" width="48" style="opacity: 0.5;"></iconify-icon>
+    <div style="margin-top: 1rem; font-size: 14px;">Платежей пока нет</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

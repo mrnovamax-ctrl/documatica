@@ -736,7 +736,7 @@ body {
   inset: 0;
   background-image: radial-gradient(#3b82f6 1px, transparent 1px);
   background-size: 24px 24px;
-  opacity: 0.4;
+  opacity: 0.6;
 }
 
 .hero-gradient {

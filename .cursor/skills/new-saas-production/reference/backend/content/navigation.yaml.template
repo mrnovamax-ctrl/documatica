@@ -1,0 +1,57 @@
+# Navigation Configuration
+
+main_menu:
+  - title: "Возможности"
+    url: "/features"
+  - title: "Тарифы"
+    url: "/pricing"
+
+footer_menu:
+  product:
+    title: "Продукт"
+    items:
+      - title: "Возможности"
+        url: "/features"
+      - title: "Тарифы"
+        url: "/pricing"
+  
+  company:
+    title: "Компания"
+    items:
+      - title: "О нас"
+        url: "/about"
+      - title: "Контакты"
+        url: "/contacts"
+  
+  legal:
+    title: "Документы"
+    items:
+      - title: "Конфиденциальность"
+        url: "/privacy"
+      - title: "Условия"
+        url: "/terms"
+
+dashboard_menu:
+  - title: "Главная"
+    url: "/dashboard"
+    icon: "solar:widget-5-bold"
+  - title: "Настройки"
+    url: "/dashboard/settings"
+    icon: "solar:settings-bold"
+  - title: "Оплата"
+    url: "/dashboard/billing"
+    icon: "solar:card-bold"
+
+admin_menu:
+  - title: "Dashboard"
+    url: "/admin"
+    icon: "solar:widget-5-bold"
+  - title: "Пользователи"
+    url: "/admin/users"
+    icon: "solar:users-group-rounded-bold"
+  - title: "Платежи"
+    url: "/admin/payments"
+    icon: "solar:card-bold"
+  - title: "Контент"
+    url: "/admin/content"
+    icon: "solar:document-text-bold"

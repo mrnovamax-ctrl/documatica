@@ -1,0 +1,29 @@
+"""
+YAML Content Loader
+"""
+
+import yaml
+from pathlib import Path
+from functools import lru_cache
+
+CONTENT_DIR = Path(__file__).parent.parent.parent / "content"
+
+
+@lru_cache(maxsize=50)
+def load_content(name: str) -> dict:
+    """Load YAML content file with caching"""
+    filepath = CONTENT_DIR / f"{name}.yaml"
+    if filepath.exists():
+        with open(filepath, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    return {}
+
+
+def load_navigation() -> dict:
+    """Load navigation configuration"""
+    return load_content("navigation")
+
+
+def clear_cache():
+    """Clear content cache"""
+    load_content.cache_clear()

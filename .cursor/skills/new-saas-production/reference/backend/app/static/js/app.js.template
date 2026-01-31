@@ -1,0 +1,66 @@
+/**
+ * {{PROJECT_TITLE}} - Main JavaScript
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('{{PROJECT_TITLE}} initialized');
+  
+  // Toast notifications
+  window.showToast = function(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  };
+  
+  // Mobile sidebar toggle
+  const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+  const sidebar = document.querySelector('.dashboard-sidebar, .admin-sidebar');
+  
+  if (mobileMenuBtn && sidebar) {
+    mobileMenuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+  }
+  
+  // Form handling
+  document.querySelectorAll('form[data-ajax]').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const url = form.action || form.dataset.action;
+      const method = form.method || 'POST';
+      
+      try {
+        const response = await fetch(url, {
+          method: method,
+          body: formData,
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showToast(data.message || 'Успешно сохранено', 'success');
+          if (data.redirect) {
+            window.location.href = data.redirect;
+          }
+        } else {
+          showToast(data.error || 'Произошла ошибка', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Ошибка соединения', 'error');
+      }
+    });
+  });
+});

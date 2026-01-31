@@ -1,0 +1,76 @@
+"""
+Billing API
+"""
+
+from typing import Optional
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from pydantic import BaseModel
+
+from app.database import get_db
+from app.models import User, Payment
+from app.api.auth import get_current_user
+
+router = APIRouter()
+
+
+class BillingInfo(BaseModel):
+    subscription_type: str
+    subscription_expires: Optional[str]
+    credits: int
+    total_payments: int
+    
+    class Config:
+        from_attributes = True
+
+
+class PaymentHistory(BaseModel):
+    id: int
+    amount: float
+    payment_type: str
+    status: str
+    created_at: str
+    
+    class Config:
+        from_attributes = True
+
+
+@router.get("/billing/info", response_model=BillingInfo)
+async def get_billing_info(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get user billing information"""
+    total_payments = db.query(Payment).filter(
+        Payment.user_id == current_user.id,
+        Payment.status == "confirmed"
+    ).count()
+    
+    return BillingInfo(
+        subscription_type=current_user.subscription_type,
+        subscription_expires=current_user.subscription_expires.isoformat() if current_user.subscription_expires else None,
+        credits=current_user.credits,
+        total_payments=total_payments
+    )
+
+
+@router.get("/billing/history")
+async def get_payment_history(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get user payment history"""
+    payments = db.query(Payment).filter(
+        Payment.user_id == current_user.id
+    ).order_by(Payment.created_at.desc()).limit(50).all()
+    
+    return [
+        {
+            "id": p.id,
+            "amount": p.amount,
+            "payment_type": p.payment_type,
+            "status": p.status,
+            "created_at": p.created_at.isoformat()
+        }
+        for p in payments
+    ]

@@ -1,0 +1,13 @@
+"""
+Public Pages Router
+"""
+
+from fastapi import APIRouter
+
+from app.pages import home, landing, legal
+
+router = APIRouter()
+
+router.include_router(home.router)
+router.include_router(landing.router)
+router.include_router(legal.router)

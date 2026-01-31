@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - TBANK_TERMINAL_KEY=${TBANK_TERMINAL_KEY}
+      - TBANK_PASSWORD=${TBANK_PASSWORD}
+      - TBANK_PRODUCTION=${TBANK_PRODUCTION:-false}
+      - SMTP_HOST=${SMTP_HOST:-smtp.yandex.ru}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - BASE_URL=${BASE_URL:-http://localhost:8000}
+      - DEBUG=${DEBUG:-true}
+    volumes:
+      - ./backend:/app
+      - ./backend/data:/app/data
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - {{PROJECT_NAME}}-network
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB={{PROJECT_NAME}}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - {{PROJECT_NAME}}-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - {{PROJECT_NAME}}-network
+
+volumes:
+  postgres_data:
+
+networks:
+  {{PROJECT_NAME}}-network:
+    driver: bridge

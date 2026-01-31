@@ -1,0 +1,44 @@
+{% extends "base_dashboard.html" %}
+
+{% block content %}
+<!-- Stats Grid -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="stat-label">Кредиты</span>
+    <span class="stat-value">{{ user.credits | default(0) }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Подписка</span>
+    <span class="stat-value">{{ user.subscription_type | default('Free') }}</span>
+  </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="dashboard-section">
+  <div class="section-header">
+    <h2 class="section-title">Добро пожаловать</h2>
+  </div>
+  
+  <div class="section-content">
+    <p class="text-slate-500">
+      Это ваш личный кабинет. Здесь будет основной функционал приложения.
+    </p>
+    
+    <!-- Quick Actions -->
+    <div class="quick-actions mt-8">
+      <a href="#" class="quick-action-card">
+        <iconify-icon icon="solar:add-circle-bold" class="text-3xl text-blue-600"></iconify-icon>
+        <span class="text-sm font-bold text-slate-900 mt-2">Создать</span>
+      </a>
+      <a href="/dashboard/settings" class="quick-action-card">
+        <iconify-icon icon="solar:settings-bold" class="text-3xl text-slate-400"></iconify-icon>
+        <span class="text-sm font-bold text-slate-900 mt-2">Настройки</span>
+      </a>
+      <a href="/dashboard/billing" class="quick-action-card">
+        <iconify-icon icon="solar:card-bold" class="text-3xl text-slate-400"></iconify-icon>
+        <span class="text-sm font-bold text-slate-900 mt-2">Оплата</span>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

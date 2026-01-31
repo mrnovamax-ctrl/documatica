@@ -1,0 +1,44 @@
+# {{PROJECT_TITLE}} - Home Page Content
+
+title: "{{PROJECT_TITLE}} - {{DESCRIPTION}}"
+
+hero:
+  title: "Заголовок вашего продукта"
+  subtitle: "Краткое описание того, что делает ваш продукт и какую проблему решает для пользователей."
+
+features:
+  - title: "Быстро"
+    description: "Молниеносная скорость работы благодаря оптимизированной архитектуре."
+    icon: "solar:bolt-bold"
+  
+  - title: "Безопасно"
+    description: "Надежная защита ваших данных и полное соответствие требованиям."
+    icon: "solar:shield-check-bold"
+  
+  - title: "Просто"
+    description: "Интуитивный интерфейс, который не требует обучения."
+    icon: "solar:hand-stars-bold"
+
+pricing:
+  - name: "Базовый"
+    price: 0
+    period: "навсегда"
+    features:
+      - "Базовый функционал"
+      - "Ограниченное использование"
+    cta: "Начать бесплатно"
+    
+  - name: "Pro"
+    price: 990
+    period: "в месяц"
+    popular: true
+    features:
+      - "Все функции"
+      - "Приоритетная поддержка"
+      - "Расширенные возможности"
+    cta: "Выбрать Pro"
+
+cta:
+  title: "Готовы начать?"
+  subtitle: "Присоединяйтесь к тысячам довольных пользователей"
+  button: "Создать аккаунт"
