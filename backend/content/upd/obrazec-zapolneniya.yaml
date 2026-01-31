@@ -10,111 +10,153 @@ page:
   intro: "Подробные примеры заполнения универсального передаточного документа с пояснениями для разных ситуаций."
   
   content: |
-    <p class="docu-lead">Универсальный передаточный документ (УПД) — это документ, который объединяет в себе счет-фактуру и первичный учетный документ. Правильное заполнение УПД критически важно для принятия НДС к вычету.</p>
+    <p class="lead-text">Универсальный передаточный документ (УПД) — это документ, который объединяет в себе счет-фактуру и первичный учетный документ. Правильное заполнение УПД критически важно для принятия НДС к вычету.</p>
     
-    <h2 class="docu-h2" style="margin-top: 48px;">Образец №1: УПД с НДС (Статус 1)</h2>
-    <p class="docu-body">Используется, когда продавец является плательщиком НДС.</p>
-    
-    <div style="background: white; padding: 32px; border-radius: 24px; margin: 32px 0; border: 1px solid #e2e8f0;">
-      <h3 class="docu-h3">Основные реквизиты</h3>
-      <ul class="docu-body" style="line-height: 1.8;">
-        <li><strong>Статус:</strong> 1 — документ заменяет счет-фактуру и первичный документ</li>
-        <li><strong>Номер:</strong> 00000123</li>
-        <li><strong>Дата:</strong> 15.01.2026</li>
-      </ul>
+    <div class="content-section">
+      <h2 style="font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 24px;">Образец №1: УПД с НДС (Статус 1)</h2>
+      <p>Используется, когда продавец является плательщиком НДС.</p>
       
-      <h3 class="docu-h3" style="margin-top: 24px;">Продавец</h3>
-      <p class="docu-body">ООО "Техносервис", ИНН 7704123456, КПП 770401001</p>
-      
-      <h3 class="docu-h3" style="margin-top: 24px;">Покупатель</h3>
-      <p class="docu-body">ООО "Строительная компания", ИНН 7708765432, КПП 770801001</p>
-      
-      <h3 class="docu-h3" style="margin-top: 24px;">Товары</h3>
-      <p class="docu-body">Компьютеры Dell и мониторы Samsung. Итого: 720 000 руб. (включая НДС 120 000 руб.)</p>
-    </div>
-    
-    <h2 class="docu-h2" style="margin-top: 48px;">Образец №2: УПД без НДС (Статус 2)</h2>
-    <p class="docu-body">Используется ИП на УСН, не являющимися плательщиками НДС.</p>
-    
-    <div style="background: white; padding: 32px; border-radius: 24px; margin: 32px 0; border: 1px solid #e2e8f0;">
-      <h3 class="docu-h3">Основные реквизиты</h3>
-      <ul class="docu-body" style="line-height: 1.8;">
-        <li><strong>Статус:</strong> 2 — документ заменяет только первичный документ (без НДС)</li>
-        <li><strong>Номер:</strong> 45</li>
-        <li><strong>Дата:</strong> 20.01.2026</li>
-      </ul>
-      
-      <h3 class="docu-h3" style="margin-top: 24px;">Продавец (ИП)</h3>
-      <p class="docu-body">ИП Смирнов Алексей Владимирович, ИНН 780112345678</p>
-      
-      <h3 class="docu-h3" style="margin-top: 24px;">Покупатель</h3>
-      <p class="docu-body">ООО "Бизнес Решения", ИНН 7801234567, КПП 780101001</p>
-      
-      <h3 class="docu-h3" style="margin-top: 24px;">Услуги</h3>
-      <p class="docu-body">Консультационные услуги. Итого: 75 000 руб. (без НДС)</p>
-    </div>
-    
-    <h2 class="docu-h2" style="margin-top: 48px;">Важные рекомендации</h2>
-    
-    <div style="background: #fef3c7; padding: 24px; border-radius: 16px; margin: 32px 0; border-left: 4px solid #f59e0b;">
-      <p class="docu-body" style="margin: 0;"><strong>Выбор статуса:</strong> Статус 1 используют плательщики НДС. Статус 2 — организации на УСН или освобожденные от НДС.</p>
-    </div>
-    
-    <div style="background: #dbeafe; padding: 24px; border-radius: 16px; margin: 32px 0; border-left: 4px solid #3b82f6;">
-      <p class="docu-body" style="margin: 0;"><strong>Обязательные реквизиты:</strong> Номер, дата, наименования и адреса сторон, ИНН/КПП, перечень товаров с ценами, подписи.</p>
-    </div>
-    
-    <div style="background: #d1fae5; padding: 24px; border-radius: 16px; margin: 32px 0; border-left: 4px solid #10b981;">
-      <p class="docu-body" style="margin: 0;"><strong>Сроки выставления:</strong> УПД должен быть оформлен в течение 5 календарных дней с даты отгрузки товара или оказания услуги.</p>
-    </div>
-    
-    <h2 class="docu-h2" style="margin-top: 64px; text-align: center;">Скачать образцы УПД в PDF</h2>
-    <p class="docu-body" style="text-align: center; margin-bottom: 32px;">Готовые образцы для разных ситуаций. Требуется регистрация.</p>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin: 48px 0;">
-      <div style="background: white; padding: 32px; border-radius: 24px; text-align: center; border: 1px solid #e2e8f0;">
-        <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
-          </svg>
+      <div class="example-card">
+        <div class="example-header">
+          <span class="example-badge">Статус 1</span>
+          <h2>УПД с НДС для ООО</h2>
         </div>
-        <h4 class="docu-h3" style="font-size: 18px; margin-bottom: 12px;">УПД с НДС</h4>
-        <p class="docu-body" style="font-size: 14px; margin-bottom: 24px;">Образец для плательщиков НДС</p>
-        <button class="download-btn" data-pdf-type="upd-nds" onclick="checkAuthAndDownload(this)" style="width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">
-          Скачать PDF
-        </button>
+        <div class="example-content">
+          <div class="field-group">
+            <h3>Основные реквизиты</h3>
+            <ul class="field-list">
+              <li><strong>Статус:</strong> 1 — документ заменяет счет-фактуру и первичный документ</li>
+              <li><strong>Номер:</strong> 00000123</li>
+              <li><strong>Дата:</strong> 15.01.2026</li>
+            </ul>
+          </div>
+          
+          <div class="field-group">
+            <h3>Продавец</h3>
+            <p>ООО "Техносервис", ИНН 7704123456, КПП 770401001</p>
+            <p style="color: #64748b; font-size: 14px;">г. Москва, ул. Тверская, д. 10, оф. 25</p>
+          </div>
+          
+          <div class="field-group">
+            <h3>Покупатель</h3>
+            <p>ООО "Строительная компания", ИНН 7708765432, КПП 770801001</p>
+          </div>
+          
+          <div class="field-group">
+            <h3>Товары и услуги</h3>
+            <p>Компьютеры Dell Optiplex 7080 — 10 шт. по 50 000 руб.</p>
+            <p>Мониторы Samsung S24 — 10 шт. по 22 000 руб.</p>
+            <p style="margin-top: 16px; padding-top: 16px; border-top: 2px solid #3b82f6; font-weight: 700; font-size: 18px;">Итого: 720 000 руб. (включая НДС 120 000 руб.)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content-section">
+      <h2 style="font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 24px;">Образец №2: УПД без НДС (Статус 2)</h2>
+      <p>Используется ИП на УСН, не являющимися плательщиками НДС.</p>
+      
+      <div class="example-card">
+        <div class="example-header">
+          <span class="example-badge example-badge-secondary">Статус 2</span>
+          <h2>УПД без НДС для ИП</h2>
+        </div>
+        <div class="example-content">
+          <div class="field-group">
+            <h3>Основные реквизиты</h3>
+            <ul class="field-list">
+              <li><strong>Статус:</strong> 2 — документ заменяет только первичный документ (без НДС)</li>
+              <li><strong>Номер:</strong> 45</li>
+              <li><strong>Дата:</strong> 20.01.2026</li>
+            </ul>
+          </div>
+          
+          <div class="field-group">
+            <h3>Продавец (ИП)</h3>
+            <p>ИП Смирнов Алексей Владимирович</p>
+            <p style="color: #64748b; font-size: 14px;">ИНН 780112345678, ОГРНИП 320780100012345</p>
+            <p style="color: #64748b; font-size: 14px;">УСН 6%, без НДС на основании п. 2 ст. 346.11 НК РФ</p>
+          </div>
+          
+          <div class="field-group">
+            <h3>Покупатель</h3>
+            <p>ООО "Бизнес Решения", ИНН 7801234567, КПП 780101001</p>
+          </div>
+          
+          <div class="field-group">
+            <h3>Услуги</h3>
+            <p>Консультационные услуги по бизнес-планированию</p>
+            <p style="margin-top: 16px; padding-top: 16px; border-top: 2px solid #fbbf24; font-weight: 700; font-size: 18px;">Итого: 75 000 руб. (без НДС)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content-section">
+      <h2 style="font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 24px;">Важные рекомендации</h2>
+      
+      <div class="alert-info-v12" style="background: #fef3c7; padding: 20px; border-radius: 16px; margin-bottom: 24px; border-left: 4px solid #f59e0b;">
+        <p style="margin: 0; line-height: 1.6;"><strong>💡 Выбор статуса:</strong> Статус 1 используют плательщики НДС (организации на ОСНО). Статус 2 — организации на УСН, ЕСХН или освобожденные от НДС по ст. 145 НК РФ.</p>
       </div>
       
-      <div style="background: white; padding: 32px; border-radius: 24px; text-align: center; border: 1px solid #e2e8f0;">
-        <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
-          </svg>
-        </div>
-        <h4 class="docu-h3" style="font-size: 18px; margin-bottom: 12px;">УПД без НДС</h4>
-        <p class="docu-body" style="font-size: 14px; margin-bottom: 24px;">Образец для УСН</p>
-        <button class="download-btn" data-pdf-type="upd-bez-nds" onclick="checkAuthAndDownload(this)" style="width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">
-          Скачать PDF
-        </button>
+      <div class="alert-info-v12" style="background: #dbeafe; padding: 20px; border-radius: 16px; margin-bottom: 24px; border-left: 4px solid #3b82f6;">
+        <p style="margin: 0; line-height: 1.6;"><strong>📝 Обязательные реквизиты:</strong> Номер, дата, наименования и адреса сторон, ИНН/КПП, перечень товаров с ценами, подписи уполномоченных лиц.</p>
       </div>
       
-      <div style="background: white; padding: 32px; border-radius: 24px; text-align: center; border: 1px solid #e2e8f0;">
-        <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
-          </svg>
+      <div class="alert-info-v12" style="background: #d1fae5; padding: 20px; border-radius: 16px; margin-bottom: 24px; border-left: 4px solid #10b981;">
+        <p style="margin: 0; line-height: 1.6;"><strong>⏰ Сроки выставления:</strong> УПД должен быть оформлен в течение 5 календарных дней с даты отгрузки товара или оказания услуги (для статуса 1).</p>
+      </div>
+    </div>
+    
+    <div class="content-section">
+      <h2 style="font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 16px; text-align: center;">Скачать образцы УПД в PDF</h2>
+      <p style="text-align: center; color: #64748b; margin-bottom: 48px;">Готовые образцы для разных ситуаций. Требуется регистрация.</p>
+      
+      <div class="download-grid">
+        <div class="download-card" style="background: white; border: 1px solid #e2e8f0;">
+          <div class="download-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
+            </svg>
+          </div>
+          <h4 style="color: #0f172a;">УПД с НДС</h4>
+          <p style="color: #64748b;">Образец для плательщиков НДС (статус 1)</p>
+          <button class="download-btn" data-pdf-type="upd-nds" onclick="checkAuthAndDownload(this)">
+            Скачать PDF
+          </button>
         </div>
-        <h4 class="docu-h3" style="font-size: 18px; margin-bottom: 12px;">УПД для ИП</h4>
-        <p class="docu-body" style="font-size: 14px; margin-bottom: 24px;">Образец для предпринимателей</p>
-        <button class="download-btn" data-pdf-type="upd-ip" onclick="checkAuthAndDownload(this)" style="width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">
-          Скачать PDF
-        </button>
+        
+        <div class="download-card" style="background: white; border: 1px solid #e2e8f0;">
+          <div class="download-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
+            </svg>
+          </div>
+          <h4 style="color: #0f172a;">УПД без НДС</h4>
+          <p style="color: #64748b;">Образец для УСН (статус 2)</p>
+          <button class="download-btn" data-pdf-type="upd-bez-nds" onclick="checkAuthAndDownload(this)">
+            Скачать PDF
+          </button>
+        </div>
+        
+        <div class="download-card" style="background: white; border: 1px solid #e2e8f0;">
+          <div class="download-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
+            </svg>
+          </div>
+          <h4 style="color: #0f172a;">УПД для ИП</h4>
+          <p style="color: #64748b;">Образец для предпринимателей</p>
+          <button class="download-btn" data-pdf-type="upd-ip" onclick="checkAuthAndDownload(this)">
+            Скачать PDF
+          </button>
+        </div>
       </div>
     </div>
 
