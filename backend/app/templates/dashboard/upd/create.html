@@ -124,6 +124,37 @@
       <p>Универсальный передаточный документ</p>
     </div>
 
+    <!-- Wizard Trigger Button -->
+    <div class="wizard-trigger-wrapper">
+      <div class="wizard-trigger-content">
+        <div class="wizard-trigger-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <div class="wizard-trigger-text">
+          <div class="wizard-trigger-title">
+            Быстрое заполнение
+            <span class="wizard-trigger-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              Для новичков
+            </span>
+          </div>
+          <div class="wizard-trigger-subtitle">
+            Заполните УПД за 3 минуты! Мы автоматически подтянем данные по ИНН и поможем на каждом шаге
+          </div>
+        </div>
+      </div>
+      <button type="button" class="wizard-trigger-btn" data-bs-toggle="modal" data-bs-target="#wizardModal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        Начать
+      </button>
+    </div>
+
     <form id="upd-form">
       <div class="row gy-4">
         <!-- Left Column - Form -->
@@ -1001,6 +1032,466 @@
   </div>
 </div>
 
+<!-- Wizard Modal -->
+<div class="modal fade" id="wizardModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-focus="false">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <!-- Header with Stepper -->
+      <div class="modal-header">
+        <h5 class="modal-title">Быстрое заполнение УПД</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" id="wizard-close-btn"></button>
+      </div>
+      
+      <!-- Stepper -->
+      <div class="wizard-stepper">
+        <div class="wizard-step-item active" data-step="1">
+          <div class="wizard-step-circle">1</div>
+          <span class="wizard-step-label">Параметры</span>
+        </div>
+        <div class="wizard-step-item" data-step="2">
+          <div class="wizard-step-circle">2</div>
+          <span class="wizard-step-label">Покупатель</span>
+        </div>
+        <div class="wizard-step-item" data-step="3">
+          <div class="wizard-step-circle">3</div>
+          <span class="wizard-step-label">Товары</span>
+        </div>
+        <div class="wizard-step-item" data-step="4">
+          <div class="wizard-step-circle">4</div>
+          <span class="wizard-step-label">Доп. сведения</span>
+        </div>
+        <div class="wizard-step-item" data-step="5">
+          <div class="wizard-step-circle">5</div>
+          <span class="wizard-step-label">Подписант П.</span>
+        </div>
+        <div class="wizard-step-item" data-step="6">
+          <div class="wizard-step-circle">6</div>
+          <span class="wizard-step-label">Подписант Пок.</span>
+        </div>
+        <div class="wizard-step-item" data-step="7">
+          <div class="wizard-step-circle">7</div>
+          <span class="wizard-step-label">Готово</span>
+        </div>
+      </div>
+      
+      <!-- Progress Bar -->
+      <div class="wizard-progress-bar">
+        <div class="wizard-progress-fill" style="width: 14.28%"></div>
+      </div>
+      
+      <!-- Body with Steps -->
+      <div class="modal-body">
+        <div class="wizard-step-container">
+          
+          <!-- Step 1: Продавец -->
+          <div class="wizard-step active" data-step="1">
+            <h3 class="wizard-step-title">Параметры и Продавец</h3>
+            <p class="wizard-step-subtitle">Укажите базовые параметры документа и данные продавца</p>
+            
+            <!-- Параметры документа -->
+            <div class="row g-16 mb-24">
+              <div class="col-12">
+                <h5 style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Параметры документа</h5>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Номер УПД <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="wizard-upd-number" placeholder="Будет сгенерирован автоматически" value="">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Дата документа <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="wizard-upd-date" placeholder="дд.мм.гггг" required>
+              </div>
+              <div class="col-md-8">
+                <label class="form-label">Валюта</label>
+                <input type="text" class="form-control" id="wizard-currency-name" value="Российский рубль">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Код валюты</label>
+                <input type="text" class="form-control" id="wizard-currency-code" value="643">
+              </div>
+            </div>
+            
+            <!-- Продавец -->
+            <div class="row g-16">
+              <div class="col-12">
+                <h5 style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Данные продавца</h5>
+              </div>
+            </div>
+            
+            <div class="row g-16">
+              <div class="col-12">
+                <label class="form-label">ИНН Продавца <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="wizard-seller-inn" placeholder="7707123456" maxlength="12">
+                  <button class="btn" type="button" id="wizard-seller-search">
+                    <iconify-icon icon="mdi:magnify"></iconify-icon>
+                    Найти
+                  </button>
+                </div>
+                <small class="text-muted d-none" id="wizard-seller-loading">Поиск...</small>
+              </div>
+            </div>
+            
+            <!-- Company Card (Hidden by default) -->
+            <div class="wizard-company-card" id="wizard-seller-card">
+              <div class="wizard-company-header">
+                <div class="wizard-company-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 21h18"></path>
+                    <path d="M5 21V7l8-4v18"></path>
+                    <path d="M19 21V11l-6-3"></path>
+                  </svg>
+                </div>
+                <div class="wizard-company-info">
+                  <div class="wizard-company-name" id="wizard-seller-name"></div>
+                  <div class="wizard-company-details">
+                    <div class="wizard-company-detail">
+                      <strong>ИНН:</strong> <span id="wizard-seller-inn-display"></span>
+                    </div>
+                    <div class="wizard-company-detail" id="wizard-seller-kpp-container">
+                      <strong>КПП:</strong> <span id="wizard-seller-kpp-display"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="wizard-company-address" id="wizard-seller-address"></div>
+              
+              <!-- НДС и страна -->
+              <div class="row g-16 mt-3">
+                <div class="col-md-3">
+                  <label class="form-label">Ставка НДС</label>
+                  <select class="form-select" id="wizard-seller-vat">
+                    <option value="22">22%</option>
+                    <option value="20" selected>20%</option>
+                    <option value="18">18%</option>
+                    <option value="10">10%</option>
+                    <option value="7">7%</option>
+                    <option value="0">0%</option>
+                    <option value="none">Без НДС</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">НДС</label>
+                  <select class="form-select" id="wizard-seller-vat-type">
+                    <option value="on-top" selected>Сверху</option>
+                    <option value="included">Включен в цену</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Страна</label>
+                  <input type="text" class="form-control" id="wizard-seller-country" value="Россия">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Код страны</label>
+                  <input type="text" class="form-control" id="wizard-seller-country-code" value="643">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 2: Покупатель -->
+          <div class="wizard-step" data-step="2">
+            <h3 class="wizard-step-title">Покупатель</h3>
+            <p class="wizard-step-subtitle">Введите ИНН покупателя</p>
+            
+            <div class="row g-16">
+              <div class="col-12">
+                <label class="form-label">ИНН Покупателя <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="wizard-buyer-inn" placeholder="7708654321" maxlength="12">
+                  <button class="btn" type="button" id="wizard-buyer-search">
+                    <iconify-icon icon="mdi:magnify"></iconify-icon>
+                    Найти
+                  </button>
+                </div>
+                <small class="text-muted d-none" id="wizard-buyer-loading">Поиск...</small>
+              </div>
+            </div>
+            
+            <!-- Company Card -->
+            <div class="wizard-company-card" id="wizard-buyer-card">
+              <div class="wizard-company-header">
+                <div class="wizard-company-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 21h18"></path>
+                    <path d="M5 21V7l8-4v18"></path>
+                    <path d="M19 21V11l-6-3"></path>
+                  </svg>
+                </div>
+                <div class="wizard-company-info">
+                  <div class="wizard-company-name" id="wizard-buyer-name"></div>
+                  <div class="wizard-company-details">
+                    <div class="wizard-company-detail">
+                      <strong>ИНН:</strong> <span id="wizard-buyer-inn-display"></span>
+                    </div>
+                    <div class="wizard-company-detail" id="wizard-buyer-kpp-container">
+                      <strong>КПП:</strong> <span id="wizard-buyer-kpp-display"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="wizard-company-address" id="wizard-buyer-address"></div>
+            </div>
+          </div>
+          
+          <!-- Step 3: Товары -->
+          <div class="wizard-step" data-step="3">
+            <h3 class="wizard-step-title">Товары и услуги</h3>
+            <p class="wizard-step-subtitle">Добавьте товары или услуги</p>
+            
+            <div class="wizard-products-table" id="wizard-products-container">
+              <div class="wizard-product-row">
+                <div>
+                  <label class="form-label">Наименование <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control wizard-product-name" placeholder="Название товара или услуги">
+                </div>
+                <div>
+                  <label class="form-label">Кол-во</label>
+                  <input type="number" class="form-control wizard-product-qty" value="1" min="0.01" step="0.01">
+                </div>
+                <div>
+                  <label class="form-label">Ед. изм.</label>
+                  <select class="form-select wizard-product-unit">
+                    <option value="шт">шт</option>
+                    <option value="усл">усл</option>
+                    <option value="ч">ч</option>
+                    <option value="кг">кг</option>
+                    <option value="л">л</option>
+                    <option value="м">м</option>
+                    <option value="м2">м2</option>
+                    <option value="м3">м3</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label">Цена</label>
+                  <input type="number" class="form-control wizard-product-price" value="0" min="0" step="0.01">
+                </div>
+                <div>
+                  <label class="form-label">Сумма</label>
+                  <input type="text" class="form-control wizard-product-total" value="0 ₽" readonly>
+                </div>
+                <div>
+                  <button type="button" class="btn remove-product wizard-remove-product" title="Удалить">
+                    <iconify-icon icon="mdi:trash-can-outline"></iconify-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <button type="button" class="add-product-btn" id="wizard-add-product">
+              <iconify-icon icon="mdi:plus-circle" class="text-xl"></iconify-icon>
+              Добавить товар
+            </button>
+            
+            <div class="wizard-totals mt-4">
+              <div class="wizard-total-row">
+                <span class="wizard-total-label">Итого без НДС:</span>
+                <span class="wizard-total-value" id="wizard-total-without-vat">0 ₽</span>
+              </div>
+              <div class="wizard-total-row">
+                <span class="wizard-total-label">НДС (20%):</span>
+                <span class="wizard-total-value" id="wizard-total-vat">0 ₽</span>
+              </div>
+              <div class="wizard-total-row">
+                <span class="wizard-total-label">Итого с НДС:</span>
+                <span class="wizard-total-value" id="wizard-total-with-vat">0 ₽</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 4: Дополнительные сведения -->
+          <div class="wizard-step" data-step="4">
+            <h3 class="wizard-step-title">Дополнительные сведения</h3>
+            <p class="wizard-step-subtitle">Необязательные данные (можно пропустить)</p>
+            
+            <div class="row g-16">
+              <div class="col-md-6">
+                <label class="form-label">К платёжно-расчётному документу №</label>
+                <input type="text" class="form-control" id="wizard-payment-doc" placeholder="№ и дата">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Документ об отгрузке</label>
+                <input type="text" class="form-control" id="wizard-shipping-doc" placeholder="№ и дата">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 5: Подписант продавца -->
+          <div class="wizard-step" data-step="5">
+            <h3 class="wizard-step-title">Подписант со стороны продавца</h3>
+            <p class="wizard-step-subtitle">Данные о передаче товара/услуг</p>
+            
+            <div class="row g-16">
+              <div class="col-12">
+                <label class="form-label">Основание передачи (сдачи)</label>
+                <input type="text" class="form-control" id="wizard-transfer-basis" placeholder="Договор № от дд.мм.гггг">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Данные о транспортировке и грузе</label>
+                <input type="text" class="form-control" id="wizard-transport-info" placeholder="Транспортная накладная">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Должность</label>
+                <input type="text" class="form-control" id="wizard-seller-position" placeholder="Директор">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">ФИО</label>
+                <input type="text" class="form-control" id="wizard-seller-fio" placeholder="Иванов И.И.">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Дата отгрузки</label>
+                <input type="text" class="form-control date-picker" id="wizard-shipping-date" placeholder="дд.мм.гггг">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Иные сведения об отгрузке</label>
+                <input type="text" class="form-control" id="wizard-other-shipping" placeholder="Дополнительная информация">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Ответственный (должность)</label>
+                <input type="text" class="form-control" id="wizard-seller-resp-position" placeholder="Главный бухгалтер">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Ответственный (ФИО)</label>
+                <input type="text" class="form-control" id="wizard-seller-resp-fio" placeholder="Петров П.П.">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 6: Подписант покупателя -->
+          <div class="wizard-step" data-step="6">
+            <h3 class="wizard-step-title">Подписант со стороны покупателя</h3>
+            <p class="wizard-step-subtitle">Данные о получении товара/услуг</p>
+            
+            <div class="row g-16">
+              <div class="col-md-4">
+                <label class="form-label">Должность</label>
+                <input type="text" class="form-control" id="wizard-buyer-position" placeholder="Директор">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">ФИО</label>
+                <input type="text" class="form-control" id="wizard-buyer-fio" placeholder="Сидоров С.С.">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Дата получения</label>
+                <input type="text" class="form-control date-picker" id="wizard-receiving-date" placeholder="дд.мм.гггг">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Иные сведения о получении</label>
+                <input type="text" class="form-control" id="wizard-other-receiving" placeholder="Дополнительная информация">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Ответственный (должность)</label>
+                <input type="text" class="form-control" id="wizard-buyer-resp-position" placeholder="Главный бухгалтер">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Ответственный (ФИО)</label>
+                <input type="text" class="form-control" id="wizard-buyer-resp-fio" placeholder="Сергеев С.С.">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 7: Готово -->
+          <div class="wizard-step" data-step="7">
+            <h3 class="wizard-step-title">Документ готов!</h3>
+            <p class="wizard-step-subtitle">Проверьте данные и выберите действие</p>
+            
+            <div class="wizard-summary-grid">
+              <div class="wizard-summary-card">
+                <div class="wizard-summary-card-title">Продавец</div>
+                <div class="wizard-summary-item">
+                  <div class="wizard-summary-label">Наименование</div>
+                  <div class="wizard-summary-value" id="summary-seller-name">—</div>
+                </div>
+                <div class="wizard-summary-item">
+                  <div class="wizard-summary-label">ИНН</div>
+                  <div class="wizard-summary-value" id="summary-seller-inn">—</div>
+                </div>
+              </div>
+              
+              <div class="wizard-summary-card">
+                <div class="wizard-summary-card-title">Покупатель</div>
+                <div class="wizard-summary-item">
+                  <div class="wizard-summary-label">Наименование</div>
+                  <div class="wizard-summary-value" id="summary-buyer-name">—</div>
+                </div>
+                <div class="wizard-summary-item">
+                  <div class="wizard-summary-label">ИНН</div>
+                  <div class="wizard-summary-value" id="summary-buyer-inn">—</div>
+                </div>
+              </div>
+              
+              <div class="wizard-summary-card">
+                <div class="wizard-summary-card-title">Товары и услуги</div>
+                <div class="wizard-summary-item">
+                  <div class="wizard-summary-label">Всего позиций</div>
+                  <div class="wizard-summary-value" id="summary-products-count">—</div>
+                </div>
+                <div class="wizard-summary-item">
+                  <div class="wizard-summary-label">Итого с НДС</div>
+                  <div class="wizard-summary-value" id="summary-total">—</div>
+                </div>
+              </div>
+              
+              <div class="wizard-summary-card">
+                <div class="wizard-summary-card-title">Документ</div>
+                <div class="wizard-summary-item">
+                  <div class="wizard-summary-label">Дата</div>
+                  <div class="wizard-summary-value" id="summary-date">—</div>
+                </div>
+                <div class="wizard-summary-item">
+                  <div class="wizard-summary-label">Статус</div>
+                  <div class="wizard-summary-value">Счёт-фактура и УПД</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="wizard-final-actions">
+              <div class="wizard-action-btn primary" id="wizard-download-pdf">
+                <div class="wizard-action-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                </div>
+                <div class="wizard-action-title">Скачать PDF</div>
+                <div class="wizard-action-desc">Сразу получить готовый документ</div>
+              </div>
+              
+              <div class="wizard-action-btn" id="wizard-open-form">
+                <div class="wizard-action-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </div>
+                <div class="wizard-action-title">Открыть полную форму</div>
+                <div class="wizard-action-desc">Заполнить и отредактировать подробнее</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Loading State -->
+        </div>
+      </div>
+      
+      <!-- Footer with Navigation -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-neutral-600" id="wizard-btn-back" style="display: none;">
+          Назад
+        </button>
+        <div style="flex: 1;"></div>
+        <button type="button" class="btn btn-outline-neutral-600" id="wizard-btn-skip" style="display: none;">
+          Пропустить
+        </button>
+        <button type="button" class="btn btn-primary-600" id="wizard-btn-next">
+          Далее
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- jQuery library js -->
 <script src="/static/js/lib/jquery-3.7.1.min.js"></script>
 <!-- Bootstrap js -->
@@ -1024,6 +1515,9 @@
 
 <!-- UPD Constructor Main JS (extracted from inline) -->
 <script src="/static/js/upd-constructor/upd-main.js?v=5.2"></script>
+
+<!-- UPD Wizard JS -->
+<script src="/static/js/upd-constructor/upd-wizard.js?v=1.0"></script>
 
 <!-- Support Widget -->
 {% include 'components/support_widget.html' %}
