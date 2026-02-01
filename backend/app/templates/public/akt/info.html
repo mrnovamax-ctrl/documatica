@@ -314,105 +314,42 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="/static/js/auth-download.js"></script>
 <script>
-let currentPdfType = null;
-
-function checkAuthAndDownload(button) {
+// Обработчик для кнопок с data-pdf-type
+document.querySelectorAll('[data-pdf-type]').forEach(button => {
   const pdfType = button.getAttribute('data-pdf-type');
-  currentPdfType = pdfType;
-
-  fetch('/api/v1/auth/check', {
-    method: 'GET',
-    credentials: 'include'
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.authenticated) {
-      downloadPDF(pdfType);
-    } else {
-      showAuthModal(pdfType);
-    }
-  })
-  .catch(error => {
-    console.error('Auth check failed:', error);
-    showAuthModal(pdfType);
-  });
-}
-
-function showAuthModal(pdfType) {
-  const redirectUrl = `/akt/obrazec/?download=${pdfType}`;
-  document.getElementById('modal-yandex-btn').href = `/auth/yandex/login?redirect_to=${encodeURIComponent(redirectUrl)}`;
-  document.getElementById('modal-register-btn').href = `/register?redirect=${encodeURIComponent(redirectUrl)}`;
-  document.getElementById('modal-login-btn').href = `/login?redirect=${encodeURIComponent(redirectUrl)}`;
-
-  const modal = new bootstrap.Modal(document.getElementById('authRequiredModal'));
-  modal.show();
-
-  if (typeof ym !== 'undefined') {
-    ym(76440544, 'reachGoal', 'sample_download_attempt', {
-      sample_type: pdfType
+  
+  button.addEventListener('click', function() {
+    const authDownload = new AuthDownload({
+      apiType: 'samples',
+      documentType: pdfType,
+      downloadFilename: `образец-${pdfType}.pdf`,
+      redirectUrl: `/akt/obrazec/?download=${pdfType}`,
+      buttonIdleText: 'Скачать PDF'
     });
-  }
-}
-
-function downloadPDF(pdfType) {
-  const button = document.querySelector(`[data-pdf-type="${pdfType}"]`);
-  if (button) {
-    button.textContent = 'Скачивание...';
-    button.disabled = true;
-  }
-
-  fetch(`/api/v1/documents/samples/${pdfType}`, {
-    method: 'GET',
-    credentials: 'include'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error('Download failed');
-    return response.blob();
-  })
-  .then(blob => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `образец-${pdfType}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    a.remove();
-
-    if (typeof ym !== 'undefined') {
-      ym(76440544, 'reachGoal', 'sample_downloaded', {
-        sample_type: pdfType
-      });
-    }
-
-    if (button) {
-      button.textContent = '✓ Скачано';
-      setTimeout(() => {
-        button.textContent = 'Скачать PDF';
-        button.disabled = false;
-      }, 2000);
-    }
-  })
-  .catch(error => {
-    console.error('Download failed:', error);
-    if (button) {
-      button.textContent = 'Ошибка';
-      button.disabled = false;
-      setTimeout(() => {
-        button.textContent = 'Скачать PDF';
-      }, 3000);
-    }
+    
+    authDownload.checkAuthAndDownload(button);
   });
-}
+});
 
+// Автоматическое скачивание после редиректа
 document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
   const downloadType = urlParams.get('download');
-
+  
   if (downloadType) {
+    const button = document.querySelector(`[data-pdf-type="${downloadType}"]`);
+    const authDownload = new AuthDownload({
+      apiType: 'samples',
+      documentType: downloadType,
+      downloadFilename: `образец-${downloadType}.pdf`,
+      redirectUrl: `/akt/obrazec/?download=${downloadType}`,
+      buttonIdleText: 'Скачать PDF'
+    });
+    
     setTimeout(() => {
-      downloadPDF(downloadType);
+      authDownload.download(button);
       window.history.replaceState({}, document.title, window.location.pathname);
     }, 500);
   }

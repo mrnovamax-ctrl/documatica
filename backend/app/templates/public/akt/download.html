@@ -97,101 +97,27 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="/static/js/auth-download.js"></script>
 <script>
-const BLANK_TYPE = "{{ config.blank_type | default('') }}";
-const DOWNLOAD_FILENAME = "{{ config.download_filename | default('blank') }}";
+// Инициализация модуля скачивания
+const authDownload = new AuthDownload({
+  apiType: 'blanks',
+  documentType: "{{ config.blank_type | default('') }}",
+  downloadFilename: "{{ config.download_filename | default('blank') }}",
+  redirectUrl: "/akt/{{ 'blank-excel' if 'excel' in (config.blank_type|default('')) else 'blank-word' }}/?download={{ config.blank_type | default('') }}"
+});
 
-function checkAuthAndDownloadBlank(btn) {
-  fetch('/api/v1/auth/check', { method: 'GET', credentials: 'include' })
-    .then(r => r.json())
-    .then(data => {
-      if (data.authenticated) {
-        downloadBlank(btn);
-      } else {
-        showAuthModal();
-      }
-    })
-    .catch(() => showAuthModal());
-}
-
-function showAuthModal() {
-  const redirectUrl = `/akt/{{ 'blank-excel' if 'excel' in (config.blank_type|default('')) else 'blank-word' }}/?download=${BLANK_TYPE}`;
-  document.getElementById('modal-yandex-btn').href = `/auth/yandex/login?redirect_to=${encodeURIComponent(redirectUrl)}`;
-  document.getElementById('modal-register-btn').href = `/register?redirect=${encodeURIComponent(redirectUrl)}`;
-  document.getElementById('modal-login-btn').href = `/login?redirect=${encodeURIComponent(redirectUrl)}`;
-
-  if (typeof bootstrap === 'undefined' || !bootstrap.Modal) {
-    window.location.href = `/register?redirect=${encodeURIComponent(redirectUrl)}`;
-    return;
-  }
-
-  const modal = new bootstrap.Modal(document.getElementById('authRequiredModal'));
-  modal.show();
-
-  if (typeof ym !== 'undefined') {
-    ym(76440544, 'reachGoal', 'sample_download_attempt', { sample_type: BLANK_TYPE });
-  }
-}
-
-function downloadBlank(btn) {
-  if (!BLANK_TYPE) return;
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = 'Скачивание...';
-  }
-
-  fetch(`/api/v1/documents/blanks/${BLANK_TYPE}`, { method: 'GET', credentials: 'include' })
-    .then(resp => {
-      if (!resp.ok) throw new Error('download failed');
-      return resp.blob();
-    })
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = DOWNLOAD_FILENAME || 'blank';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-
-      if (typeof ym !== 'undefined') {
-        ym(76440544, 'reachGoal', 'sample_downloaded', { sample_type: BLANK_TYPE });
-      }
-
-      if (btn) {
-        btn.textContent = '✓ Скачано';
-        setTimeout(() => {
-          btn.textContent = 'Скачать бесплатно';
-          btn.disabled = false;
-        }, 2000);
-      }
-    })
-    .catch(() => {
-      if (btn) {
-        btn.textContent = 'Ошибка';
-        btn.disabled = false;
-        setTimeout(() => (btn.textContent = 'Скачать бесплатно'), 2500);
-      }
-    });
-}
-
+// Обработчик клика по кнопке
 document.addEventListener('DOMContentLoaded', function() {
-  const clickBtn = document.getElementById('blankDownloadBtn');
-  if (clickBtn) {
-    clickBtn.addEventListener('click', function() {
-      checkAuthAndDownloadBlank(clickBtn);
+  const downloadBtn = document.getElementById('blankDownloadBtn');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', function() {
+      authDownload.checkAuthAndDownload(downloadBtn);
     });
   }
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const downloadType = urlParams.get('download');
-  if (downloadType && downloadType === BLANK_TYPE) {
-    setTimeout(() => {
-      downloadBlank(clickBtn);
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }, 400);
-  }
+  // Автоматическое скачивание после редиректа
+  authDownload.autoDownloadIfRequested();
 });
 </script>
 {% endblock %}
