@@ -737,12 +737,14 @@ body {
   background-image: radial-gradient(#3b82f6 1px, transparent 1px);
   background-size: 24px 24px;
   opacity: 0.6;
+  z-index: 1;
 }
 
 .hero-gradient {
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, #0f172a 0%, rgba(15, 23, 42, 0.85) 60%, rgba(15, 23, 42, 0.7) 100%);
+  z-index: 1;
 }
 
 .hero-content {
