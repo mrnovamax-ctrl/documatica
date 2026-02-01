@@ -35,6 +35,8 @@ services:
       - ./backend/data:/app/data
       - ./backend/documents:/app/documents
       - ./backend/app/static/uploads:/app/app/static/uploads
+      - ./robots.txt:/app/robots.txt:ro
+      - ./sitemap.xml:/app/sitemap.xml:ro
     environment:
       - DEBUG=0
       - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/documatica

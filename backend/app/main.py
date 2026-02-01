@@ -7,7 +7,7 @@ from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -89,6 +89,26 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
         content=f"<h1>Error {exc.status_code}</h1><p>{exc.detail}</p>",
         status_code=exc.status_code
     )
+
+
+# ===== SEO файлы (robots.txt, sitemap.xml) =====
+PROJECT_ROOT = Path(__file__).parent.parent
+
+@app.get("/robots.txt")
+async def robots():
+    """Раздача robots.txt из корня контейнера /app"""
+    robots_path = PROJECT_ROOT / "robots.txt"
+    if robots_path.exists():
+        return FileResponse(robots_path, media_type="text/plain")
+    return HTMLResponse(content="User-agent: *\nDisallow:", media_type="text/plain")
+
+@app.get("/sitemap.xml")
+async def sitemap():
+    """Раздача sitemap.xml из корня контейнера /app"""
+    sitemap_path = PROJECT_ROOT / "sitemap.xml"
+    if sitemap_path.exists():
+        return FileResponse(sitemap_path, media_type="application/xml")
+    return HTMLResponse(content="<?xml version='1.0' encoding='UTF-8'?><urlset></urlset>", media_type="application/xml")
 
 
 # ===== API роутеры =====
