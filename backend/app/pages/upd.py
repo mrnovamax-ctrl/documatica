@@ -1,6 +1,6 @@
 """
 УПД - публичные страницы (хаб и лендинги)
-Рефакторинг: универсальный роутер на основе конфига
+Рефакторинг: динамическая регистрация роутов из _pages.yaml
 """
 
 import yaml
@@ -77,32 +77,17 @@ async def upd_hub(request: Request):
     )
 
 
-# ============== УНИВЕРСАЛЬНЫЙ РОУТЕР ЛЕНДИНГОВ ==============
+# ============== УНИВЕРСАЛЬНЫЕ ОБРАБОТЧИКИ ==============
 
-# Определяем все возможные лендинги статически для FastAPI
-LANDING_SLUGS = ["ooo", "ip", "samozanyatye", "s-nds", "bez-nds", "usn", "2026", "xml-edo"]
-
-
-@router.get("/ooo/", response_class=HTMLResponse)
-@router.get("/ip/", response_class=HTMLResponse)
-@router.get("/samozanyatye/", response_class=HTMLResponse)
-@router.get("/s-nds/", response_class=HTMLResponse)
-@router.get("/bez-nds/", response_class=HTMLResponse)
-@router.get("/usn/", response_class=HTMLResponse)
-@router.get("/2026/", response_class=HTMLResponse)
-@router.get("/xml-edo/", response_class=HTMLResponse)
-async def upd_landing(request: Request):
+async def upd_landing_handler(request: Request):
     """Универсальный обработчик лендингов УПД"""
-    # Извлекаем slug из пути
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
     
-    # Получаем конфиг
     config = get_landing_config(slug)
     if not config:
         raise HTTPException(status_code=404, detail="Страница не найдена")
     
-    # Загружаем контент
     content = load_content(config["content_file"])
     
     return templates.TemplateResponse(
@@ -119,12 +104,8 @@ async def upd_landing(request: Request):
     )
 
 
-# ============== ИНФОРМАЦИОННЫЕ СТРАНИЦЫ ==============
-
-@router.get("/obrazec/", response_class=HTMLResponse)
-@router.get("/obrazec-zapolneniya/", response_class=HTMLResponse)
-async def upd_info(request: Request):
-    """Информационные страницы УПД"""
+async def upd_info_handler(request: Request):
+    """Универсальный обработчик информационных страниц"""
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
     
@@ -148,18 +129,18 @@ async def upd_info(request: Request):
     )
 
 
-# ============== СТРАНИЦЫ СКАЧИВАНИЯ ==============
-
-@router.get("/blank-excel/", response_class=HTMLResponse)
-@router.get("/blank-word/", response_class=HTMLResponse)
-async def upd_download(request: Request):
-    """Страницы скачивания бланков"""
+async def upd_download_handler(request: Request):
+    """Универсальный обработчик страниц скачивания"""
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
     
     config = get_download_config(slug)
     if not config:
         raise HTTPException(status_code=404, detail="Страница не найдена")
+    
+    # Определяем тип бланка для API
+    blank_type = f"upd-{slug}"
+    download_filename = f"upd-blank-2026.{'xls' if 'excel' in slug else 'doc'}"
     
     return templates.TemplateResponse(
         request=request,
@@ -172,7 +153,10 @@ async def upd_download(request: Request):
             "page": {
                 "h1": config["h1"],
                 "format": config["format"],
-                "file_url": config["file_url"],
+            },
+            "config": {
+                "blank_type": blank_type,
+                "download_filename": download_filename,
             },
             "breadcrumbs": [
                 {"title": "Главная", "url": "/"},
@@ -183,26 +167,89 @@ async def upd_download(request: Request):
     )
 
 
-# ============== РЕДИРЕКТЫ (без trailing slash) ==============
-
-REDIRECT_SLUGS = [
-    "s-nds", "bez-nds", "ooo", "ip", "samozanyatye", "usn", "2026",
-    "obrazec-zapolneniya", "xml-edo", "blank-excel", "blank-word"
-]
-
-
-@router.get("/s-nds", response_class=RedirectResponse)
-@router.get("/bez-nds", response_class=RedirectResponse)
-@router.get("/ooo", response_class=RedirectResponse)
-@router.get("/ip", response_class=RedirectResponse)
-@router.get("/samozanyatye", response_class=RedirectResponse)
-@router.get("/usn", response_class=RedirectResponse)
-@router.get("/2026", response_class=RedirectResponse)
-@router.get("/obrazec-zapolneniya", response_class=RedirectResponse)
-@router.get("/xml-edo", response_class=RedirectResponse)
-@router.get("/blank-excel", response_class=RedirectResponse)
-@router.get("/blank-word", response_class=RedirectResponse)
-async def upd_redirect(request: Request):
-    """Редирект на URL с trailing slash"""
+async def upd_redirect_handler(request: Request):
+    """Универсальный редирект на URL с trailing slash"""
     path = request.url.path
     return RedirectResponse(url=f"{path}/", status_code=301)
+
+
+# ============== ДИНАМИЧЕСКАЯ РЕГИСТРАЦИЯ РОУТОВ ==============
+
+def register_upd_routes():
+    """Динамически регистрирует все роуты из _pages.yaml"""
+    config = load_upd_pages_config()
+    
+    # Регистрируем лендинги
+    for slug in config.get("landings", {}).keys():
+        router.add_api_route(
+            f"/{slug}/",
+            upd_landing_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"upd_landing_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            upd_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"upd_landing_{slug}_redirect"
+        )
+    
+    # Регистрируем информационные страницы
+    for slug, page_config in config.get("info_pages", {}).items():
+        router.add_api_route(
+            f"/{slug}/",
+            upd_info_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"upd_info_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            upd_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"upd_info_{slug}_redirect"
+        )
+        
+        # Регистрируем алиасы
+        for alias in page_config.get("aliases", []):
+            router.add_api_route(
+                f"/{alias}/",
+                upd_info_handler,
+                methods=["GET"],
+                response_class=HTMLResponse,
+                name=f"upd_info_{alias}"
+            )
+            router.add_api_route(
+                f"/{alias}",
+                upd_redirect_handler,
+                methods=["GET"],
+                response_class=RedirectResponse,
+                name=f"upd_info_{alias}_redirect"
+            )
+    
+    # Регистрируем страницы скачивания
+    for slug in config.get("downloads", {}).keys():
+        router.add_api_route(
+            f"/{slug}/",
+            upd_download_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"upd_download_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            upd_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"upd_download_{slug}_redirect"
+        )
+
+
+# Регистрируем роуты при импорте модуля
+register_upd_routes()
