@@ -224,68 +224,7 @@
   </div>
 </section>
 
-<!-- Auth Modal (Bootstrap Modal) -->
-<div class="modal fade" id="authRequiredModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 480px;">
-    <div class="modal-content" style="border: none; border-radius: 2.5rem; overflow: hidden; box-shadow: 0 50px 100px -20px rgba(15,23,42,0.3);">
-      <div class="modal-body p-0">
-        <div style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); background-image: radial-gradient(#60a5fa 1px, transparent 1px), linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); background-size: 24px 24px, 100% 100%; padding: 2rem 2.5rem; position: relative;">
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="position: absolute; top: 1.25rem; right: 1.25rem; opacity: 0.7;"></button>
-          <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
-            </div>
-            <div>
-              <h3 style="color: white; font-size: 1.25rem; font-weight: 800; margin: 0 0 0.25rem;">Образец защищен</h3>
-              <p style="color: rgba(255,255,255,0.9); font-size: 0.875rem; margin: 0;">Войдите, чтобы скачать PDF</p>
-            </div>
-          </div>
-        </div>
-
-        <div style="padding: 2rem 2.5rem 2.5rem;">
-          <div style="background: #fefce8; border: 1px solid #fef08a; border-radius: 1rem; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
-            <p style="margin: 0; font-size: 0.8125rem; color: #854d0e; line-height: 1.5;">
-              <strong>Бесплатная регистрация за 30 секунд!</strong> Получите доступ к образцам и создавайте свои документы.
-            </p>
-          </div>
-
-          <div style="text-align: center; margin-bottom: 1.5rem;">
-            <p style="font-size: 0.6875rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #94a3b8; margin-bottom: 0.75rem;">Самый быстрый способ</p>
-            <a href="#" id="modal-yandex-btn" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: 100%; padding: 1.125rem 1.5rem; background: #FC3F1D; color: white; border-radius: 1.25rem; font-weight: 800; font-size: 0.9375rem; text-decoration: none; transition: all 0.3s;"
-               onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px -5px rgba(252,63,29,0.45)'"
-               onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="11" fill="white" fill-opacity="0.15"/>
-                <text x="8" y="16" font-size="12" font-weight="bold" fill="white">Y</text>
-              </svg>
-              Войти через Яндекс
-              <span style="font-size: 0.6875rem; background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-weight: 700;">1 клик</span>
-            </a>
-          </div>
-
-          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-            <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
-            <span style="font-size: 0.75rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">или по email</span>
-            <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
-          </div>
-
-          <a href="/register" id="modal-register-btn" style="display: block; width: 100%; padding: 1rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 1.25rem; font-weight: 800; font-size: 0.8125rem; text-align: center; text-decoration: none; transition: all 0.3s; margin-bottom: 0.75rem;"
-             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px -5px rgba(59,130,246,0.4)'"
-             onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
-            Зарегистрироваться
-          </a>
-
-          <p style="text-align: center; margin: 0; font-size: 0.875rem; color: #64748b;">
-            Уже есть аккаунт? <a href="/login" id="modal-login-btn" style="color: #3b82f6; font-weight: 600; text-decoration: none;">Войти</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+{% include "components/auth_modal.html" with modal_title="Образец защищен", modal_subtitle="Войдите, чтобы скачать PDF", modal_info="Получите доступ к образцам и создавайте свои документы." %}
 
 <!-- Article Content v12.0 -->
 <section class="upd-content-v12">

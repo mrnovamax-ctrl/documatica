@@ -1,0 +1,64 @@
+{# Auth Modal Component - используется на страницах скачивания бланков и образцов #}
+<!-- Auth Modal (Bootstrap Modal) -->
+<div class="modal fade" id="authRequiredModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-narrow">
+    <div class="modal-content modal-card">
+      <div class="modal-body p-0">
+        <div class="modal-header-gradient">
+          <button type="button" class="btn-close btn-close-white modal-close-btn" data-bs-dismiss="modal"></button>
+          <div class="d-flex align-center gap-16">
+            <div class="modal-icon-circle">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-white text-xl font-extrabold" style="margin: 0 0 0.25rem;">
+                {{ modal_title | default('Файл защищен') }}
+              </h3>
+              <p class="text-sm" style="color: rgba(255,255,255,0.9); margin: 0;">
+                {{ modal_subtitle | default('Войдите, чтобы скачать бланк') }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 2rem 2.5rem 2.5rem;">
+          <div class="alert-warning">
+            <p>
+              <strong>Бесплатная регистрация за 30 секунд!</strong> 
+              {{ modal_info | default('Получите доступ к бланкам и образцам.') }}
+            </p>
+          </div>
+
+          <div class="text-center mb-24">
+            <p class="text-xs font-extrabold text-uppercase letter-spacing-wider text-subtle mb-12">Самый быстрый способ</p>
+            <a href="#" id="modal-yandex-btn" class="btn-yandex">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="11" fill="white" fill-opacity="0.15"/>
+                <text x="8" y="16" font-size="12" font-weight="bold" fill="white">Y</text>
+              </svg>
+              Войти через Яндекс
+              <span class="text-xs font-bold" style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 0.5rem;">1 клик</span>
+            </a>
+          </div>
+
+          <div class="divider-with-text">
+            <div class="divider-h"></div>
+            <span class="text-xs font-bold text-subtle text-uppercase letter-spacing-wide">или по email</span>
+            <div class="divider-h"></div>
+          </div>
+
+          <a href="/register" id="modal-register-btn" class="btn-register mb-12">
+            Зарегистрироваться
+          </a>
+
+          <p class="text-center text-sm text-muted" style="margin: 0;">
+            Уже есть аккаунт? <a href="/login" id="modal-login-btn" class="font-bold" style="color: #3b82f6; text-decoration: none;">Войти</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
