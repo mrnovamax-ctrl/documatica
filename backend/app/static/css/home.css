@@ -2487,6 +2487,11 @@ body {
 
 /* === MOBILE (до 768px) === */
 @media (max-width: 768px) {
+  /* Hide AI Animation on mobile */
+  .hero-section .col-lg-6:last-child {
+    display: none !important;
+  }
+  
   /* Container */
   .container {
     padding: 0 20px;
