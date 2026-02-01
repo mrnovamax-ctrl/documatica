@@ -70,6 +70,35 @@
   <script src="/static/js/lib/jquery-3.7.1.min.js"></script>
   <script src="/static/js/lib/bootstrap.bundle.min.js"></script>
   <script src="/static/js/toasts.js"></script>
+  <script>
+    // Yandex OAuth registration goal (global, works on любой странице после редиректа)
+    (function () {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get('yandex_registered') === '1') {
+          // avoid double-send if multiple scripts run
+          var key = 'metrika_user_registered_yandex_sent';
+          if (window.sessionStorage && sessionStorage.getItem(key) !== '1') {
+            if (typeof ym !== 'undefined') {
+              ym(76440544, 'reachGoal', 'user_registered_yandex');
+              console.log('[Yandex Metrika] Goal sent: user_registered_yandex');
+            } else {
+              console.warn('[Yandex Metrika] ym is undefined');
+            }
+            sessionStorage.setItem(key, '1');
+          }
+
+          // Clean URL without page reload
+          params.delete('yandex_registered');
+          var qs = params.toString();
+          var cleanUrl = window.location.pathname + (qs ? ('?' + qs) : '') + window.location.hash;
+          window.history.replaceState({}, document.title, cleanUrl);
+        }
+      } catch (e) {
+        console.warn('[Yandex Metrika] yandex_registered handler error', e);
+      }
+    })();
+  </script>
   {% block extra_js %}{% endblock %}
   <script src="/static/js/app.js"></script>
 </body>

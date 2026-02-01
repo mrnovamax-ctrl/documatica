@@ -10,45 +10,87 @@ page:
   tag: "Образец"
   h1: "Образец заполнения счета на оплату"
   intro: "Посмотрите пример правильно заполненного счета на оплату со всеми обязательными реквизитами."
-  image: "/static/images/schet-obrazec-2026.png"
   content: |
-    <h2>Обязательные реквизиты счета</h2>
-    
-    <h3>1. Реквизиты поставщика</h3>
-    <ul>
-      <li>Наименование организации или ФИО ИП</li>
-      <li>ИНН (и КПП для организаций)</li>
-      <li>ОГРН / ОГРНИП</li>
-      <li>Юридический адрес</li>
-      <li>Банковские реквизиты: БИК, расчетный счет, корр. счет</li>
-    </ul>
-    
-    <h3>2. Реквизиты покупателя</h3>
-    <ul>
-      <li>Наименование организации или ФИО</li>
-      <li>ИНН (и КПП для организаций)</li>
-      <li>Адрес</li>
-    </ul>
-    
-    <h3>3. Информация о товарах/услугах</h3>
-    <ul>
-      <li>Наименование товара или услуги</li>
-      <li>Единица измерения</li>
-      <li>Количество</li>
-      <li>Цена за единицу</li>
-      <li>Сумма</li>
-    </ul>
-    
-    <h3>4. Итоговая информация</h3>
-    <ul>
-      <li>Итого без НДС (если применимо)</li>
-      <li>Сумма НДС (для плательщиков)</li>
-      <li>Всего к оплате</li>
-      <li>Сумма прописью</li>
-    </ul>
-    
-    <h2>Подпись и печать</h2>
-    <p>Счет подписывается руководителем организации или ИП. Печать необязательна с 2015 года, но может быть добавлена по желанию.</p>
+    <p class="lead-text">Счет на оплату — это документ, который фиксирует сумму и реквизиты для оплаты. Важно корректно заполнить все обязательные поля, чтобы у контрагента не возникло вопросов.</p>
+
+    <div class="content-section">
+      <h2 style="font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 24px;">Образец счета на оплату</h2>
+      <p>Пример заполненного счета для ООО с НДС.</p>
+
+      <div class="example-card">
+        <div class="example-header">
+          <span class="example-badge">Образец</span>
+          <h2>Счет № 45 от 20.01.2026</h2>
+        </div>
+        <div class="example-content">
+          <div class="field-group">
+            <h3>Поставщик</h3>
+            <ul class="field-list">
+              <li><strong>Организация:</strong> ООО "Техносервис"</li>
+              <li><strong>ИНН / КПП:</strong> 7704123456 / 770401001</li>
+              <li><strong>Адрес:</strong> г. Москва, ул. Тверская, д. 10</li>
+              <li><strong>Банк:</strong> ПАО Сбербанк, БИК 044525225</li>
+              <li><strong>Счет:</strong> 40702810900000000001</li>
+            </ul>
+          </div>
+
+          <div class="field-group">
+            <h3>Покупатель</h3>
+            <ul class="field-list">
+              <li><strong>Организация:</strong> ООО "Бизнес Решения"</li>
+              <li><strong>ИНН / КПП:</strong> 7801234567 / 780101001</li>
+              <li><strong>Адрес:</strong> г. Санкт‑Петербург, ул. Невский, д. 1</li>
+            </ul>
+          </div>
+
+          <div class="field-group">
+            <h3>Товары и услуги</h3>
+            <ul class="field-list">
+              <li><strong>Услуга:</strong> Разработка сайта</li>
+              <li><strong>Количество:</strong> 1 шт.</li>
+              <li><strong>Цена:</strong> 100 000,00 ₽</li>
+              <li><strong>Сумма:</strong> 100 000,00 ₽</li>
+              <li><strong>НДС:</strong> 20% — 20 000,00 ₽</li>
+              <li><strong>Итого:</strong> 120 000,00 ₽</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2 style="font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 24px;">Обязательные реквизиты счета</h2>
+      <ul class="field-list">
+        <li><strong>Реквизиты поставщика:</strong> название, ИНН/КПП, ОГРН/ОГРНИП, адрес, банк</li>
+        <li><strong>Реквизиты покупателя:</strong> название, ИНН/КПП, адрес</li>
+        <li><strong>Список товаров/услуг:</strong> наименование, единица, количество, цена, сумма</li>
+        <li><strong>Итоги:</strong> сумма без НДС, НДС, всего к оплате, сумма прописью</li>
+        <li><strong>Подпись:</strong> руководитель или уполномоченное лицо</li>
+      </ul>
+      <p style="margin-top: 16px; color: #64748b;">Печать не обязательна с 2015 года, но может использоваться при наличии.</p>
+    </div>
+
+    <div class="content-section">
+      <h2 style="font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 16px; text-align: center;">Скачать образец счета в PDF</h2>
+      <p style="text-align: center; color: #64748b; margin-bottom: 48px;">Готовый образец с реальными данными. Требуется регистрация.</p>
+
+      <div class="download-grid">
+        <div class="download-card">
+          <div class="download-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
+            </svg>
+          </div>
+          <h4>Счет на оплату</h4>
+          <p>Образец для ООО с НДС</p>
+          <button class="download-btn" data-pdf-type="schet" onclick="checkAuthAndDownload(this)">
+            Скачать PDF
+          </button>
+        </div>
+      </div>
+    </div>
 
 cta:
   text: "Создать счет по образцу"

@@ -18,10 +18,24 @@ router = APIRouter()
 
 # Путь к данным
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
-UPLOAD_DIR = Path(__file__).parent.parent / "static" / "uploads" / "articles"
+UPLOAD_DIR = DATA_DIR / "uploads" / "articles"
+LEGACY_UPLOAD_DIR = Path(__file__).parent.parent / "static" / "uploads" / "articles"
 
 # Создаём папку для загрузок если её нет
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+# Миграция: если старые файлы есть, копируем в новое хранилище (без удаления)
+try:
+    if LEGACY_UPLOAD_DIR.exists():
+        legacy_files = list(LEGACY_UPLOAD_DIR.glob("*"))
+        if legacy_files:
+            for file_path in legacy_files:
+                if file_path.is_file():
+                    target_path = UPLOAD_DIR / file_path.name
+                    if not target_path.exists():
+                        shutil.copy2(file_path, target_path)
+except Exception:
+    pass
 
 
 def load_articles() -> Dict[str, Any]:
@@ -75,7 +89,7 @@ def generate_slug(title: str) -> str:
 
 
 @router.get("/", response_class=HTMLResponse)
-async def articles_list(request: Request, page: int = 1):
+async def articles_list(request: Request, page: int = 1, q: str = ""):
     """Список статей"""
     auth_check = require_admin(request)
     if auth_check:
@@ -84,6 +98,16 @@ async def articles_list(request: Request, page: int = 1):
     data = load_articles()
     articles = data.get("articles", [])
     categories = data.get("categories", [])
+
+    query = (q or "").strip().lower()
+    if query:
+        articles = [
+            a for a in articles
+            if query in (a.get("title", "").lower())
+            or query in (a.get("slug", "").lower())
+            or query in (a.get("excerpt", "").lower())
+            or query in (a.get("content", "").lower())
+        ]
     
     # Сортировка по дате (новые сначала)
     articles.sort(key=lambda x: x.get("created_at", ""), reverse=True)
@@ -108,6 +132,7 @@ async def articles_list(request: Request, page: int = 1):
             page=page,
             total_pages=total_pages,
             total=total,
+            search_query=query,
         )
     )
 

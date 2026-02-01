@@ -13,7 +13,7 @@ from fastapi.responses import FileResponse
 router = APIRouter()
 
 # Директория для загрузки файлов
-UPLOAD_DIR = Path(__file__).parent.parent / "static" / "uploads"
+UPLOAD_DIR = Path(__file__).parent.parent.parent / "data" / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # Разрешенные расширения

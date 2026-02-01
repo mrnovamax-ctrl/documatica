@@ -38,7 +38,7 @@ downloads:
   blank-excel:
     breadcrumb: "Скачать Excel"
     title: "Скачать бланк счета на оплату Excel бесплатно — Documatica"
-    description: "Скачайте пустой бланк счета на оплату в формате Excel (.xlsx) бесплатно. Актуальный образец 2026 года."
+    description: "Скачайте пустой бланк счета на оплату в формате Excel (.xls) бесплатно. Актуальный образец 2026 года."
     h1: "Скачать бланк счета на оплату Excel"
-    format: "Excel (.xlsx)"
-    file_url: "/static/blanks/schet-blank-2026.xlsx"
+    format: "Excel (.xls)"
+    file_url: "/api/v1/documents/blanks/schet-blank-excel"

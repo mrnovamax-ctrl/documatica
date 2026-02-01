@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Скрипт для генерации образцов УПД в PDF
+Скрипт для генерации образцов документов в PDF
 """
 
 import sys
@@ -15,6 +15,7 @@ from decimal import Decimal
 import io
 
 from app.schemas.upd import UPDRequest, CompanyInfo, ProductItem, SignerInfo
+from app.api.documents import number_to_words_ru
 from jinja2 import Environment, FileSystemLoader
 
 # Попытка импорта WeasyPrint
@@ -133,8 +134,79 @@ def generate_upd_pdf(request: UPDRequest, filename: str):
     print(f"✅ Создан: {output_path}")
 
 
+def generate_invoice_pdf(data: dict, filename: str):
+    """Генерирует PDF счета и сохраняет в файл"""
+    template = jinja_env.get_template("invoice_template.html")
+
+    total_with_vat = float(data.get("total_with_vat", 0))
+    template_data = {
+        "invoice_number": data.get("invoice_number", ""),
+        "invoice_date": data.get("invoice_date", ""),
+        "contract_info": data.get("contract_info", ""),
+        "payment_due": data.get("payment_due"),
+        "invoice_note": data.get("invoice_note", ""),
+        "supplier": data.get("supplier", {}),
+        "bank": data.get("bank", {}),
+        "signers": data.get("signers", {}),
+        "client": data.get("client", {}),
+        "items": data.get("items", []),
+        "vat_rate": data.get("vat_rate", "20%"),
+        "vat_amount": float(data.get("vat_amount", 0)),
+        "total_without_vat": float(data.get("total_without_vat", 0)),
+        "total_with_vat": total_with_vat,
+        "amount_in_words": number_to_words_ru(total_with_vat).capitalize(),
+        "supplier_org_type": data.get("supplier_org_type", "ooo"),
+        "supplier_stamp_image": data.get("supplier_stamp_image"),
+        "director_signature": data.get("director_signature"),
+        "accountant_signature": data.get("accountant_signature"),
+    }
+
+    html_content = template.render(**template_data)
+    output_path = SAMPLES_DIR / filename
+    WeasyHTML(string=html_content).write_pdf(output_path)
+    print(f"✅ Создан: {output_path}")
+
+
+def generate_akt_pdf(data: dict, filename: str):
+    """Генерирует PDF акта и сохраняет в файл"""
+    template = jinja_env.get_template("akt_template.html")
+
+    total_amount = float(data.get("total_amount", 0))
+    total_vat = float(data.get("total_vat", 0))
+    total_without_vat = float(data.get("total_without_vat", total_amount))
+
+    template_data = {
+        "document_number": data.get("document_number", ""),
+        "document_date_day": data.get("document_date_day", ""),
+        "document_date_month": data.get("document_date_month", ""),
+        "document_date_year": data.get("document_date_year", ""),
+        "executor": data.get("executor", {}),
+        "customer": data.get("customer", {}),
+        "contract_number": data.get("contract_number"),
+        "contract_date": data.get("contract_date"),
+        "items": data.get("items", []),
+        "vat_rate": data.get("vat_rate", "none"),
+        "total_without_vat": total_without_vat,
+        "total_vat": total_vat,
+        "total_amount": total_amount,
+        "total_amount_words": number_to_words_ru(total_amount).capitalize(),
+        "total_vat_words": number_to_words_ru(total_vat).capitalize(),
+        "notes": data.get("notes"),
+        "customer_signatory": data.get("customer_signatory"),
+        "executor_signatory": data.get("executor_signatory"),
+        "executor_org_type": data.get("executor_org_type", "ooo"),
+        "executor_signature": data.get("executor_signature"),
+        "executor_stamp_image": data.get("executor_stamp_image"),
+    }
+
+    html_content = template.render(**template_data)
+    output_path = SAMPLES_DIR / filename
+    WeasyHTML(string=html_content).write_pdf(output_path)
+    print(f"✅ Создан: {output_path}")
+
+
 def main():
-    """Генерирует 3 образца УПД"""
+    """Генерирует образцы УПД и счета"""
     
     print("🚀 Начинаем генерацию образцов УПД...\n")
     
@@ -409,6 +481,90 @@ def main():
     
     generate_upd_pdf(upd_ip, "upd-obrazec-ip.pdf")
     
+    # ==============================================
+    # ОБРАЗЕЦ 4: Счет на оплату (ООО, с НДС)
+    # ==============================================
+    invoice_data = {
+        "invoice_number": "45",
+        "invoice_date": "20.01.2026",
+        "contract_info": "Договор № 12 от 10.01.2026",
+        "invoice_note": "Оплата услуг по договору",
+        "supplier": {
+            "name": 'ООО "Техносервис"',
+            "inn": "7704123456",
+            "kpp": "770401001",
+            "address": "г. Москва, ул. Тверская, д. 10",
+        },
+        "bank": {
+            "name": "ПАО Сбербанк",
+            "bik": "044525225",
+            "account": "30101810400000000225",
+            "settlement_account": "40702810900000000001",
+        },
+        "client": {
+            "name": 'ООО "Бизнес Решения"',
+            "inn": "7801234567",
+            "kpp": "780101001",
+            "address": "г. Санкт‑Петербург, ул. Невский, д. 1",
+        },
+        "items": [
+            {
+                "name": "Разработка сайта",
+                "unit": "усл.",
+                "quantity": 1,
+                "price": 100000,
+                "amount": 100000,
+            }
+        ],
+        "vat_rate": "20%",
+        "vat_amount": 20000,
+        "total_without_vat": 100000,
+        "total_with_vat": 120000,
+        "supplier_org_type": "ooo",
+    }
+    generate_invoice_pdf(invoice_data, "schet-obrazec.pdf")
+
+    # ==============================================
+    # ОБРАЗЕЦ 5: Акт выполненных работ (ООО)
+    # ==============================================
+    akt_data = {
+        "document_number": "15",
+        "document_date_day": "26",
+        "document_date_month": "января",
+        "document_date_year": "2026",
+        "executor": {
+            "name": 'ООО "Техносервис"',
+            "inn": "7704123456",
+            "kpp": "770401001",
+            "address": "г. Москва, ул. Тверская, д. 10",
+        },
+        "customer": {
+            "name": 'ООО "Бизнес Решения"',
+            "inn": "7801234567",
+            "kpp": "780101001",
+            "address": "г. Санкт‑Петербург, ул. Невский, д. 1",
+        },
+        "contract_number": "10",
+        "contract_date": "01.01.2026",
+        "items": [
+            {
+                "name": "Разработка сайта по договору № 10 от 01.01.2026",
+                "quantity": 1,
+                "unit": "шт.",
+                "price": 100000,
+                "amount": 100000,
+            }
+        ],
+        "vat_rate": "20",
+        "total_without_vat": 100000,
+        "total_vat": 20000,
+        "total_amount": 120000,
+        "executor_signatory": "Иванов И.И.",
+        "customer_signatory": "Петров П.П.",
+        "executor_org_type": "ooo",
+    }
+    generate_akt_pdf(akt_data, "akt-obrazec.pdf")
+
     print("\n🎉 Все образцы успешно созданы!")
     print(f"📁 Директория: {SAMPLES_DIR}")
 

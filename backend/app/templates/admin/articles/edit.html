@@ -131,7 +131,7 @@
         <div class="admin-sidebar-card-body">
           <input type="hidden" name="image" id="imageInput" value="{{ article.image if article else '' }}">
           <div id="imagePreview" style="margin-bottom: 12px; border-radius: 12px; overflow: hidden; display: {% if article and article.image %}block{% else %}none{% endif %};">
-            <img src="{{ article.image if article else '' }}" style="width: 100%; height: auto;">
+            <img src="{{ article.image if article else '' }}" style="width: 100%; height: auto;" onerror="this.onerror=null; this.src='/static/images/og-image.png';">
           </div>
           <label class="admin-upload-btn" for="imageFileInput">
             <iconify-icon icon="ri:upload-cloud-line" width="18"></iconify-icon>

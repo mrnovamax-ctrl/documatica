@@ -48,15 +48,15 @@ downloads:
   blank-excel:
     breadcrumb: "Скачать Excel"
     title: "Скачать бланк Акта Excel бесплатно — Documatica"
-    description: "Скачайте пустой бланк акта выполненных работ в формате Excel (.xlsx) бесплатно. Актуальная форма 2026 года."
+    description: "Скачайте пустой бланк акта выполненных работ в формате Excel (.xls) бесплатно. Актуальная форма 2026 года."
     h1: "Скачать бланк Акта Excel"
-    format: "Excel (.xlsx)"
-    file_url: "/static/blanks/akt-blank-2026.xlsx"
+    format: "Excel (.xls)"
+    file_url: "/api/v1/documents/blanks/akt-blank-excel"
     
   blank-word:
     breadcrumb: "Скачать Word"
     title: "Скачать бланк Акта Word бесплатно — Documatica"
-    description: "Скачайте пустой бланк акта выполненных работ в формате Word (.docx) бесплатно. Актуальная форма 2026 года."
+    description: "Скачайте пустой бланк акта выполненных работ в формате Word (.doc) бесплатно. Актуальная форма 2026 года."
     h1: "Скачать бланк Акта Word"
-    format: "Word (.docx)"
-    file_url: "/static/blanks/akt-blank-2026.docx"
+    format: "Word (.doc)"
+    file_url: "/api/v1/documents/blanks/akt-blank-word"

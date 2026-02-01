@@ -156,6 +156,15 @@ async def akt_download(request: Request):
     config = get_download_config(slug)
     if not config:
         raise HTTPException(status_code=404, detail="Страница не найдена")
+
+    # Обогащаем конфиг данными для gated download (не меняя исходный dict из кэша)
+    config = dict(config)
+    if slug == "blank-excel":
+        config["blank_type"] = "akt-blank-excel"
+        config["download_filename"] = "akt-blank-2026.xls"
+    elif slug == "blank-word":
+        config["blank_type"] = "akt-blank-word"
+        config["download_filename"] = "akt-blank-2026.doc"
     
     return templates.TemplateResponse(
         request=request,

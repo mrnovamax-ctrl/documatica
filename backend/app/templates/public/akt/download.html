@@ -42,14 +42,14 @@
         Формат: <strong>{{ config.format | default('Excel (.xlsx)') }}</strong>
       </p>
       
-      <a href="{{ config.file_url | default('#') }}" class="docu-btn-primary" style="padding: 16px 48px; display: inline-flex; align-items: center; gap: 8px;" download>
+      <button class="docu-btn-primary" id="blankDownloadBtn" type="button" style="padding: 16px 48px; display: inline-flex; align-items: center; gap: 8px;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="7 10 12 15 17 10"></polyline>
           <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
         Скачать бесплатно
-      </a>
+      </button>
       
       <p style="color: #94a3b8; font-size: 12px; margin-top: 16px;">
         Файл будет загружен на ваш компьютер
@@ -92,4 +92,167 @@
     </div>
   </div>
 </section>
+
+<!-- Auth Modal (Bootstrap Modal) -->
+<div class="modal fade" id="authRequiredModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 480px;">
+    <div class="modal-content" style="border: none; border-radius: 2.5rem; overflow: hidden; box-shadow: 0 50px 100px -20px rgba(15,23,42,0.3);">
+      <div class="modal-body p-0">
+        <div style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); background-image: radial-gradient(#60a5fa 1px, transparent 1px), linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); background-size: 24px 24px, 100% 100%; padding: 2rem 2.5rem; position: relative;">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="position: absolute; top: 1.25rem; right: 1.25rem; opacity: 0.7;"></button>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div>
+              <h3 style="color: white; font-size: 1.25rem; font-weight: 800; margin: 0 0 0.25rem;">Файл защищен</h3>
+              <p style="color: rgba(255,255,255,0.9); font-size: 0.875rem; margin: 0;">Войдите, чтобы скачать бланк</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 2rem 2.5rem 2.5rem;">
+          <div style="background: #fefce8; border: 1px solid #fef08a; border-radius: 1rem; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+            <p style="margin: 0; font-size: 0.8125rem; color: #854d0e; line-height: 1.5;">
+              <strong>Бесплатная регистрация за 30 секунд!</strong> Получите доступ к бланкам и образцам.
+            </p>
+          </div>
+
+          <div style="text-align: center; margin-bottom: 1.5rem;">
+            <p style="font-size: 0.6875rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #94a3b8; margin-bottom: 0.75rem;">Самый быстрый способ</p>
+            <a href="#" id="modal-yandex-btn" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: 100%; padding: 1.125rem 1.5rem; background: #FC3F1D; color: white; border-radius: 1.25rem; font-weight: 800; font-size: 0.9375rem; text-decoration: none; transition: all 0.3s;"
+               onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px -5px rgba(252,63,29,0.45)'"
+               onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="11" fill="white" fill-opacity="0.15"/>
+                <text x="8" y="16" font-size="12" font-weight="bold" fill="white">Y</text>
+              </svg>
+              Войти через Яндекс
+              <span style="font-size: 0.6875rem; background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-weight: 700;">1 клик</span>
+            </a>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+            <span style="font-size: 0.75rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">или по email</span>
+            <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+          </div>
+
+          <a href="/register" id="modal-register-btn" style="display: block; width: 100%; padding: 1rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 1.25rem; font-weight: 800; font-size: 0.8125rem; text-align: center; text-decoration: none; transition: all 0.3s; margin-bottom: 0.75rem;"
+             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px -5px rgba(59,130,246,0.4)'"
+             onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+            Зарегистрироваться
+          </a>
+
+          <p style="text-align: center; margin: 0; font-size: 0.875rem; color: #64748b;">
+            Уже есть аккаунт? <a href="/login" id="modal-login-btn" style="color: #3b82f6; font-weight: 600; text-decoration: none;">Войти</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const BLANK_TYPE = "{{ config.blank_type | default('') }}";
+const DOWNLOAD_FILENAME = "{{ config.download_filename | default('blank') }}";
+
+function checkAuthAndDownloadBlank(btn) {
+  fetch('/api/v1/auth/check', { method: 'GET', credentials: 'include' })
+    .then(r => r.json())
+    .then(data => {
+      if (data.authenticated) {
+        downloadBlank(btn);
+      } else {
+        showAuthModal();
+      }
+    })
+    .catch(() => showAuthModal());
+}
+
+function showAuthModal() {
+  const redirectUrl = `/akt/{{ 'blank-excel' if 'excel' in (config.blank_type|default('')) else 'blank-word' }}/?download=${BLANK_TYPE}`;
+  document.getElementById('modal-yandex-btn').href = `/auth/yandex/login?redirect_to=${encodeURIComponent(redirectUrl)}`;
+  document.getElementById('modal-register-btn').href = `/register?redirect=${encodeURIComponent(redirectUrl)}`;
+  document.getElementById('modal-login-btn').href = `/login?redirect=${encodeURIComponent(redirectUrl)}`;
+
+  if (typeof bootstrap === 'undefined' || !bootstrap.Modal) {
+    window.location.href = `/register?redirect=${encodeURIComponent(redirectUrl)}`;
+    return;
+  }
+
+  const modal = new bootstrap.Modal(document.getElementById('authRequiredModal'));
+  modal.show();
+
+  if (typeof ym !== 'undefined') {
+    ym(76440544, 'reachGoal', 'sample_download_attempt', { sample_type: BLANK_TYPE });
+  }
+}
+
+function downloadBlank(btn) {
+  if (!BLANK_TYPE) return;
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Скачивание...';
+  }
+
+  fetch(`/api/v1/documents/blanks/${BLANK_TYPE}`, { method: 'GET', credentials: 'include' })
+    .then(resp => {
+      if (!resp.ok) throw new Error('download failed');
+      return resp.blob();
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = DOWNLOAD_FILENAME || 'blank';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+
+      if (typeof ym !== 'undefined') {
+        ym(76440544, 'reachGoal', 'sample_downloaded', { sample_type: BLANK_TYPE });
+      }
+
+      if (btn) {
+        btn.textContent = '✓ Скачано';
+        setTimeout(() => {
+          btn.textContent = 'Скачать бесплатно';
+          btn.disabled = false;
+        }, 2000);
+      }
+    })
+    .catch(() => {
+      if (btn) {
+        btn.textContent = 'Ошибка';
+        btn.disabled = false;
+        setTimeout(() => (btn.textContent = 'Скачать бесплатно'), 2500);
+      }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const clickBtn = document.getElementById('blankDownloadBtn');
+  if (clickBtn) {
+    clickBtn.addEventListener('click', function() {
+      checkAuthAndDownloadBlank(clickBtn);
+    });
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const downloadType = urlParams.get('download');
+  if (downloadType && downloadType === BLANK_TYPE) {
+    setTimeout(() => {
+      downloadBlank(clickBtn);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }, 400);
+  }
+});
+</script>
 {% endblock %}

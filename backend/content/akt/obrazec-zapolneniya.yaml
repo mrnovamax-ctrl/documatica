@@ -10,80 +10,106 @@ page:
   intro: |
     Подробный образец заполнения акта выполненных работ с пояснениями по каждому полю.
     Актуальная форма 2026 года.
+  content: |
+    <p class="lead-text">Акт выполненных работ подтверждает факт оказания услуг и служит основанием для оплаты. Ниже — пример заполнения с пояснениями по каждому блоку.</p>
 
-sections:
-  - title: "1. Шапка документа"
-    content: |
-      <p>В шапке акта указывается:</p>
-      <ul>
-        <li><strong>Название документа</strong> — "Акт выполненных работ" или "Акт оказанных услуг"</li>
-        <li><strong>Номер документа</strong> — порядковый номер в вашей нумерации</li>
-        <li><strong>Дата составления</strong> — день подписания акта сторонами</li>
+    <div class="content-section">
+      <h2 style="font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 24px;">Образец акта</h2>
+      <p>Пример акта для ООО.</p>
+
+      <div class="example-card">
+        <div class="example-header">
+          <span class="example-badge">Образец</span>
+          <h2>Акт № 15 от 26.01.2026</h2>
+        </div>
+        <div class="example-content">
+          <div class="field-group">
+            <h3>Исполнитель</h3>
+            <ul class="field-list">
+              <li><strong>Организация:</strong> ООО "Техносервис"</li>
+              <li><strong>ИНН / КПП:</strong> 7704123456 / 770401001</li>
+              <li><strong>Адрес:</strong> г. Москва, ул. Тверская, д. 10</li>
+            </ul>
+          </div>
+
+          <div class="field-group">
+            <h3>Заказчик</h3>
+            <ul class="field-list">
+              <li><strong>Организация:</strong> ООО "Бизнес Решения"</li>
+              <li><strong>ИНН / КПП:</strong> 7801234567 / 780101001</li>
+              <li><strong>Адрес:</strong> г. Санкт‑Петербург, ул. Невский, д. 1</li>
+            </ul>
+          </div>
+
+          <div class="field-group">
+            <h3>Перечень работ</h3>
+            <div class="table-wrapper">
+              <table class="example-table">
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>Наименование работ</th>
+                    <th>Ед.</th>
+                    <th>Кол-во</th>
+                    <th>Цена</th>
+                    <th>Сумма</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Разработка сайта по договору № 10 от 01.01.2026</td>
+                    <td>шт.</td>
+                    <td>1</td>
+                    <td>100 000,00</td>
+                    <td>100 000,00</td>
+                  </tr>
+                  <tr class="total-row">
+                    <td colspan="5">Итого</td>
+                    <td>100 000,00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="color: #64748b;">Итоговая сумма указывается цифрами и прописью.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2 style="font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 24px;">Ключевые реквизиты</h2>
+      <ul class="field-list">
+        <li><strong>Название документа:</strong> "Акт выполненных работ" или "Акт оказанных услуг"</li>
+        <li><strong>Номер и дата:</strong> по внутренней нумерации</li>
+        <li><strong>Исполнитель и заказчик:</strong> наименование, ИНН/КПП, адрес</li>
+        <li><strong>Таблица работ:</strong> наименование, количество, цена, сумма</li>
+        <li><strong>Подписи сторон:</strong> уполномоченные лица</li>
       </ul>
-      <p><em>Пример: Акт № 15 от 26 января 2026 г.</em></p>
-      
-  - title: "2. Реквизиты Исполнителя"
-    content: |
-      <p>Укажите данные организации или ИП, которые выполнили работы:</p>
-      <ul>
-        <li><strong>Наименование</strong> — полное или сокращенное название (ООО "Ромашка" или ИП Иванов И.И.)</li>
-        <li><strong>ИНН</strong> — 10 цифр для юрлица, 12 цифр для ИП</li>
-        <li><strong>КПП</strong> — только для юридических лиц</li>
-        <li><strong>Адрес</strong> — юридический адрес организации</li>
-      </ul>
-      
-  - title: "3. Реквизиты Заказчика"
-    content: |
-      <p>Укажите данные организации или ИП, для которых выполнены работы:</p>
-      <ul>
-        <li><strong>Наименование</strong> — полное или сокращенное название</li>
-        <li><strong>ИНН</strong> — идентификационный номер налогоплательщика</li>
-        <li><strong>КПП</strong> — для юридических лиц</li>
-        <li><strong>Адрес</strong> — юридический адрес</li>
-      </ul>
-      
-  - title: "4. Таблица с перечнем работ/услуг"
-    content: |
-      <p>Заполните таблицу с перечнем выполненных работ:</p>
-      <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
-        <tr style="background: #f1f5f9;">
-          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">№</th>
-          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Наименование работ</th>
-          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Ед. изм.</th>
-          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Кол-во</th>
-          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Цена</th>
-          <th style="border: 1px solid #e2e8f0; padding: 8px; text-align: left;">Сумма</th>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #e2e8f0; padding: 8px;">1</td>
-          <td style="border: 1px solid #e2e8f0; padding: 8px;">Разработка сайта по договору № 10 от 01.01.2026</td>
-          <td style="border: 1px solid #e2e8f0; padding: 8px;">шт.</td>
-          <td style="border: 1px solid #e2e8f0; padding: 8px;">1</td>
-          <td style="border: 1px solid #e2e8f0; padding: 8px;">100 000,00</td>
-          <td style="border: 1px solid #e2e8f0; padding: 8px;">100 000,00</td>
-        </tr>
-      </table>
-      <p><strong>Важно:</strong> Описывайте работы конкретно. "Услуги по договору" — плохо. "Разработка сайта" — хорошо.</p>
-      
-  - title: "5. Итоговая сумма и НДС"
-    content: |
-      <p>В итогах укажите:</p>
-      <ul>
-        <li><strong>Итого</strong> — общая сумма всех работ</li>
-        <li><strong>НДС</strong> — сумма налога (если вы плательщик НДС) или "Без НДС"</li>
-        <li><strong>Всего к оплате</strong> — итоговая сумма с НДС или без</li>
-        <li><strong>Сумма прописью</strong> — например, "Сто тысяч рублей 00 копеек"</li>
-      </ul>
-      
-  - title: "6. Подписи сторон"
-    content: |
-      <p>Акт подписывают обе стороны:</p>
-      <ul>
-        <li><strong>Исполнитель</strong> — директор или уполномоченное лицо</li>
-        <li><strong>Заказчик</strong> — директор или уполномоченное лицо</li>
-      </ul>
-      <p>Печати не обязательны с 2015 года, но могут использоваться при наличии.</p>
-      <p><strong>Подпись заказчика означает, что работы приняты без претензий.</strong></p>
+      <p style="margin-top: 16px; color: #64748b;">Печати не обязательны с 2015 года, но могут использоваться при наличии.</p>
+    </div>
+
+    <div class="content-section">
+      <h2 style="font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 16px; text-align: center;">Скачать образец Акта в PDF</h2>
+      <p style="text-align: center; color: #64748b; margin-bottom: 48px;">Готовый образец с реальными данными. Требуется регистрация.</p>
+
+      <div class="download-grid">
+        <div class="download-card">
+          <div class="download-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
+            </svg>
+          </div>
+          <h4>Акт выполненных работ</h4>
+          <p>Образец для ООО</p>
+          <button class="download-btn" data-pdf-type="akt" onclick="checkAuthAndDownload(this)">
+            Скачать PDF
+          </button>
+        </div>
+      </div>
+    </div>
 
 cta:
   title: "Создать Акт онлайн"

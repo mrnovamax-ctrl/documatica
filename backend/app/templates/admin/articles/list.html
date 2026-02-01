@@ -4,10 +4,22 @@
 {% block page_title %}Статьи{% endblock %}
 
 {% block header_actions %}
-<a href="/admin/articles/create/" class="admin-btn-primary">
-  <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
-  Новая статья
-</a>
+<div style="display: flex; gap: 12px; align-items: center;">
+  <form method="get" style="margin: 0;">
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <input type="text" name="q" value="{{ search_query or '' }}" placeholder="Поиск статей..."
+             class="admin-input" style="max-width: 260px;">
+      <button type="submit" class="admin-btn-secondary">Найти</button>
+      {% if search_query %}
+      <a href="/admin/articles/" class="admin-btn-secondary">Сбросить</a>
+      {% endif %}
+    </div>
+  </form>
+  <a href="/admin/articles/create/" class="admin-btn-primary">
+    <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+    Новая статья
+  </a>
+</div>
 {% endblock %}
 
 {% block content %}

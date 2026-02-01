@@ -168,13 +168,22 @@ def save_content_file(path: str, data: Dict[str, Any]) -> bool:
 
 
 @router.get("/", response_class=HTMLResponse)
-async def content_list(request: Request):
+async def content_list(request: Request, q: str = ""):
     """Список страниц для редактирования"""
     auth_check = require_admin(request)
     if auth_check:
         return auth_check
     
     files = get_content_files()
+    query = (q or "").strip().lower()
+    if query:
+        files = [
+            f for f in files
+            if query in f["path"].lower()
+            or query in f["filename"].lower()
+            or query in f["title"].lower()
+            or query in f["public_url"].lower()
+        ]
     
     # Группируем по категориям
     categories = {}
@@ -206,6 +215,7 @@ async def content_list(request: Request):
             active_menu="content",
             files=files,
             categories=sorted_categories,
+            search_query=query,
         )
     )
 

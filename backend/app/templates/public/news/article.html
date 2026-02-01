@@ -83,7 +83,7 @@
         <!-- Featured Image -->
         {% if article.image %}
         <div style="margin: -48px -48px 40px; border-radius: 2rem 2rem 0 0; overflow: hidden;">
-          <img src="{{ article.image }}" alt="{{ article.title }}" style="width: 100%; height: auto; display: block;">
+          <img src="{{ article.image }}" alt="{{ article.title }}" style="width: 100%; height: auto; display: block;" onerror="this.onerror=null; this.src='/static/images/og-image.png';">
         </div>
         {% endif %}
         

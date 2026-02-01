@@ -1,0 +1,261 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Счет на оплату — бланк 2026</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12pt; }
+    .title { font-size: 16pt; font-weight: bold; }
+    .muted { color: #555; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border: 1px solid #000; padding: 6px; vertical-align: top; }
+    .no-border td { border: none; }
+    .right { text-align: right; }
+    .center { text-align: center; }
+    .bold { font-weight: bold; }
+    .nowrap { white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <table class="no-border">
+    <tr>
+      <td class="title">СЧЕТ НА ОПЛАТУ № ______ от __.__.2026</td>
+    </tr>
+    <tr>
+      <td class="muted">Заполните поля и сохраните файл. Бланк подготовлен для печати и отправки клиенту.</td>
+    </tr>
+  </table>
+
+  <br />
+
+  <table>
+    <tr>
+      <td class="bold nowrap" style="width: 180px;">Поставщик</td>
+      <td>______________________________________________<br/>ИНН/КПП ____________________ / ____________________<br/>Адрес _____________________________________________<br/>Р/с ____________________ в ________________________<br/>БИК ____________________ К/с _______________________</td>
+    </tr>
+    <tr>
+      <td class="bold nowrap">Покупатель</td>
+      <td>______________________________________________<br/>ИНН/КПП ____________________ / ____________________<br/>Адрес _____________________________________________</td>
+    </tr>
+    <tr>
+      <td class="bold nowrap">Основание</td>
+      <td>Договор № ______ от __.__.____ (при наличии)</td>
+    </tr>
+  </table>
+
+  <br />
+
+  <table>
+    <tr>
+      <th class="center nowrap" style="width: 40px;">№</th>
+      <th>Наименование товаров/работ/услуг</th>
+      <th class="center nowrap" style="width: 70px;">Кол-во</th>
+      <th class="center nowrap" style="width: 60px;">Ед.</th>
+      <th class="right nowrap" style="width: 110px;">Цена</th>
+      <th class="right nowrap" style="width: 120px;">Сумма</th>
+      <th class="right nowrap" style="width: 110px;">НДС</th>
+      <th class="right nowrap" style="width: 120px;">Всего</th>
+    </tr>
+    <tr>
+      <td class="center">1</td>
+      <td>______________________________________________</td>
+      <td class="center">__</td>
+      <td class="center">шт</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+    </tr>
+    <tr>
+      <td class="center">2</td>
+      <td>______________________________________________</td>
+      <td class="center">__</td>
+      <td class="center">шт</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+    </tr>
+    <tr>
+      <td class="center">3</td>
+      <td>______________________________________________</td>
+      <td class="center">__</td>
+      <td class="center">шт</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+    </tr>
+    <tr>
+      <td colspan="5" class="right bold">Итого:</td>
+      <td class="right bold">0,00</td>
+      <td class="right bold">0,00</td>
+      <td class="right bold">0,00</td>
+    </tr>
+  </table>
+
+  <br />
+
+  <table>
+    <tr>
+      <td class="bold nowrap" style="width: 180px;">К оплате</td>
+      <td class="bold">0,00 руб.</td>
+    </tr>
+    <tr>
+      <td class="bold nowrap">Комментарий</td>
+      <td>Назначение платежа: _____________________________________________</td>
+    </tr>
+  </table>
+
+  <br />
+
+  <table class="no-border">
+    <tr>
+      <td style="width: 50%;" class="no-border">
+        <div class="bold">Руководитель</div>
+        ____________________ / ____________________<br/>
+        <span class="muted">(подпись)</span> &nbsp;&nbsp;&nbsp;&nbsp; <span class="muted">(ФИО)</span>
+      </td>
+      <td style="width: 50%;" class="no-border">
+        <div class="bold">Главный бухгалтер</div>
+        ____________________ / ____________________<br/>
+        <span class="muted">(подпись)</span> &nbsp;&nbsp;&nbsp;&nbsp; <span class="muted">(ФИО)</span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="no-border muted" style="padding-top: 18px;">
+        М.П.
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Бланк счета на оплату (2026)</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12pt; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border: 1px solid #000; padding: 6px; vertical-align: top; }
+    .noborder td, .noborder th { border: none; }
+    .center { text-align: center; }
+    .right { text-align: right; }
+    .bold { font-weight: 700; }
+    .small { font-size: 10pt; color: #333; }
+    .muted { color: #555; }
+  </style>
+</head>
+<body>
+  <table class="noborder">
+    <tr>
+      <td class="bold">СЧЕТ НА ОПЛАТУ № ____ от «__» ________ 2026 г.</td>
+    </tr>
+    <tr>
+      <td class="small muted">Заполните реквизиты и строки товаров/услуг. Это шаблон-бланк для Excel (.xls).</td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <table>
+    <tr>
+      <th style="width: 25%;">Поставщик</th>
+      <td>
+        Наименование: _______________________________<br/>
+        ИНН/КПП: _______________________________<br/>
+        Адрес: _______________________________<br/>
+        Телефон / Email: _______________________________
+      </td>
+    </tr>
+    <tr>
+      <th>Покупатель</th>
+      <td>
+        Наименование: _______________________________<br/>
+        ИНН/КПП: _______________________________<br/>
+        Адрес: _______________________________<br/>
+        Контактное лицо: _______________________________
+      </td>
+    </tr>
+    <tr>
+      <th>Банковские реквизиты</th>
+      <td>
+        Получатель: _______________________________<br/>
+        Банк: _______________________________<br/>
+        Р/с: _______________________________<br/>
+        К/с: _______________________________<br/>
+        БИК: _______________________________
+      </td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <table>
+    <tr class="center bold">
+      <th style="width: 6%;">№</th>
+      <th>Наименование товара/услуги</th>
+      <th style="width: 10%;">Ед.</th>
+      <th style="width: 10%;">Кол-во</th>
+      <th style="width: 14%;">Цена</th>
+      <th style="width: 14%;">Сумма</th>
+    </tr>
+    <tr>
+      <td class="center">1</td>
+      <td>_______________________________</td>
+      <td class="center">шт</td>
+      <td class="right">1</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+    </tr>
+    <tr>
+      <td class="center">2</td>
+      <td>_______________________________</td>
+      <td class="center">шт</td>
+      <td class="right">1</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+    </tr>
+    <tr>
+      <td class="center">3</td>
+      <td>_______________________________</td>
+      <td class="center">шт</td>
+      <td class="right">1</td>
+      <td class="right">0,00</td>
+      <td class="right">0,00</td>
+    </tr>
+    <tr>
+      <td colspan="5" class="right bold">Итого:</td>
+      <td class="right bold">0,00</td>
+    </tr>
+    <tr>
+      <td colspan="5" class="right bold">НДС:</td>
+      <td class="right bold">0,00</td>
+    </tr>
+    <tr>
+      <td colspan="5" class="right bold">Всего к оплате:</td>
+      <td class="right bold">0,00</td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <table class="noborder">
+    <tr>
+      <td style="width: 50%;">
+        <span class="bold">Руководитель</span> ____________________ /______________/
+      </td>
+      <td style="width: 50%;">
+        <span class="bold">Главный бухгалтер</span> ____________________ /______________/
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="small muted">
+        Примечание: для автоматического заполнения реквизитов по ИНН и QR‑кода для оплаты используйте онлайн‑генератор на сайте.
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+

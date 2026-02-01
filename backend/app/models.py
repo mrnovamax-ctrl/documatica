@@ -17,6 +17,7 @@ class User(Base):
     email = Column(String(255), unique=True, index=True, nullable=False)
     password_hash = Column(String(255), nullable=True)  # Nullable for OAuth users
     name = Column(String(255), nullable=True)
+    phone = Column(String(32), nullable=True)
     
     # Статус верификации
     is_verified = Column(Boolean, default=False)

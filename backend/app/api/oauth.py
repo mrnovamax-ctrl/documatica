@@ -60,6 +60,7 @@ async def yandex_login(
         "client_id": YANDEX_CLIENT_ID,
         "redirect_uri": YANDEX_REDIRECT_URI,
         "state": state,
+        "scope": "login:email login:info",
     }
     
     auth_url = f"https://oauth.yandex.ru/authorize?{urlencode(params)}"
@@ -140,6 +141,12 @@ async def yandex_callback(
         yandex_id = user_info.get("id")
         email = user_info.get("default_email")
         name = user_info.get("display_name") or user_info.get("real_name") or user_info.get("first_name", "")
+        phone = None
+        default_phone = user_info.get("default_phone") or {}
+        if isinstance(default_phone, dict):
+            phone = default_phone.get("number")
+        if not phone:
+            phone = user_info.get("phone")
         
         if not yandex_id or not email:
             print(f"[YANDEX_OAUTH] Missing user info: {user_info}")
@@ -160,11 +167,13 @@ async def yandex_callback(
                 if not user.is_verified:
                     user.is_verified = True  # Yandex email is verified
                 print(f"[YANDEX_OAUTH] Linked Yandex to existing user: {user.email}")
+                is_new_registration = False
             else:
                 # Create new user
                 user = User(
                     email=email.lower(),
                     name=name,
+                    phone=phone,
                     yandex_id=str(yandex_id),
                     auth_provider="yandex",
                     is_verified=True,  # Yandex email is verified
@@ -176,6 +185,8 @@ async def yandex_callback(
                 is_new_registration = True
         else:
             is_new_registration = False
+            if phone and not user.phone:
+                user.phone = phone
         
         # Update last login
         user.last_login = datetime.utcnow()
@@ -282,6 +293,7 @@ async def get_yandex_user_info(access_token: str) -> dict:
             },
             params={
                 "format": "json",
+                "with_phone_number": "true",
             }
         )
         

@@ -1,0 +1,123 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Платежи{% endblock %}
+{% block page_title %}Платежи{% endblock %}
+
+{% block header_actions %}
+<div class="admin-header-meta">
+  Всего: <strong>{{ total_payments }}</strong>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="admin-table-container">
+  <div class="admin-table-header admin-table-row-7col">
+    <div class="admin-table-th">Пользователь</div>
+    <div class="admin-table-th">Тип</div>
+    <div class="admin-table-th">Сумма</div>
+    <div class="admin-table-th">Документы</div>
+    <div class="admin-table-th">Статус</div>
+    <div class="admin-table-th">Создан</div>
+    <div class="admin-table-th">Подтверждён</div>
+  </div>
+
+  {% for payment in payments %}
+  <div class="admin-table-row admin-table-row-7col">
+    <div class="admin-table-cell">
+      <div class="admin-user-email">
+        {% if payment.user %}
+        <a href="/admin/users/{{ payment.user.id }}/" style="color: inherit; text-decoration: none;">
+          {{ payment.user.email }}
+        </a>
+        {% else %}
+        —
+        {% endif %}
+      </div>
+      <div class="admin-user-id">Заказ: {{ payment.tbank_order_id }}</div>
+    </div>
+
+    <div class="admin-table-cell">
+      {% if payment.payment_type == 'subscription' %}
+      <span class="admin-badge admin-badge-gold">
+        <iconify-icon icon="ri:vip-crown-line" width="14"></iconify-icon>
+        Подписка
+      </span>
+      {% elif payment.payment_type == 'documents' or payment.payment_type == 'pay_per_doc' %}
+      <span class="admin-badge admin-badge-purple">
+        <iconify-icon icon="ri:file-list-3-line" width="14"></iconify-icon>
+        Пакет
+      </span>
+      {% else %}
+      <span class="admin-badge admin-badge-muted">{{ payment.payment_type }}</span>
+      {% endif %}
+    </div>
+
+    <div class="admin-table-cell">
+      <span class="admin-docs-count">{{ payment.amount|int }}</span>
+      <span class="admin-docs-label">₽</span>
+    </div>
+
+    <div class="admin-table-cell admin-text-muted">
+      {{ payment.documents_count if payment.documents_count else '—' }}
+    </div>
+
+    <div class="admin-table-cell">
+      {% if payment.status == 'confirmed' %}
+      <span class="admin-badge admin-badge-success">
+        <iconify-icon icon="ri:checkbox-circle-fill" width="14"></iconify-icon>
+        Подтверждён
+      </span>
+      {% elif payment.status == 'pending' %}
+      <span class="admin-badge admin-badge-warning">
+        <iconify-icon icon="ri:time-line" width="14"></iconify-icon>
+        Ожидание
+      </span>
+      {% elif payment.status == 'rejected' %}
+      <span class="admin-badge admin-badge-danger">
+        <iconify-icon icon="ri:close-circle-fill" width="14"></iconify-icon>
+        Отклонён
+      </span>
+      {% else %}
+      <span class="admin-badge admin-badge-muted">{{ payment.status }}</span>
+      {% endif %}
+    </div>
+
+    <div class="admin-table-cell admin-text-muted">
+      {{ payment.created_at.strftime('%d.%m.%Y %H:%M') if payment.created_at else '—' }}
+    </div>
+
+    <div class="admin-table-cell admin-text-muted">
+      {{ payment.confirmed_at.strftime('%d.%m.%Y %H:%M') if payment.confirmed_at else '—' }}
+    </div>
+  </div>
+  {% else %}
+  <div class="admin-empty-state">
+    <iconify-icon icon="ri:cash-line" width="64"></iconify-icon>
+    <div class="admin-empty-state-title">Платежи не найдены</div>
+    <div class="admin-empty-state-text">Транзакции появятся после первых оплат</div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if total_pages > 1 %}
+<div class="admin-pagination">
+  {% if page > 1 %}
+  <a href="?page={{ page - 1 }}" class="admin-pagination-btn">
+    <iconify-icon icon="ri:arrow-left-s-line" width="20"></iconify-icon>
+  </a>
+  {% endif %}
+
+  {% for p in range(1, total_pages + 1) %}
+  <a href="?page={{ p }}" class="admin-pagination-btn {% if p == page %}active{% endif %}">
+    {{ p }}
+  </a>
+  {% endfor %}
+
+  {% if page < total_pages %}
+  <a href="?page={{ page + 1 }}" class="admin-pagination-btn">
+    <iconify-icon icon="ri:arrow-right-s-line" width="20"></iconify-icon>
+  </a>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}
