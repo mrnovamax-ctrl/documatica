@@ -1,0 +1,149 @@
+{% extends "base_public.html" %}
+
+{# ==========================================================================
+   Base Landing Template
+   Универсальный шаблон для лендингов УПД/Счет/Акт
+   
+   Переопределяемые блоки:
+   - landing_defaults: Установка дефолтных значений (title, meta, cta_url)
+   - landing_preview: Preview компонент в hero-секции
+   ========================================================================== #}
+
+{% set page = content.page | default({}) %}
+{% set meta = content.meta | default({}) %}
+{% set features = content.features | default([]) %}
+{% set faq = content.faq | default([]) %}
+{% set cta = content.cta | default({}) %}
+{% set related = content.related | default([]) %}
+
+{# Блок для кастомизации дефолтных значений в дочерних шаблонах #}
+{% block landing_defaults %}
+{% set default_title = 'Documatica' %}
+{% set default_description = 'Создайте документы онлайн бесплатно' %}
+{% set default_keywords = 'онлайн документы' %}
+{% set default_h1 = 'Генератор документов' %}
+{% set default_intro = 'Создайте документы онлайн бесплатно' %}
+{% set default_cta_text = 'Создать документ' %}
+{% set default_cta_url = '/dashboard/' %}
+{% endblock %}
+
+{% block title %}{{ meta.title | default(default_title) }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ meta.description | default(default_description) }}">
+<meta name="keywords" content="{{ meta.keywords | default(default_keywords) }}">
+{% if meta.canonical %}
+<link rel="canonical" href="{{ site_url }}{{ meta.canonical }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section v12.0 - Two Columns -->
+<section class="upd-hero-v12">
+  <div class="container position-relative" style="max-width: 1400px; margin: 0 auto; padding: 0 24px; z-index: 10;">
+    <div class="row align-items-center" style="overflow: visible;">
+      
+      <!-- Left Column: Text Content -->
+      <div class="col-lg-6" style="padding-right: 2rem;">
+        <span class="upd-hero-tag-v12">{{ page.tag | default('Генератор документов') }}</span>
+        <h1 class="upd-hero-title-v12">
+          {{ page.h1 | default(default_h1) }}
+        </h1>
+        <p class="upd-hero-desc-v12">
+          {{ page.intro | default(default_intro) }}
+        </p>
+        
+        <div class="upd-hero-actions-v12">
+          <a href="{{ cta.url | default(default_cta_url) }}" class="docu-btn-primary" style="padding: 20px 40px;">
+            {{ cta.text | default(default_cta_text) }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Right Column: Preview Component (переопределяемый блок) -->
+      <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center" style="overflow: visible;">
+        {% block landing_preview %}
+        {# Дефолтный preview - в дочерних шаблонах переопределяется #}
+        <div class="upd-preview-card" style="transform: rotate(2deg);">
+          <div class="upd-preview-header">
+            <div class="upd-preview-badge">Документ</div>
+            <div class="upd-preview-number">N 1 от {{ now().strftime('%d.%m.%Y') }}</div>
+          </div>
+          <div class="upd-preview-total">
+            <span>Documatica</span>
+            <span class="upd-preview-total-amount">—</span>
+          </div>
+        </div>
+        {% endblock %}
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Content v12.0 -->
+{% if page.content %}
+<section class="upd-content-v12">
+  <div class="upd-content-container-v12">
+    <div class="upd-text-v12">
+      {{ page.content | safe }}
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="upd-sidebar-v12">
+      <div class="upd-sidebar-cta-v12">
+        <h4>{% block sidebar_cta_title %}Готовы создать документ?{% endblock %}</h4>
+        <p>{% block sidebar_cta_text %}Автозаполнение реквизитов по ИНН, актуальная форма 2026 года{% endblock %}</p>
+        <a href="{{ cta.url | default(default_cta_url) }}" class="docu-btn-primary" style="width: 100%; text-align: center;">
+          {{ cta.text | default(default_cta_text) }}
+        </a>
+      </div>
+      
+      {% if related %}
+      <div class="upd-sidebar-related-v12">
+        <h4>Читайте также</h4>
+        <ul>
+          {% for item in related %}
+          <li>
+            <a href="{{ item.url }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+              {{ item.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Features -->
+{% if features %}
+{% set features_title = page.features_title | default('Преимущества') %}
+{% include "components/features_block.html" %}
+{% endif %}
+
+<!-- FAQ -->
+{% if faq %}
+{% set faq_title = page.faq_title | default('Частые вопросы') %}
+{% include "components/faq_block.html" %}
+{% endif %}
+
+<!-- Related -->
+{% if related %}
+{% set related_title = page.related_title | default('Смотрите также') %}
+{% include "components/related_block.html" %}
+{% endif %}
+
+<!-- CTA -->
+{% include "components/cta_block.html" %}
+{% endblock %}

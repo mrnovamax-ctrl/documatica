@@ -1,132 +1,20 @@
-{% extends "base_public.html" %}
+{% extends "base_landing.html" %}
 
-{% set page = content.page | default({}) %}
-{% set meta = content.meta | default({}) %}
-{% set sections = content.sections | default([]) %}
-{% set benefits = content.benefits | default([]) %}
-{% set cta = content.cta | default({}) %}
-{% set related = content.related | default([]) %}
+{# Акт Landing - использует базовый шаблон #}
 
-{% block title %}{{ meta.title | default('Акт выполненных работ — Documatica') }}{% endblock %}
-
-{% block meta %}
-<meta name="description" content="{{ meta.description | default('Создайте акт выполненных работ онлайн бесплатно') }}">
-<meta name="keywords" content="{{ meta.keywords | default('акт выполненных работ онлайн') }}">
-{% if meta.canonical %}
-<link rel="canonical" href="{{ site_url }}{{ meta.canonical }}">
-{% endif %}
+{% block landing_defaults %}
+{% set default_title = 'Акт выполненных работ — Documatica' %}
+{% set default_description = 'Создайте акт выполненных работ онлайн бесплатно' %}
+{% set default_keywords = 'акт выполненных работ онлайн' %}
+{% set default_h1 = 'Генератор акта выполненных работ' %}
+{% set default_intro = 'Создайте акт выполненных работ онлайн бесплатно' %}
+{% set default_cta_text = 'Создать акт' %}
+{% set default_cta_url = '/dashboard/akt/create/' %}
 {% endblock %}
 
-{% block content %}
-<!-- Hero Section v12.0 - Two Columns -->
-<section class="upd-hero-v12">
-  <div class="container position-relative" style="max-width: 1400px; margin: 0 auto; padding: 0 24px; z-index: 10;">
-    <div class="row align-items-center" style="overflow: visible;">
-      
-      <!-- Left Column: Text Content -->
-      <div class="col-lg-6" style="padding-right: 2rem;">
-        <span class="upd-hero-tag-v12">{{ page.tag | default('Генератор документов') }}</span>
-        <h1 class="upd-hero-title-v12">
-          {{ page.h1 | default('Генератор Акта') }}
-        </h1>
-        <p class="upd-hero-desc-v12">
-          {{ page.intro | default('Создайте акт выполненных работ онлайн бесплатно') }}
-        </p>
-        
-        <div class="upd-hero-actions-v12">
-          <a href="{{ cta.url | default('/dashboard/akt/create/') }}" class="docu-btn-primary" style="padding: 20px 40px;">
-            {{ cta.text | default('Создать Акт') }}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-      </div>
-      
-      <!-- Right Column: Document Preview -->
-      <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center" style="overflow: visible;">
-        {% include "components/akt_preview.html" ignore missing %}
-      </div>
-      
-    </div>
-  </div>
-</section>
-
-<!-- Content Sections -->
-{% if sections %}
-<section style="padding: 80px 0; background: white;">
-  <div style="max-width: 900px; margin: 0 auto; padding: 0 24px;">
-    {% for section in sections %}
-    <div style="margin-bottom: 48px;">
-      <h2 class="docu-h3" style="margin-bottom: 24px;">{{ section.title }}</h2>
-      <div class="docu-body" style="line-height: 1.8;">
-        {{ section.content | safe }}
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-
-<!-- Benefits -->
-{% if benefits %}
-<section style="padding: 80px 0; background: #f8fafc;">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
-    <h2 class="docu-tag-muted" style="text-align: center; margin-bottom: 48px;">Преимущества</h2>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-      {% for benefit in benefits %}
-      <div class="upd-type-card" style="cursor: default;">
-        <div class="upd-type-card-header">
-          <div class="upd-type-card-icon">
-            <iconify-icon icon="{{ benefit.icon }}" width="24" height="24" style="color: #3b82f6;"></iconify-icon>
-          </div>
-        </div>
-        <div class="upd-type-card-content">
-          <h3 class="docu-h3">{{ benefit.title }}</h3>
-          <p class="docu-body">{{ benefit.description }}</p>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
-<!-- Related -->
-{% if related %}
-<section style="padding: 80px 0; background: white;">
-  <div style="max-width: 900px; margin: 0 auto; padding: 0 24px;">
-    <h2 class="docu-tag-muted" style="text-align: center; margin-bottom: 48px;">Смотрите также</h2>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
-      {% for item in related %}
-      <a href="{{ item.url }}" style="display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #f8fafc; border-radius: 12px; text-decoration: none; color: #0f172a; font-weight: 600; transition: all 0.2s;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-          <polyline points="12 5 19 12 12 19"></polyline>
-        </svg>
-        {{ item.title }}
-      </a>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
-<!-- CTA -->
-<section style="padding: 80px 0; background: #f8fafc;">
-  <div style="max-width: 800px; margin: 0 auto; padding: 0 24px; text-align: center;">
-    <h2 class="docu-h2" style="margin-bottom: 16px;">{{ cta.title | default('Готовы создать Акт?') }}</h2>
-    <p class="docu-lead" style="margin-bottom: 32px;">{{ cta.description | default('Создайте документ за 2 минуты с автозаполнением реквизитов') }}</p>
-    <a href="{{ cta.url | default('/dashboard/akt/create/') }}" class="docu-btn-primary" style="padding: 20px 48px; font-size: 14px;">
-      {{ cta.text | default('Создать Акт бесплатно') }}
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-        <polyline points="12 5 19 12 12 19"></polyline>
-      </svg>
-    </a>
-  </div>
-</section>
+{% block landing_preview %}
+{% include "components/akt_preview.html" ignore missing %}
 {% endblock %}
+
+{% block sidebar_cta_title %}Готовы создать акт?{% endblock %}
+{% block sidebar_cta_text %}Автозаполнение реквизитов по ИНН, актуальная форма 2026 года{% endblock %}
