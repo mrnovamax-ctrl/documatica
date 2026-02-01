@@ -65,6 +65,7 @@ async def home(request: Request):
             "latest_articles": latest_articles,
             "title": content.get("meta", {}).get("title", "Documatica — генератор документов для бизнеса"),
             "description": content.get("meta", {}).get("description", "Создавайте УПД, счета, акты и договоры онлайн бесплатно."),
+            "is_home_page": True,  # Флаг для отображения прелоадера
         }
     )
 

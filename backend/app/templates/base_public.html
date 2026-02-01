@@ -1,14 +1,35 @@
 {% extends "base.html" %}
 
-{% block body_class %}public-page{% endblock %}
+{% block body_class %}public-page{% if is_home_page %} home-page{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/home.css?v=2.0">
+{{ super() }}
+{% endblock %}
 
 {% block body %}
+<!-- Прелоадер (только для главной страницы) -->
+{% if is_home_page %}
+<div id="preloader">
+  <div class="preloader-logo">
+    <svg width="120" height="120" viewBox="0 0 64 64" fill="none">
+      <rect x="8" y="8" width="48" height="48" rx="12" fill="white" fill-opacity="0.05" />
+      <path class="logo-path logo-path-1" d="M18 24H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+      <path class="logo-path logo-path-2" d="M18 32H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+      <path class="logo-path logo-path-3" d="M18 40H34" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+      <circle class="ai-dot-anim" cx="48" cy="40" r="6" fill="#FBBF24" filter="drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))"/>
+    </svg>
+  </div>
+  <div class="preloader-text">documatica документы просто</div>
+</div>
+{% endif %}
+
 <!-- Header -->
 {% include "components/header_dynamic.html" %}
 
 <!-- Main Content -->
 <main class="main-content">
-  {% if breadcrumbs %}
+  {% if breadcrumbs and not is_home_page %}
   {% include "components/breadcrumbs.html" %}
   {% endif %}
   
@@ -19,6 +40,43 @@
 {% include "components/footer.html" %}
 {% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="/static/css/home.css?v=2.0">
+{% block extra_js %}
+{% if is_home_page %}
+<script>
+  // Прелоадер - показываем только при первом входе в сессии
+  (function() {
+    const preloader = document.getElementById('preloader');
+    if (!preloader) return;
+    
+    if (sessionStorage.getItem('preloaderShown')) {
+      preloader.classList.add('hidden-loader');
+    } else {
+      setTimeout(() => { 
+        preloader.classList.add('hidden-loader');
+        sessionStorage.setItem('preloaderShown', 'true');
+      }, 2500);
+    }
+    
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (link && link.href && !preloader.classList.contains('hidden-loader')) {
+        preloader.classList.add('hidden-loader');
+        sessionStorage.setItem('preloaderShown', 'true');
+      }
+    });
+  })();
+</script>
+{% endif %}
+
+<script>
+  // Header scroll effect
+  window.addEventListener('scroll', function() {
+    const header = document.getElementById('header');
+    if (header) {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    }
+  });
+</script>
+
+{{ super() }}
 {% endblock %}
