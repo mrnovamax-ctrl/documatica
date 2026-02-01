@@ -1,0 +1,27 @@
+/* ================================================================
+   Contact Page Styles
+   Используется в: contact.html
+   ================================================================ */
+
+@media (max-width: 768px) {
+  section.about-section > .container > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  
+  .about-hero__content {
+    padding: 60px 0 40px !important;
+  }
+  
+  a[href*="t.me"][style*="position: fixed"] {
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 56px !important;
+    height: 56px !important;
+  }
+  
+  a[href*="t.me"] svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
