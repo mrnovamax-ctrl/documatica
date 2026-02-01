@@ -1,6 +1,6 @@
 """
 Счет на оплату - публичные страницы (хаб и лендинги)
-Аналогичная структура с УПД
+Динамическая регистрация роутов из _pages.yaml
 """
 
 import yaml
@@ -66,15 +66,9 @@ async def schet_hub(request: Request):
     )
 
 
-# ============== УНИВЕРСАЛЬНЫЙ РОУТЕР ЛЕНДИНГОВ ==============
+# ============== УНИВЕРСАЛЬНЫЕ ОБРАБОТЧИКИ ==============
 
-@router.get("/ip/", response_class=HTMLResponse)
-@router.get("/ooo/", response_class=HTMLResponse)
-@router.get("/samozanyatye/", response_class=HTMLResponse)
-@router.get("/s-nds/", response_class=HTMLResponse)
-@router.get("/bez-nds/", response_class=HTMLResponse)
-@router.get("/qr-kod/", response_class=HTMLResponse)
-async def schet_landing(request: Request):
+async def schet_landing_handler(request: Request):
     """Универсальный обработчик лендингов счетов"""
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
@@ -99,11 +93,8 @@ async def schet_landing(request: Request):
     )
 
 
-# ============== ИНФОРМАЦИОННЫЕ СТРАНИЦЫ ==============
-
-@router.get("/obrazec/", response_class=HTMLResponse)
-async def schet_info(request: Request):
-    """Информационные страницы счетов"""
+async def schet_info_handler(request: Request):
+    """Универсальный обработчик информационных страниц"""
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
     
@@ -127,11 +118,8 @@ async def schet_info(request: Request):
     )
 
 
-# ============== СТРАНИЦЫ СКАЧИВАНИЯ ==============
-
-@router.get("/blank-excel/", response_class=HTMLResponse)
-async def schet_download(request: Request):
-    """Страницы скачивания бланков"""
+async def schet_download_handler(request: Request):
+    """Универсальный обработчик страниц скачивания"""
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
     
@@ -161,17 +149,72 @@ async def schet_download(request: Request):
     )
 
 
-# ============== РЕДИРЕКТЫ (без trailing slash) ==============
-
-@router.get("/ip", response_class=RedirectResponse)
-@router.get("/ooo", response_class=RedirectResponse)
-@router.get("/samozanyatye", response_class=RedirectResponse)
-@router.get("/s-nds", response_class=RedirectResponse)
-@router.get("/bez-nds", response_class=RedirectResponse)
-@router.get("/qr-kod", response_class=RedirectResponse)
-@router.get("/obrazec", response_class=RedirectResponse)
-@router.get("/blank-excel", response_class=RedirectResponse)
-async def schet_redirect(request: Request):
-    """Редирект на URL с trailing slash"""
+async def schet_redirect_handler(request: Request):
+    """Универсальный редирект на URL с trailing slash"""
     path = request.url.path
     return RedirectResponse(url=f"{path}/", status_code=301)
+
+
+# ============== ДИНАМИЧЕСКАЯ РЕГИСТРАЦИЯ РОУТОВ ==============
+
+def register_schet_routes():
+    """Динамически регистрирует все роуты из _pages.yaml"""
+    config = load_schet_pages_config()
+    
+    # Регистрируем лендинги
+    for slug in config.get("landings", {}).keys():
+        router.add_api_route(
+            f"/{slug}/",
+            schet_landing_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"schet_landing_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            schet_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"schet_landing_{slug}_redirect"
+        )
+    
+    # Регистрируем информационные страницы
+    for slug in config.get("info_pages", {}).keys():
+        router.add_api_route(
+            f"/{slug}/",
+            schet_info_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"schet_info_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            schet_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"schet_info_{slug}_redirect"
+        )
+    
+    # Регистрируем страницы скачивания
+    for slug in config.get("downloads", {}).keys():
+        router.add_api_route(
+            f"/{slug}/",
+            schet_download_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"schet_download_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            schet_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"schet_download_{slug}_redirect"
+        )
+
+
+# Регистрируем роуты при импорте модуля
+register_schet_routes()

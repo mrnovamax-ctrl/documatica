@@ -1,6 +1,6 @@
 """
 Акт выполненных работ - публичные страницы (хаб и лендинги)
-Универсальный роутер на основе конфига
+Динамическая регистрация роутов из _pages.yaml
 """
 
 import yaml
@@ -77,28 +77,17 @@ async def akt_hub(request: Request):
     )
 
 
-# ============== УНИВЕРСАЛЬНЫЙ РОУТЕР ЛЕНДИНГОВ ==============
+# ============== УНИВЕРСАЛЬНЫЕ ОБРАБОТЧИКИ ==============
 
-@router.get("/ooo/", response_class=HTMLResponse)
-@router.get("/ip/", response_class=HTMLResponse)
-@router.get("/samozanyatye/", response_class=HTMLResponse)
-@router.get("/uslug/", response_class=HTMLResponse)
-@router.get("/rabot/", response_class=HTMLResponse)
-@router.get("/s-nds/", response_class=HTMLResponse)
-@router.get("/bez-nds/", response_class=HTMLResponse)
-@router.get("/2026/", response_class=HTMLResponse)
-async def akt_landing(request: Request):
+async def akt_landing_handler(request: Request):
     """Универсальный обработчик лендингов Акт"""
-    # Извлекаем slug из пути
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
     
-    # Получаем конфиг
     config = get_landing_config(slug)
     if not config:
         raise HTTPException(status_code=404, detail="Страница не найдена")
     
-    # Загружаем контент
     content = load_content(config["content_file"])
     
     return templates.TemplateResponse(
@@ -115,12 +104,8 @@ async def akt_landing(request: Request):
     )
 
 
-# ============== ИНФОРМАЦИОННЫЕ СТРАНИЦЫ ==============
-
-@router.get("/obrazec-zapolneniya/", response_class=HTMLResponse)
-@router.get("/obrazec/", response_class=HTMLResponse)
-async def akt_info(request: Request):
-    """Информационные страницы Акт"""
+async def akt_info_handler(request: Request):
+    """Универсальный обработчик информационных страниц"""
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
     
@@ -144,12 +129,8 @@ async def akt_info(request: Request):
     )
 
 
-# ============== СТРАНИЦЫ СКАЧИВАНИЯ ==============
-
-@router.get("/blank-excel/", response_class=HTMLResponse)
-@router.get("/blank-word/", response_class=HTMLResponse)
-async def akt_download(request: Request):
-    """Страницы скачивания бланков"""
+async def akt_download_handler(request: Request):
+    """Универсальный обработчик страниц скачивания"""
     path = request.url.path
     slug = path.strip("/").split("/")[-1]
     
@@ -178,3 +159,91 @@ async def akt_download(request: Request):
             ]
         }
     )
+
+
+async def akt_redirect_handler(request: Request):
+    """Универсальный редирект на URL с trailing slash"""
+    path = request.url.path
+    return RedirectResponse(url=f"{path}/", status_code=301)
+
+
+# ============== ДИНАМИЧЕСКАЯ РЕГИСТРАЦИЯ РОУТОВ ==============
+
+def register_akt_routes():
+    """Динамически регистрирует все роуты из _pages.yaml"""
+    config = load_akt_pages_config()
+    
+    # Регистрируем лендинги
+    for slug in config.get("landings", {}).keys():
+        router.add_api_route(
+            f"/{slug}/",
+            akt_landing_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"akt_landing_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            akt_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"akt_landing_{slug}_redirect"
+        )
+    
+    # Регистрируем информационные страницы
+    for slug, page_config in config.get("info_pages", {}).items():
+        router.add_api_route(
+            f"/{slug}/",
+            akt_info_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"akt_info_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            akt_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"akt_info_{slug}_redirect"
+        )
+        
+        # Регистрируем алиасы
+        for alias in page_config.get("aliases", []):
+            router.add_api_route(
+                f"/{alias}/",
+                akt_info_handler,
+                methods=["GET"],
+                response_class=HTMLResponse,
+                name=f"akt_info_{alias}"
+            )
+            router.add_api_route(
+                f"/{alias}",
+                akt_redirect_handler,
+                methods=["GET"],
+                response_class=RedirectResponse,
+                name=f"akt_info_{alias}_redirect"
+            )
+    
+    # Регистрируем страницы скачивания
+    for slug in config.get("downloads", {}).keys():
+        router.add_api_route(
+            f"/{slug}/",
+            akt_download_handler,
+            methods=["GET"],
+            response_class=HTMLResponse,
+            name=f"akt_download_{slug}"
+        )
+        # Редирект без trailing slash
+        router.add_api_route(
+            f"/{slug}",
+            akt_redirect_handler,
+            methods=["GET"],
+            response_class=RedirectResponse,
+            name=f"akt_download_{slug}_redirect"
+        )
+
+
+# Регистрируем роуты при импорте модуля
+register_akt_routes()
