@@ -1314,7 +1314,13 @@ $(document).ready(function() {
     // Функция генерации и скачивания PDF (для авторизованных)
     async function generateAndDownloadPDF(requestData) {
         // ПРОВЕРКА АВТОРИЗАЦИИ - для гостей показываем модалку регистрации
-        const token = localStorage.getItem('documatica_token') || getCookie('access_token');
+        let token = localStorage.getItem('documatica_token') || getCookie('access_token');
+        
+        // Если токен есть в cookie, но нет в localStorage - синхронизируем
+        if (token && !localStorage.getItem('documatica_token')) {
+            localStorage.setItem('documatica_token', token);
+            console.log('[AUTH] Token synced from cookie to localStorage');
+        }
         
         if (!token) {
             // Показываем модалку сразу
@@ -1341,7 +1347,7 @@ $(document).ready(function() {
         
         try {
             const API_URL = '';
-            const token = localStorage.getItem('documatica_token');
+            const token = localStorage.getItem('documatica_token') || getCookie('access_token');
             const response = await fetch(`${API_URL}/api/v1/documents/invoice/generate`, {
                 method: 'POST',
                 headers: {

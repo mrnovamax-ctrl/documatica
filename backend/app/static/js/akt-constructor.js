@@ -3,6 +3,14 @@
  * Адаптировано из upd-constructor для работы с Актами выполненных работ
  */
 
+// Вспомогательная функция для получения cookie
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+
 $(document).ready(function() {
     // Отключаем transitions при инициализации страницы
     document.body.classList.add('no-transitions');
@@ -52,7 +60,17 @@ $(document).ready(function() {
     
     // Настраиваем интерфейс для авторизованного пользователя
     (function() {
-        const token = localStorage.getItem('documatica_token');
+        // Проверяем токен в localStorage и cookie
+        let token = localStorage.getItem('documatica_token');
+        if (!token) {
+            // Пробуем получить из cookie (например, после OAuth)
+            token = getCookie('access_token');
+            if (token) {
+                localStorage.setItem('documatica_token', token);
+                console.log('[AUTH] Token synced from cookie to localStorage');
+            }
+        }
+        
         const user = JSON.parse(localStorage.getItem('documatica_user') || '{}');
         
         if (token && user) {
@@ -855,7 +873,7 @@ $(document).ready(function() {
         submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Сохранение...');
         
         try {
-            const token = localStorage.getItem('documatica_token');
+            const token = localStorage.getItem('documatica_token') || getCookie('access_token');
             
             // Если нет токена - сохраняем как черновик и показываем модалку
             if (!token) {

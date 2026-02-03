@@ -1,6 +1,40 @@
 (function ($) {
   "use strict";
 
+  // Глобальная функция для получения cookie
+  window.getCookie = function(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  };
+
+  // Синхронизация токена из cookie в localStorage (важно для OAuth)
+  (function syncTokenFromCookie() {
+    const cookieToken = window.getCookie('access_token');
+    const localToken = localStorage.getItem('documatica_token');
+    
+    if (cookieToken && !localToken) {
+      localStorage.setItem('documatica_token', cookieToken);
+      console.log('[AUTH] Token synced from cookie to localStorage');
+      
+      // Также загружаем данные пользователя
+      fetch('/api/v1/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${cookieToken}`
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.id) {
+          localStorage.setItem('documatica_user', JSON.stringify(data));
+          console.log('[AUTH] User data loaded:', data.email);
+        }
+      })
+      .catch(err => console.error('[AUTH] Failed to load user data:', err));
+    }
+  })();
+
   // sidebar submenu collapsible js
   $(".sidebar-menu .dropdown").on("click", function () {
     var item = $(this);

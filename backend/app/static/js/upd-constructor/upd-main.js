@@ -1352,6 +1352,18 @@ $(document).ready(function() {
     $('#upd-form').on('submit', async function(e) {
         e.preventDefault();
         
+        // DEBUG: Проверяем наличие полей в DOM
+        console.log('[DOM CHECK] Поле #shipping-date существует?', $('#shipping-date').length > 0);
+        console.log('[DOM CHECK] Поле #other-shipping-info существует?', $('#other-shipping-info').length > 0);
+        console.log('[DOM CHECK] Поле #receiving-date существует?', $('#receiving-date').length > 0);
+        console.log('[DOM CHECK] Поле #other-receiving-info существует?', $('#other-receiving-info').length > 0);
+        
+        // DEBUG: Проверяем значения полей
+        console.log('[VALUE CHECK] #shipping-date =', $('#shipping-date').val());
+        console.log('[VALUE CHECK] #other-shipping-info =', $('#other-shipping-info').val());
+        console.log('[VALUE CHECK] #receiving-date =', $('#receiving-date').val());
+        console.log('[VALUE CHECK] #other-receiving-info =', $('#other-receiving-info').val());
+        
         // Validate form
         if (!this.checkValidity()) {
             this.reportValidity();
@@ -1388,8 +1400,24 @@ $(document).ready(function() {
     
     // Функция генерации и скачивания PDF (для авторизованных)
     async function generateAndDownloadPDF(requestData) {
+        // DEBUG: Логируем данные перед отправкой
+        console.log('[UPD DEBUG] Отправляемые данные:', {
+            shipping_date: requestData.shipping_date,
+            other_shipping_info: requestData.other_shipping_info,
+            receiving_date: requestData.receiving_date,
+            other_receiving_info: requestData.other_receiving_info,
+            seller_responsible: requestData.seller_responsible,
+            buyer_responsible: requestData.buyer_responsible
+        });
+        
         // ПРОВЕРКА АВТОРИЗАЦИИ - для гостей показываем модалку регистрации
-        const token = localStorage.getItem('documatica_token') || getCookie('access_token');
+        let token = localStorage.getItem('documatica_token') || getCookie('access_token');
+        
+        // Если токен есть в cookie, но нет в localStorage - синхронизируем
+        if (token && !localStorage.getItem('documatica_token')) {
+            localStorage.setItem('documatica_token', token);
+            console.log('[AUTH] Token synced from cookie to localStorage');
+        }
         
         if (!token) {
             // Гость - показываем модалку сразу
@@ -1421,7 +1449,7 @@ $(document).ready(function() {
         
         try {
             const API_URL = '';
-            const token = localStorage.getItem('documatica_token');
+            const token = localStorage.getItem('documatica_token') || getCookie('access_token');
             const response = await fetch(`${API_URL}/api/v1/documents/upd/generate`, {
                 method: 'POST',
                 headers: {
@@ -1483,11 +1511,12 @@ $(document).ready(function() {
             
             // Сохраняем документ в личном кабинете
             try {
+                const saveToken = localStorage.getItem('documatica_token') || getCookie('access_token');
                 const saveResponse = await fetch(`${API_URL}/api/v1/documents/upd/save`, {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': token ? `Bearer ${token}` : ''
+                        'Authorization': saveToken ? `Bearer ${saveToken}` : ''
                     },
                     body: JSON.stringify(requestData)
                 });
@@ -1649,6 +1678,12 @@ $(document).ready(function() {
             receiving_date: $('#receiving-date').val() ? convertDateToISO($('#receiving-date').val()) : null,
             other_shipping_info: $('#other-shipping-info').val() || null,
             other_receiving_info: $('#other-receiving-info').val() || null,
+            
+            // DEBUG: Логируем значения полей
+            ...(console.log('[FORM DEBUG] shipping-date поле:', $('#shipping-date').val()), {}),
+            ...(console.log('[FORM DEBUG] other-shipping-info поле:', $('#other-shipping-info').val()), {}),
+            ...(console.log('[FORM DEBUG] receiving-date поле:', $('#receiving-date').val()), {}),
+            ...(console.log('[FORM DEBUG] other-receiving-info поле:', $('#other-receiving-info').val()), {}),
             seller_signer: $('#released-by').val() ? {
                 position: $('#released-position').val() || 'Директор',
                 full_name: $('#released-by').val(),
