@@ -281,5 +281,31 @@
     "user_id": 65,
     "created_at": "2026-01-30T11:40:17.633778",
     "updated_at": "2026-01-30T11:40:17.633778"
+  },
+  {
+    "id": "a8bf192f-5112-469e-962f-7dd5f6390d28",
+    "org_type": "ooo",
+    "name": "ИП Рубацкий Игорь Николаевич",
+    "inn": "101302680830",
+    "kpp": "",
+    "ogrn": "308103922100022",
+    "address": "Респ Карелия, Медвежьегорский р-н, пгт Пиндуши",
+    "logo_url": "",
+    "director": "Рубацкий Игорь Николаевич",
+    "bank_name": "КАРЕЛЬСКОЕ ОТДЕЛЕНИЕ N8628 ПАО СБЕРБАНК",
+    "bank_bik": "048602673",
+    "bank_account": "40802810925000007020",
+    "bank_corr_account": "30101810600000000673",
+    "phone": "+79114060581",
+    "email": "Rubaigor@yandex.ru",
+    "contact_person": "",
+    "receiver_position": null,
+    "receiver_name": null,
+    "responsible_position": null,
+    "responsible_name": null,
+    "economic_entity": null,
+    "user_id": 109,
+    "created_at": "2026-02-03T08:51:22.429815",
+    "updated_at": "2026-02-03T08:51:22.429815"
   }
 ]

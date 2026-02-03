@@ -1421,19 +1421,11 @@ td { padding: 0 !important; font-size: 6pt !important; }
   <td class=xl65></td>
   <td class=xl73>&nbsp;</td>
   <td class=xl65></td>
+  <td colspan=9 class=xl83>{% if buyer_signer %}{{ buyer_signer.position|default('', true) }}{% endif %}</td>
+  <td class=xl65></td>
   <td colspan=3 class=xl83 style='width:43pt'>{% if buyer_signer and buyer_signer.signature_image %}<span class="signature-with-stamp"><img src="{{ buyer_signer.signature_image }}" class="signature-img">{% if buyer_stamp_image %}<img src="{{ buyer_stamp_image }}" class="stamp-img">{% endif %}</span>{% endif %}</td>
   <td class=xl65></td>
   <td colspan=7 class=xl83 width=149 style='width:112pt'>{% if buyer_signer %}{{ buyer_signer.full_name }}{% endif %}</td>
-  <td class=xl65></td>
-  <td class=xl83 width=1 style='width:1pt'>&nbsp;</td>
-  <td class=xl83 width=4 style='width:3pt'>&nbsp;</td>
-  <td class=xl83 width=7 style='width:5pt'>&nbsp;</td>
-  <td class=xl83 width=11 style='width:8pt'>&nbsp;</td>
-  <td class=xl83 width=5 style='width:4pt'>&nbsp;</td>
-  <td class=xl83 width=32 style='width:24pt'>&nbsp;</td>
-  <td class=xl83 width=31 style='width:23pt'>&nbsp;</td>
-  <td class=xl83 width=76 style='width:57pt'>&nbsp;</td>
-  <td class=xl83 width=31 style='width:23pt'>&nbsp;</td>
   <td colspan=2 rowspan=2 class=xl87>[15]</td>
   <td class=xl65></td>
   <td class=xl65></td>

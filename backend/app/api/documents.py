@@ -204,6 +204,14 @@ async def generate_upd(request: UPDRequest, return_base64: bool = False):
     - **return_base64**: Если True, возвращает PDF как base64 в JSON ответе
     """
     try:
+        # DEBUG: Логируем критичные поля
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"[UPD DEBUG] shipping_date: {request.shipping_date}")
+        logger.info(f"[UPD DEBUG] other_shipping_info: {request.other_shipping_info}")
+        logger.info(f"[UPD DEBUG] receiving_date: {request.receiving_date}")
+        logger.info(f"[UPD DEBUG] other_receiving_info: {request.other_receiving_info}")
+        
         # Загружаем шаблон
         template = jinja_env.get_template("upd_template.html")
         
@@ -251,11 +259,14 @@ async def generate_upd(request: UPDRequest, return_base64: bool = False):
             "payment_document": request.payment_document,
             "shipping_document": request.shipping_document,
             "contract_info": request.contract_info,
+            "transfer_basis": request.contract_info,  # Алиас для шаблона (основание передачи)
             "transport_info": request.transport_info,
             
             # Подписант продавца
             "shipping_date": format_date_short(request.shipping_date) if request.shipping_date else None,
+            "transfer_date": format_date_short(request.shipping_date) if request.shipping_date else None,  # Алиас для шаблона
             "other_shipping_info": request.other_shipping_info,
+            "other_transfer_info": request.other_shipping_info,  # Алиас для шаблона
             "seller_signer": request.seller_signer.model_dump() if request.seller_signer else None,
             "seller_responsible": request.seller_responsible.model_dump() if request.seller_responsible else None,
             "economic_entity": request.economic_entity,
@@ -264,11 +275,32 @@ async def generate_upd(request: UPDRequest, return_base64: bool = False):
             
             # Подписант покупателя
             "receiving_date": format_date_short(request.receiving_date) if request.receiving_date else None,
+            "receipt_date": format_date_short(request.receiving_date) if request.receiving_date else None,  # Алиас для шаблона
             "other_receiving_info": request.other_receiving_info,
+            "other_receipt_info": request.other_receiving_info,  # Алиас для шаблона
             "buyer_signer": request.buyer_signer.model_dump() if request.buyer_signer else None,
             "buyer_responsible": request.buyer_responsible.model_dump() if request.buyer_responsible else None,
             "buyer_economic_entity": request.buyer_economic_entity,
         }
+        
+        # DEBUG: Подробное логирование для отладки
+        logger.info("="*80)
+        logger.info("[UPD DEBUG] ДАННЫЕ ПОЛУЧЕНЫ ОТ КЛИЕНТА:")
+        logger.info(f"  shipping_date (request): {request.shipping_date}")
+        logger.info(f"  other_shipping_info (request): {request.other_shipping_info}")
+        logger.info(f"  receiving_date (request): {request.receiving_date}")
+        logger.info(f"  other_receiving_info (request): {request.other_receiving_info}")
+        logger.info(f"  seller_responsible (request): {request.seller_responsible}")
+        logger.info(f"  buyer_responsible (request): {request.buyer_responsible}")
+        logger.info("")
+        logger.info("[UPD DEBUG] ДАННЫЕ ПЕРЕДАЮТСЯ В ШАБЛОН:")
+        logger.info(f"  transfer_date: {template_data.get('transfer_date')}")
+        logger.info(f"  other_transfer_info: {template_data.get('other_transfer_info')}")
+        logger.info(f"  receipt_date: {template_data.get('receipt_date')}")
+        logger.info(f"  other_receipt_info: {template_data.get('other_receipt_info')}")
+        logger.info(f"  seller_responsible: {template_data.get('seller_responsible')}")
+        logger.info(f"  buyer_responsible: {template_data.get('buyer_responsible')}")
+        logger.info("="*80)
         
         # Рендерим HTML
         html_content = template.render(**template_data)

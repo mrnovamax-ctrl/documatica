@@ -3,6 +3,7 @@ Documatica Backend - FastAPI Application
 Сервис генерации бухгалтерских документов (УПД)
 """
 
+import logging
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,6 +11,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
+
+# Настройка логирования
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+# Включаем DEBUG для модуля app
+logging.getLogger('app').setLevel(logging.DEBUG)
 
 from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload, promocodes, oauth, drafts, contact, samples, blanks
 from app.pages import router as pages_router

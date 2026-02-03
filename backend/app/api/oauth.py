@@ -60,7 +60,8 @@ async def yandex_login(
         "client_id": YANDEX_CLIENT_ID,
         "redirect_uri": YANDEX_REDIRECT_URI,
         "state": state,
-        "scope": "login:email login:info",
+        # Яндекс OAuth не требует явных scope для базового доступа к email и info
+        # Доступ настраивается в настройках приложения на https://oauth.yandex.ru
     }
     
     auth_url = f"https://oauth.yandex.ru/authorize?{urlencode(params)}"

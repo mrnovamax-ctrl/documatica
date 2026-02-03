@@ -1,0 +1,50 @@
+<!-- Тест сбора данных из формы УПД -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Тест сбора данных формы УПД</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <h1>Тест сбора данных из формы УПД</h1>
+    
+    <h2>Блок продавца:</h2>
+    <label>Дата отгрузки:</label>
+    <input type="text" id="shipping-date" value="02.02.2026"><br><br>
+    
+    <label>Иные сведения об отгрузке:</label>
+    <input type="text" id="other-shipping-info" value="Тест информации об отгрузке"><br><br>
+    
+    <h2>Блок покупателя:</h2>
+    <label>Дата получения:</label>
+    <input type="text" id="receiving-date" value="03.02.2026"><br><br>
+    
+    <label>Иные сведения о получении:</label>
+    <input type="text" id="other-receiving-info" value="Тест информации о получении"><br><br>
+    
+    <button onclick="testCollect()">Собрать данные</button>
+    
+    <h2>Результат:</h2>
+    <pre id="result"></pre>
+    
+    <script>
+        function testCollect() {
+            const data = {
+                shipping_date: $('#shipping-date').val(),
+                other_shipping_info: $('#other-shipping-info').val(),
+                receiving_date: $('#receiving-date').val(),
+                other_receiving_info: $('#other-receiving-info').val()
+            };
+            
+            console.log('Собранные данные:', data);
+            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        }
+        
+        // Автоматически собираем при загрузке
+        $(document).ready(function() {
+            testCollect();
+        });
+    </script>
+</body>
+</html>
