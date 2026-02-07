@@ -24,6 +24,7 @@ dadata==21.10.1
 # База данных
 sqlalchemy==2.0.25
 psycopg2-binary==2.9.9
+alembic==1.13.1
 
 # Авторизация
 passlib==1.7.4
@@ -37,6 +38,7 @@ python-jose[cryptography]==3.3.0
 # Утилиты
 python-dotenv==1.0.1
 httpx==0.26.0
+markdown==3.5.1
 
 # Для работы с датами
 python-dateutil==2.8.2

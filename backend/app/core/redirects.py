@@ -1,6 +1,7 @@
 """
 Редиректы со старых URL на новые (301)
-Для сохранения SEO после миграции сайта
+Для сохранения SEO после миграции сайта.
+Статические редиректы в REDIRECTS + редиректы из БД (в т.ч. при смене slug статей).
 """
 
 from fastapi import Request
@@ -103,6 +104,22 @@ REDIRECTS = {
 REDIRECTS_NO_SLASH = {k.rstrip('/'): v for k, v in REDIRECTS.items() if k.endswith('/')}
 
 
+def _get_db_redirect(path: str):
+    """Редирект из БД (ленивый импорт)."""
+    from app.database import SessionLocal
+    from app.models import Redirect
+    path_normalized = path if path.endswith("/") else path + "/"
+    db = SessionLocal()
+    try:
+        r = db.query(Redirect).filter(
+            Redirect.from_url == path_normalized,
+            Redirect.is_active.is_(True),
+        ).first()
+        return (r.to_url, r.status_code or 301) if r else None
+    finally:
+        db.close()
+
+
 class RedirectMiddleware(BaseHTTPMiddleware):
     """Middleware для обработки 301 редиректов"""
     
@@ -118,5 +135,10 @@ class RedirectMiddleware(BaseHTTPMiddleware):
         if path in REDIRECTS_NO_SLASH:
             new_url = REDIRECTS_NO_SLASH[path]
             return RedirectResponse(url=new_url, status_code=301)
-        
+
+        db_redirect = _get_db_redirect(path)
+        if db_redirect:
+            to_url, status_code = db_redirect
+            return RedirectResponse(url=to_url, status_code=status_code)
+
         return await call_next(request)

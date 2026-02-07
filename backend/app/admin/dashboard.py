@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, case, and_
 
 from app.database import get_db
 from app.models import User, Payment
@@ -27,37 +27,26 @@ def get_statistics(db: Session) -> dict:
     week_start = today_start - timedelta(days=7)
     month_start = today_start - timedelta(days=30)
     
-    # === Пользователи из БД ===
-    total_users = db.query(func.count(User.id)).scalar() or 0
-    
-    # Платные аккаунты (с активной подпиской)
-    paid_users = db.query(func.count(User.id)).filter(
-        User.subscription_plan == "subscription",
-        User.subscription_expires > now
-    ).scalar() or 0
-    
-    # Новые пользователи за периоды
-    users_today = db.query(func.count(User.id)).filter(
-        User.created_at >= today_start
-    ).scalar() or 0
-    
-    users_week = db.query(func.count(User.id)).filter(
-        User.created_at >= week_start
-    ).scalar() or 0
-    
-    users_month = db.query(func.count(User.id)).filter(
-        User.created_at >= month_start
-    ).scalar() or 0
-    
-    # Верифицированные пользователи
-    verified_users = db.query(func.count(User.id)).filter(
-        User.is_verified == True
-    ).scalar() or 0
-    
-    # OAuth пользователи (Яндекс)
-    oauth_users = db.query(func.count(User.id)).filter(
-        User.yandex_id.isnot(None)
-    ).scalar() or 0
+    # === Пользователи из БД (один запрос вместо семи) ===
+    user_row = db.query(
+        func.count(User.id).label("total"),
+        func.count(case((and_(
+            User.subscription_plan == "subscription",
+            User.subscription_expires > now
+        ), 1))).label("paid"),
+        func.count(case((User.created_at >= today_start, 1))).label("today"),
+        func.count(case((User.created_at >= week_start, 1))).label("week"),
+        func.count(case((User.created_at >= month_start, 1))).label("month"),
+        func.count(case((User.is_verified == True, 1))).label("verified"),
+        func.count(case((User.yandex_id.isnot(None), 1))).label("oauth"),
+    ).one()
+    total_users = user_row.total or 0
+    paid_users = user_row.paid or 0
+    users_today = user_row.today or 0
+    users_week = user_row.week or 0
+    users_month = user_row.month or 0
+    verified_users = user_row.verified or 0
+    oauth_users = user_row.oauth or 0
     
     # === Документы ===
     # Считаем папки в директории documents
@@ -82,24 +71,18 @@ def get_statistics(db: Session) -> dict:
                 except Exception:
                     pass
     
-    # === Платежи из БД ===
-    total_payments = db.query(func.count(Payment.id)).filter(
-        Payment.status == "confirmed"
-    ).scalar() or 0
-    
-    total_revenue = db.query(func.sum(Payment.amount)).filter(
-        Payment.status == "confirmed"
-    ).scalar() or 0
-    
-    payments_month = db.query(func.count(Payment.id)).filter(
-        Payment.status == "confirmed",
-        Payment.confirmed_at >= month_start
-    ).scalar() or 0
-    
-    revenue_month = db.query(func.sum(Payment.amount)).filter(
-        Payment.status == "confirmed",
-        Payment.confirmed_at >= month_start
-    ).scalar() or 0
+    # === Платежи из БД (один запрос вместо четырёх) ===
+    confirmed = Payment.status == "confirmed"
+    payment_row = db.query(
+        func.count(Payment.id).label("total_count"),
+        func.coalesce(func.sum(Payment.amount), 0).label("total_revenue"),
+        func.count(case((Payment.confirmed_at >= month_start, 1))).label("month_count"),
+        func.coalesce(func.sum(case((Payment.confirmed_at >= month_start, Payment.amount))), 0).label("month_revenue"),
+    ).filter(confirmed).one()
+    total_payments = payment_row.total_count or 0
+    total_revenue = float(payment_row.total_revenue or 0)
+    payments_month = payment_row.month_count or 0
+    revenue_month = float(payment_row.month_revenue or 0)
     
     return {
         "users": {

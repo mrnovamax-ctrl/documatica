@@ -1,17 +1,22 @@
 """
 Счет на оплату - публичные страницы (хаб и лендинги)
-Динамическая регистрация роутов из _pages.yaml
+Хаб /schet/ отдаётся из CMS, если есть опубликованная страница с slug=schet.
 """
 
 import yaml
 from pathlib import Path
 from functools import lru_cache
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, HTTPException, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
 from typing import Dict, Any, Optional
+from sqlalchemy.orm import Session, joinedload
 
 from app.core.templates import templates
 from app.core.content import load_content
+from app.core.heroicons import get_icon_paths_html
+from app.database import get_db
+from app.models import Page
+from app.pages.cms_dynamic import _build_sections_for_template
 
 router = APIRouter()
 
@@ -49,10 +54,38 @@ def get_download_config(slug: str) -> Optional[Dict[str, Any]]:
 # ============== ГЛАВНАЯ СТРАНИЦА РАЗДЕЛА ==============
 
 @router.get("/", response_class=HTMLResponse)
-async def schet_hub(request: Request):
-    """Хаб Счетов - главная страница раздела"""
+async def schet_hub(request: Request, db: Session = Depends(get_db)):
+    """Хаб Счетов: из CMS (slug=schet), при наличии опубликованной страницы — dynamic_page, иначе YAML."""
+    page = (
+        db.query(Page)
+        .options(joinedload(Page.sections))
+        .filter(Page.slug == "schet")
+        .first()
+    )
+    if page and getattr(page, "status", None) == "published":
+        sections_for_template = _build_sections_for_template(page)
+        page_view = type("PageView", (), {
+            "id": page.id,
+            "title": page.title,
+            "meta_title": getattr(page, "meta_title", None),
+            "meta_description": getattr(page, "meta_description", None),
+            "meta_keywords": getattr(page, "meta_keywords", None),
+            "canonical_url": getattr(page, "canonical_url", None),
+            "sections": sections_for_template,
+        })()
+        return templates.TemplateResponse(
+            request=request,
+            name="public/dynamic_page.html",
+            context={
+                "page": page_view,
+                "latest_articles": [],
+                "title": page.meta_title or page.title,
+                "description": page.meta_description or "",
+                "is_home_page": False,
+                "heroicon_paths": get_icon_paths_html(),
+            },
+        )
     content = load_content("schet/index")
-    
     return templates.TemplateResponse(
         request=request,
         name="public/schet/index.html",
@@ -68,17 +101,55 @@ async def schet_hub(request: Request):
 
 # ============== УНИВЕРСАЛЬНЫЕ ОБРАБОТЧИКИ ==============
 
-async def schet_landing_handler(request: Request):
-    """Универсальный обработчик лендингов счетов"""
-    path = request.url.path
-    slug = path.strip("/").split("/")[-1]
-    
+def _schet_cms_page_response(request: Request, page, breadcrumb_title: str):
+    """Общий ответ из CMS для schet (лендинг/инфо)."""
+    sections_for_template = _build_sections_for_template(page)
+    page_view = type("PageView", (), {
+        "id": page.id,
+        "title": page.title,
+        "meta_title": getattr(page, "meta_title", None),
+        "meta_description": getattr(page, "meta_description", None),
+        "meta_keywords": getattr(page, "meta_keywords", None),
+        "canonical_url": getattr(page, "canonical_url", None),
+        "sections": sections_for_template,
+    })()
+    return templates.TemplateResponse(
+        request=request,
+        name="public/dynamic_page.html",
+        context={
+            "page": page_view,
+            "latest_articles": [],
+            "title": page.meta_title or page.title,
+            "description": page.meta_description or "",
+            "is_home_page": False,
+            "heroicon_paths": get_icon_paths_html(),
+            "breadcrumbs": [
+                {"title": "Главная", "url": "/"},
+                {"title": "Счет на оплату", "url": "/schet/"},
+                {"title": breadcrumb_title, "url": None},
+            ],
+        },
+    )
+
+
+async def schet_landing_handler(request: Request, db: Session = Depends(get_db)):
+    """Лендинги счетов: сначала CMS (slug=schet/ip и т.д.), иначе YAML."""
+    path = request.url.path.strip("/")  # schet/ip
+    slug = path.split("/")[-1]
+    page = (
+        db.query(Page)
+        .options(joinedload(Page.sections))
+        .filter(Page.slug == path, Page.status == "published")
+        .first()
+    )
+    if page:
+        config = get_landing_config(slug)
+        bc_title = config.get("breadcrumb", slug) if config else page.title
+        return _schet_cms_page_response(request, page, bc_title)
     config = get_landing_config(slug)
     if not config:
         raise HTTPException(status_code=404, detail="Страница не найдена")
-    
     content = load_content(config["content_file"])
-    
     return templates.TemplateResponse(
         request=request,
         name="public/schet/landing.html",
@@ -93,17 +164,25 @@ async def schet_landing_handler(request: Request):
     )
 
 
-async def schet_info_handler(request: Request):
-    """Универсальный обработчик информационных страниц"""
-    path = request.url.path
-    slug = path.strip("/").split("/")[-1]
-    
+async def schet_info_handler(request: Request, db: Session = Depends(get_db)):
+    """Информационные страницы счетов: сначала CMS, иначе YAML."""
+    path = request.url.path.strip("/")
+    slug = path.split("/")[-1]
+    cms_slug = path  # schet/obrazec
+    page = (
+        db.query(Page)
+        .options(joinedload(Page.sections))
+        .filter(Page.slug == cms_slug, Page.status == "published")
+        .first()
+    )
+    if page:
+        config = get_info_config(slug)
+        bc_title = config.get("breadcrumb", page.title) if config else page.title
+        return _schet_cms_page_response(request, page, bc_title)
     config = get_info_config(slug)
     if not config:
         raise HTTPException(status_code=404, detail="Страница не найдена")
-    
     content = load_content(config["content_file"])
-    
     return templates.TemplateResponse(
         request=request,
         name="public/schet/info.html",

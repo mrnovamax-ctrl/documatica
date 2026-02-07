@@ -1,0 +1,69 @@
+{# Form Section - блоки: heading, paragraph, contact_form (Terminal v12.0 forms) #}
+{% set bg_class = 'form-section-v12 section-light' %}
+{% if section.background_style == 'white' %}
+  {% set bg_class = 'form-section-v12 bg-white' %}
+{% elif section.background_style == 'surface' %}
+  {% set bg_class = 'form-section-v12 bg-surface' %}
+{% elif section.background_style == 'surface_light' %}
+  {% set bg_class = 'form-section-v12 bg-surface-light' %}
+{% elif section.background_style == 'dark' %}
+  {% set bg_class = 'form-section-v12 bg-dark' %}
+{% elif section.background_style == 'primary' %}
+  {% set bg_class = 'form-section-v12 bg-primary' %}
+{% elif section.background_style == 'gold' %}
+  {% set bg_class = 'form-section-v12 bg-gold' %}
+{% elif section.background_style == 'pattern_dots_light' %}
+  {% set bg_class = 'form-section-v12 pattern-dots-light' %}
+{% elif section.background_style == 'pattern_dots_dark' %}
+  {% set bg_class = 'form-section-v12 pattern-dots-dark' %}
+{% elif section.background_style == 'pattern_grid_lines' %}
+  {% set bg_class = 'form-section-v12 pattern-grid-lines' %}
+{% elif section.background_style == 'pattern_radial_blue' %}
+  {% set bg_class = 'form-section-v12 pattern-radial-blue' %}
+{% elif section.background_style == 'pattern_radial_gold' %}
+  {% set bg_class = 'form-section-v12 pattern-radial-gold' %}
+{% elif section.background_style == 'gradient_blue' %}
+  {% set bg_class = 'form-section-v12 bg-gradient-blue' %}
+{% elif section.background_style == 'gradient_gold' %}
+  {% set bg_class = 'form-section-v12 bg-gradient-gold' %}
+{% endif %}
+{% set is_dark_bg = section.background_style in ['dark', 'primary', 'gold', 'pattern_dots_dark'] %}
+{% set container_class = 'container' %}
+{% if section.container_width == 'narrow' %}
+  {% set container_class = 'container container-narrow' %}
+{% elif section.container_width == 'wide' %}
+  {% set container_class = 'container container-wide' %}
+{% elif section.container_width == 'full' %}
+  {% set container_class = 'container-fluid' %}
+{% endif %}
+
+<section class="{{ bg_class }} {{ section.css_classes }}{% if is_dark_bg %} section--dark{% endif %}">
+  <div class="{{ container_class }}">
+    <div class="form-section-inner-v12">
+      {% for block in section.blocks %}
+        {% if block.is_visible and block.block_type == 'heading' %}
+          {% set title_text = block.content.text %}
+          {% set accent = block.content.accent %}
+          {% if accent and accent in title_text %}
+            {% set parts = title_text.split(accent) %}
+            <h2 class="type-h2 form-section-title-v12 {{ block.css_classes }}">
+              {{ parts[0] }}<span class="text-primary-light">{{ accent }}</span>{{ parts[1] if parts|length > 1 else '' }}
+            </h2>
+          {% elif accent %}
+            <h2 class="type-h2 form-section-title-v12 {{ block.css_classes }}">{{ title_text }} <span class="text-primary-light">{{ accent }}</span></h2>
+          {% else %}
+            <h2 class="type-h2 form-section-title-v12 {{ block.css_classes }}">{{ title_text }}</h2>
+          {% endif %}
+        {% elif block.is_visible and block.block_type == 'paragraph' %}
+          <div class="type-body-base form-section-desc-v12 {{ block.css_classes }}">{{ block.content.text | safe }}</div>
+        {% elif block.is_visible and block.block_type == 'contact_form' %}
+          <div class="form-section-form-wrap-v12 {{ block.css_classes }}">
+            {% include "components/blocks/contact_form.html" %}
+          </div>
+        {% elif block.is_visible and block.block_type == 'link_group' %}
+          {% include "components/blocks/_link_group_render.html" %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,75 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Страницы{% endblock %}
+{% block page_title %}Страницы{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/pages/create/" class="admin-btn-primary">
+  <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+  Создать страницу
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="admin-core">
+  {% set groups = page_groups if page_groups is defined and page_groups else ([{'key': 'all', 'title': 'Все страницы', 'pages': pages}] if pages is defined and pages else []) %}
+  {% if groups %}
+    {% for group in groups %}
+    <section class="admin-table-section">
+      <h2 class="admin-table-section__title">{{ group.title }}</h2>
+      <div class="table-wrapper">
+        <table class="table table--striped">
+          <thead>
+            <tr>
+              <th>Название</th>
+              <th>URL</th>
+              <th>Секций</th>
+              <th>Обновлено</th>
+              <th>Статус</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for page in group.pages %}
+            <tr>
+              <td>{{ page.title }}</td>
+              <td class="table__muted">/{{ page.slug }}/</td>
+              <td>{{ page.sections | length }}</td>
+              <td class="table__muted">{{ page.updated_at.strftime('%d.%m.%Y %H:%M') if page.updated_at else '—' }}</td>
+              <td>
+                <span class="badge badge--{{ 'success' if page.status == 'published' else 'warning' if page.status == 'draft' else 'neutral' }}">
+                  {{ page.status }}
+                </span>
+              </td>
+              <td>
+                <div class="table-actions">
+                  <a href="/admin/pages/{{ page.id }}/edit/" class="table-action table-action--primary">
+                    <iconify-icon icon="ri:edit-line" width="18"></iconify-icon>
+                    Редактировать
+                  </a>
+                  <a href="/{{ page.slug }}/" target="_blank" class="table-action" rel="noopener">
+                    <iconify-icon icon="ri:external-link-line" width="18"></iconify-icon>
+                    Открыть
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {% endfor %}
+  {% else %}
+    <div class="admin-empty">
+      <iconify-icon icon="ri:file-list-3-line" width="64" class="admin-empty__icon"></iconify-icon>
+      <h3 class="admin-empty__title">Страниц пока нет</h3>
+      <p class="admin-empty__text">Создайте первую страницу с помощью Block Builder</p>
+      <a href="/admin/pages/create/" class="admin-btn-primary">
+        <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+        Создать страницу
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

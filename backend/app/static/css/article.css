@@ -3,7 +3,50 @@
    Используется в: public/news/article.html
    ================================================================ */
 
-.article-content h2 {
+/* Breadcrumbs */
+.article-breadcrumbs {
+  margin-bottom: 32px;
+}
+
+.article-breadcrumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.article-breadcrumbs__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.article-breadcrumbs__sep {
+  color: #64748b;
+  pointer-events: none;
+}
+
+.article-breadcrumbs__link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.article-breadcrumbs__link:hover {
+  color: #cbd5e1;
+}
+
+.article-breadcrumbs__current {
+  color: #3b82f6;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Только прямой контент статьи — не трогаем вставки шорткодов (.shortcode-block) */
+.article-content > h2,
+.article-content > div:not(.shortcode-block) h2 {
   font-size: 1.5rem;
   font-weight: 800;
   color: #0f172a;
@@ -11,37 +54,47 @@
   line-height: 1.3;
 }
 
-.article-content h3 {
+.article-content > h3,
+.article-content > div:not(.shortcode-block) h3 {
   font-size: 1.25rem;
   font-weight: 700;
   color: #0f172a;
   margin: 32px 0 12px;
 }
 
-.article-content p {
+.article-content > p,
+.article-content > div:not(.shortcode-block) p {
   margin: 0 0 20px;
 }
 
-.article-content ul, .article-content ol {
+.article-content > ul,
+.article-content > ol,
+.article-content > div:not(.shortcode-block) ul,
+.article-content > div:not(.shortcode-block) ol {
   margin: 0 0 20px;
   padding-left: 24px;
 }
 
-.article-content li {
+.article-content > ul li,
+.article-content > ol li,
+.article-content > div:not(.shortcode-block) li {
   margin-bottom: 8px;
 }
 
-.article-content strong {
+.article-content > strong,
+.article-content > div:not(.shortcode-block) strong {
   font-weight: 600;
   color: #0f172a;
 }
 
-.article-content a {
+.article-content > a,
+.article-content > div:not(.shortcode-block) a {
   color: #3b82f6;
   text-decoration: underline;
 }
 
-.article-content blockquote {
+.article-content > blockquote,
+.article-content > div:not(.shortcode-block) blockquote {
   margin: 24px 0;
   padding: 20px 24px;
   background: #f8fafc;
@@ -51,28 +104,43 @@
   color: #64748b;
 }
 
-.article-content img {
+.article-content > img,
+.article-content > div:not(.shortcode-block) img {
   max-width: 100%;
   height: auto;
   border-radius: 1rem;
   margin: 24px 0;
 }
 
-.article-content table {
+.article-content > table,
+.article-content > div:not(.shortcode-block) table {
   width: 100%;
   border-collapse: collapse;
   margin: 24px 0;
 }
 
-.article-content th, .article-content td {
+.article-content > th,
+.article-content > td,
+.article-content > div:not(.shortcode-block) th,
+.article-content > div:not(.shortcode-block) td {
   padding: 12px 16px;
   border: 1px solid #e2e8f0;
   text-align: left;
 }
 
-.article-content th {
+.article-content > th,
+.article-content > div:not(.shortcode-block) th {
   background: #f8fafc;
   font-weight: 600;
+}
+
+/* Вставка шорткода: отступы; паддинг секции убираем (не тянем 120px из home.css/documatica) */
+.shortcode-block {
+  margin: 2.5rem 0;
+  min-width: 0;
+}
+.shortcode-block .section {
+  padding: 0;
 }
 
 @media (max-width: 1024px) {

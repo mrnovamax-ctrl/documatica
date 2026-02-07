@@ -7,18 +7,46 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, UploadFile, File, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, UploadFile, File, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
 
 router = APIRouter()
 
-# Директория для загрузки файлов
-UPLOAD_DIR = Path(__file__).parent.parent.parent / "data" / "uploads"
+
+def _require_admin_api(request: Request):
+    from app.admin.context import require_admin
+    check = require_admin(request)
+    if check:
+        return JSONResponse({"error": "Unauthorized", "success": 0}, status_code=401)
+    return None
+
+# Директория для загрузки файлов (backend/data/uploads)
+UPLOAD_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # Разрешенные расширения
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"}
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+
+
+@router.post("/upload/tinymce-image")
+async def upload_tinymce_image(request: Request, file: UploadFile = File(..., description="file")):
+    """Загрузка изображений для TinyMCE. Возвращает { location: url }."""
+    auth_err = _require_admin_api(request)
+    if auth_err:
+        return auth_err
+    file_ext = Path(file.filename or "image.png").suffix.lower()
+    if file_ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=400, detail=f"Недопустимый формат. Разрешены: {', '.join(ALLOWED_EXTENSIONS)}")
+    contents = await file.read()
+    if len(contents) > MAX_FILE_SIZE:
+        raise HTTPException(status_code=400, detail="Файл слишком большой. Макс: 5 МБ")
+    filename = f"{uuid.uuid4()}{file_ext}"
+    file_path = UPLOAD_DIR / filename
+    with open(file_path, "wb") as f:
+        f.write(contents)
+    url = f"/static/uploads/{filename}"
+    return {"location": url}
 
 
 @router.post("/upload/logo")

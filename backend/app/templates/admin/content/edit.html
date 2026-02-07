@@ -163,9 +163,55 @@
       </div>
     </div>
 
+    <!-- HERO Section (для главной страницы) -->
+    {% if content.hero is defined %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:rocket-line" class="section-icon" width="20"></iconify-icon>
+        <h3>Hero секция (главный экран)</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Заголовок (title)</label>
+            <input type="text" name="hero__title" class="field-input" value="{{ content.hero.title }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Акцентное слово (title_accent)</label>
+            <input type="text" name="hero__title_accent" class="field-input" value="{{ content.hero.title_accent }}">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Подзаголовок (subtitle)</label>
+          <textarea name="hero__subtitle" class="field-input field-textarea">{{ content.hero.subtitle }}</textarea>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Текст кнопки (cta_text)</label>
+            <input type="text" name="hero__cta_text" class="field-input" value="{{ content.hero.cta_text }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">URL кнопки (cta_url)</label>
+            <input type="text" name="hero__cta_url" class="field-input" value="{{ content.hero.cta_url }}">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Заметка (note)</label>
+            <input type="text" name="hero__note" class="field-input" value="{{ content.hero.note }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Акцент заметки (note_accent)</label>
+            <input type="text" name="hero__note_accent" class="field-input" value="{{ content.hero.note_accent }}">
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     <!-- FEATURES Section -->
     {% if content.features is defined or content.benefits is defined %}
-    {% set features_list = content.features if content.features is defined else content.benefits %}
+    {% set features_data = content.features if content.features is defined else content.benefits %}
     {% set features_key = 'features' if content.features is defined else 'benefits' %}
     <div class="editor-section">
       <div class="editor-section-header">
@@ -173,6 +219,22 @@
         <h3>Преимущества / Фичи</h3>
       </div>
       <div class="editor-section-body">
+        <!-- Заголовки секции Features -->
+        {% if features_data.title is defined %}
+        <div class="field-row" style="margin-bottom: 1.5rem;">
+          <div class="field-group">
+            <label class="field-label">Заголовок секции (title)</label>
+            <input type="text" name="{{ features_key }}__title" class="field-input" value="{{ features_data.title }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Подзаголовок (subtitle)</label>
+            <input type="text" name="{{ features_key }}__subtitle" class="field-input" value="{{ features_data.subtitle }}">
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Карточки Features -->
+        {% set features_list = features_data.cards if features_data.cards is defined else features_data %}
         <div class="repeater-container" id="featuresRepeater" data-key="{{ features_key }}">
           {% for feature in features_list %}
           <div class="repeater-item" data-index="{{ loop.index0 }}">
@@ -186,16 +248,16 @@
               <div class="field-row">
                 <div class="field-group">
                   <label class="field-label">Заголовок</label>
-                  <input type="text" name="{{ features_key }}__{{ loop.index0 }}__title" class="field-input" value="{{ feature.title }}">
+                  <input type="text" name="{{ features_key }}__cards__{{ loop.index0 }}__title" class="field-input" value="{{ feature.title }}">
                 </div>
                 <div class="field-group">
-                  <label class="field-label">Иконка (mdi:icon-name)</label>
-                  <input type="text" name="{{ features_key }}__{{ loop.index0 }}__icon" class="field-input" value="{{ feature.icon }}" placeholder="mdi:check">
+                  <label class="field-label">Иконка</label>
+                  <input type="text" name="{{ features_key }}__cards__{{ loop.index0 }}__icon" class="field-input" value="{{ feature.icon }}" placeholder="check-circle">
                 </div>
               </div>
               <div class="field-group">
                 <label class="field-label">Описание</label>
-                <textarea name="{{ features_key }}__{{ loop.index0 }}__description" class="field-input field-textarea">{{ feature.description }}</textarea>
+                <textarea name="{{ features_key }}__cards__{{ loop.index0 }}__description" class="field-input field-textarea">{{ feature.description }}</textarea>
               </div>
             </div>
           </div>
@@ -284,6 +346,152 @@
       </div>
     </div>
     {% endif %}
+
+    <!-- PRICING Section -->
+    {% if content.pricing is defined %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:price-tag-3-line" class="section-icon" width="20"></iconify-icon>
+        <h3>Тарифы (Pricing)</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Метка (label)</label>
+            <input type="text" name="pricing__label" class="field-input" value="{{ content.pricing.label }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Заголовок (title)</label>
+            <input type="text" name="pricing__title" class="field-input" value="{{ content.pricing.title }}">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Акцентная часть (title_accent)</label>
+          <input type="text" name="pricing__title_accent" class="field-input" value="{{ content.pricing.title_accent }}">
+        </div>
+        <div class="field-hint" style="margin-top: 1rem; padding: 1rem; background: #fffbeb; border-radius: 0.5rem; border: 1px solid #fbbf24;">
+          ⚠️ Тарифные планы редактируются в YAML режиме (слишком сложная структура для визуального редактора)
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- UPD TYPES Section -->
+    {% if content.upd_types is defined %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:file-list-3-line" class="section-icon" width="20"></iconify-icon>
+        <h3>Типы УПД (UPD Types)</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Метка (label)</label>
+            <input type="text" name="upd_types__label" class="field-input" value="{{ content.upd_types.label }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Заголовок (title)</label>
+            <input type="text" name="upd_types__title" class="field-input" value="{{ content.upd_types.title }}">
+          </div>
+        </div>
+        <div class="field-hint" style="margin-top: 1rem; padding: 1rem; background: #fffbeb; border-radius: 0.5rem; border: 1px solid #fbbf24;">
+          ⚠️ Карточки УПД редактируются в YAML режиме (слишком сложная структура для визуального редактора)
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- DOCUMENT TYPES Section -->
+    {% if content.document_types is defined %}
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:file-copy-line" class="section-icon" width="20"></iconify-icon>
+        <h3>Типы документов (Document Types)</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Заголовок (title)</label>
+            <input type="text" name="document_types__title" class="field-input" value="{{ content.document_types.title }}">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Подзаголовок (subtitle)</label>
+            <input type="text" name="document_types__subtitle" class="field-input" value="{{ content.document_types.subtitle }}">
+          </div>
+        </div>
+        <div class="field-hint" style="margin-top: 1rem; padding: 1rem; background: #fffbeb; border-radius: 0.5rem; border: 1px solid #fbbf24;">
+          ⚠️ Карточки документов редактируются в YAML режиме
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ABOUT Section -->
+    <div class="editor-section">
+      <div class="editor-section-header">
+        <iconify-icon icon="ri:information-line" class="section-icon" width="20"></iconify-icon>
+        <h3>О нас (About Us)</h3>
+      </div>
+      <div class="editor-section-body">
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Метка (label)</label>
+            <input type="text" name="about__label" class="field-input" value="{{ content.about.label if content.about else '' }}" placeholder="О нас">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Заголовок (title)</label>
+            <input type="text" name="about__title" class="field-input" value="{{ content.about.title if content.about else '' }}" placeholder="Кто стоит за">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Акцентная часть заголовка (title_accent)</label>
+          <input type="text" name="about__title_accent" class="field-input" value="{{ content.about.title_accent if content.about else '' }}" placeholder="Documatica">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Описание (description)</label>
+          <textarea name="about__description" class="field-input field-textarea">{{ content.about.description if content.about else '' }}</textarea>
+          <div class="field-hint">Краткое описание команды и проекта (1-2 предложения)</div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Миссия (mission)</label>
+          <textarea name="about__mission" class="field-input field-textarea">{{ content.about.mission if content.about else '' }}</textarea>
+          <div class="field-hint">Подробнее о технологиях и подходе</div>
+        </div>
+        
+        <!-- Stats Repeater -->
+        <div class="field-group" style="margin-top: 2rem;">
+          <label class="field-label">Статистика / Факты</label>
+          <div class="repeater-container" id="aboutStatsRepeater">
+            {% if content.about is defined and content.about.stats %}
+            {% for stat in content.about.stats %}
+            <div class="repeater-item" data-index="{{ loop.index0 }}">
+              <div class="repeater-item-header">
+                <span class="repeater-item-number">Факт #{{ loop.index }}</span>
+                <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+                  <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+                </button>
+              </div>
+              <div class="repeater-item-fields field-row">
+                <div class="field-group">
+                  <label class="field-label">Значение (value)</label>
+                  <input type="text" name="about__stats__{{ loop.index0 }}__value" class="field-input" value="{{ stat.value }}" placeholder="50,000+">
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Подпись (label)</label>
+                  <input type="text" name="about__stats__{{ loop.index0 }}__label" class="field-input" value="{{ stat.label }}" placeholder="Documents processed">
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+          <button type="button" class="repeater-add-btn" onclick="addAboutStat()">
+            <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+            Добавить факт
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- CTA Section -->
     {% if content.cta is defined %}
@@ -439,16 +647,16 @@ function addFeature() {
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Заголовок</label>
-            <input type="text" name="${key}__${index}__title" class="field-input">
+            <input type="text" name="${key}__cards__${index}__title" class="field-input">
           </div>
           <div class="field-group">
             <label class="field-label">Иконка</label>
-            <input type="text" name="${key}__${index}__icon" class="field-input" placeholder="mdi:check">
+            <input type="text" name="${key}__cards__${index}__icon" class="field-input" placeholder="check-circle">
           </div>
         </div>
         <div class="field-group">
           <label class="field-label">Описание</label>
-          <textarea name="${key}__${index}__description" class="field-input field-textarea"></textarea>
+          <textarea name="${key}__cards__${index}__description" class="field-input field-textarea"></textarea>
         </div>
       </div>
     </div>
@@ -527,6 +735,32 @@ function addRelated() {
         <div class="field-group">
           <label class="field-label">URL</label>
           <input type="text" name="related__${index}__url" class="field-input">
+        </div>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+}
+
+function addAboutStat() {
+  const container = document.getElementById('aboutStatsRepeater');
+  const index = container.querySelectorAll('.repeater-item').length;
+  const html = `
+    <div class="repeater-item" data-index="${index}">
+      <div class="repeater-item-header">
+        <span class="repeater-item-number">Факт #${index + 1}</span>
+        <button type="button" class="repeater-item-remove" onclick="removeRepeaterItem(this)">
+          <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+        </button>
+      </div>
+      <div class="repeater-item-fields field-row">
+        <div class="field-group">
+          <label class="field-label">Значение (value)</label>
+          <input type="text" name="about__stats__${index}__value" class="field-input" placeholder="50,000+">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Подпись (label)</label>
+          <input type="text" name="about__stats__${index}__label" class="field-input" placeholder="Documents processed">
         </div>
       </div>
     </div>

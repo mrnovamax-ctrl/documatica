@@ -148,14 +148,22 @@ document.addEventListener('DOMContentLoaded', function() {
   
   async function loadDashboardData() {
     try {
-      // Load documents
+      // Load documents (используем credentials для работы с cookie)
       const docsResponse = await fetch('/api/v1/documents/', {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
       
       if (docsResponse.ok) {
         const data = await docsResponse.json();
-        const docs = data.documents || [];
+        let docs = data.documents || [];
+        
+        // Сортируем по дате создания (новые первые)
+        docs.sort((a, b) => {
+          const dateA = new Date(a.created_at || a.document_date);
+          const dateB = new Date(b.created_at || b.document_date);
+          return dateB - dateA;
+        });
+        
         document.getElementById('total-docs').textContent = docs.length || 0;
         
         // Count this month
@@ -173,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (docs.length > 0) {
           emptyState.style.display = 'none';
           
-          // Populate table with last 10 documents
+          // Populate table with last 10 documents (уже отсортированы)
           docs.slice(0, 10).forEach(doc => {
             const sum = parseFloat(doc.total_amount) || 0;
             
@@ -225,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Load organizations
       const orgsResponse = await fetch('/api/v1/organizations/', {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
       
       if (orgsResponse.ok) {
@@ -235,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Load contractors
       const contractorsResponse = await fetch('/api/v1/contractors/', {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
       
       if (contractorsResponse.ok) {
@@ -274,19 +282,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     try {
-      const response = await fetch(`/api/v1/documents/${docId}/`, {
+      const response = await fetch(`/api/v1/documents/saved/${docId}`, {
         method: 'DELETE',
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
       
       if (response.ok) {
         location.reload();
       } else {
-        toastError('Ошибка при удалении документа');
+        console.error('Ошибка при удалении документа');
+        alert('Ошибка при удалении документа');
       }
     } catch (error) {
       console.error('Error deleting document:', error);
-      toastError('Ошибка при удалении документа');
+      alert('Ошибка при удалении документа');
     }
   }
 });

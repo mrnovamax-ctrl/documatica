@@ -1,17 +1,23 @@
 """
 УПД - публичные страницы (хаб и лендинги)
 Рефакторинг: динамическая регистрация роутов из _pages.yaml
+Главная страница /upd/ отдаётся из CMS, если есть опубликованная страница с slug=upd.
 """
 
 import yaml
 from pathlib import Path
 from functools import lru_cache
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from typing import Dict, Any, Optional
+from sqlalchemy.orm import Session, joinedload
 
 from app.core.templates import templates
 from app.core.content import load_content
+from app.core.heroicons import get_icon_paths_html
+from app.database import get_db
+from app.models import Page
+from app.pages.cms_dynamic import _build_sections_for_template
 
 router = APIRouter()
 
@@ -60,10 +66,38 @@ def get_download_config(slug: str) -> Optional[Dict[str, Any]]:
 # ============== ГЛАВНАЯ СТРАНИЦА РАЗДЕЛА ==============
 
 @router.get("/", response_class=HTMLResponse)
-async def upd_hub(request: Request):
-    """Хаб УПД - главная страница раздела"""
+async def upd_hub(request: Request, db: Session = Depends(get_db)):
+    """Хаб УПД: из CMS (slug=upd), как контакты — при наличии опубликованной страницы отдаём её, иначе YAML."""
+    page = (
+        db.query(Page)
+        .options(joinedload(Page.sections))
+        .filter(Page.slug == "upd")
+        .first()
+    )
+    if page and getattr(page, "status", None) == "published":
+        sections_for_template = _build_sections_for_template(page)
+        page_view = type("PageView", (), {
+            "id": page.id,
+            "title": page.title,
+            "meta_title": getattr(page, "meta_title", None),
+            "meta_description": getattr(page, "meta_description", None),
+            "meta_keywords": getattr(page, "meta_keywords", None),
+            "canonical_url": getattr(page, "canonical_url", None),
+            "sections": sections_for_template,
+        })()
+        return templates.TemplateResponse(
+            request=request,
+            name="public/dynamic_page.html",
+            context={
+                "page": page_view,
+                "latest_articles": [],
+                "title": page.meta_title or page.title,
+                "description": page.meta_description or "",
+                "is_home_page": False,
+                "heroicon_paths": get_icon_paths_html(),
+            },
+        )
     content = load_content("upd/index")
-    
     return templates.TemplateResponse(
         request=request,
         name="public/upd/index.html",
@@ -73,23 +107,61 @@ async def upd_hub(request: Request):
                 {"title": "Главная", "url": "/"},
                 {"title": "УПД", "url": None},
             ]
-        }
+        },
     )
 
 
 # ============== УНИВЕРСАЛЬНЫЕ ОБРАБОТЧИКИ ==============
 
-async def upd_landing_handler(request: Request):
-    """Универсальный обработчик лендингов УПД"""
-    path = request.url.path
-    slug = path.strip("/").split("/")[-1]
-    
+async def upd_landing_handler(request: Request, db: Session = Depends(get_db)):
+    """Универсальный обработчик лендингов УПД. Сначала проверяем CMS (страница из конструктора)."""
+    path = request.url.path.strip("/")  # upd/ooo
+    slug = path.split("/")[-1]  # ooo
+
+    # Если в CMS есть опубликованная страница с slug upd/ooo — отдаём её из конструктора
+    page = (
+        db.query(Page)
+        .options(joinedload(Page.sections))
+        .filter(Page.slug == path, Page.status == "published")
+        .first()
+    )
+    if page:
+        sections_for_template = _build_sections_for_template(page)
+        page_view = type("PageView", (), {
+            "id": page.id,
+            "title": page.title,
+            "meta_title": getattr(page, "meta_title", None),
+            "meta_description": getattr(page, "meta_description", None),
+            "meta_keywords": getattr(page, "meta_keywords", None),
+            "canonical_url": getattr(page, "canonical_url", None),
+            "sections": sections_for_template,
+        })()
+        config = get_landing_config(slug)
+        breadcrumb_title = config.get("breadcrumb", "Для ООО") if config else slug
+        return templates.TemplateResponse(
+            request=request,
+            name="public/dynamic_page.html",
+            context={
+                "page": page_view,
+                "latest_articles": [],
+                "title": page.meta_title or page.title,
+                "description": page.meta_description or "",
+                "is_home_page": False,
+                "heroicon_paths": get_icon_paths_html(),
+                "breadcrumbs": [
+                    {"title": "Главная", "url": "/"},
+                    {"title": "УПД", "url": "/upd/"},
+                    {"title": breadcrumb_title, "url": None},
+                ],
+            },
+        )
+
     config = get_landing_config(slug)
     if not config:
         raise HTTPException(status_code=404, detail="Страница не найдена")
-    
+
     content = load_content(config["content_file"])
-    
+
     return templates.TemplateResponse(
         request=request,
         name="public/upd/landing.html",
@@ -104,11 +176,43 @@ async def upd_landing_handler(request: Request):
     )
 
 
-async def upd_info_handler(request: Request):
-    """Универсальный обработчик информационных страниц"""
-    path = request.url.path
-    slug = path.strip("/").split("/")[-1]
-    
+async def upd_info_handler(request: Request, db: Session = Depends(get_db)):
+    """Информационные страницы УПД: сначала CMS, иначе YAML."""
+    path = request.url.path.strip("/")
+    slug = path.split("/")[-1]
+    cms_slug = "upd/obrazec-zapolneniya" if slug == "obrazec" else path
+    page = (
+        db.query(Page)
+        .options(joinedload(Page.sections))
+        .filter(Page.slug == cms_slug, Page.status == "published")
+        .first()
+    )
+    if page:
+        sections_for_template = _build_sections_for_template(page)
+        page_view = type("PageView", (), {
+            "id": page.id, "title": page.title,
+            "meta_title": getattr(page, "meta_title", None),
+            "meta_description": getattr(page, "meta_description", None),
+            "meta_keywords": getattr(page, "meta_keywords", None),
+            "canonical_url": getattr(page, "canonical_url", None),
+            "sections": sections_for_template,
+        })()
+        cfg = get_info_config(slug)
+        bc_title = cfg.get("breadcrumb", page.title) if cfg else page.title
+        return templates.TemplateResponse(
+            request=request, name="public/dynamic_page.html",
+            context={
+                "page": page_view, "latest_articles": [],
+                "title": page.meta_title or page.title,
+                "description": page.meta_description or "",
+                "is_home_page": False, "heroicon_paths": get_icon_paths_html(),
+                "breadcrumbs": [
+                    {"title": "Главная", "url": "/"},
+                    {"title": "УПД", "url": "/upd/"},
+                    {"title": bc_title, "url": None},
+                ],
+            },
+        )
     config = get_info_config(slug)
     if not config:
         raise HTTPException(status_code=404, detail="Страница не найдена")

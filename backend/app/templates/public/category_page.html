@@ -1,0 +1,123 @@
+{% extends "base_public.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ description }}">
+{% if category.meta_keywords %}
+<meta name="keywords" content="{{ category.meta_keywords }}">
+{% endif %}
+{% if category.canonical_url %}
+<link rel="canonical" href="{{ category.canonical_url }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if layout == 'with_sidebar' %}
+{# Макет с сайдбаром: классы из core.css (demo-grid-2fr-1fr, sidebar-section, sidebar-nav, sidebar-list) #}
+<div class="container">
+  <div class="grid demo-grid-2fr-1fr gap-medium">
+    <div>
+      {% for section in page_sections %}
+        {% if section.is_visible %}
+          {% if section.section_type == 'hero' %}
+            {% include "components/blocks/hero.html" %}
+          {% elif section.section_type == 'features' %}
+            {% include "components/blocks/features.html" %}
+          {% elif section.section_type == 'about' %}
+            {% include "components/blocks/about.html" %}
+          {% elif section.section_type == 'cta' %}
+            {% include "components/blocks/cta.html" %}
+          {% elif section.section_type == 'pricing' %}
+            {% include "components/blocks/pricing.html" %}
+          {% elif section.section_type == 'faq' %}
+            {% include "components/blocks/faq.html" %}
+          {% elif section.section_type == 'seo_text' %}
+            {% include "components/blocks/seo_text.html" %}
+          {% elif section.section_type == 'form_section' %}
+            {% include "components/blocks/form_section.html" %}
+          {% elif section.section_type == 'articles_preview' %}
+            {% include "components/blocks/articles_preview.html" %}
+          {% elif section.section_type == 'articles_list' %}
+            {% include "components/blocks/articles_list.html" %}
+          {% else %}
+            <section class="section {{ section.css_classes or '' }}">
+              <div class="container">
+                {% for block in section.blocks %}
+                  {% if block.is_visible %}
+                  <div class="{{ block.css_classes or '' }}">{{ block.content.text | default(block.content.title) | default('') | safe }}</div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </section>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      {# Список статей категории всегда в основной колонке #}
+      {% include "components/blocks/articles_list.html" %}
+    </div>
+    <aside>
+      <div class="sidebar-section">
+        <h3>Категории</h3>
+        <ul class="sidebar-nav">
+          <li><a href="/news/">Все статьи</a></li>
+          <li><a href="/news/category/{{ category.full_slug }}/" class="active">{{ category.name }}</a></li>
+          {% for child in children %}
+          <li><a href="/news/category/{{ child.full_slug }}/">{{ child.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% if latest_articles_sidebar %}
+      <div class="sidebar-section">
+        <h3>Последние в категории</h3>
+        <ul class="sidebar-nav">
+          {% for art in latest_articles_sidebar %}
+          <li><a href="/news/{{ art.slug }}/">{{ art.title | truncate(50) }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+</div>
+{% else %}
+{# Без сайдбара: один столбец #}
+{% for section in page_sections %}
+  {% if section.is_visible %}
+    {% if section.section_type == 'hero' %}
+      {% include "components/blocks/hero.html" %}
+    {% elif section.section_type == 'features' %}
+      {% include "components/blocks/features.html" %}
+    {% elif section.section_type == 'about' %}
+      {% include "components/blocks/about.html" %}
+    {% elif section.section_type == 'cta' %}
+      {% include "components/blocks/cta.html" %}
+    {% elif section.section_type == 'pricing' %}
+      {% include "components/blocks/pricing.html" %}
+    {% elif section.section_type == 'faq' %}
+      {% include "components/blocks/faq.html" %}
+    {% elif section.section_type == 'seo_text' %}
+      {% include "components/blocks/seo_text.html" %}
+    {% elif section.section_type == 'form_section' %}
+      {% include "components/blocks/form_section.html" %}
+    {% elif section.section_type == 'articles_preview' %}
+      {% include "components/blocks/articles_preview.html" %}
+    {% elif section.section_type == 'articles_list' %}
+      {% include "components/blocks/articles_list.html" %}
+    {% else %}
+      <section class="section {{ section.css_classes or '' }}">
+        <div class="container">
+          {% for block in section.blocks %}
+            {% if block.is_visible %}
+            <div class="{{ block.css_classes or '' }}">{{ block.content.text | default(block.content.title) | default('') | safe }}</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{# Список статей категории всегда выводим (даже если секций нет) #}
+{% include "components/blocks/articles_list.html" %}
+{% endif %}
+{% endblock %}

@@ -1,32 +1,74 @@
 /**
- * Documatica Admin Panel Styles
+ * Documatica Admin Panel Styles - Terminal v12.0
  * Отдельные стили только для /admin/ - не влияют на основной сайт
- * v1.0
+ * v2.0 - Terminal v12.0 Design System
  */
+
+/* ===== Design Tokens (Terminal v12.0) ===== */
+:root {
+  /* Colors - Terminal v12.0 */
+  --admin-primary: #3b82f6;
+  --admin-primary-hover: #2563eb;
+  --admin-gold: #fbbf24;
+  --admin-success: #10b981;
+  --admin-danger: #ef4444;
+  --admin-dark: #0f172a;
+  --admin-slate-50: #f8fafc;
+  --admin-slate-100: #f1f5f9;
+  --admin-slate-200: #e2e8f0;
+  --admin-slate-400: #94a3b8;
+  --admin-slate-500: #64748b;
+  --admin-slate-600: #475569;
+  --admin-slate-900: #0f172a;
+  
+  /* Transitions - "The v12.0 Spring" */
+  --admin-spring: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --admin-fast: all 200ms ease;
+  
+  /* Border Radius */
+  --admin-radius-sm: 0.5rem;
+  --admin-radius-md: 0.75rem;
+  --admin-radius-lg: 1rem;
+  --admin-radius-xl: 1.5rem;
+  --admin-radius-2xl: 2rem;
+  
+  /* Shadows */
+  --admin-shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --admin-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --admin-shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== TinyMCE z-index (выше модалок и icon-picker 10000) ===== */
+.tox-tinymce-aux,
+.tox-dialog-wrap,
+.tox-dialog {
+  z-index: 99999 !important;
+}
 
 /* ===== Admin Layout ===== */
 .admin-body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #f8fafc;
+  background: var(--admin-slate-50);
   min-height: 100vh;
   display: flex;
   margin: 0;
   padding: 0;
 }
 
-/* ===== Admin Sidebar ===== */
+/* ===== Admin Sidebar (Terminal v12.0) ===== */
 .admin-sidebar {
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
   width: 280px;
-  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-  padding: 32px 20px;
+  background: var(--admin-dark);
+  padding: 2rem 1.25rem;
   display: flex;
   flex-direction: column;
   z-index: 1000;
   overflow-y: auto;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .admin-sidebar-logo {
@@ -69,31 +111,32 @@
   margin-bottom: 12px;
 }
 
-/* Sidebar Menu Items */
+/* Sidebar Menu Items (Terminal v12.0 Spring) */
 .admin-menu-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  border-radius: 12px;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--admin-radius-lg);
   color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  margin-bottom: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: var(--admin-spring);
+  margin-bottom: 0.25rem;
   border-left: 3px solid transparent;
 }
 
 .admin-menu-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.95);
+  transform: translateX(2px);
 }
 
 .admin-menu-item.active {
-  background: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
-  border-left-color: #ef4444;
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border-left-color: var(--admin-primary);
 }
 
 .admin-menu-item iconify-icon {
@@ -187,9 +230,97 @@
   transition: all 0.3s ease;
 }
 
-.admin-stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
+  .admin-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
+  }
+}
+
+/* ========================================
+   Admin Buttons (Terminal v12.0)
+   ======================================== */
+
+.admin-btn-primary,
+.admin-btn-secondary,
+.admin-btn-success,
+.admin-btn-danger,
+.admin-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--admin-radius-lg);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--admin-spring);
+}
+
+.admin-btn-primary {
+  background: var(--admin-primary);
+  color: white;
+}
+
+.admin-btn-primary:hover {
+  background: var(--admin-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+}
+
+.admin-btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.admin-btn-secondary {
+  background: white;
+  color: var(--admin-slate-600);
+  border: 1px solid var(--admin-slate-200);
+}
+
+.admin-btn-secondary:hover {
+  background: var(--admin-slate-50);
+  border-color: var(--admin-primary);
+  color: var(--admin-primary);
+  transform: translateY(-2px);
+}
+
+.admin-btn-success {
+  background: var(--admin-success);
+  color: white;
+}
+
+.admin-btn-success:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+}
+
+.admin-btn-danger {
+  background: var(--admin-danger);
+  color: white;
+}
+
+.admin-btn-danger:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
+}
+
+.admin-btn-back {
+  background: white;
+  color: var(--admin-slate-600);
+  border: 1px solid var(--admin-slate-200);
+}
+
+.admin-btn-back:hover {
+  background: var(--admin-slate-50);
+  border-color: var(--admin-primary);
+  color: var(--admin-primary);
+  transform: translateY(-2px);
 }
 
 .admin-stat-icon {
@@ -914,26 +1045,40 @@
   }
 }
 
-/* ===== Back Button ===== */
-.admin-back-btn,
-.admin-btn-back {
+/* Back button — тот же outline-стиль, что и admin-btn-secondary (v12) */
+.admin-back-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background: #f1f5f9;
-  border-radius: 12px;
-  color: #64748b;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid var(--admin-slate-200);
+  border-radius: var(--admin-radius-lg);
+  color: var(--admin-slate-600);
   text-decoration: none;
-  font-weight: 600;
-  font-size: 13px;
-  transition: all 0.2s;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: var(--admin-spring);
 }
 
-.admin-back-btn:hover,
-.admin-btn-back:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+.admin-back-btn:hover {
+  background: var(--admin-slate-50);
+  border-color: var(--admin-primary);
+  color: var(--admin-primary);
+  transform: translateY(-2px);
+}
+
+/* Ссылки-кнопки без подчёркивания */
+a.admin-btn-back,
+a.admin-btn-secondary {
+  text-decoration: none;
+}
+
+a.admin-btn-back:hover,
+a.admin-btn-secondary:hover {
+  text-decoration: none;
 }
 
 /* ===== Content List Specific ===== */
@@ -1295,3 +1440,220 @@
   border-color: #3b82f6;
   color: white;
 }
+
+/* ========================================
+   Block Builder (Terminal v12.0)
+   Редактор страниц: формы, кнопки, карточки по скиллу v12
+   ======================================== */
+
+.builder-v12.builder-container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.builder-v12 .builder-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.builder-v12 .builder-sidebar {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+/* Карточка настроек страницы (v12 card) */
+.builder-v12 .page-info-card {
+  background: white;
+  border: 1px solid var(--admin-slate-200);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.builder-v12 .page-info-card h3 {
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--admin-slate-900);
+  margin-bottom: 1.25rem;
+}
+
+/* Form group = поле с подписью (v12 forms) */
+.builder-v12 .page-info-field {
+  margin-bottom: 1.25rem;
+}
+
+.builder-v12 .page-info-field:last-child {
+  margin-bottom: 0;
+}
+
+.builder-v12 .page-info-label,
+.builder-v12 .section-setting-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--admin-slate-500);
+  margin-bottom: 0.5rem;
+}
+
+/* Input / select (v12 form controls) */
+.builder-v12 .page-info-input,
+.builder-v12 .section-setting-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--admin-slate-50);
+  border: 1px solid var(--admin-slate-200);
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--admin-slate-900);
+  font-family: inherit;
+  transition: var(--admin-spring);
+}
+
+.builder-v12 .page-info-input::placeholder,
+.builder-v12 .section-setting-select::placeholder {
+  color: var(--admin-slate-400);
+  opacity: 0.8;
+}
+
+.builder-v12 .page-info-input:focus,
+.builder-v12 .section-setting-select:focus {
+  outline: none;
+  background: white;
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.builder-v12 .page-info-input[readonly] {
+  background: var(--admin-slate-100);
+  color: var(--admin-slate-500);
+  cursor: default;
+}
+
+.builder-v12 textarea.page-info-input {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Секции (карточки v12) */
+.builder-v12 .sections-container {
+  background: white;
+  border: 1px solid var(--admin-slate-200);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  min-height: 400px;
+}
+
+.builder-v12 .section-card {
+  background: var(--admin-slate-50);
+  border: 2px solid var(--admin-slate-200);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  cursor: move;
+  transition: var(--admin-spring);
+}
+
+.builder-v12 .section-card:hover {
+  border-color: var(--admin-primary);
+  box-shadow: 0 8px 24px -8px rgba(59, 130, 246, 0.2);
+}
+
+.builder-v12 .section-card.sortable-ghost {
+  opacity: 0.4;
+}
+
+.builder-v12 .section-card.sortable-drag {
+  box-shadow: 0 12px 32px -8px rgba(59, 130, 246, 0.25);
+}
+
+.builder-v12 .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--admin-slate-200);
+}
+
+.builder-v12 .section-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--admin-slate-900);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.builder-v12 .section-type-badge {
+  padding: 0.25rem 0.75rem;
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--admin-primary);
+  border-radius: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.builder-v12 .section-settings {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.builder-v12 .section-setting {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Блоки внутри секции */
+.builder-v12 .block-item {
+  background: white;
+  border: 1px solid var(--admin-slate-200);
+  border-radius: 1rem;
+  padding: 1rem;
+  transition: var(--admin-spring);
+}
+
+.builder-v12 .block-item:hover {
+  border-color: var(--admin-primary);
+  box-shadow: 0 4px 12px -4px rgba(59, 130, 246, 0.15);
+}
+
+.builder-v12 .block-item.sortable-ghost {
+  opacity: 0.4;
+}
+
+.builder-v12 .section-hint {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+  color: var(--admin-slate-700);
+}
+
+.builder-v12 .sections-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--admin-slate-400);
+}
+
+/* Кнопка «Добавить блок» в стиле outline v12 */
+.builder-v12 .admin-btn-secondary {
+  width: 100%;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+/* Кнопка «Сохранить» показывается по markAsChanged(); скрыта по умолчанию */

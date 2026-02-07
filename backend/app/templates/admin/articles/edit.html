@@ -19,8 +19,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<!-- TinyMCE Editor -->
-<script src="https://cdn.tiny.cloud/1/r2v05zzwh60bkbscnns4ljyx3jbi421dgma0nplglm1yn0p4/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- TinyMCE грузится асинхронно при открытии страницы (см. конец шаблона) -->
 {% endblock %}
 
 {% block content %}
@@ -31,7 +30,7 @@
 </div>
 {% endif %}
 
-<form method="POST" id="articleForm">
+<form method="POST" id="articleForm" data-article-is-new="{{ '1' if is_new else '0' }}">
   <div style="display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start;">
     <!-- Main Content -->
     <div>
@@ -349,10 +348,12 @@
 </style>
 
 <script>
-// Slug generator
+// Slug generator (при редактировании существующей статьи slug не перезаписываем — URL остаётся прежним)
 function generateSlug(title) {
   const slugInput = document.getElementById('slugInput');
   if (slugInput.dataset.manual) return;
+  const form = document.getElementById('articleForm');
+  if (form && form.dataset.articleIsNew === '0' && slugInput.value) return;
   
   const translit = {
     'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo',
@@ -374,6 +375,7 @@ document.getElementById('slugInput').addEventListener('input', function() {
   this.dataset.manual = 'true';
 });
 
+function toastError(msg) { alert(msg); }
 // Image upload
 document.getElementById('imageFileInput').addEventListener('change', async function(e) {
   const file = e.target.files[0];
@@ -386,13 +388,13 @@ document.getElementById('imageFileInput').addEventListener('change', async funct
   progress.style.display = 'block';
   
   try {
+    // Не задавать Content-Type — браузер сам подставит multipart/form-data с boundary
     const response = await fetch('/admin/articles/upload-image/', {
       method: 'POST',
-      body: formData
+      body: formData,
+      credentials: 'same-origin'
     });
-    
-    const result = await response.json();
-    
+    const result = await response.json().catch(function() { return {}; });
     if (result.success) {
       document.getElementById('imageInput').value = result.url;
       const preview = document.getElementById('imagePreview');
@@ -400,11 +402,18 @@ document.getElementById('imageFileInput').addEventListener('change', async funct
       preview.querySelector('img').src = result.url;
       progress.style.display = 'none';
     } else {
-      toastError('Ошибка загрузки: ' + (result.error || 'Неизвестная ошибка'));
+      var msg = result.error;
+      if (!msg && result.detail) {
+        if (typeof result.detail === 'string') msg = result.detail;
+        else if (Array.isArray(result.detail) && result.detail[0] && result.detail[0].msg) msg = result.detail[0].msg;
+        else msg = JSON.stringify(result.detail);
+      }
+      if (!msg) msg = 'HTTP ' + response.status + ' ' + (response.statusText || '');
+      toastError('Ошибка загрузки: ' + msg);
       progress.style.display = 'none';
     }
   } catch (error) {
-    toastError('Ошибка загрузки изображения');
+    toastError('Ошибка загрузки: ' + (error && error.message ? error.message : 'сетевая ошибка'));
     progress.style.display = 'none';
   }
 });
@@ -420,10 +429,13 @@ function deleteArticle() {
   }
 }
 
-// TinyMCE initialization
-document.addEventListener('DOMContentLoaded', function() {
-  if (typeof tinymce !== 'undefined') {
+// TinyMCE — локально из /static/js/tinymce/, страница не блокируется
+(function() {
+  var TINYMCE_SRC = '/static/js/tinymce/tinymce.min.js?v=6';
+  var TINYMCE_BASE = '/static/js/tinymce';
+  function initTinyMCE() {
     tinymce.init({
+      base_url: TINYMCE_BASE,
       selector: '#contentEditor',
       height: 500,
       menubar: false,
@@ -438,17 +450,29 @@ document.addEventListener('DOMContentLoaded', function() {
       content_style: 'body { font-family: Inter, sans-serif; font-size: 15px; line-height: 1.7; color: #334155; }',
       branding: false,
       promotion: false,
-      // Интеграция загрузки изображений
       images_upload_url: '/admin/articles/tinymce-upload/',
       automatic_uploads: true,
+      images_upload_credentials: true,
       images_reuse_filename: false,
       setup: function(editor) {
-        editor.on('change', function() {
-          editor.save();
-        });
+        editor.on('change', function() { editor.save(); });
       }
     });
   }
-});
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof tinymce !== 'undefined') {
+      initTinyMCE();
+      return;
+    }
+    var s = document.createElement('script');
+    s.src = TINYMCE_SRC;
+    s.onload = initTinyMCE;
+    s.onerror = function() {
+      var el = document.getElementById('contentEditor');
+      if (el) el.placeholder = 'Не удалось загрузить редактор. Обновите страницу.';
+    };
+    document.head.appendChild(s);
+  });
+})();
 </script>
 {% endblock %}

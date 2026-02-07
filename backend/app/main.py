@@ -21,6 +21,7 @@ logging.basicConfig(
 logging.getLogger('app').setLevel(logging.DEBUG)
 
 from app.api import documents, organizations, products, auth, dadata, templates, billing, payment, ai, upload, promocodes, oauth, drafts, contact, samples, blanks
+from app.api.v1 import router as api_v1_router
 from app.pages import router as pages_router
 from app.dashboard import router as dashboard_router
 from app.admin import router as admin_router
@@ -222,6 +223,9 @@ app.include_router(
 # ===== SSR роутеры =====
 # Admin (панель администратора)
 app.include_router(admin_router, tags=["admin"])
+
+# API v1 (Block Builder и другие)
+app.include_router(api_v1_router, tags=["api"])
 
 # Dashboard (личный кабинет) - перед pages чтобы /dashboard/ работал
 app.include_router(dashboard_router, tags=["dashboard"])

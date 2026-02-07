@@ -3,9 +3,10 @@
 """
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, Float, ForeignKey, Numeric
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, Float, ForeignKey, Numeric, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import JSONB
 
 Base = declarative_base()
 
@@ -49,6 +50,10 @@ class User(Base):
     # Связи
     inn_usages = relationship("INNUsage", back_populates="user")
     payments = relationship("Payment", back_populates="user")
+    pages = relationship("Page", foreign_keys="Page.created_by_user_id")
+    analytics_events = relationship("AnalyticsEvent")
+    documents = relationship("Document")
+    redirects = relationship("Redirect", foreign_keys="Redirect.created_by_user_id")
     
     def __repr__(self):
         return f"<User {self.email}>"
@@ -202,3 +207,350 @@ class GuestDraft(Base):
     
     def __repr__(self):
         return f"<GuestDraft {self.draft_token[:8]}... type={self.document_type}>"
+
+
+# ============================================================================
+# CMS Models - для Block Builder и управления контентом
+# ============================================================================
+
+class Page(Base):
+    """Страницы сайта (CMS)"""
+    __tablename__ = "pages"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    slug = Column(String(500), unique=True, index=True, nullable=False)  # URL страницы (БЕЗ изменений!)
+    title = Column(String(500), nullable=False)
+    
+    # SEO
+    meta_title = Column(String(255), nullable=True)
+    meta_description = Column(Text, nullable=True)
+    meta_keywords = Column(String(500), nullable=True)
+    canonical_url = Column(String(500), nullable=True)
+    
+    # Статус
+    status = Column(String(50), default="draft")  # draft, published, archived
+    page_type = Column(String(50), default="custom")  # home, service, blog, custom
+    
+    # Маппинг для миграции
+    legacy_yaml_path = Column(String(500), nullable=True)  # Путь к старому YAML файлу
+    
+    # Метаданные
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    published_at = Column(DateTime, nullable=True)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    
+    # Связи (parent_id и parent — после применения миграции 20260204_add_page_parent_id)
+    sections = relationship("PageSection", back_populates="page", cascade="all, delete-orphan", order_by="PageSection.position")
+    created_by = relationship("User")
+    
+    def __repr__(self):
+        return f"<Page {self.slug} status={self.status}>"
+
+
+class PageSection(Base):
+    """Секции страниц (контейнеры для блоков)"""
+    __tablename__ = "page_sections"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    page_id = Column(Integer, ForeignKey("pages.id"), nullable=False, index=True)
+    
+    # Тип секции
+    section_type = Column(String(100), nullable=False)  # hero, features, pricing, about, cta, faq, custom
+    position = Column(Integer, default=0)  # Порядок на странице
+    
+    # Стили (ТОЛЬКО CSS классы, НЕ инлайн!)
+    background_style = Column(String(100), default="light")  # light, dark, pattern_light, pattern_dark, gradient_blue, gradient_gold
+    css_classes = Column(Text, nullable=True)  # Дополнительные CSS классы
+    container_width = Column(String(50), default="default")  # default, wide, full, narrow
+    padding_y = Column(String(50), default="default")  # default, none, sm, lg, xl
+    
+    # Сетка (отдельные колонки — сохраняются как фон/ширина, не в JSON)
+    grid_columns = Column(Integer, default=2)  # 1, 2, 3, 4
+    grid_gap = Column(String(20), default="medium")  # small, medium, large
+    grid_style = Column(String(20), default="grid")  # grid, masonry
+    
+    # Настройки секции (JSON)
+    settings = Column(JSON, nullable=True)  # Дополнительные настройки (НЕ стили!)
+    
+    # Видимость
+    is_visible = Column(Boolean, default=True)
+    
+    # Метаданные
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Связи
+    page = relationship("Page", back_populates="sections")
+    blocks = relationship("ContentBlock", back_populates="section", cascade="all, delete-orphan", order_by="ContentBlock.position", lazy="joined")
+    
+    def __repr__(self):
+        return f"<PageSection {self.section_type} page_id={self.page_id} pos={self.position}>"
+
+
+class ContentBlock(Base):
+    """Блоки контента внутри секций"""
+    __tablename__ = "content_blocks"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    section_id = Column(Integer, ForeignKey("page_sections.id"), nullable=False, index=True)
+    
+    # Тип блока
+    block_type = Column(String(100), nullable=False)  # heading, paragraph, button, image, card, stat, etc.
+    position = Column(Integer, default=0)  # Порядок в секции
+    
+    # Контент блока (JSON)
+    content = Column(JSON, nullable=False)  # {"text": "...", "url": "...", "alt": "...", etc.}
+    
+    # Стили (ТОЛЬКО CSS классы, НЕ инлайн!)
+    css_classes = Column(Text, nullable=True)  # Например: "btn btn-primary btn-lg"
+    
+    # Видимость
+    is_visible = Column(Boolean, default=True)
+    
+    # Метаданные
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Связи
+    section = relationship("PageSection", back_populates="blocks")
+    
+    def __repr__(self):
+        return f"<ContentBlock {self.block_type} section_id={self.section_id} pos={self.position}>"
+
+
+# ============================================================================
+# Article categories (hierarchical, with layout and sections)
+# ============================================================================
+
+class ArticleCategory(Base):
+    """Категории статей (иерархия, мета, макет: с сайдбаром / без)"""
+    __tablename__ = "article_categories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("article_categories.id"), nullable=True, index=True)
+
+    slug = Column(String(255), nullable=False)  # slug внутри уровня (без пути)
+    full_slug = Column(String(500), unique=True, index=True, nullable=False)  # путь: "usn" или "tax/usn"
+    name = Column(String(255), nullable=False)
+
+    # SEO
+    meta_title = Column(String(255), nullable=True)
+    meta_description = Column(Text, nullable=True)
+    meta_keywords = Column(String(500), nullable=True)
+    canonical_url = Column(String(500), nullable=True)
+
+    # Макет страницы категории (как в layout v12)
+    layout = Column(String(50), default="no_sidebar")  # with_sidebar | no_sidebar
+
+    position = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    parent = relationship("ArticleCategory", remote_side=[id], back_populates="children")
+    children = relationship("ArticleCategory", back_populates="parent", order_by="ArticleCategory.position")
+    sections = relationship(
+        "CategorySection",
+        back_populates="category",
+        cascade="all, delete-orphan",
+        order_by="CategorySection.position",
+    )
+
+    def __repr__(self):
+        return f"<ArticleCategory {self.full_slug}>"
+
+
+class CategorySection(Base):
+    """Секции страницы категории (те же типы, что у PageSection)"""
+    __tablename__ = "category_sections"
+
+    id = Column(Integer, primary_key=True, index=True)
+    category_id = Column(Integer, ForeignKey("article_categories.id"), nullable=False, index=True)
+
+    section_type = Column(String(100), nullable=False)
+    position = Column(Integer, default=0)
+
+    background_style = Column(String(100), default="light")
+    css_classes = Column(Text, nullable=True)
+    container_width = Column(String(50), default="default")
+    padding_y = Column(String(50), default="default")
+    grid_columns = Column(Integer, default=2)
+    grid_gap = Column(String(20), default="medium")
+    grid_style = Column(String(20), default="grid")
+    settings = Column(JSON, nullable=True)
+    is_visible = Column(Boolean, default=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    category = relationship("ArticleCategory", back_populates="sections")
+    blocks = relationship(
+        "CategoryBlock",
+        back_populates="section",
+        cascade="all, delete-orphan",
+        order_by="CategoryBlock.position",
+        lazy="joined",
+    )
+
+    def __repr__(self):
+        return f"<CategorySection {self.section_type} category_id={self.category_id} pos={self.position}>"
+
+
+class CategoryBlock(Base):
+    """Блоки контента внутри секций категории"""
+    __tablename__ = "category_blocks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    section_id = Column(Integer, ForeignKey("category_sections.id"), nullable=False, index=True)
+
+    block_type = Column(String(100), nullable=False)
+    position = Column(Integer, default=0)
+    content = Column(JSON, nullable=False)
+    css_classes = Column(Text, nullable=True)
+    is_visible = Column(Boolean, default=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    section = relationship("CategorySection", back_populates="blocks")
+
+    def __repr__(self):
+        return f"<CategoryBlock {self.block_type} section_id={self.section_id} pos={self.position}>"
+
+
+class AnalyticsEvent(Base):
+    """События для аналитики"""
+    __tablename__ = "analytics_events"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    
+    # Тип события
+    event_type = Column(String(100), nullable=False, index=True)  # page_view, document_created, payment, etc.
+    
+    # Пользователь (если авторизован)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    session_id = Column(String(100), nullable=True, index=True)  # Для гостей
+    
+    # Данные события (JSON) - переименовано из metadata (зарезервировано в SQLAlchemy)
+    event_data = Column(JSON, nullable=True)  # Любые данные события
+    
+    # Технические данные
+    ip_address = Column(String(45), nullable=True)
+    user_agent = Column(Text, nullable=True)
+    referrer = Column(String(500), nullable=True)
+    
+    # Метаданные
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+    
+    # Связи
+    user = relationship("User")
+    
+    def __repr__(self):
+        return f"<AnalyticsEvent {self.event_type} user_id={self.user_id}>"
+
+
+class Document(Base):
+    """Метаданные созданных документов (для аналитики)"""
+    __tablename__ = "documents"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    
+    # Пользователь
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    guest_draft_id = Column(Integer, ForeignKey("guest_drafts.id"), nullable=True)
+    
+    # Тип документа
+    document_type = Column(String(50), nullable=False, index=True)  # upd, akt, schet
+    document_subtype = Column(String(100), nullable=True)  # ooo, ip, s-nds, bez-nds, etc.
+    
+    # Идентификатор документа (папка на диске)
+    document_id = Column(String(100), unique=True, index=True, nullable=False)
+    
+    # Статус
+    status = Column(String(50), default="draft")  # draft, saved, exported, deleted
+    
+    # Данные документа (JSON) - переименовано из metadata (зарезервировано в SQLAlchemy)
+    document_data = Column(JSON, nullable=True)  # Любые данные документа
+    
+    # Размер файла
+    file_size_bytes = Column(Integer, nullable=True)
+    
+    # Метаданные
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    exported_at = Column(DateTime, nullable=True)  # Когда экспортирован в PDF
+    
+    # Связи
+    user = relationship("User")
+    guest_draft = relationship("GuestDraft")
+    
+    def __repr__(self):
+        return f"<Document {self.document_id} type={self.document_type}>"
+
+
+class Shortcode(Base):
+    """Шорткоды: переиспользуемые блоки из шаблонов секций для вставки в контент."""
+    __tablename__ = "shortcodes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), unique=True, nullable=False, index=True)  # slug для [name]
+    title = Column(String(255), nullable=False)  # название в админке
+
+    # Ссылка на секцию страницы (созданную в визуальном редакторе)
+    page_section_id = Column(Integer, ForeignKey("page_sections.id"), nullable=True, index=True)
+
+    # Legacy: если page_section_id не задан, рендер из этих полей
+    section_type = Column(String(100), nullable=True)
+    section_settings = Column(JSON, nullable=True)
+    blocks = Column(JSON, nullable=True)
+
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    page_section = relationship("PageSection", backref="shortcodes", foreign_keys=[page_section_id])
+
+    def __repr__(self):
+        return f"<Shortcode {self.name}>"
+
+
+class NewsSidebarItem(Base):
+    """Элемент сайдбара раздела «Новости»: порядок и тип (встроенный блок или шорткод)."""
+    __tablename__ = "news_sidebar_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    position = Column(Integer, nullable=False, default=0)  # порядок вывода (меньше — выше)
+    block_type = Column(String(50), nullable=False)  # cta_card | related_articles | shortcode
+    shortcode_id = Column(Integer, ForeignKey("shortcodes.id"), nullable=True, index=True)  # только при block_type == shortcode
+
+    shortcode = relationship("Shortcode", foreign_keys=[shortcode_id])
+
+    def __repr__(self):
+        return f"<NewsSidebarItem {self.block_type} pos={self.position}>"
+
+
+class Redirect(Base):
+    """301/302 редиректы для SEO"""
+    __tablename__ = "redirects"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    
+    # URL
+    from_url = Column(String(500), nullable=False, index=True)  # Старый URL
+    to_url = Column(String(500), nullable=False)  # Новый URL
+    
+    # Тип редиректа
+    status_code = Column(Integer, default=301)  # 301 (permanent) или 302 (temporary)
+    
+    # Статус
+    is_active = Column(Boolean, default=True)
+    
+    # Метаданные
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    
+    # Связи
+    created_by = relationship("User")
+    
+    def __repr__(self):
+        return f"<Redirect {self.from_url} → {self.to_url} ({self.status_code})>"

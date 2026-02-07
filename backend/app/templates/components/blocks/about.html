@@ -1,0 +1,95 @@
+{# About Section Component - Terminal v12.0 #}
+{# ВАЖНО: Все стили через CSS классы, НЕ инлайн! #}
+
+{% set bg_class = 'about-section-v12' %}
+{% if section.background_style == 'white' %}
+  {% set bg_class = 'about-section-v12 bg-white' %}
+{% elif section.background_style == 'surface' %}
+  {% set bg_class = 'about-section-v12 bg-surface' %}
+{% elif section.background_style == 'surface_light' %}
+  {% set bg_class = 'about-section-v12 bg-surface-light' %}
+{% elif section.background_style == 'dark' %}
+  {% set bg_class = 'about-section-v12 bg-dark' %}
+{% elif section.background_style == 'primary' %}
+  {% set bg_class = 'about-section-v12 bg-primary' %}
+{% elif section.background_style == 'gold' %}
+  {% set bg_class = 'about-section-v12 bg-gold' %}
+{% elif section.background_style == 'pattern_dots_light' %}
+  {% set bg_class = 'about-section-v12 pattern-dots-light' %}
+{% elif section.background_style == 'pattern_dots_dark' %}
+  {% set bg_class = 'about-section-v12 pattern-dots-dark' %}
+{% elif section.background_style == 'pattern_grid_lines' %}
+  {% set bg_class = 'about-section-v12 pattern-grid-lines' %}
+{% elif section.background_style == 'pattern_radial_blue' %}
+  {% set bg_class = 'about-section-v12 pattern-radial-blue' %}
+{% elif section.background_style == 'pattern_radial_gold' %}
+  {% set bg_class = 'about-section-v12 pattern-radial-gold' %}
+{% elif section.background_style == 'gradient_blue' %}
+  {% set bg_class = 'about-section-v12 bg-gradient-blue' %}
+{% elif section.background_style == 'gradient_gold' %}
+  {% set bg_class = 'about-section-v12 bg-gradient-gold' %}
+{% endif %}
+{% set is_dark_bg = section.background_style in ['dark', 'primary', 'gold', 'pattern_dots_dark'] %}
+
+<section class="{{ bg_class }} {{ section.css_classes }}{% if is_dark_bg %} section--dark{% endif %}" id="about">
+  <div class="container">
+    <div class="about-header-v12">
+      {% for block in section.blocks %}
+        {% if block.block_type == 'label' and block.is_visible %}
+          {# Badge/label по design system badges.html: badge + вариант (primary, success, outline-primary, ...) #}
+          {% set _label_c = block.content or {} %}
+          {% set badge_style = _label_c.get('badge_style') or 'primary' %}
+          {% if badge_style.startswith('outline-') %}
+            <span class="badge badge--outline badge--{{ badge_style }} about-label-v12 {{ block.css_classes }}">
+              <span class="ai-node"></span>
+              {{ _label_c.get('text', '') }}
+            </span>
+          {% else %}
+            <span class="badge badge--{{ badge_style }} about-label-v12 {{ block.css_classes }}">
+              <span class="ai-node"></span>
+              {{ _label_c.get('text', '') }}
+            </span>
+          {% endif %}
+        {% elif block.block_type == 'heading' and block.is_visible %}
+          {% set title_text = block.content.text %}
+          {% set accent = block.content.accent %}
+          {# Типографика v12: цветное слово через .text-primary-light (typography.html) #}
+          {% if accent and accent in title_text %}
+            {% set parts = title_text.split(accent) %}
+            <h2 class="about-title-v12 {{ block.css_classes }}">
+              {{ parts[0] }}<br><span class="accent text-primary-light">{{ accent }}</span>{{ parts[1] if parts|length > 1 else '' }}
+            </h2>
+          {% elif accent %}
+            <h2 class="about-title-v12 {{ block.css_classes }}">{{ title_text }} <span class="accent text-primary-light">{{ accent }}</span></h2>
+          {% else %}
+            <h2 class="about-title-v12 {{ block.css_classes }}">{{ title_text }}</h2>
+          {% endif %}
+        {% elif block.block_type == 'link_group' and block.is_visible %}
+          {% include "components/blocks/_link_group_render.html" %}
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    <div class="about-content-v12">
+      <div class="about-text-v12">
+        {% for block in section.blocks %}
+          {% if block.block_type == 'paragraph' and block.is_visible %}
+            <div class="{{ block.css_classes }}">{{ block.content.text | safe }}</div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      
+      <div class="about-stats-v12">
+        {% for block in section.blocks %}
+          {% if block.block_type == 'stat_card' and block.is_visible %}
+            {% set scard_bg = (block.content.card_background or '') %}
+            <div class="{{ block.css_classes }}{% if scard_bg %} about-stat-card--bg-{{ scard_bg }}{% endif %}">
+              <div class="about-stat-value">{{ block.content.value }}</div>
+              <div class="about-stat-label">{{ block.content.label }}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

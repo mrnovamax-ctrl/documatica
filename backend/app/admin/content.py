@@ -230,15 +230,22 @@ async def content_edit(request: Request, path: str):
     content = load_content_file(path)
     
     if not content:
-        # Создаём структуру по умолчанию
-        content = {
-            "meta": {"title": "", "description": "", "keywords": ""},
-            "page": {"h1": "", "intro": ""},
-            "features": [],
-            "faq": [],
-            "cta": {"title": "", "text": "", "url": ""},
-            "related": [],
-        }
+        content = {}
+    # Гарантируем ключи, к которым обращается edit.html
+    defaults = {
+        "meta": {"title": "", "description": "", "keywords": "", "canonical": ""},
+        "page": {"h1": "", "intro": "", "tag": ""},
+        "features": [],
+        "faq": [],
+        "cta": {"title": "", "text": "", "url": "", "subtext": "", "description": ""},
+        "related": [],
+        "about": {"label": "", "title": "", "title_accent": "", "description": "", "mission": "", "stats": []},
+    }
+    for key, default_val in defaults.items():
+        if key not in content:
+            content[key] = default_val
+        elif key == "about" and isinstance(content[key], dict) and "stats" not in content[key]:
+            content[key].setdefault("stats", [])
     
     return templates.TemplateResponse(
         request=request,
@@ -335,7 +342,7 @@ def parse_form_to_dict(form_data) -> Dict[str, Any]:
         if key in ("edit_mode", "yaml_content"):
             continue
         
-        # Парсим ключ вида "meta__title" или "features__0__title"
+        # Парсим ключ вида "meta__title" или "features__0__title" или "about__stats__0__value" или "features__cards__0__title"
         parts = key.split("__")
         
         if len(parts) == 2:
@@ -347,21 +354,65 @@ def parse_form_to_dict(form_data) -> Dict[str, Any]:
             
         elif len(parts) == 3:
             # Массив: features__0__title -> result["features"][0]["title"]
-            section, index, field = parts
-            index = int(index)
+            section, index_or_subsection, field = parts
             
-            if section not in result:
-                result[section] = []
+            # Проверяем, это индекс или подсекция
+            try:
+                index = int(index_or_subsection)
+                # Это массив
+                if section not in result:
+                    result[section] = []
+                
+                # Расширяем массив если нужно
+                while len(result[section]) <= index:
+                    result[section].append({})
+                
+                result[section][index][field] = value
+            except ValueError:
+                # Это подсекция (например hero__cta_text)
+                # Но это не подходит под формат, пропускаем
+                pass
             
-            # Расширяем массив если нужно
-            while len(result[section]) <= index:
-                result[section].append({})
+        elif len(parts) == 4:
+            # Вложенный массив: about__stats__0__value -> result["about"]["stats"][0]["value"]
+            # ИЛИ features__cards__0__title -> result["features"]["cards"][0]["title"]
+            section, subsection, index, field = parts
             
-            result[section][index][field] = value
+            try:
+                index = int(index)
+                
+                if section not in result:
+                    result[section] = {}
+                if subsection not in result[section]:
+                    result[section][subsection] = []
+                
+                # Расширяем массив если нужно
+                while len(result[section][subsection]) <= index:
+                    result[section][subsection].append({})
+                
+                result[section][subsection][index][field] = value
+            except ValueError:
+                # Индекс не число, пропускаем
+                pass
     
     # Очищаем пустые элементы массивов
     for key in ["features", "benefits", "faq", "related", "sections"]:
         if key in result:
-            result[key] = [item for item in result[key] if any(v.strip() for v in item.values() if v)]
+            # Проверяем, это массив объектов или объект с подмассивами
+            if isinstance(result[key], list):
+                result[key] = [item for item in result[key] if any(v.strip() for v in item.values() if v)]
+            elif isinstance(result[key], dict) and "cards" in result[key]:
+                # Очищаем cards внутри features/benefits
+                result[key]["cards"] = [
+                    item for item in result[key]["cards"] 
+                    if any(v.strip() for v in item.values() if v)
+                ]
+    
+    # Очищаем пустые элементы вложенных массивов (about.stats)
+    if "about" in result and "stats" in result["about"]:
+        result["about"]["stats"] = [
+            item for item in result["about"]["stats"] 
+            if any(v.strip() for v in item.values() if v)
+        ]
     
     return result

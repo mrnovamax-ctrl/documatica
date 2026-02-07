@@ -1,0 +1,232 @@
+{# CTA Section — 11 вариантов из cta.html v12. Фон секции из админки (background_style). #}
+{% set variant = (section.settings or {}).get('cta_variant', 'basic') %}
+
+{# Фон секции — как в FAQ/hero: из настройки «Фон» в билдере #}
+{% set section_bg = 'section' %}
+{% if section.background_style == 'white' %}
+  {% set section_bg = 'section bg-white' %}
+{% elif section.background_style == 'surface' %}
+  {% set section_bg = 'section bg-surface' %}
+{% elif section.background_style == 'surface_light' %}
+  {% set section_bg = 'section bg-surface-light' %}
+{% elif section.background_style == 'dark' %}
+  {% set section_bg = 'section bg-dark' %}
+{% elif section.background_style == 'primary' %}
+  {% set section_bg = 'section bg-primary' %}
+{% elif section.background_style == 'gold' %}
+  {% set section_bg = 'section bg-gold' %}
+{% elif section.background_style == 'pattern_dots_light' %}
+  {% set section_bg = 'section pattern-dots-light' %}
+{% elif section.background_style == 'pattern_dots_dark' %}
+  {% set section_bg = 'section pattern-dots-dark' %}
+{% elif section.background_style == 'pattern_grid_lines' %}
+  {% set section_bg = 'section pattern-grid-lines' %}
+{% elif section.background_style == 'pattern_radial_blue' %}
+  {% set section_bg = 'section pattern-radial-blue' %}
+{% elif section.background_style == 'pattern_radial_gold' %}
+  {% set section_bg = 'section pattern-radial-gold' %}
+{% elif section.background_style == 'gradient_blue' %}
+  {% set section_bg = 'section bg-gradient-blue' %}
+{% elif section.background_style == 'gradient_gold' %}
+  {% set section_bg = 'section bg-gradient-gold' %}
+{% endif %}
+{% set section_is_dark = section.background_style in ['dark', 'primary', 'gold', 'pattern_dots_dark'] %}
+
+{% set label_blocks = section.blocks | selectattr('block_type', 'equalto', 'label') | selectattr('is_visible') | list %}
+{% set heading_blocks = section.blocks | selectattr('block_type', 'equalto', 'heading') | selectattr('is_visible') | list %}
+{% set paragraph_blocks = section.blocks | selectattr('block_type', 'equalto', 'paragraph') | selectattr('is_visible') | list %}
+{% set button_blocks = section.blocks | selectattr('block_type', 'equalto', 'button') | selectattr('is_visible') | list %}
+{% set link_group_blocks = section.blocks | selectattr('block_type', 'equalto', 'link_group') | selectattr('is_visible') | list %}
+{% set feature_card_blocks = section.blocks | selectattr('block_type', 'equalto', 'feature_card') | selectattr('is_visible') | list %}
+{% set countdown_block = section.blocks | selectattr('block_type', 'equalto', 'countdown') | selectattr('is_visible') | list | first %}
+{% set newsletter_block = section.blocks | selectattr('block_type', 'equalto', 'newsletter') | selectattr('is_visible') | list | first %}
+{% set cta_card_blocks = section.blocks | selectattr('block_type', 'equalto', 'cta_card') | selectattr('is_visible') | list %}
+
+{% set first_label = label_blocks | first %}
+{% set first_heading = heading_blocks | first %}
+{% set first_paragraph = paragraph_blocks | first %}
+{% set first_link_group = link_group_blocks | first %}
+{% set links = (first_link_group.content or {}).get('links', []) if first_link_group else [] %}
+
+{# Wrapper class by variant (v12 classes from cta.html reference) #}
+{% if variant == 'banner' %}
+  {% set section_wrapper = 'cta-banner' %}
+{% elif variant == 'cards' %}
+  {% set section_wrapper = '' %}
+{% elif variant == 'newsletter' %}
+  {% set section_wrapper = 'cta-newsletter' %}
+{% elif variant == 'countdown' %}
+  {% set section_wrapper = 'cta-countdown' %}
+{% elif variant == 'split' %}
+  {# В референсе: div.cta-section.cta-split #}
+  {% set section_wrapper = 'cta-section cta-split' %}
+{% else %}
+  {# basic, dark, gradient, minimal, compact, bordered #}
+  {% set section_wrapper = 'cta-section' %}
+  {% if variant == 'dark' %}{% set section_mod = 'cta-section--dark' %}
+  {% elif variant == 'gradient' %}{% set section_mod = 'cta-section--gradient' %}
+  {% elif variant == 'minimal' %}{% set section_mod = 'cta-section--minimal' %}
+  {% elif variant == 'compact' %}{% set section_mod = 'cta-section--compact' %}
+  {% elif variant == 'bordered' %}{% set section_mod = 'cta-section--bordered' %}
+  {% else %}{% set section_mod = '' %}{% endif %}
+{% endif %}
+
+<section class="{{ section_bg }}{% if section.css_classes %} {{ section.css_classes }}{% endif %}{% if section_is_dark %} section--dark{% endif %}">
+  <div class="container">
+    {# Внутренний блок с вариантом — внутри container, чтобы ширина была как в референсе (не на всю ширину) #}
+    {% if section_wrapper %}<div class="{{ section_wrapper }}{% if section_mod %} {{ section_mod }}{% endif %}">{% endif %}
+    {% if variant == 'banner' %}
+      {# 05. Banner CTA — горизонтальный компакт #}
+      <div class="cta-banner-content">
+        {% if first_heading %}
+          {% set h = first_heading.content %}
+          <h3 class="cta-banner-title">{{ h.text | default('') }}{% if h.accent %} <span class="text-primary-light">{{ h.accent }}</span>{% endif %}</h3>
+        {% endif %}
+        {% if first_paragraph %}
+          <div class="cta-banner-text">{{ first_paragraph.content.text | default('') | safe }}</div>
+        {% endif %}
+      </div>
+      <div class="cta-banner-actions">
+        {% for b in button_blocks %}
+          <a href="{{ b.content.url | default('#') }}" class="{{ b.css_classes | default('btn btn-primary') }}">{{ b.content.text | default('Кнопка') }}</a>
+        {% endfor %}
+      </div>
+
+    {% elif variant == 'cards' %}
+      {# 06. Horizontal CTA Cards — kit-card kit-card--cta #}
+      <div class="grid gap-4">
+        {% if cta_card_blocks | length > 0 %}
+          {% for card in cta_card_blocks %}
+            {% set c = card.content or {} %}
+            <a href="{{ c.url | default('#') }}" class="kit-card kit-card--cta">
+              <div class="kit-card-content">
+                <h3 class="kit-card-title">{{ c.title | default('') }}</h3>
+                <p class="kit-card-text">{{ c.description | default(c.text, '') }}</p>
+              </div>
+              <div class="kit-card__button">
+                {% if c.icon %}<iconify-icon icon="{{ c.icon }}" width="24"></iconify-icon>
+                {% else %}<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>{% endif %}
+              </div>
+            </a>
+          {% endfor %}
+        {% else %}
+          {% for link in links %}
+            <a href="{{ link.url | default('#') }}" class="kit-card kit-card--cta">
+              <div class="kit-card-content">
+                <h3 class="kit-card-title">{{ link.text | default('Ссылка') }}</h3>
+                <p class="kit-card-text"></p>
+              </div>
+              <div class="kit-card__button">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+    {% elif variant == 'newsletter' %}
+      {# 07. Newsletter CTA #}
+      {% set nb = newsletter_block.content if newsletter_block else {} %}
+      <h3 class="cta-newsletter-title">{% if first_heading %}{{ first_heading.content.text | default('') }}{% if first_heading.content.accent %} <span class="text-primary-light">{{ first_heading.content.accent }}</span>{% endif %}{% else %}STAY UPDATED{% endif %}</h3>
+      <div class="cta-newsletter-text">{% if first_paragraph %}{{ first_paragraph.content.text | safe }}{% else %}Get the latest updates delivered to your inbox.{% endif %}</div>
+      <form class="cta-newsletter-form" action="{{ nb.form_action | default('#' ) }}" method="post">
+        <input type="email" class="cta-newsletter-input" placeholder="{{ nb.placeholder | default('Enter your email') }}" name="email" required>
+        <button type="submit" class="btn btn-primary">{{ nb.button_text | default('SUBSCRIBE') }}</button>
+      </form>
+
+    {% elif variant == 'countdown' %}
+      {# 08. Countdown CTA #}
+      {% if first_label %}<span class="cta-badge">{{ first_label.content.text | default('') }}</span>{% endif %}
+      <h2 class="cta-title cta-countdown-title">{% if first_heading %}{{ first_heading.content.text | default('') }}{% if first_heading.content.accent %} <span class="text-primary-light">{{ first_heading.content.accent }}</span>{% endif %}{% else %}SALE ENDS SOON{% endif %}</h2>
+      <div class="cta-subtitle cta-countdown-subtitle">{% if first_paragraph %}{{ first_paragraph.content.text | safe }}{% endif %}</div>
+      {% if countdown_block %}
+        {% set cd = countdown_block.content or {} %}
+        <div class="cta-countdown-timer">
+          <div class="cta-countdown-item">
+            <div class="cta-countdown-value" data-countdown="days">{{ cd.days | default('00') }}</div>
+            <div class="cta-countdown-label">Days</div>
+          </div>
+          <div class="cta-countdown-item">
+            <div class="cta-countdown-value" data-countdown="hours">{{ cd.hours | default('00') }}</div>
+            <div class="cta-countdown-label">Hours</div>
+          </div>
+          <div class="cta-countdown-item">
+            <div class="cta-countdown-value" data-countdown="minutes">{{ cd.minutes | default('00') }}</div>
+            <div class="cta-countdown-label">Minutes</div>
+          </div>
+          <div class="cta-countdown-item">
+            <div class="cta-countdown-value" data-countdown="seconds">{{ cd.seconds | default('00') }}</div>
+            <div class="cta-countdown-label">Seconds</div>
+          </div>
+        </div>
+      {% endif %}
+      <div class="cta-actions">
+        {% for b in button_blocks %}
+          <a href="{{ b.content.url | default('#') }}" class="{{ b.css_classes | default('btn btn-gold btn-lg') }}">{{ b.content.text | default('Кнопка') }}</a>
+        {% endfor %}
+      </div>
+
+    {% elif variant == 'split' %}
+      {# 04. Split CTA — две колонки, справа фичи с иконками #}
+      <div class="cta-split-content">
+        {% if first_label %}<span class="cta-badge">{{ first_label.content.text | default('') }}</span>{% endif %}
+        <h2 class="cta-title">{% if first_heading %}{{ first_heading.content.text | default('') }}{% if first_heading.content.accent %} <span class="text-primary-light">{{ first_heading.content.accent }}</span>{% endif %}{% else %}BUILT FOR TEAMS{% endif %}</h2>
+        {% if first_paragraph %}<div class="cta-subtitle">{{ first_paragraph.content.text | safe }}</div>{% endif %}
+        <div class="cta-actions">
+          {% for b in button_blocks %}
+            <a href="{{ b.content.url | default('#') }}" class="{{ b.css_classes | default('btn btn-primary btn-lg') }}">{{ b.content.text | default('Кнопка') }}</a>
+          {% endfor %}
+        </div>
+        {% if feature_card_blocks %}
+          <div class="cta-features">
+            {% for f in feature_card_blocks %}
+              {% set fc = f.content or {} %}
+              <div class="cta-feature">
+                <div class="cta-feature-icon">
+                  {% if fc.icon %}<iconify-icon icon="heroicons:{{ fc.icon }}-outline" width="24"></iconify-icon>
+                  {% else %}<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>{% endif %}
+                </div>
+                <span class="cta-feature-text">{{ fc.title | default('') }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="cta-split-visual">
+        {% set split_img = (section.settings or {}).get('split_image_url') %}
+        {% if split_img %}<img src="{{ split_img }}" alt="" class="cta-split-image">{% else %}<div class="cta-split-placeholder">VISUAL</div>{% endif %}
+      </div>
+
+    {% else %}
+      {# 01 Basic, 02 Dark, 03 Gradient, 09 Minimal, 10 Compact, 11 Bordered — общая разметка cta-content #}
+      <div class="cta-content">
+        {% if first_label %}<span class="cta-badge">{{ first_label.content.text | default('') }}</span>{% endif %}
+        {% if first_heading %}
+          {% set h = first_heading.content %}
+          <h2 class="cta-title">{{ h.text | default('') }}{% if h.accent %} <span class="text-primary-light">{{ h.accent }}</span>{% endif %}</h2>
+        {% endif %}
+        {% if first_paragraph %}<div class="cta-subtitle">{{ first_paragraph.content.text | safe }}</div>{% endif %}
+        <div class="cta-actions">
+          {% for b in button_blocks %}
+            <a href="{{ b.content.url | default('#') }}" class="{{ b.css_classes | default('btn btn-primary btn-lg') }}">{{ b.content.text | default('Кнопка') }}</a>
+          {% endfor %}
+        </div>
+        {% if variant == 'gradient' and first_link_group and links %}
+          <div class="cta-social-proof">
+            <div class="cta-avatars">
+              <div class="cta-avatar cta-avatar--blue"></div>
+              <div class="cta-avatar cta-avatar--gold"></div>
+              <div class="cta-avatar cta-avatar--green"></div>
+              <div class="cta-avatar cta-avatar--red"></div>
+            </div>
+            <span class="cta-social-text">{{ links[0].text if links else 'Join 10,000+ happy users' }}</span>
+          </div>
+        {% endif %}
+        {% if variant != 'gradient' and first_link_group %}
+          {% include "components/blocks/_link_group_render.html" %}
+        {% endif %}
+      </div>
+    {% endif %}
+    {% if section_wrapper %}</div>{% endif %}
+  </div>
+</section>

@@ -3,7 +3,7 @@
 {% block body_class %}public-page{% if is_home_page %} home-page{% endif %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="/static/css/home.css?v=2.3">
+<link rel="stylesheet" href="/static/css/home.css?v=2.5">
 {{ super() }}
 {% endblock %}
 
@@ -29,10 +29,10 @@
 
 <!-- Main Content -->
 <main class="main-content">
-  {% if breadcrumbs and not is_home_page %}
+  {% if breadcrumbs and not is_home_page and not use_custom_breadcrumbs %}
   {% include "components/breadcrumbs.html" %}
   {% endif %}
-  
+
   {% block content %}{% endblock %}
 </main>
 
@@ -77,6 +77,6 @@
     }
   });
 </script>
-
+<script src="/static/js/accordion-v12.js"></script>
 {{ super() }}
 {% endblock %}

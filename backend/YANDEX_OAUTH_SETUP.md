@@ -104,3 +104,26 @@ invalid_scope
 - **HTTPS обязателен** - Яндекс OAuth работает только через HTTPS в production
 - **Точное совпадение URL** - Callback URL в настройках приложения должен **точно** совпадать с `YANDEX_REDIRECT_URI` в .env
 - **Без trailing slash** - URL должен быть без `/` в конце
+
+---
+
+## Yandex SmartCaptcha (капча на странице входа)
+
+На странице входа (`/login/`) используется SmartCaptcha для защиты от ботов.
+
+### Настройка
+
+1. Создайте капчу в [Yandex Cloud SmartCaptcha](https://cloud.yandex.ru/services/smartcaptcha)
+2. Получите **ключ клиента** (sitekey) и **ключ сервера** (server key)
+3. В `.env` добавьте (подставьте ваш ключ сервиса):
+
+```env
+SMARTCAPTCHA_SERVER_KEY=ysc2_xxxxxxxxxxxxxxxxxxxx
+```
+
+Ключ клиента (sitekey) уже прописан в шаблоне `auth/login.html`. Ключ сервиса — приватный, храните его только в .env (не коммитьте в git).
+
+### Поведение
+
+- **Без SMARTCAPTCHA_SERVER_KEY** — капча отключена, вход работает без проверки
+- **С SMARTCAPTCHA_SERVER_KEY** — капча обязательна, пользователь должен пройти проверку «Я не робот»

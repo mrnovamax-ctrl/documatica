@@ -275,6 +275,39 @@
   </div>
 </section>
 
+<!-- About Us Section v12.0 -->
+<section class="about-section-v12" id="about">
+  <div class="container">
+    {% set about = content.about | default({}) %}
+    <div class="about-header-v12">
+      <div class="about-label-v12">
+        <span class="ai-node"></span>
+        {{ about.label | default("О нас") }}
+      </div>
+      <h2 class="about-title-v12">{{ about.title | default("Кто стоит за") }}<br><span class="accent">{{ about.title_accent | default("Documatica") }}</span></h2>
+    </div>
+    
+    <div class="about-content-v12">
+      <div class="about-text-v12">
+        <p class="about-description">{{ about.description | default("Мы — команда экспертов в области автоматизации документооборота и искусственного интеллекта.") }}</p>
+        <p class="about-mission">{{ about.mission | default("Documatica использует передовые технологии машинного обучения для проверки документов.") }}</p>
+      </div>
+      
+      {% set stats = about.stats | default([]) %}
+      {% if stats %}
+      <div class="about-stats-v12">
+        {% for stat in stats %}
+        <div class="about-stat-card">
+          <div class="about-stat-value">{{ stat.value }}</div>
+          <div class="about-stat-label">{{ stat.label }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
 <!-- CTA Section v12.0 -->
 <section class="cta-section-v12">
   <div class="container">

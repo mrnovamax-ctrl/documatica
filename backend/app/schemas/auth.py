@@ -16,6 +16,7 @@ class UserRegister(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+    smart_token: Optional[str] = None  # Yandex SmartCaptcha token
 
 
 class UserResponse(BaseModel):

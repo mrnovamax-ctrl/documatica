@@ -1,0 +1,89 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Шорткоды{% endblock %}
+{% block page_title %}Шорткоды{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/shortcodes/create/" class="admin-btn admin-btn-primary">
+  <iconify-icon icon="ri:add-line" width="16"></iconify-icon>
+  Создать шорткод
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="admin-core">
+  <div class="table-wrapper">
+    <table class="table table--compact">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>Шорткод</th>
+          <th>Секция</th>
+          <th>Статус</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sc in shortcodes %}
+        <tr>
+          <td>
+            <a href="/admin/shortcodes/{{ sc.id }}/" class="admin-shortcode-title">{{ sc.title }}</a>
+          </td>
+          <td>
+            <code class="admin-shortcode-tag">[{{ sc.name }}]</code>
+            <div class="table__muted" style="font-size: 11px; margin-top: 2px;">Вставьте в контент статьи</div>
+          </td>
+          <td>
+            {% if sc.page_section %}
+            <span class="admin-badge admin-badge-primary">{{ sc.page_section.section_type }}</span>
+            <div class="table__muted" style="font-size: 11px;">страница: {{ sc.page_section.page.slug if sc.page_section.page else '—' }}</div>
+            {% else %}
+            <span class="table__muted">—</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if sc.is_active %}
+            <span class="admin-badge admin-badge-success">Вкл</span>
+            {% else %}
+            <span class="admin-badge admin-badge-muted">Выкл</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="table-actions">
+              <a href="/admin/shortcodes/{{ sc.id }}/" class="table-action" title="Редактировать">
+                <iconify-icon icon="ri:edit-line" width="16"></iconify-icon>
+              </a>
+              <form action="/admin/shortcodes/{{ sc.id }}/delete/" method="POST" style="display: inline;" onsubmit="return confirm('Удалить шорткод?');">
+                <button type="submit" class="table-action" title="Удалить">
+                  <iconify-icon icon="ri:delete-bin-line" width="16"></iconify-icon>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 3rem;">
+            <div class="admin-empty-state">
+              <iconify-icon icon="ri:code-s-slash-line" width="48" style="color: var(--color-slate-300);"></iconify-icon>
+              <div class="admin-empty-state-title">Шорткодов пока нет</div>
+              <div class="admin-empty-state-text">Создайте шорткод по шаблону секции, заполните данные и вставляйте [имя] в статьи</div>
+              <a href="/admin/shortcodes/create/" class="admin-btn admin-btn-primary" style="margin-top: 1rem;">
+                <iconify-icon icon="ri:add-line" width="16"></iconify-icon>
+                Создать шорткод
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+.admin-shortcode-title { font-weight: 600; color: var(--color-slate-900); text-decoration: none; }
+.admin-shortcode-title:hover { color: var(--color-brand-blue); }
+.admin-shortcode-tag { background: var(--color-slate-100); padding: 4px 8px; border-radius: 6px; font-size: 13px; }
+</style>
+{% endblock %}

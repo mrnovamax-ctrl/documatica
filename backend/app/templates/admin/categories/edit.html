@@ -1,0 +1,212 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Категория: {{ category.name }}{% endblock %}
+{% block page_title %}Категория: {{ category.name }}{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/categories/" class="admin-btn-back">
+  <iconify-icon icon="ri:arrow-left-line" width="18"></iconify-icon>
+  К списку
+</a>
+<a href="/news/category/{{ category.full_slug }}/" target="_blank" class="admin-btn-secondary" rel="noopener">
+  <iconify-icon icon="ri:external-link-line" width="18"></iconify-icon>
+  Предпросмотр
+</a>
+{% endblock %}
+
+{% block content %}
+<style>
+.admin-form-card { max-width: 36rem; background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+.admin-form-group { margin-bottom: 1.25rem; }
+.admin-form-label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; }
+.admin-form-input { width: 100%; padding: 0.625rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; }
+.admin-form-actions { display: flex; gap: 0.75rem; margin-top: 1rem; }
+.admin-btn-submit { padding: 0.625rem 1.25rem; background: #3b82f6; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; }
+.admin-radio-group { display: flex; gap: 1.5rem; margin-top: 0.5rem; }
+.admin-radio-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9375rem; }
+.cat-sections-wrap { background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; }
+.cat-sections-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+.cat-section-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; }
+.cat-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+.cat-section-type { padding: 0.25rem 0.75rem; background: #eff6ff; color: #3b82f6; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; }
+.cat-section-actions { display: flex; gap: 0.5rem; }
+.cat-block-item { background: white; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 0.75rem; margin-bottom: 0.5rem; font-size: 0.875rem; display: flex; justify-content: space-between; align-items: center; }
+.cat-block-type { color: #64748b; font-weight: 600; }
+.cat-add-section-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; margin-bottom: 1rem; }
+.cat-add-section-btn { padding: 0.75rem; border: 2px dashed #e2e8f0; border-radius: 0.5rem; background: #f8fafc; cursor: pointer; font-size: 0.8125rem; text-align: center; }
+.cat-add-section-btn:hover { border-color: #3b82f6; background: #eff6ff; }
+.cat-add-block-btn { padding: 0.375rem 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: white; cursor: pointer; font-size: 0.8125rem; }
+.cat-add-block-btn:hover { background: #eff6ff; border-color: #3b82f6; }
+.cat-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
+.cat-modal.show { display: flex; }
+.cat-modal-inner { background: white; border-radius: 1rem; padding: 1.5rem; min-width: 320px; max-width: 90vw; }
+.cat-modal-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+</style>
+
+{% if request.query_params.get('error') == 'slug' %}
+<div class="admin-form-error" style="margin-bottom:1rem;">Укажите корректный slug.</div>
+{% elif request.query_params.get('error') == 'exists' %}
+<div class="admin-form-error" style="margin-bottom:1rem;">Категория с таким путём уже существует.</div>
+{% endif %}
+
+<form method="post" action="/admin/categories/{{ category.id }}/edit/" class="admin-form-card">
+  <div class="admin-form-group">
+    <label class="admin-form-label" for="name">Название</label>
+    <input type="text" id="name" name="name" class="admin-form-input" required value="{{ category.name }}">
+  </div>
+  <div class="admin-form-group">
+    <label class="admin-form-label" for="slug">Slug</label>
+    <input type="text" id="slug" name="slug" class="admin-form-input" required value="{{ category.slug }}" pattern="[a-z0-9\-]+">
+  </div>
+  <div class="admin-form-group">
+    <label class="admin-form-label" for="parent_id">Родитель</label>
+    <select id="parent_id" name="parent_id" class="admin-form-input">
+      <option value="">— Корневая —</option>
+      {% for p in (parents | default([])) %}
+      <option value="{{ p.id }}" {% if category.parent_id == p.id %}selected{% endif %}>{{ p.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="admin-form-group">
+    <label class="admin-form-label">Макет</label>
+    <div class="admin-radio-group">
+      <label class="admin-radio-label"><input type="radio" name="layout" value="no_sidebar" {% if category.layout == 'no_sidebar' %}checked{% endif %}> Без сайдбара</label>
+      <label class="admin-radio-label"><input type="radio" name="layout" value="with_sidebar" {% if category.layout == 'with_sidebar' %}checked{% endif %}> С сайдбаром</label>
+    </div>
+  </div>
+  <div class="admin-form-group">
+    <label class="admin-form-label" for="meta_title">Meta title</label>
+    <input type="text" id="meta_title" name="meta_title" class="admin-form-input" value="{{ category.meta_title or '' }}">
+  </div>
+  <div class="admin-form-group">
+    <label class="admin-form-label" for="meta_description">Meta description</label>
+    <textarea id="meta_description" name="meta_description" class="admin-form-input" rows="2">{{ category.meta_description or '' }}</textarea>
+  </div>
+  <div class="admin-form-group">
+    <label class="admin-form-label" for="meta_keywords">Meta keywords</label>
+    <input type="text" id="meta_keywords" name="meta_keywords" class="admin-form-input" value="{{ category.meta_keywords or '' }}">
+  </div>
+  <div class="admin-form-group">
+    <label class="admin-form-label" for="canonical_url">Canonical URL</label>
+    <input type="text" id="canonical_url" name="canonical_url" class="admin-form-input" value="{{ category.canonical_url or '' }}">
+  </div>
+  <div class="admin-form-actions">
+    <button type="submit" class="admin-btn-submit">Сохранить мета и макет</button>
+  </div>
+</form>
+
+<div class="cat-sections-wrap">
+  <h2 class="cat-sections-title">Секции страницы категории</h2>
+  <p style="color:#64748b;font-size:0.875rem;margin-bottom:1rem;">Добавьте секции (hero, список статей, CTA и т.д.). На странице категории они выводятся в том же порядке. При макете «С сайдбаром» основной контент — слева, сайдбар (подкатегории, последние статьи) — справа.</p>
+  <div class="cat-add-section-grid" id="addSectionGrid">
+    {% for st in section_types %}
+    <button type="button" class="cat-add-section-btn" data-section-type="{{ st[0] }}">{{ st[1] }}</button>
+    {% endfor %}
+  </div>
+  <div id="sectionsList">
+    {% for section in (sections | default([])) | sort(attribute='position') %}
+    <div class="cat-section-card" data-section-id="{{ section.id }}">
+      <div class="cat-section-header">
+        <span class="cat-section-type">{{ section.section_type }}</span>
+        <div class="cat-section-actions">
+          <button type="button" class="cat-add-block-btn" data-section-id="{{ section.id }}">+ Блок</button>
+          <button type="button" class="table-action table-action--danger btn-delete-section" data-section-id="{{ section.id }}">Удалить секцию</button>
+        </div>
+      </div>
+      <div class="cat-blocks-list">
+        {% for block in section.blocks %}
+        <div class="cat-block-item" data-block-id="{{ block.id }}">
+          <span class="cat-block-type">{{ block.block_type }}</span>
+          <button type="button" class="table-action table-action--danger btn-delete-block" data-block-id="{{ block.id }}">Удалить</button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="cat-modal" id="modalAddBlock">
+  <div class="cat-modal-inner">
+    <div class="cat-modal-title">Добавить блок</div>
+    <input type="hidden" id="modalSectionId" value="">
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="modalBlockType">Тип блока</label>
+      <select id="modalBlockType" class="admin-form-input">
+        <option value="paragraph">paragraph</option>
+        <option value="heading">heading</option>
+        <option value="button">button</option>
+        <option value="image">image</option>
+      </select>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="modalBlockContent">Content (JSON)</label>
+      <textarea id="modalBlockContent" class="admin-form-input" rows="4">{"text": ""}</textarea>
+    </div>
+    <div class="admin-form-actions">
+      <button type="button" class="admin-btn-submit" id="modalAddBlockSubmit">Добавить</button>
+      <button type="button" class="admin-btn-cancel" id="modalAddBlockCancel">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var categoryId = {{ category.id }};
+var apiBase = '/api/v1';
+
+function reload() { window.location.reload(); }
+
+document.getElementById('addSectionGrid').addEventListener('click', function(e) {
+  var btn = e.target.closest('.cat-add-section-btn');
+  if (!btn) return;
+  var sectionType = btn.getAttribute('data-section-type');
+  fetch(apiBase + '/categories/' + categoryId + '/sections/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ section_type: sectionType, position: document.querySelectorAll('.cat-section-card').length })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.success) reload();
+    else alert('Ошибка: ' + (data.detail || 'неизвестно'));
+  }).catch(function() { alert('Ошибка сети'); });
+});
+
+document.getElementById('sectionsList').addEventListener('click', function(e) {
+  if (e.target.closest('.btn-delete-section')) {
+    var sid = e.target.closest('.btn-delete-section').getAttribute('data-section-id');
+    if (!confirm('Удалить секцию?')) return;
+    fetch(apiBase + '/category-sections/' + sid + '/', { method: 'DELETE' })
+      .then(function(r) { return r.json(); }).then(function(data) { if (data.success) reload(); }).catch(function() { alert('Ошибка'); });
+  }
+  if (e.target.closest('.btn-delete-block')) {
+    var bid = e.target.closest('.btn-delete-block').getAttribute('data-block-id');
+    if (!confirm('Удалить блок?')) return;
+    fetch(apiBase + '/category-blocks/' + bid + '/', { method: 'DELETE' })
+      .then(function(r) { return r.json(); }).then(function(data) { if (data.success) reload(); }).catch(function() { alert('Ошибка'); });
+  }
+  if (e.target.closest('.cat-add-block-btn')) {
+    var sid = e.target.closest('.cat-add-block-btn').getAttribute('data-section-id');
+    document.getElementById('modalSectionId').value = sid;
+    document.getElementById('modalAddBlock').classList.add('show');
+  }
+});
+
+document.getElementById('modalAddBlockSubmit').addEventListener('click', function() {
+  var sectionId = document.getElementById('modalSectionId').value;
+  var blockType = document.getElementById('modalBlockType').value;
+  var contentStr = document.getElementById('modalBlockContent').value;
+  var content = {};
+  try { content = JSON.parse(contentStr || '{}'); } catch (err) { content = { text: contentStr }; }
+  fetch(apiBase + '/category-sections/' + sectionId + '/blocks/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ block_type: blockType, content: content, position: 999 })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.success) { document.getElementById('modalAddBlock').classList.remove('show'); reload(); }
+    else alert('Ошибка: ' + (data.detail || 'неизвестно'));
+  }).catch(function() { alert('Ошибка сети'); });
+});
+document.getElementById('modalAddBlockCancel').addEventListener('click', function() {
+  document.getElementById('modalAddBlock').classList.remove('show');
+});
+</script>
+{% endblock %}

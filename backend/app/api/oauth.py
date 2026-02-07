@@ -226,6 +226,8 @@ async def yandex_callback(
                     print(f"[YANDEX_OAUTH] Converted draft to document {doc_id}")
                     # Редиректим в дашборд (там будет виден документ)
                     redirect_to = "/dashboard/"
+                    if is_new_registration:
+                        redirect_to = f"{redirect_to}?yandex_registered=1"
         
         # Redirect to appropriate page
         response = RedirectResponse(url=redirect_to)

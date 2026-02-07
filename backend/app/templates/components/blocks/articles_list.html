@@ -1,0 +1,98 @@
+{# Секция «Список статей» с фильтром по категориям и пагинацией. Контекст: articles, categories, current_category, current_page или page, total_pages, total #}
+{% set _articles = articles | default([]) %}
+{% set _categories = categories | default([]) %}
+{% set _current_category = current_category | default(none) %}
+{% set _page = current_page | default(page) | default(1) %}
+{% set _total_pages = total_pages | default(1) %}
+<section class="knowledge-hub-section {% if section is defined and section %}{{ section.css_classes or '' }}{% endif %}" style="padding-top: 48px; background: #f8fafc;">
+  <div class="container">
+    {% if _articles %}
+    {% if _articles[0] %}
+    <div class="knowledge-hub-grid" style="margin-bottom: 32px;">
+      <a href="/news/{{ _articles[0].slug }}/" class="article-card article-card--featured">
+        <div class="article-card-bg-blob"></div>
+        <div class="article-card-header">
+          <span class="article-card-badge article-card-badge--primary">Featured</span>
+          <div class="article-card-arrow">
+            <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </div>
+        <div class="article-card-content">
+          {% set cat0 = none %}
+          {% for c in _categories if c.slug == _articles[0].category %}{% set cat0 = c %}{% endfor %}
+          <span class="article-card-category">{{ cat0.name if cat0 else _articles[0].category | default("Статьи") }}</span>
+          <h3 class="article-card-title article-card-title--large">{{ _articles[0].title }}</h3>
+          <p class="article-card-excerpt">{{ (_articles[0].excerpt or '')[:200] }}{% if (_articles[0].excerpt or '')|length > 200 %}...{% endif %}</p>
+        </div>
+      </a>
+      {% if _articles|length > 1 %}
+      <div class="article-card-side-grid">
+        {% for article in _articles[1:3] %}
+        {% set cat = none %}
+        {% for c in _categories if c.slug == article.category %}{% set cat = c %}{% endfor %}
+        <a href="/news/{{ article.slug }}/" class="article-card article-card--small">
+          <div class="article-card-header">
+            <span class="article-card-tag{% if loop.index == 1 %} article-card-tag--blue{% else %} article-card-tag--amber{% endif %}">{{ cat.name if cat else article.category | default("Статьи") }}</span>
+            <div class="article-card-arrow article-card-arrow--small">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </div>
+          </div>
+          <div class="article-card-content">
+            <h4 class="article-card-title article-card-title--small">{{ article.title | truncate(60) }}</h4>
+            <p class="article-card-meta">{{ article.created_at[:10] if article.created_at else '' }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if _articles|length > 3 %}
+    <div class="knowledge-hub-bottom-row" style="margin-bottom: 32px;">
+      {% for article in _articles[3:] %}
+      {% set cat = none %}
+      {% for c in _categories if c.slug == article.category %}{% set cat = c %}{% endfor %}
+      <a href="/news/{{ article.slug }}/" class="article-card article-card--small">
+        <div class="article-card-header">
+          <span class="article-card-tag{% if loop.index % 3 == 0 %} article-card-tag--blue{% elif loop.index % 3 == 1 %} article-card-tag--amber{% endif %}">{{ cat.name if cat else article.category | default("Статьи") }}</span>
+          <div class="article-card-arrow article-card-arrow--small">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </div>
+        <div class="article-card-content">
+          <h4 class="article-card-title article-card-title--small">{{ article.title | truncate(50) }}</h4>
+          <p class="article-card-meta">{{ article.created_at[:10] if article.created_at else '' }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if _total_pages > 1 %}
+    <div class="news-pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: 48px;">
+      {% if _page > 1 %}
+      <a href="?{% if _current_category %}category={{ _current_category.slug }}&{% endif %}page={{ _page - 1 }}" class="article-card-tag" style="padding: 12px 16px; text-decoration: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      {% endif %}
+      {% for p in range(1, _total_pages + 1) %}
+      <a href="?{% if _current_category %}category={{ _current_category.slug }}&{% endif %}page={{ p }}" class="article-card-tag{% if p == _page %} article-card-tag--blue{% endif %}" style="padding: 12px 20px; text-decoration: none; font-weight: 700;">{{ p }}</a>
+      {% endfor %}
+      {% if _page < _total_pages %}
+      <a href="?{% if _current_category %}category={{ _current_category.slug }}&{% endif %}page={{ _page + 1 }}" class="article-card-tag" style="padding: 12px 16px; text-decoration: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="knowledge-hub-empty" style="text-align: center; padding: 80px 0;">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" style="margin-bottom: 24px;">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+      </svg>
+      <h3 style="font-size: 24px; font-weight: 800; color: var(--docu-ink); margin-bottom: 8px;">Статьи не найдены</h3>
+      <p style="color: var(--docu-body);">В этой категории пока нет статей</p>
+    </div>
+    {% endif %}
+  </div>
+</section>

@@ -1,0 +1,89 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Создать категорию{% endblock %}
+{% block page_title %}Создать категорию{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/categories/" class="admin-btn-back">
+  <iconify-icon icon="ri:arrow-left-line" width="18"></iconify-icon>
+  К списку
+</a>
+{% endblock %}
+
+{% block content %}
+<style>
+.admin-form-card { max-width: 36rem; background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; }
+.admin-form-group { margin-bottom: 1.25rem; }
+.admin-form-label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; }
+.admin-form-input { width: 100%; padding: 0.625rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; }
+.admin-form-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+.admin-form-hint { font-size: 0.8125rem; color: #6b7280; margin-top: 0.25rem; }
+.admin-form-error { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.875rem; }
+.admin-form-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #f1f5f9; }
+.admin-btn-submit { padding: 0.625rem 1.25rem; background: #3b82f6; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; }
+.admin-btn-submit:hover { background: #2563eb; }
+.admin-btn-cancel { padding: 0.625rem 1.25rem; background: white; color: #64748b; border: 1px solid #e2e8f0; border-radius: 0.5rem; text-decoration: none; font-weight: 500; }
+.admin-btn-cancel:hover { background: #f8fafc; }
+.admin-radio-group { display: flex; gap: 1.5rem; margin-top: 0.5rem; }
+.admin-radio-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9375rem; }
+</style>
+
+<div class="admin-form-card">
+  {% if request.query_params.get('error') == 'slug' %}
+  <div class="admin-form-error">Укажите корректный slug (латиница, цифры, дефис).</div>
+  {% elif request.query_params.get('error') == 'exists' %}
+  <div class="admin-form-error">Категория с таким путём уже существует.</div>
+  {% endif %}
+
+  <form method="post" action="/admin/categories/create/">
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="parent_id">Родительская категория</label>
+      <select id="parent_id" name="parent_id" class="admin-form-input">
+        <option value="">— Корневая —</option>
+        {% for p in (parents | default([])) %}
+        <option value="{{ p.id }}" {% if (parent_id | default(None)) == p.id %}selected{% endif %}>{{ p.name }} ({{ p.full_slug }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="name">Название</label>
+      <input type="text" id="name" name="name" class="admin-form-input" required placeholder="Например: Налоги">
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="slug">Slug (сегмент URL)</label>
+      <input type="text" id="slug" name="slug" class="admin-form-input" required placeholder="nalogi" pattern="[a-z0-9\-]+">
+      <p class="admin-form-hint">Латиница, цифры, дефис. Итоговый путь: /news/category/{% if parent %}{{ parent.full_slug }}/{% endif %}<strong id="slug-preview">slug</strong>/</p>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label">Макет страницы категории</label>
+      <div class="admin-radio-group">
+        <label class="admin-radio-label"><input type="radio" name="layout" value="no_sidebar" checked> Без сайдбара</label>
+        <label class="admin-radio-label"><input type="radio" name="layout" value="with_sidebar"> С сайдбаром (контент 2fr + сайдбар 1fr)</label>
+      </div>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="meta_title">Meta title</label>
+      <input type="text" id="meta_title" name="meta_title" class="admin-form-input" placeholder="Опционально">
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="meta_description">Meta description</label>
+      <textarea id="meta_description" name="meta_description" class="admin-form-input" rows="2" placeholder="Опционально"></textarea>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="meta_keywords">Meta keywords</label>
+      <input type="text" id="meta_keywords" name="meta_keywords" class="admin-form-input" placeholder="Опционально">
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="canonical_url">Canonical URL</label>
+      <input type="text" id="canonical_url" name="canonical_url" class="admin-form-input" placeholder="Опционально">
+    </div>
+    <div class="admin-form-actions">
+      <button type="submit" class="admin-btn-submit">
+        <iconify-icon icon="ri:add-line" width="18" style="vertical-align: middle;"></iconify-icon>
+        Создать и перейти в редактор
+      </button>
+      <a href="/admin/categories/" class="admin-btn-cancel">Отмена</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

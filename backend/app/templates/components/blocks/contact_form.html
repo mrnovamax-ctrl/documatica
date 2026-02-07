@@ -1,0 +1,119 @@
+{# Contact Form Block — конструктор форм v12. Рендер только по block.content.fields. #}
+{% set form_id = 'contactForm' ~ (block.id | default(0)) %}
+{% set msg_id = 'contactFormMessage' ~ (block.id | default(0)) %}
+{% set fields = block.content.fields if block.content.fields else [] %}
+{% set form_width = block.content.form_width | default('default') %}
+{% set submit_text = block.content.submit_text | default('Отправить сообщение') %}
+
+<div class="contact-form-wrapper form-width-{{ form_width }}">
+<form id="{{ form_id }}" class="contact-form-v12" action="#" method="post">
+  {% for f in fields %}
+      {% set fid = form_id ~ '_' ~ loop.index0 %}
+      {% set fname = f.name | default('field_' ~ loop.index0) %}
+      {% set flabel = f.label | default('') %}
+      {% set fplaceholder = f.placeholder | default('') %}
+      {% set frequired = f.required | default(false) %}
+      <div class="form-group">
+        {% if f.type not in ['checkbox', 'toggle'] %}
+          <label class="label" for="{{ fid }}">{{ flabel }}{% if frequired %} *{% endif %}</label>
+        {% endif %}
+        {% if f.type == 'text' or f.type == 'email' or f.type == 'tel' or f.type == 'password' %}
+          <input type="{{ f.type }}" id="{{ fid }}" name="{{ fname }}" class="input" placeholder="{{ fplaceholder }}"{{ ' required' if frequired else '' }}>
+        {% elif f.type == 'textarea' %}
+          <textarea id="{{ fid }}" name="{{ fname }}" class="input" rows="{{ f.rows | default(4) }}" placeholder="{{ fplaceholder }}"{{ ' required' if frequired else '' }}></textarea>
+        {% elif f.type == 'checkbox' %}
+          <label class="checkbox">
+            <input type="checkbox" id="{{ fid }}" name="{{ fname }}" class="checkbox__input" value="1">
+            <span class="checkbox__box"><svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <span class="checkbox__label">{{ flabel }}{% if frequired %} *{% endif %}</span>
+          </label>
+        {% elif f.type == 'toggle' %}
+          <label class="toggle-label">
+            <input type="checkbox" id="{{ fid }}" name="{{ fname }}" class="toggle-input" value="1">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">{{ flabel }}{% if frequired %} *{% endif %}</span>
+          </label>
+        {% elif f.type == 'radio' %}
+          {% set opts = f.options if f.options else [] %}
+          <div class="form-radio-group">
+          {% for opt in opts %}
+            <label class="radio">
+              <input type="radio" name="{{ fname }}" id="{{ fid }}_o{{ loop.index0 }}" class="radio__input" value="{{ opt.value | default(opt.label) }}">
+              <span class="radio__circle"></span>
+              <span class="radio__label">{{ opt.label | default(opt.value) }}</span>
+            </label>
+          {% endfor %}
+          </div>
+        {% elif f.type == 'select' %}
+          <select id="{{ fid }}" name="{{ fname }}" class="input select-input"{{ ' required' if frequired else '' }}>
+            <option value="">{{ fplaceholder or 'Выберите...' }}</option>
+            {% for opt in (f.options or []) %}
+              <option value="{{ opt.value | default(opt.label) }}">{{ opt.label | default(opt.value) }}</option>
+            {% endfor %}
+          </select>
+        {% endif %}
+      </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary btn-lg btn-full">{{ submit_text }}</button>
+  <div id="{{ msg_id }}" class="form-message" role="status" aria-live="polite"></div>
+</form>
+</div>
+<script>
+(function() {
+  var form = document.getElementById('{{ form_id }}');
+  if (!form) return;
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = form.querySelector('button[type="submit"]');
+    var msgEl = document.getElementById('{{ msg_id }}');
+    var origText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Отправка...';
+    if (msgEl) { msgEl.style.display = 'none'; msgEl.className = 'form-message'; }
+    var payload = {};
+    var inputs = form.querySelectorAll('input, textarea, select');
+    for (var i = 0; i < inputs.length; i++) {
+      var el = inputs[i];
+      if (el.name && el.type !== 'submit') {
+        if (el.type === 'radio') { if (el.checked) payload[el.name] = el.value || ''; }
+        else if (el.type === 'checkbox') payload[el.name] = el.checked ? (el.value || '1') : '';
+        else payload[el.name] = el.value || '';
+      }
+    }
+    fetch('{{ block.content.submit_url | default("/api/v1/contact/send") }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(result) {
+      if (msgEl) {
+        msgEl.style.display = 'block';
+        if (result.ok) {
+          msgEl.className = 'form-message form-message--success';
+          msgEl.textContent = 'Спасибо! Ваше сообщение отправлено.';
+          form.reset();
+        } else {
+          msgEl.className = 'form-message form-message--error';
+          var detail = result.data && result.data.detail;
+          var msg = 'не удалось отправить';
+          if (typeof detail === 'string') {
+            msg = detail;
+          } else if (Array.isArray(detail) && detail.length) {
+            msg = detail.map(function(d) {
+              return (d.msg != null ? d.msg : (d.loc && d.loc.length ? d.loc.join('.') + ': ' : '') + JSON.stringify(d)).toString();
+            }).join('. ');
+          } else if (detail && typeof detail === 'object') {
+            msg = (detail.msg != null ? detail.msg : JSON.stringify(detail)).toString();
+          }
+          msgEl.textContent = 'Ошибка: ' + msg;
+        }
+      }
+    })
+    .catch(function() {
+      if (msgEl) { msgEl.style.display = 'block'; msgEl.className = 'form-message form-message--error'; msgEl.textContent = 'Ошибка отправки.'; }
+    })
+    .finally(function() { btn.disabled = false; btn.textContent = origText; });
+  });
+})();
+</script>

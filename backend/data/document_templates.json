@@ -878,104 +878,6 @@
     "updated_at": "2026-02-02T11:44:00.816239"
   },
   {
-    "id": "2d04cc34-8dbd-4386-ac06-9c861606f762",
-    "name": "ИП Джуракулов Илья Дмитриевич - ПАО \"ТРАНСКОНТЕЙНЕР\"",
-    "doc_type": "upd",
-    "data": {
-      "document_number": "1-02022026",
-      "document_date": "2026-02-02",
-      "status": 2,
-      "correction_number": null,
-      "correction_date": null,
-      "seller": {
-        "name": "ИП Джуракулов Илья Дмитриевич",
-        "inn": "645320161801",
-        "kpp": null,
-        "address": "410000, Саратовская обл, г Саратов"
-      },
-      "buyer": {
-        "name": "ПАО \"ТРАНСКОНТЕЙНЕР\"",
-        "inn": "7708591995",
-        "kpp": "504701001",
-        "address": "141402, МОСКОВСКАЯ ОБЛАСТЬ, Г.О. ХИМКИ, Г ХИМКИ, УЛ ЛЕНИНГРАДСКАЯ, ВЛД. 39, СТР. 6, ОФИС 3 (ЭТАЖ 6)"
-      },
-      "consignor": null,
-      "consignee": null,
-      "payment_document": null,
-      "shipping_document": null,
-      "items": [
-        {
-          "row_number": 1,
-          "name": "Строповка и контроль перемещения железнодорожного вагона № 54158092 с подъездного пути на контейнерную площадку.",
-          "unit_code": "796",
-          "unit_name": "шт",
-          "quantity": 1,
-          "price": 15600,
-          "amount_without_vat": 15600,
-          "vat_rate": "Без НДС",
-          "vat_amount": 0,
-          "amount_with_vat": 15600,
-          "country_code": "643",
-          "country_name": "Россия"
-        },
-        {
-          "row_number": 2,
-          "name": "Строповка и контроль перемещения железнодорожного вагона № 54650593 с подъездного пути на контейнерную площадку.",
-          "unit_code": "796",
-          "unit_name": "шт",
-          "quantity": 1,
-          "price": 15600,
-          "amount_without_vat": 15600,
-          "vat_rate": "Без НДС",
-          "vat_amount": 0,
-          "amount_with_vat": 15600,
-          "country_code": "643",
-          "country_name": "Россия"
-        }
-      ],
-      "total_amount_without_vat": 31200,
-      "total_vat_amount": 0,
-      "total_amount_with_vat": 31200,
-      "currency_code": "643",
-      "currency_name": "Российский рубль",
-      "gov_contract_id": null,
-      "contract_info": "Договор №ПРИВд/26/01/2026",
-      "transport_info": null,
-      "shipping_date": "2026-01-28",
-      "other_shipping_info": "Заявка №1 от 28.01.2026 к договору №ПРИВд/26/01/006 от 22.01.2026 г.",
-      "seller_signer": {
-        "position": "Индивидуальный предприниматель  Джуракулов И. Д.",
-        "full_name": "  Джуракулов Илья Дмитриевич",
-        "basis": "Устав",
-        "signature_image": null
-      },
-      "seller_responsible": {
-        "position": null,
-        "full_name": "  Джуракулов Илья Дмитриевич"
-      },
-      "economic_entity": null,
-      "seller_stamp_image": null,
-      "seller_org_type": "ip",
-      "accountant_name": null,
-      "accountant_signature": null,
-      "receiving_date": "2026-01-28",
-      "other_receiving_info": null,
-      "buyer_signer": {
-        "position": "Директор филиала",
-        "full_name": "Шпаков Константин Анатольевич",
-        "basis": "Устав"
-      },
-      "buyer_responsible": {
-        "position": null,
-        "full_name": "Шпаков Константин Анатольевич"
-      },
-      "buyer_economic_entity": null
-    },
-    "user_id": 97,
-    "created_at": "2026-02-02T13:25:33.017088",
-    "updated_at": "2026-02-02T13:25:33.017088"
-  },
-  {
     "id": "4cceb6f0-784e-4e44-b68a-a408effa2781",
     "name": " ИП Рязапов Рамис Фянисович - ООО \"Купишуз\"",
     "doc_type": "upd",
@@ -1115,5 +1017,233 @@
     "user_id": 98,
     "created_at": "2026-02-02T14:18:44.448603",
     "updated_at": "2026-02-02T14:18:44.448603"
+  },
+  {
+    "id": "8d659b12-078d-4bed-98c2-bc78ef072575",
+    "name": "ИП Зотиков Алексей Валентинович - ИП Новгородцев Кирилл Сергеевич",
+    "doc_type": "upd",
+    "data": {
+      "document_number": "УПД-087851",
+      "document_date": "2026-02-03",
+      "status": 2,
+      "correction_number": null,
+      "correction_date": null,
+      "seller": {
+        "name": "ИП Зотиков Алексей Валентинович",
+        "inn": "350231379481",
+        "kpp": null,
+        "address": "Вологодская область, Бабушкинский район, Рослятинский, с Андреевское"
+      },
+      "buyer": {
+        "name": "ИП Новгородцев Кирилл Сергеевич",
+        "inn": "351400746035",
+        "kpp": null,
+        "address": "Вологодская область, Никольский район, Байдаровский, д Кудрино"
+      },
+      "consignor": null,
+      "consignee": null,
+      "payment_document": null,
+      "shipping_document": "0,00 ₽",
+      "items": [
+        {
+          "row_number": 1,
+          "name": "Оказание транспортных услуг ",
+          "unit_code": "796",
+          "unit_name": "шт",
+          "quantity": 1,
+          "price": 13000,
+          "amount_without_vat": 13000,
+          "vat_rate": "20%",
+          "vat_amount": 2600,
+          "amount_with_vat": 15600,
+          "country_code": "643",
+          "country_name": "Россия"
+        }
+      ],
+      "total_amount_without_vat": 13000,
+      "total_vat_amount": 2600,
+      "total_amount_with_vat": 15600,
+      "currency_code": "643",
+      "currency_name": "Российский рубль",
+      "gov_contract_id": null,
+      "contract_info": null,
+      "transport_info": null,
+      "shipping_date": null,
+      "other_shipping_info": null,
+      "seller_signer": null,
+      "seller_responsible": null,
+      "economic_entity": null,
+      "seller_stamp_image": null,
+      "seller_org_type": "ip",
+      "accountant_name": null,
+      "accountant_signature": null,
+      "receiving_date": null,
+      "other_receiving_info": null,
+      "buyer_signer": {
+        "position": "Индивидуальный предприниматель",
+        "full_name": "Новгородцев Кирилл Сергеевис",
+        "basis": "Устав"
+      },
+      "buyer_responsible": null,
+      "buyer_economic_entity": null
+    },
+    "user_id": 118,
+    "created_at": "2026-02-03T18:23:30.779628",
+    "updated_at": "2026-02-03T18:23:30.779628"
+  },
+  {
+    "id": "b1647ec9-2fb1-427b-9740-370e0a3cbd2c",
+    "name": "ИП Плотников Роман Александрович - ООО \"ПЛАСТПОЛИМЕР-СИБИРЬ\"",
+    "doc_type": "upd",
+    "data": {
+      "document_number": "302",
+      "document_date": "2026-01-31",
+      "status": 2,
+      "correction_number": null,
+      "correction_date": null,
+      "seller": {
+        "name": "ИП Плотников Роман Александрович",
+        "inn": "701752844210",
+        "kpp": null,
+        "address": "634000, Томская обл, г Томск"
+      },
+      "buyer": {
+        "name": "ООО \"ПЛАСТПОЛИМЕР-СИБИРЬ\"",
+        "inn": "7017189678",
+        "kpp": "701701001",
+        "address": "634021, Томская обл, г Томск, пр-кт Фрунзе, д 137/1, помещ 308"
+      },
+      "consignor": null,
+      "consignee": null,
+      "payment_document": "Договор № бн от 01.06.2023",
+      "shipping_document": null,
+      "items": [
+        {
+          "row_number": 1,
+          "name": "Услуги по тендерному сопровождению",
+          "unit_code": "796",
+          "unit_name": "шт",
+          "quantity": 1,
+          "price": 12800,
+          "amount_without_vat": 12800,
+          "vat_rate": "Без НДС",
+          "vat_amount": 0,
+          "amount_with_vat": 12800,
+          "country_code": "643",
+          "country_name": "Россия"
+        }
+      ],
+      "total_amount_without_vat": 12800,
+      "total_vat_amount": 0,
+      "total_amount_with_vat": 12800,
+      "currency_code": "643",
+      "currency_name": "Российский рубль",
+      "gov_contract_id": null,
+      "contract_info": null,
+      "transport_info": null,
+      "shipping_date": "2026-01-31",
+      "other_shipping_info": null,
+      "seller_signer": {
+        "position": "ИП",
+        "full_name": "Плотников Р.А.",
+        "basis": "Устав",
+        "signature_image": null
+      },
+      "seller_responsible": null,
+      "economic_entity": null,
+      "seller_stamp_image": null,
+      "seller_org_type": "ip",
+      "accountant_name": null,
+      "accountant_signature": null,
+      "receiving_date": null,
+      "other_receiving_info": null,
+      "buyer_signer": {
+        "position": "Диреткор",
+        "full_name": "Курьяков Д.В.",
+        "basis": "Устав"
+      },
+      "buyer_responsible": null,
+      "buyer_economic_entity": null
+    },
+    "user_id": 122,
+    "created_at": "2026-02-04T03:19:37.447838",
+    "updated_at": "2026-02-04T03:19:37.447838"
+  },
+  {
+    "id": "63273c13-e4ca-4d90-ad4a-26197379c90c",
+    "name": "ИП Смыков В.А. - ООО \"Кирпич Маркет\"",
+    "doc_type": "upd",
+    "data": {
+      "document_number": "К555ВН/48",
+      "document_date": "2026-02-05",
+      "status": 2,
+      "correction_number": "21",
+      "correction_date": "2026-02-05",
+      "seller": {
+        "name": "ИП Смыков В.А.",
+        "inn": "481307653927",
+        "kpp": null,
+        "address": "398531,Липецкая обл., Липецкий р-н,село Пады, улица Зегеля, дом 51"
+      },
+      "buyer": {
+        "name": "ООО \"Кирпич Маркет\"",
+        "inn": "4800004668",
+        "kpp": "480001001",
+        "address": "398046,Липецкая область,г. Липецк,ул. П. Смородина, д. 9\"А\", кв. 186"
+      },
+      "consignor": null,
+      "consignee": null,
+      "payment_document": null,
+      "shipping_document": "Универсальный передаточный документ, № 21 от 05.02.2026",
+      "items": [
+        {
+          "row_number": 1,
+          "name": "Оплата за тр. услуги согласно Договор-заявке №21 от 27.01.2026. По маршруту: Тульская обл., Болохово,пос. Строительный (Большие колмыки) - Г. Липецк, ул. Механизаторов, д. 21. Погр. 27.01.2026 Выгр. 28.01.2026 Маз К555ВН/48 п/п АК 0831/48 Смыков Вадим Александрович",
+          "unit_code": "796",
+          "unit_name": "шт",
+          "quantity": 1,
+          "price": 26000,
+          "amount_without_vat": 26000,
+          "vat_rate": "Без НДС",
+          "vat_amount": 0,
+          "amount_with_vat": 26000,
+          "country_code": "643",
+          "country_name": "Россия"
+        }
+      ],
+      "total_amount_without_vat": 26000,
+      "total_vat_amount": 0,
+      "total_amount_with_vat": 26000,
+      "currency_code": "643",
+      "currency_name": "Российский рубль",
+      "gov_contract_id": null,
+      "contract_info": "Основной Договор",
+      "transport_info": null,
+      "shipping_date": "2026-01-28",
+      "other_shipping_info": null,
+      "seller_signer": {
+        "position": "Индивидуальный Предприниматель",
+        "full_name": "Смыков В.А.",
+        "basis": "Устав",
+        "signature_image": null
+      },
+      "seller_responsible": {
+        "position": "Индивидуальный Предприниматель",
+        "full_name": "Смыков В.А."
+      },
+      "economic_entity": null,
+      "seller_stamp_image": null,
+      "seller_org_type": "ip",
+      "accountant_name": null,
+      "accountant_signature": null,
+      "receiving_date": null,
+      "other_receiving_info": null,
+      "buyer_signer": null,
+      "buyer_responsible": null,
+      "buyer_economic_entity": null
+    },
+    "user_id": 169,
+    "created_at": "2026-02-05T18:33:07.348081",
+    "updated_at": "2026-02-05T18:33:07.348081"
   }
 ]

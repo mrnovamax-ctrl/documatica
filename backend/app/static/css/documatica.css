@@ -11,6 +11,93 @@
 @import url('/static/css/v12/utilities.css');
 
 /* ========================================
+   Typography v12.0 (Terminal v12 Design System)
+   ======================================== */
+@import url('/static/css/v12/core/typography.css');
+
+/* ========================================
+   Layout: переопределения после v12/core.css
+   core.css задаёт .container и .main-content; у нас контент не должен сужаться.
+   ======================================== */
+/* Чтобы контент не сужался: main на всю ширину, без лишних отступов (core даёт padding: 4rem 0 — убираем) */
+.main-content {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+/* Контейнер: наша ширина 1200px (поверх core.css) */
+.public-page .container,
+.main-content .container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Секции: наши отступы (без margin-bottom из core.css) */
+.public-page .section,
+.main-content .section {
+  margin-bottom: 0;
+  padding: 120px 0;
+  position: relative;
+}
+@media (max-width: 1023px) {
+  .public-page .section,
+  .main-content .section {
+    padding: 80px 0;
+  }
+}
+@media (max-width: 767px) {
+  .public-page .section,
+  .main-content .section {
+    padding: 60px 0;
+  }
+}
+@media (max-width: 479px) {
+  .public-page .section,
+  .main-content .section {
+    padding: 48px 0;
+  }
+}
+
+/* Accordion: базовые стили в v12/core.css. Ниже — вариант Nested (как в accordions.html §06, стиль по data-attribute). */
+.accordion[data-accordion-variant="nested"] .accordion-item { background: var(--color-slate-50); border: none; border-left: 4px solid var(--color-slate-300); border-radius: 0; }
+.accordion[data-accordion-variant="nested"] .accordion-item:hover { border-left-color: var(--color-slate-400); }
+.accordion[data-accordion-variant="nested"] .accordion-item.active { border-left-color: var(--color-brand-blue); background: var(--color-white); }
+.accordion-header .flex { display: flex; align-items: center; }
+.accordion-header .flex.flex-1 { flex: 1 1 0%; min-width: 0; }
+.accordion-header .gap-3 { gap: var(--spacing-3, 0.75rem); }
+/* В accordions.html бейдж: class="badge badge-primary" (алиас к .badge--primary из core) */
+.badge-primary { background: var(--color-brand-blue); color: var(--color-white); }
+.badge-dark { background: var(--color-slate-900); color: var(--color-white); }
+
+/* FAQ/accordion: как в accordions.html — отступ под подзаголовком 2rem (utilities .mb-8 даёт 8px, перебиваем в контексте subsection-text) */
+.subsection-text.mb-8 { margin-bottom: 2rem !important; }
+
+/* Секция с тёмным фоном: заголовок/подзаголовок всегда светлые; аккордеон — только если НЕ вариант .accordion--dark (у него свои стили в core) */
+.section--dark .subsection-title,
+.section--dark .subsection-text { color: #ffffff; }
+.section--dark .subsection-title .text-primary-light { color: var(--color-primary-light, #60a5fa); }
+.section--dark .accordion:not(.accordion--dark) .accordion-header { color: var(--color-slate-300); }
+.section--dark .accordion:not(.accordion--dark) .accordion-header:hover { color: #ffffff; }
+.section--dark .accordion:not(.accordion--dark) .accordion-item.active > .accordion-header { color: var(--color-primary-light, #60a5fa); }
+.section--dark .accordion:not(.accordion--dark) .accordion-icon { color: var(--color-slate-500); }
+.section--dark .accordion:not(.accordion--dark) .accordion-header:hover .accordion-icon,
+.section--dark .accordion:not(.accordion--dark) .accordion-item.active > .accordion-header .accordion-icon { color: var(--color-primary-light, #60a5fa); }
+.section--dark .accordion:not(.accordion--dark) .accordion-body,
+.section--dark .accordion:not(.accordion--dark) .accordion-body p,
+.section--dark .accordion:not(.accordion--dark) .accordion-body .text-body { color: rgba(255, 255, 255, 0.85); }
+.section--dark .accordion:not(.accordion--dark) .accordion-body .type-h5,
+.section--dark .accordion:not(.accordion--dark) .accordion-body h4 { color: #ffffff; }
+.section--dark .accordion:not(.accordion--dark) .accordion-item { border-color: rgba(255, 255, 255, 0.15); }
+.section--dark .accordion:not(.accordion--dark) .accordion-item:hover { border-color: rgba(255, 255, 255, 0.25); }
+.section--dark .accordion:not(.accordion--dark) .accordion-item.active { border-color: var(--color-primary-light, #60a5fa); }
+
+/* Hero (hero.html v12): контейнер и отступы — core задаёт .hero margin-bottom, убираем на публичной странице */
+.public-page .hero,
+.main-content .hero { margin-bottom: 0; }
+.hero-container { position: relative; z-index: 10; }
+
+/* ========================================
    CSS Variables (Design Tokens)
    ======================================== */
 :root {
@@ -1286,8 +1373,6 @@ body {
 .cta-section-v12 {
   padding: 100px 0;
   background-color: #f8fafc;
-  background-image: radial-gradient(circle, rgba(59, 130, 246, 0.2) 1px, transparent 1px);
-  background-size: 32px 32px;
 }
 
 .cta-card-v12 {
@@ -2023,6 +2108,15 @@ body {
 .auth-checkbox-v12 input[type="checkbox"]:checked {
   background: #3b82f6;
   border-color: #3b82f6;
+}
+
+/* Auth Captcha - Yandex SmartCaptcha */
+.auth-captcha-v12 {
+  margin: 0;
+}
+
+.smart-captcha-container {
+  min-height: 100px;
 }
 
 .auth-checkbox-v12 input[type="checkbox"]:checked::after {
@@ -2864,31 +2958,6 @@ body {
 .faq-block-v12 {
   padding: 80px 0;
   background: #f8fafc;
-}
-
-.faq-block-container-v12 {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.faq-block-title-v12 {
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.4em;
-  color: #94a3b8;
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.faq-item-v12 {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 1.5rem;
-  margin-bottom: 16px;
-  overflow: hidden;
-  transition: all 0.3s ease;
 }
 
 .faq-item-v12:hover {

@@ -1,0 +1,9 @@
+{# Рендер блока link_group — используется в hero, features, cta, about, faq, seo_text, form_section, document_types #}
+{% set links = block.content.links | default([]) %}
+{% if links %}
+<div class="link-group hero-actions hero-actions--links {{ block.css_classes or '' }}">
+  {% for item in links %}
+  <a href="{{ item.url }}" class="btn btn-ghost btn-sm">{{ item.text }}</a>
+  {% endfor %}
+</div>
+{% endif %}

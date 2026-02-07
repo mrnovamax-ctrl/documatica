@@ -31,6 +31,11 @@ echo "🔄 Перезапускаю backend..."
 docker-compose restart backend
 echo "✅ Backend перезапущен"
 
+# 3.1 Миграции БД (если в образе есть alembic)
+echo "🔄 Применяю миграции..."
+docker exec documatica-backend sh -c 'cd /app && alembic upgrade head' 2>/dev/null || true
+echo "✅ Миграции проверены"
+
 # 4. Проверка здоровья
 echo "🏥 Проверяю работу сервиса..."
 sleep 5

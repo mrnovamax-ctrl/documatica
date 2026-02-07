@@ -60,6 +60,8 @@ services:
       - YANDEX_CLIENT_ID=09029de7b0f04999a8717c61c760dfaa
       - YANDEX_CLIENT_SECRET=85590fb299d34154bfdcca01efd029ff
       - YANDEX_REDIRECT_URI=https://oplatanalogov.ru/auth/yandex/callback
+      # Yandex SmartCaptcha
+      - SMARTCAPTCHA_SERVER_KEY=${SMARTCAPTCHA_SERVER_KEY:-}
     depends_on:
       db:
         condition: service_healthy

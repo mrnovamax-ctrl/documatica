@@ -1,0 +1,95 @@
+{# FAQ Section — классы 1:1 как в .cursor/skills/terminal-v12/src/pages/accordions.html #}
+
+{% set bg_class = 'section' %}
+{% if section.background_style == 'white' %}
+  {% set bg_class = 'section bg-white' %}
+{% elif section.background_style == 'surface' %}
+  {% set bg_class = 'section bg-surface' %}
+{% elif section.background_style == 'surface_light' %}
+  {% set bg_class = 'section bg-surface-light' %}
+{% elif section.background_style == 'dark' %}
+  {% set bg_class = 'section bg-dark' %}
+{% elif section.background_style == 'primary' %}
+  {% set bg_class = 'section bg-primary' %}
+{% elif section.background_style == 'gold' %}
+  {% set bg_class = 'section bg-gold' %}
+{% elif section.background_style == 'pattern_dots_light' %}
+  {% set bg_class = 'section pattern-dots-light' %}
+{% elif section.background_style == 'pattern_dots_dark' %}
+  {% set bg_class = 'section pattern-dots-dark' %}
+{% elif section.background_style == 'pattern_grid_lines' %}
+  {% set bg_class = 'section pattern-grid-lines' %}
+{% elif section.background_style == 'pattern_radial_blue' %}
+  {% set bg_class = 'section pattern-radial-blue' %}
+{% elif section.background_style == 'pattern_radial_gold' %}
+  {% set bg_class = 'section pattern-radial-gold' %}
+{% elif section.background_style == 'gradient_blue' %}
+  {% set bg_class = 'section bg-gradient-blue' %}
+{% elif section.background_style == 'gradient_gold' %}
+  {% set bg_class = 'section bg-gradient-gold' %}
+{% endif %}
+{% set is_dark_bg = section.background_style in ['dark', 'primary', 'gold', 'pattern_dots_dark'] %}
+{% set accordion_variant = (section.settings or {}).get('accordion_variant', 'basic') %}
+{% set with_icons = accordion_variant == 'icons' %}
+{% set accordion_mod = ' accordion--bordered' if accordion_variant == 'bordered' else '' %}
+{% set accordion_mod = accordion_mod or (' accordion--separated' if accordion_variant == 'separated' else '') %}
+{% set accordion_mod = accordion_mod or (' accordion--dark' if accordion_variant == 'dark' else '') %}
+
+<section class="{{ bg_class }}{% if section.css_classes %} {{ section.css_classes }}{% endif %}{% if is_dark_bg %} section--dark{% endif %}" id="faq">
+  <div class="container">
+    {% for block in section.blocks %}
+      {% if block.block_type == 'heading' and block.is_visible %}
+        <h2 class="subsection-title">{{ block.content.text }}{% if block.content.accent %} <span class="text-primary-light">{{ block.content.accent }}</span>{% endif %}</h2>
+      {% endif %}
+    {% endfor %}
+    {% for block in section.blocks %}
+      {% if block.block_type == 'paragraph' and block.is_visible %}
+        <div class="subsection-text mb-8">{{ block.content.text | safe }}</div>
+      {% endif %}
+    {% endfor %}
+    <div class="accordion js-accordion{{ accordion_mod }}" id="faq-accordion" data-accordion-variant="{{ accordion_variant }}">
+      {% for block in section.blocks %}
+        {% if block.block_type == 'faq_item' and block.is_visible %}
+          {% set is_active = (accordion_variant == 'separated' and loop.index == 2) or (accordion_variant != 'separated' and loop.first) %}
+          <div class="accordion-item{% if is_active %} active{% endif %}">
+            <button class="accordion-header" type="button">
+              {% if with_icons %}
+                <div class="flex items-center flex-1">
+                  <svg class="accordion-header-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                  </svg>
+                  <span>{{ block.content.question }}</span>
+                </div>
+              {% elif accordion_variant == 'nested' and (block.content.badge_text or '') %}
+                <div class="flex items-center gap-3">
+                  <span>{{ block.content.question }}</span>
+                  <span class="badge badge-primary">{{ block.content.badge_text }}</span>
+                </div>
+              {% else %}
+                <span>{{ block.content.question }}</span>
+              {% endif %}
+              <svg class="accordion-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                {{ block.content.answer | safe }}
+                {% if block.content.button_text and block.content.button_url %}
+                <p class="mb-4 mt-4">
+                  <a href="{{ block.content.button_url }}" class="{{ block.content.button_style | default('btn btn-primary') }} {{ block.content.button_size | default('') | trim }}">{{ block.content.button_text }}</a>
+                </p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% for block in section.blocks %}
+      {% if block.block_type == 'link_group' and block.is_visible %}
+        {% include "components/blocks/_link_group_render.html" %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>

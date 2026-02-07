@@ -1,0 +1,1334 @@
+{# Модальное окно редактирования блока - Terminal v12.0 Design System #}
+<div id="blockEditorModal" class="block-modal-overlay" style="display: none;">
+  <div class="block-modal">
+    <div class="block-modal__header">
+      <div class="block-modal__title-wrapper">
+        <div class="block-modal__icon">
+          <iconify-icon icon="ri:edit-box-line" width="24"></iconify-icon>
+        </div>
+        <h3 class="block-modal__title">Block Editor</h3>
+      </div>
+      <button class="block-modal__close" onclick="closeBlockEditor()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="block-modal__body">
+      <form id="blockEditorForm" class="block-editor-form">
+        <input type="hidden" id="editBlockId">
+        <input type="hidden" id="editBlockType">
+        
+        {# Heading Block #}
+        <div id="editor-heading" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Text Content</label>
+            <input type="text" id="heading-text" class="editor-input" placeholder="Enter heading text...">
+            <div class="editor-hint">Main heading text that will be displayed</div>
+          </div>
+          <div class="editor-field-row">
+            <div class="editor-field">
+              <label class="editor-label">Level (H1-H6)</label>
+              <select id="heading-level" class="editor-select">
+                <option value="1">H1 - Hero Title</option>
+                <option value="2" selected>H2 - Section Title</option>
+                <option value="3">H3 - Card Title</option>
+                <option value="4">H4 - Small Title</option>
+              </select>
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Accent Word</label>
+              <input type="text" id="heading-accent" class="editor-input" placeholder="Optional">
+              <div class="editor-hint">Word to highlight in blue</div>
+            </div>
+          </div>
+        </div>
+        
+        {# Paragraph Block - TinyMCE WYSIWYG #}
+        <div id="editor-paragraph" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Текстовый контент (как в Word)</label>
+            <div class="paragraph-editor-wrap">
+              <textarea id="paragraph-tinymce" name="paragraph-text" rows="10"></textarea>
+            </div>
+            <div class="editor-hint">Визуальный редактор: жирный, курсив, списки, ссылки, картинки</div>
+          </div>
+        </div>
+        
+        {# Button Block #}
+        <div id="editor-button" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Button Text</label>
+            <input type="text" id="button-text" class="editor-input" placeholder="Click here">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">URL / Link</label>
+            <input type="text" id="button-url" class="editor-input" placeholder="/upd/">
+            <div class="editor-hint">Internal link (e.g. /upd/) or external (https://...)</div>
+          </div>
+          <div class="editor-field-row">
+            <div class="editor-field">
+              <label class="editor-label">Стиль кнопки</label>
+              <select id="button-style" class="editor-select">
+                <option value="btn btn-primary">Primary (синяя)</option>
+                <option value="btn btn-gold">Gold (AI)</option>
+                <option value="btn btn-outline">Outline</option>
+                <option value="btn btn-ghost">Ghost</option>
+                <option value="btn btn-link">Link (текст)</option>
+              </select>
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Размер</label>
+              <select id="button-size" class="editor-select">
+                <option value="btn-sm">Small</option>
+                <option value="">Default</option>
+                <option value="btn-lg">Large</option>
+                <option value="btn-massive">Massive CTA</option>
+              </select>
+            </div>
+          </div>
+          <div class="editor-hint">Две кнопки подряд в hero отображаются в ряд (на мобильных — столбиком). Стили и размеры — buttons.html v12.</div>
+        </div>
+        
+        {# Feature Card Block #}
+        <div id="editor-feature_card" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Заголовок</label>
+            <input type="text" id="feature_card-title" class="editor-input" placeholder="Название фичи">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Описание</label>
+            <textarea id="feature_card-description" class="editor-textarea" rows="3" placeholder="Описание фичи"></textarea>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Иконка</label>
+            <input type="hidden" id="feature_card-icon" value="check-circle">
+            <div class="icon-picker-trigger" data-target="feature_card-icon">
+              <span class="icon-picker-preview" id="feature_card-icon-preview"></span>
+              <button type="button" class="icon-picker-btn" onclick="openIconPicker('feature_card-icon')">Выбрать иконку</button>
+            </div>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Фон карточки</label>
+            <select id="feature_card-card_background" class="editor-select">
+              <option value="">По умолчанию</option>
+              <option value="white">Белый</option>
+              <option value="surface">Surface</option>
+              <option value="surface_light">Surface Light</option>
+              <option value="dark">Тёмный</option>
+              <option value="primary">Primary (синий)</option>
+              <option value="gold">Золотой</option>
+              <option value="pattern_dots_light">Точки светлые</option>
+              <option value="pattern_dots_dark">Точки тёмные</option>
+              <option value="gradient_blue">Градиент синий</option>
+              <option value="gradient_gold">Градиент золотой</option>
+            </select>
+          </div>
+        </div>
+        
+        {# Stat Card Block #}
+        <div id="editor-stat_card" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Значение</label>
+            <input type="text" id="stat_card-value" class="editor-input" placeholder="50 000+">
+            <div class="editor-hint">Число, процент или текст (например «24/7»)</div>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Подпись</label>
+            <input type="text" id="stat_card-label" class="editor-input" placeholder="Обработано документов">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Фон карточки</label>
+            <select id="stat_card-card_background" class="editor-select">
+              <option value="">По умолчанию</option>
+              <option value="white">Белый</option>
+              <option value="surface">Surface</option>
+              <option value="dark">Тёмный</option>
+              <option value="primary">Primary (синий)</option>
+              <option value="gold">Золотой</option>
+              <option value="gradient_blue">Градиент синий</option>
+              <option value="gradient_gold">Градиент золотой</option>
+            </select>
+          </div>
+        </div>
+        
+        {# Label Block #}
+        <div id="editor-label" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Текст метки / тега</label>
+            <input type="text" id="label-text" class="editor-input" placeholder="О нас">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Стиль бейджа</label>
+            <select id="label-badge_style" class="editor-select">
+              <optgroup label="Заливка">
+                <option value="primary">Primary (синий)</option>
+                <option value="success">Success (зелёный)</option>
+                <option value="warning">Warning (жёлтый)</option>
+                <option value="danger">Danger (красный)</option>
+                <option value="info">Info (голубой)</option>
+                <option value="neutral">Neutral (серый)</option>
+                <option value="smart">AI Smart (золотой градиент)</option>
+                <option value="dark">Dark / Premium</option>
+              </optgroup>
+              <optgroup label="Outline">
+                <option value="outline-primary">Outline Primary</option>
+                <option value="outline-success">Outline Success</option>
+                <option value="outline-warning">Outline Warning</option>
+                <option value="outline-danger">Outline Danger</option>
+                <option value="outline-neutral">Outline Neutral</option>
+              </optgroup>
+            </select>
+            <div class="editor-hint">Стиль как в badges.html (v12)</div>
+          </div>
+        </div>
+        
+        {# Note Block #}
+        <div id="editor-note" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Note Text</label>
+            <input type="text" id="note-text" class="editor-input" placeholder="Try it now">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Accent Text</label>
+            <input type="text" id="note-accent" class="editor-input" placeholder="With AI verification">
+            <div class="editor-hint">Optional highlighted text after bullet point</div>
+          </div>
+        </div>
+
+        {# Document Type Card — тип карточки определяет набор полей (Cards v12.0) #}
+        <div id="editor-document_type_card" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Тип карточки</label>
+            <select id="document_type_card-card_style" class="editor-select" onchange="toggleDocumentTypeCardFields(this.value)">
+              <option value="default">Default — заголовок, описание, ссылка</option>
+              <option value="feature">Feature — иконка, тег, заголовок, описание, ссылка</option>
+              <option value="stat">Stat — подпись, значение, доп. текст</option>
+              <option value="promo">Promo — заголовок, описание, ссылка, тег, мета</option>
+              <option value="article">Article — тег, мета, заголовок, описание, ссылка</option>
+              <option value="info">Info — тег, заголовок, описание, ссылка</option>
+              <option value="cta">CTA — заголовок, описание, ссылка</option>
+            </select>
+          </div>
+
+          <div id="doc-card-common" class="doc-card-fields" data-card-style="common">
+            <div class="editor-field"><label class="editor-label">Заголовок</label><input type="text" id="document_type_card-name" class="editor-input" placeholder="УПД"></div>
+            <div class="editor-field"><label class="editor-label">Описание</label><textarea id="document_type_card-description" class="editor-textarea" rows="2" placeholder="Описание"></textarea></div>
+            <div class="editor-field"><label class="editor-label">Ссылка (URL)</label><input type="text" id="document_type_card-url" class="editor-input" placeholder="/upd/"></div>
+            <div class="editor-field">
+              <label class="editor-label">Стиль бейджа тега</label>
+              <select id="document_type_card-tag_badge_style" class="editor-select">
+                <optgroup label="Заливка">
+                  <option value="primary">Primary</option>
+                  <option value="success">Success</option>
+                  <option value="warning">Warning</option>
+                  <option value="danger">Danger</option>
+                  <option value="info">Info</option>
+                  <option value="neutral">Neutral</option>
+                  <option value="smart">AI Smart</option>
+                  <option value="dark">Dark</option>
+                </optgroup>
+                <optgroup label="Outline">
+                  <option value="outline-primary">Outline Primary</option>
+                  <option value="outline-success">Outline Success</option>
+                  <option value="outline-warning">Outline Warning</option>
+                  <option value="outline-danger">Outline Danger</option>
+                  <option value="outline-neutral">Outline Neutral</option>
+                </optgroup>
+              </select>
+              <div class="editor-hint">Для тега в стилях Feature, Promo, Article, Info (badges.html v12)</div>
+            </div>
+          </div>
+
+          <div class="doc-card-fields" data-card-style="feature" style="display: none;">
+            <div class="editor-field"><label class="editor-label">Иконка</label>
+              <input type="hidden" id="document_type_card-icon" value="file-text">
+              <div class="icon-picker-trigger" data-target="document_type_card-icon">
+                <span class="icon-picker-preview" id="document_type_card-icon-preview"></span>
+                <button type="button" class="icon-picker-btn" onclick="openIconPicker('document_type_card-icon')">Выбрать иконку</button>
+              </div>
+            </div>
+            <div class="editor-field"><label class="editor-label">Тег (бейдж)</label><input type="text" id="document_type_card-tag" class="editor-input" placeholder="Документ"></div>
+          </div>
+
+          <div class="doc-card-fields" data-card-style="stat" style="display: none;">
+            <div class="editor-field"><label class="editor-label">Подпись (label)</label><input type="text" id="document_type_card-label" class="editor-input" placeholder="Документ"></div>
+            <div class="editor-field"><label class="editor-label">Значение (value)</label><input type="text" id="document_type_card-value" class="editor-input" placeholder="УПД"></div>
+            <div class="editor-field"><label class="editor-label">Доп. текст (change)</label><input type="text" id="document_type_card-change" class="editor-input" placeholder="Подробнее"></div>
+          </div>
+
+          <div class="doc-card-fields" data-card-style="promo" style="display: none;">
+            <div class="editor-field"><label class="editor-label">Тег (опц.)</label><input type="text" id="document_type_card-tag_promo" class="editor-input" placeholder=""></div>
+            <div class="editor-field"><label class="editor-label">Мета (опц.)</label><input type="text" id="document_type_card-meta" class="editor-input" placeholder="Documatica v12.0"></div>
+          </div>
+
+          <div class="doc-card-fields" data-card-style="article" style="display: none;">
+            <div class="editor-field"><label class="editor-label">Тег (бейдж)</label><input type="text" id="document_type_card-tag_article" class="editor-input" placeholder="Статья"></div>
+            <div class="editor-field"><label class="editor-label">Мета</label><input type="text" id="document_type_card-meta_article" class="editor-input" placeholder="2026"></div>
+          </div>
+
+          <div class="doc-card-fields" data-card-style="info" style="display: none;">
+            <div class="editor-field"><label class="editor-label">Тег (бейдж)</label><input type="text" id="document_type_card-tag_info" class="editor-input" placeholder="Инфо"></div>
+          </div>
+
+          <div class="editor-field" style="margin-top: 1rem;">
+            <label class="editor-label">Ширина карточки</label>
+            <select id="document_type_card-card_width" class="editor-select">
+              <option value="">В сетке (по умолчанию)</option>
+              <option value="full">Full Width — на всю ширину контейнера</option>
+              <option value="half">Half — макс. 600px</option>
+              <option value="third">Third — макс. 400px</option>
+              <option value="quarter">Quarter — макс. 300px</option>
+            </select>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Фон карточки</label>
+            <select id="document_type_card-card_background" class="editor-select">
+              <option value="">По умолчанию</option>
+              <option value="white">Белый</option>
+              <option value="surface">Surface</option>
+              <option value="surface_light">Surface Light</option>
+              <option value="dark">Тёмный</option>
+              <option value="primary">Primary</option>
+              <option value="gold">Золотой</option>
+              <option value="pattern_dots_light">Точки светлые</option>
+              <option value="pattern_dots_dark">Точки тёмные</option>
+              <option value="pattern_radial_blue">Радиал синий</option>
+              <option value="pattern_radial_gold">Радиал золотой</option>
+              <option value="gradient_blue">Градиент синий</option>
+              <option value="gradient_gold">Градиент золотой</option>
+            </select>
+          </div>
+        </div>
+
+        {# Form Builder (contact_form) — конструктор форм v12 (forms.html, layout.html) #}
+        <div id="editor-contact_form" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Ширина формы в секции</label>
+            <select id="contact_form-form_width" class="editor-select">
+              <option value="narrow">Узкая (макс. ~28rem)</option>
+              <option value="default" selected>По умолчанию (~36rem)</option>
+              <option value="wide">Широкая (~48rem)</option>
+              <option value="full">На всю ширину контейнера</option>
+            </select>
+            <div class="editor-hint">Layout v12: контейнер формы внутри секции</div>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Текст кнопки отправки</label>
+            <input type="text" id="contact_form-submit_text" class="editor-input" placeholder="Отправить сообщение" value="Отправить сообщение">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Поля формы</label>
+            <div id="form-builder-fields" class="form-builder-fields"></div>
+            <button type="button" class="btn btn--ghost btn--md" id="form-builder-add-field" style="margin-top: 0.75rem;">+ Добавить поле</button>
+            <div class="editor-hint">Типы полей: text, email, tel, password, textarea, checkbox, radio, select, toggle (forms.html v12)</div>
+          </div>
+        </div>
+
+        {# FAQ Item — вопрос, ответ (HTML), опционально кнопка (buttons.html v12) #}
+        <div id="editor-faq_item" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Вопрос (заголовок аккордеона)</label>
+            <input type="text" id="faq_item-question" class="editor-input" placeholder="Как оформить УПД?">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Ответ (HTML)</label>
+            <textarea id="faq_item-answer" class="editor-textarea" rows="6" placeholder="<p>Текст ответа...</p>"></textarea>
+            <div class="editor-hint">Можно использовать теги: &lt;p&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;strong&gt;. Кнопка добавляется отдельно ниже.</div>
+          </div>
+          <div class="editor-field" style="border-top: 1px solid #e2e8f0; padding-top: 1rem; margin-top: 1rem;">
+            <label class="editor-label">Кнопка в ответе (опционально)</label>
+            <div class="editor-field-row">
+              <div class="editor-field" style="flex: 1;">
+                <input type="text" id="faq_item-button_text" class="editor-input" placeholder="Текст кнопки">
+              </div>
+              <div class="editor-field" style="flex: 1;">
+                <input type="text" id="faq_item-button_url" class="editor-input" placeholder="URL (например /upd/)">
+              </div>
+            </div>
+            <div class="editor-field-row">
+              <div class="editor-field">
+                <label class="editor-label">Стиль кнопки</label>
+                <select id="faq_item-button_style" class="editor-select">
+                  <option value="btn btn-primary">Primary (синяя)</option>
+                  <option value="btn btn-gold">Gold (AI)</option>
+                  <option value="btn btn-outline">Outline</option>
+                  <option value="btn btn-ghost">Ghost</option>
+                  <option value="btn btn-link">Link</option>
+                </select>
+              </div>
+              <div class="editor-field">
+                <label class="editor-label">Размер</label>
+                <select id="faq_item-button_size" class="editor-select">
+                  <option value="btn-sm">Small</option>
+                  <option value="" selected>Default</option>
+                  <option value="btn-lg">Large</option>
+                  <option value="btn-massive">Massive</option>
+                </select>
+              </div>
+            </div>
+            <div class="editor-hint">Стили и размеры — buttons.html v12</div>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Бейдж в заголовке (для стиля Nested)</label>
+            <input type="text" id="faq_item-badge_text" class="editor-input" placeholder="Например: 15">
+            <div class="editor-hint">Опционально. Показывается рядом с вопросом при выборе стиля аккордеона «06. Nested style»</div>
+          </div>
+        </div>
+
+        {# Countdown — таймер для CTA вариант 08 #}
+        <div id="editor-countdown" class="block-editor-content" style="display: none;">
+          <div class="editor-field-row">
+            <div class="editor-field">
+              <label class="editor-label">Дни</label>
+              <input type="text" id="countdown-days" class="editor-input" placeholder="12" maxlength="2">
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Часы</label>
+              <input type="text" id="countdown-hours" class="editor-input" placeholder="08" maxlength="2">
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Минуты</label>
+              <input type="text" id="countdown-minutes" class="editor-input" placeholder="34" maxlength="2">
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Секунды</label>
+              <input type="text" id="countdown-seconds" class="editor-input" placeholder="56" maxlength="2">
+            </div>
+          </div>
+          <div class="editor-hint">Отображается в CTA при выборе варианта «08. Countdown»</div>
+        </div>
+
+        {# Newsletter — подписка для CTA вариант 07 #}
+        <div id="editor-newsletter" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Placeholder поля email</label>
+            <input type="text" id="newsletter-placeholder" class="editor-input" placeholder="Enter your email">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Текст кнопки</label>
+            <input type="text" id="newsletter-button_text" class="editor-input" placeholder="SUBSCRIBE">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">URL формы (action)</label>
+            <input type="text" id="newsletter-form_action" class="editor-input" placeholder="#" value="#">
+          </div>
+          <div class="editor-hint">Заголовок и описание берутся из блоков Heading и Paragraph в этой секции</div>
+        </div>
+
+        {# CTA Card — карточка для CTA вариант 06 #}
+        <div id="editor-cta_card" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Заголовок</label>
+            <input type="text" id="cta_card-title" class="editor-input" placeholder="QUICK START">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Описание / текст</label>
+            <textarea id="cta_card-description" class="editor-textarea" rows="2" placeholder="Краткое описание"></textarea>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Ссылка (URL)</label>
+            <input type="text" id="cta_card-url" class="editor-input" placeholder="/docs/">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Иконка (heroicons, опц.)</label>
+            <input type="text" id="cta_card-icon" class="editor-input" placeholder="bolt (или пусто — стрелка)">
+          </div>
+          <div class="editor-hint">Вариант CTA «06. Horizontal CTA Cards»</div>
+        </div>
+
+        {# Link Group — быстрые ссылки в hero (добавить/удалить/редактировать) #}
+        <div id="editor-link_group" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Ссылки (текст и URL)</label>
+            <div id="link_group-links" class="link-group-fields"></div>
+            <button type="button" class="btn btn--ghost btn--md" id="link_group-add-link" style="margin-top: 0.75rem;">+ Добавить ссылку</button>
+            <div class="editor-hint">Отображаются в hero под кнопками в виде быстрых ссылок (стиль btn btn-ghost btn-sm). Порядок можно менять перетаскиванием.</div>
+          </div>
+        </div>
+
+        {# Pricing Card — карточка тарифа (секция Pricing v12) #}
+        <div id="editor-pricing_card" class="block-editor-content" style="display: none;">
+          <div class="editor-field">
+            <label class="editor-label">Тег (бейдж над карточкой)</label>
+            <input type="text" id="pricing_card-tag" class="editor-input" placeholder="POPULAR / Рекомендуем">
+            <div class="editor-hint">Оставьте пустым, если бейдж не нужен</div>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Стиль тега</label>
+            <select id="pricing_card-tag_style" class="editor-select">
+              <option value="default">Default (синий)</option>
+              <option value="gold">Gold (золотой)</option>
+            </select>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Название тарифа</label>
+            <input type="text" id="pricing_card-plan_name" class="editor-input" placeholder="PROFESSIONAL">
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Подзаголовок (описание)</label>
+            <input type="text" id="pricing_card-plan_desc" class="editor-input" placeholder="For growing companies">
+          </div>
+          <div class="editor-field-row">
+            <div class="editor-field">
+              <label class="editor-label">Валюта</label>
+              <input type="text" id="pricing_card-currency" class="editor-input" placeholder="₽" value="₽" style="max-width: 5rem;">
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Цена (месяц)</label>
+              <input type="text" id="pricing_card-price_month" class="editor-input" placeholder="99">
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Цена (год)</label>
+              <input type="text" id="pricing_card-price_year" class="editor-input" placeholder="79">
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Цена (за штуку)</label>
+              <input type="text" id="pricing_card-price_unit" class="editor-input" placeholder="">
+            </div>
+          </div>
+          <div class="editor-field-row">
+            <div class="editor-field">
+              <label class="editor-label">Подпись месяца</label>
+              <input type="text" id="pricing_card-term_month" class="editor-input" placeholder="/mo" value="/mo" style="max-width: 6rem;">
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Подпись года</label>
+              <input type="text" id="pricing_card-term_year" class="editor-input" placeholder="/yr" value="/yr" style="max-width: 6rem;">
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Подпись за штуку</label>
+              <input type="text" id="pricing_card-term_unit" class="editor-input" placeholder="/шт" value="/шт" style="max-width: 6rem;">
+            </div>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Фон карточки</label>
+            <select id="pricing_card-card_background" class="editor-select">
+              <option value="default">По умолчанию (белый)</option>
+              <option value="dotted">Dotted (серые точки)</option>
+              <option value="dotted_blue">Dotted Blue (синие точки)</option>
+              <option value="dotted_gold">Dotted Gold (золотые точки)</option>
+              <option value="dark">Dark (тёмная тема)</option>
+            </select>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Выделенная карточка (featured)</label>
+            <input type="checkbox" id="pricing_card-is_featured" value="1">
+            <span class="editor-hint" style="margin-left: 0.5rem;">Рамка и акцент цены</span>
+          </div>
+          <div class="editor-field">
+            <label class="editor-label">Фичи (список)</label>
+            <div id="pricing_card-features" class="pricing-features-editor"></div>
+            <button type="button" class="btn btn--ghost btn--md" id="pricing_card-add-feature" style="margin-top: 0.5rem;">+ Добавить фичу</button>
+            <div class="editor-hint">Для каждой фичи укажите текст и отметьте «включено» (галочка) или выключено (крестик)</div>
+          </div>
+          <div class="editor-field" style="border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+            <label class="editor-label">Кнопка</label>
+            <div class="editor-field-row">
+              <div class="editor-field" style="flex: 1;">
+                <input type="text" id="pricing_card-button_text" class="editor-input" placeholder="Выбрать тариф">
+              </div>
+              <div class="editor-field" style="flex: 1;">
+                <input type="text" id="pricing_card-button_url" class="editor-input" placeholder="/register/">
+              </div>
+            </div>
+            <div class="editor-field">
+              <label class="editor-label">Стиль кнопки</label>
+              <select id="pricing_card-button_style" class="editor-select">
+                <option value="btn btn-primary">Primary (синяя)</option>
+                <option value="btn btn-secondary" selected>Secondary</option>
+                <option value="btn btn-gold">Gold (AI)</option>
+              </select>
+            </div>
+          </div>
+          <div class="editor-hint" style="font-size: 0.7rem; margin-top: 0.5rem;">pricing.html v12 — 5 стилей секции задаются в настройках секции</div>
+        </div>
+
+      </form>
+    </div>
+    
+    <div class="block-modal__footer">
+      <button class="btn btn--ghost btn--md" onclick="closeBlockEditor()">
+        Cancel
+      </button>
+      <button class="btn btn--primary btn--md" onclick="saveBlockChanges()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+          <path d="M5 13l4 4L19 7"></path>
+        </svg>
+        Save Block
+      </button>
+    </div>
+  </div>
+</div>
+
+{# Icon Picker Modal — Heroicons v12 #}
+<div id="iconPickerOverlay" class="icon-picker-overlay" style="display: none;">
+  <div class="icon-picker-modal">
+    <div class="icon-picker-header">
+      <h4 class="icon-picker-title">Выберите иконку</h4>
+      <input type="text" id="iconPickerSearch" class="icon-picker-search" placeholder="Поиск по названию...">
+      <button type="button" class="icon-picker-close" onclick="closeIconPicker()" aria-label="Закрыть">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+    </div>
+    <div id="iconPickerGrid" class="icon-picker-grid"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var HEROICONS_URL = '/static/data/heroicons-outline.json';
+  var HEROICONS = [];
+  var iconPickerTargetId = null;
+  var iconPathById = {};
+  var iconsLoadPromise = null;
+
+  function loadHeroicons() {
+    if (iconsLoadPromise) return iconsLoadPromise;
+    iconsLoadPromise = fetch(HEROICONS_URL).then(function(r){ return r.json(); }).then(function(arr){
+      HEROICONS = arr;
+      iconPathById = {};
+      HEROICONS.forEach(function(item){
+        if (item.paths) iconPathById[item.id] = item.paths;
+        else iconPathById[item.id] = item.d;
+      });
+      return HEROICONS;
+    });
+    return iconsLoadPromise;
+  }
+
+  function getIconPathHtml(icon) {
+    var path = 'stroke-linecap="round" stroke-linejoin="round"';
+    if (icon.paths) return icon.paths.map(function(d){ return '<path d="'+d+'" '+path+'></path>'; }).join('');
+    return '<path d="'+icon.d+'" '+path+'></path>';
+  }
+
+  function renderIconCell(icon) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'icon-picker-cell';
+    btn.dataset.icon = icon.id;
+    btn.title = icon.id;
+    btn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">' + getIconPathHtml(icon) + '</svg><span class="icon-picker-cell-name">' + icon.id + '</span>';
+    btn.onclick = function(){ selectIcon(icon.id); };
+    return btn;
+  }
+
+  function renderIconPickerGrid(filter) {
+    var grid = document.getElementById('iconPickerGrid');
+    grid.innerHTML = '';
+    var list = filter ? HEROICONS.filter(function(i){ return i.id.indexOf(filter.toLowerCase()) !== -1; }) : HEROICONS;
+    list.forEach(function(icon) {
+      grid.appendChild(renderIconCell(icon));
+    });
+  }
+
+  window.openIconPicker = function(targetInputId) {
+    iconPickerTargetId = targetInputId;
+    document.getElementById('iconPickerSearch').value = '';
+    renderIconPickerGrid();
+    document.getElementById('iconPickerOverlay').style.display = 'flex';
+    document.getElementById('iconPickerSearch').focus();
+  };
+
+  window.closeIconPicker = function() {
+    document.getElementById('iconPickerOverlay').style.display = 'none';
+    iconPickerTargetId = null;
+  };
+
+  function selectIcon(iconId) {
+    if (!iconPickerTargetId) return;
+    var input = document.getElementById(iconPickerTargetId);
+    if (input) {
+      input.value = iconId;
+      updateIconPreview(iconPickerTargetId, iconId);
+    }
+    closeIconPicker();
+  }
+
+  window.updateIconPreview = function(inputId, iconId) {
+    var preview = document.getElementById(inputId + '-preview');
+    if (!preview) return;
+    var pathData = iconPathById[iconId] || iconPathById['file-text'];
+    var pathHtml = Array.isArray(pathData)
+      ? pathData.map(function(d){ return '<path d="'+d+'" stroke-linecap="round" stroke-linejoin="round"></path>'; }).join('')
+      : '<path d="'+pathData+'" stroke-linecap="round" stroke-linejoin="round"></path>';
+    preview.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" class="icon-picker-preview-svg">' + pathHtml + '</svg>';
+    preview.title = iconId;
+  };
+
+  document.getElementById('iconPickerSearch').addEventListener('input', function() {
+    renderIconPickerGrid(this.value.trim());
+  });
+  document.getElementById('iconPickerOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeIconPicker();
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    loadHeroicons().then(function() {
+      ['feature_card-icon', 'document_type_card-icon'].forEach(function(id) {
+        var input = document.getElementById(id);
+        if (input) updateIconPreview(id, input.value || (id === 'document_type_card-icon' ? 'file-text' : 'check-circle'));
+      });
+    });
+    var addBtn = document.getElementById('form-builder-add-field');
+    if (addBtn) addBtn.addEventListener('click', function() { if (window.formBuilderAddRow) window.formBuilderAddRow({}); });
+  });
+})();
+</script>
+<script>
+(function() {
+  var FIELD_TYPES = [
+    { value: 'text', label: 'Text' },
+    { value: 'email', label: 'Email' },
+    { value: 'tel', label: 'Tel' },
+    { value: 'password', label: 'Password' },
+    { value: 'textarea', label: 'Textarea' },
+    { value: 'checkbox', label: 'Checkbox' },
+    { value: 'radio', label: 'Radio' },
+    { value: 'select', label: 'Select' },
+    { value: 'toggle', label: 'Toggle' }
+  ];
+  function rowToggleOptions(row, type) {
+    var optWrap = row.querySelector('.field-options-wrap');
+    var rowsWrap = row.querySelector('.field-rows-wrap');
+    if (optWrap) optWrap.classList.toggle('visible', type === 'radio' || type === 'select');
+    if (rowsWrap) rowsWrap.classList.toggle('visible', type === 'textarea');
+  }
+  function createRow(field) {
+    field = field || {};
+    var type = field.type || 'text';
+    var optionsHtml = FIELD_TYPES.map(function(t) { return '<option value="'+t.value+'"' + (t.value === type ? ' selected' : '') + '>'+t.label+'</option>'; }).join('');
+    var row = document.createElement('div');
+    row.className = 'form-builder-row';
+    row.innerHTML =
+      '<div class="editor-field"><label class="editor-label">Тип</label><select class="form-field-type editor-select">' + optionsHtml + '</select></div>' +
+      '<div class="editor-field"><label class="editor-label">Name (атрибут)</label><input type="text" class="form-field-name editor-input" placeholder="name" value="' + (field.name || '').replace(/"/g, '&quot;') + '"></div>' +
+      '<div class="form-builder-row-actions"><button type="button" class="move-up" title="Вверх">&#9650;</button><button type="button" class="move-down" title="Вниз">&#9660;</button><button type="button" class="danger delete-row" title="Удалить">&#215;</button></div>' +
+      '<div class="editor-field" style="grid-column:1/-1"><label class="editor-label">Label (подпись)</label><input type="text" class="form-field-label editor-input" placeholder="Подпись поля" value="' + (field.label || '').replace(/"/g, '&quot;') + '"></div>' +
+      '<div class="editor-field" style="grid-column:1/-1"><label class="editor-label">Placeholder</label><input type="text" class="form-field-placeholder editor-input" placeholder="Опционально" value="' + (field.placeholder || '').replace(/"/g, '&quot;') + '"></div>' +
+      '<div class="editor-field" style="grid-column:1/-1"><label><input type="checkbox" class="form-field-required"' + (field.required ? ' checked' : '') + '> Обязательное</label></div>' +
+      '<div class="field-options-wrap editor-field"><label class="editor-label">Варианты (radio/select): одна строка = value|Подпись</label><textarea class="form-field-options editor-textarea" rows="3" placeholder="yes|Да\nno|Нет">' + (Array.isArray(field.options) ? field.options.map(function(o){ return (o.value || o) + '|' + (o.label || o); }).join('\n') : (field.options_text || '')).replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</textarea></div>' +
+      '<div class="field-rows-wrap editor-field"><label class="editor-label">Строк (textarea)</label><input type="number" class="form-field-rows editor-input" min="2" max="20" value="' + (field.rows || 4) + '"></div>';
+    var container = document.getElementById('form-builder-fields');
+    if (container) container.appendChild(row);
+    row.querySelector('.form-field-type').addEventListener('change', function() { rowToggleOptions(row, this.value); });
+    rowToggleOptions(row, type);
+    row.querySelector('.delete-row').addEventListener('click', function() { row.remove(); });
+    row.querySelector('.move-up').addEventListener('click', function() { if (row.previousElementSibling) container.insertBefore(row, row.previousElementSibling); });
+    row.querySelector('.move-down').addEventListener('click', function() { if (row.nextElementSibling) container.insertBefore(row.nextElementSibling, row); });
+    return row;
+  }
+  window.formBuilderSetFields = function(fields) {
+    var container = document.getElementById('form-builder-fields');
+    if (!container) return;
+    container.innerHTML = '';
+    (fields.length ? fields : [{ type: 'text', label: '', name: '' }]).forEach(function(f) { createRow(f); });
+  };
+  window.formBuilderAddRow = function(field) {
+    createRow(field || { type: 'text', label: '', name: '' });
+  };
+  window.formBuilderGetFields = function() {
+    var container = document.getElementById('form-builder-fields');
+    if (!container) return [];
+    return Array.from(container.querySelectorAll('.form-builder-row')).map(function(row) {
+      var type = row.querySelector('.form-field-type').value;
+      var optionsText = row.querySelector('.form-field-options').value.trim();
+      var options = [];
+      if (optionsText) optionsText.split('\n').forEach(function(line) {
+        var parts = line.split('|');
+        options.push({ value: (parts[0] || '').trim(), label: (parts[1] || parts[0] || '').trim() });
+      });
+      return {
+        type: type,
+        name: row.querySelector('.form-field-name').value.trim() || undefined,
+        label: row.querySelector('.form-field-label').value.trim() || '',
+        placeholder: row.querySelector('.form-field-placeholder').value.trim() || undefined,
+        required: row.querySelector('.form-field-required').checked,
+        options: options.length ? options : undefined,
+        options_text: optionsText || undefined,
+        rows: type === 'textarea' ? parseInt(row.querySelector('.form-field-rows').value, 10) || 4 : undefined
+      };
+    });
+  };
+})();
+
+(function() {
+  function createLinkRow(item) {
+    item = item || { text: '', url: '' };
+    var row = document.createElement('div');
+    row.className = 'link-group-row';
+    row.innerHTML =
+      '<div class="link-group-row-inner">' +
+      '<input type="text" class="link-group-text editor-input" placeholder="Текст ссылки" value="' + (item.text || '').replace(/"/g, '&quot;') + '">' +
+      '<input type="text" class="link-group-url editor-input" placeholder="URL (например /upd/)" value="' + (item.url || '').replace(/"/g, '&quot;') + '">' +
+      '<button type="button" class="link-group-remove btn btn--ghost btn--sm" title="Удалить">&#215;</button>' +
+      '</div>';
+    var container = document.getElementById('link_group-links');
+    if (container) container.appendChild(row);
+    row.querySelector('.link-group-remove').addEventListener('click', function() { row.remove(); });
+    return row;
+  }
+  window.linkGroupSetLinks = function(links) {
+    var container = document.getElementById('link_group-links');
+    if (!container) return;
+    container.innerHTML = '';
+    var list = Array.isArray(links) && links.length ? links : [{ text: 'УПД для ООО', url: '/upd/' }];
+    list.forEach(function(item) { createLinkRow(item); });
+  };
+  window.linkGroupAddLink = function() {
+    createLinkRow({ text: '', url: '' });
+  };
+  window.linkGroupGetLinks = function() {
+    var container = document.getElementById('link_group-links');
+    if (!container) return [];
+    return Array.from(container.querySelectorAll('.link-group-row')).map(function(row) {
+      return {
+        text: (row.querySelector('.link-group-text') && row.querySelector('.link-group-text').value) || '',
+        url: (row.querySelector('.link-group-url') && row.querySelector('.link-group-url').value) || ''
+      };
+    }).filter(function(l) { return l.text || l.url; });
+  };
+  document.addEventListener('DOMContentLoaded', function() {
+    var addBtn = document.getElementById('link_group-add-link');
+    if (addBtn) addBtn.addEventListener('click', function() { window.linkGroupAddLink(); });
+  });
+})();
+
+(function() {
+  function createPricingFeatureRow(item) {
+    item = item || { text: '', enabled: true };
+    var row = document.createElement('div');
+    row.className = 'pricing-feature-row';
+    row.style.cssText = 'display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;';
+    var checked = item.enabled !== false ? ' checked' : '';
+    row.innerHTML =
+      '<input type="checkbox" class="pricing-feature-enabled" ' + checked + ' title="Включено (галочка)">' +
+      '<input type="text" class="pricing-feature-text editor-input" placeholder="Текст фичи" value="' + (item.text || '').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" style="flex: 1;">' +
+      '<button type="button" class="pricing-feature-remove btn btn--ghost btn--sm" title="Удалить">&#215;</button>';
+    var container = document.getElementById('pricing_card-features');
+    if (container) container.appendChild(row);
+    row.querySelector('.pricing-feature-remove').addEventListener('click', function() { row.remove(); });
+    return row;
+  }
+  window.pricingFeaturesSet = function(features) {
+    var container = document.getElementById('pricing_card-features');
+    if (!container) return;
+    container.innerHTML = '';
+    var list = Array.isArray(features) && features.length ? features : [{ text: 'Первая фича', enabled: true }];
+    list.forEach(function(item) { createPricingFeatureRow(item); });
+  };
+  window.pricingFeaturesGet = function() {
+    var container = document.getElementById('pricing_card-features');
+    if (!container) return [];
+    return Array.from(container.querySelectorAll('.pricing-feature-row')).map(function(row) {
+      return {
+        text: (row.querySelector('.pricing-feature-text') && row.querySelector('.pricing-feature-text').value) || '',
+        enabled: row.querySelector('.pricing-feature-enabled') && row.querySelector('.pricing-feature-enabled').checked
+      };
+    });
+  };
+  document.addEventListener('DOMContentLoaded', function() {
+    var addBtn = document.getElementById('pricing_card-add-feature');
+    if (addBtn) addBtn.addEventListener('click', function() { createPricingFeatureRow({ text: '', enabled: true }); });
+  });
+})();
+</script>
+
+<style>
+/* =========================================================================
+   BLOCK EDITOR MODAL - Terminal v12.0 Design System
+   ========================================================================= */
+
+.block-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.block-modal {
+  background: white;
+  border-radius: 1.5rem;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.block-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #f1f5f9;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.block-modal__title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.block-modal__icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.block-modal__title {
+  font-size: 1.125rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0f172a;
+  margin: 0;
+}
+
+.block-modal__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0.75rem;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.block-modal__close:hover {
+  background: #f1f5f9;
+  color: #475569;
+  transform: rotate(90deg);
+}
+
+.block-modal__close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Body */
+.block-modal__body {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+  background: white;
+}
+
+/* Footer */
+.block-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #f1f5f9;
+  background: #f8fafc;
+}
+
+/* Form Fields - Terminal v12.0 */
+.block-editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.editor-field-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.editor-label {
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #64748b;
+}
+
+.editor-input,
+.editor-textarea,
+.editor-select {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #1e293b;
+  background: #f8fafc;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: 'Inter', sans-serif;
+}
+
+.editor-input:focus,
+.editor-textarea:focus,
+.editor-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+.editor-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+.editor-select {
+  cursor: pointer;
+}
+
+.editor-select-icon {
+  font-size: 1rem;
+}
+
+/* Icon Picker trigger (вместо select) */
+.icon-picker-trigger {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.icon-picker-preview {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+.icon-picker-preview-svg {
+  width: 24px;
+  height: 24px;
+}
+.icon-picker-btn {
+  padding: 0.625rem 1.25rem;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #3b82f6;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.icon-picker-btn:hover {
+  background: #dbeafe;
+  border-color: #3b82f6;
+}
+
+/* Icon Picker overlay & modal */
+.icon-picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.icon-picker-modal {
+  background: white;
+  border-radius: 1.5rem;
+  max-width: 560px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+.icon-picker-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+.icon-picker-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0f172a;
+}
+.icon-picker-search {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+}
+.icon-picker-search:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+.icon-picker-close {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 0.75rem;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-picker-close:hover { background: #e2e8f0; color: #0f172a; }
+.icon-picker-close svg { width: 18px; height: 18px; }
+.icon-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+.icon-picker-loading {
+  grid-column: 1 / -1;
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+  margin: 0;
+}
+.icon-picker-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748b;
+}
+.icon-picker-cell:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #3b82f6;
+  transform: translateY(-2px);
+}
+.icon-picker-cell svg {
+  width: 24px;
+  height: 24px;
+}
+.icon-picker-cell-name {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-align: center;
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+.editor-hint {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Form Builder rows */
+.form-builder-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.form-builder-row {
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.5rem;
+  align-items: start;
+}
+.form-builder-row .editor-field { margin-bottom: 0; }
+.form-builder-row .editor-label { font-size: 0.7rem; }
+.form-builder-row .editor-input,
+.form-builder-row .editor-select { padding: 0.5rem; font-size: 0.8125rem; }
+.form-builder-row-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.form-builder-row-actions button {
+  padding: 0.35rem;
+  background: #e2e8f0;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  color: #475569;
+}
+.form-builder-row-actions button:hover { background: #cbd5e1; }
+.form-builder-row-actions button.danger:hover { background: #fecaca; color: #991b1b; }
+.form-builder-row .field-options-wrap { grid-column: 1 / -1; display: none; }
+.form-builder-row .field-options-wrap.visible { display: block; }
+.form-builder-row .field-rows-wrap { grid-column: 1 / -1; display: none; }
+.form-builder-row .field-rows-wrap.visible { display: block; }
+
+/* Link Group rows */
+.link-group-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.link-group-row-inner {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.link-group-row .link-group-text { flex: 1; min-width: 140px; }
+.link-group-row .link-group-url { flex: 1; min-width: 160px; }
+.link-group-row .link-group-remove {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 0.5rem;
+  color: #64748b;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.link-group-row .link-group-remove:hover { background: #fecaca; color: #991b1b; }
+
+/* Buttons in Modal - Terminal v12.0 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-decoration: none;
+}
+
+.btn--primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn--primary:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+}
+
+.btn--primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.btn--ghost:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+.btn--md {
+  padding: 0.875rem 1.75rem;
+  font-size: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .block-modal {
+    max-width: 100%;
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+  }
+  
+  .editor-field-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .block-modal__header {
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .block-modal__body {
+    padding: 1.5rem;
+  }
+  
+  .block-modal__footer {
+    padding: 1.25rem 1.5rem;
+  }
+}
+</style>

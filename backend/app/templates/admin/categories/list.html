@@ -1,0 +1,89 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Категории статей{% endblock %}
+{% block page_title %}Категории статей{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/categories/create/" class="admin-btn-primary">
+  <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+  Создать категорию
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="admin-core">
+  {% if tree %}
+  <section class="admin-table-section">
+    <div class="table-wrapper">
+      <table class="table table--striped">
+        <thead>
+          <tr>
+            <th>Название</th>
+            <th>URL</th>
+            <th>Макет</th>
+            <th>Секций</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in tree %}
+          <tr>
+            <td>
+              <span style="padding-left: {{ (item.level * 1.5) }}rem;">{% if item.level %}<iconify-icon icon="ri:corner-down-right-line" width="16" class="table__muted"></iconify-icon>{% endif %}{{ item.category.name }}</span>
+            </td>
+            <td class="table__muted">/news/category/{{ item.category.full_slug }}/</td>
+            <td>
+              <span class="badge badge--neutral">{{ 'С сайдбаром' if item.category.layout == 'with_sidebar' else 'Без сайдбара' }}</span>
+            </td>
+            <td>{{ item.category.sections | length }}</td>
+            <td>
+              <div class="table-actions">
+                <a href="/admin/categories/{{ item.category.id }}/edit/" class="table-action table-action--primary">
+                  <iconify-icon icon="ri:edit-line" width="18"></iconify-icon>
+                  Редактировать
+                </a>
+                <a href="/news/category/{{ item.category.full_slug }}/" target="_blank" class="table-action" rel="noopener">
+                  <iconify-icon icon="ri:external-link-line" width="18"></iconify-icon>
+                  Открыть
+                </a>
+                <button type="button" class="table-action table-action--danger btn-delete-category" data-id="{{ item.category.id }}" data-name="{{ item.category.name }}">
+                  <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+                  Удалить
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% else %}
+  <div class="admin-empty">
+    <iconify-icon icon="ri:folder-line" width="64" class="admin-empty__icon"></iconify-icon>
+    <h3 class="admin-empty__title">Категорий пока нет</h3>
+    <p class="admin-empty__text">Создайте категорию для статей с настраиваемой структурой и макетом (с сайдбаром / без)</p>
+    <a href="/admin/categories/create/" class="admin-btn-primary">
+      <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+      Создать категорию
+    </a>
+  </div>
+  {% endif %}
+</div>
+<script>
+document.querySelectorAll('.btn-delete-category').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var id = this.getAttribute('data-id');
+    var name = this.getAttribute('data-name');
+    if (!confirm('Удалить категорию «' + name + '»?')) return;
+    fetch('/admin/categories/' + id + '/delete/', { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json' } })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success) location.reload();
+        else alert(data.error || 'Ошибка удаления');
+      })
+      .catch(function() { alert('Ошибка сети'); });
+  });
+});
+</script>
+{% endblock %}

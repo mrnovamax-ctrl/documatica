@@ -34,18 +34,38 @@
 <!-- Article Header -->
 <section style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 120px 0 60px;">
   <div class="container">
-    <!-- Breadcrumbs -->
-    <nav style="margin-bottom: 32px;">
-      <ol style="display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0;">
+    <!-- Breadcrumbs + Schema.org BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
         {% for crumb in breadcrumbs if crumb %}
-        <li style="display: flex; align-items: center; gap: 8px;">
+        {
+          "@type": "ListItem",
+          "position": {{ loop.index }},
+          "name": "{{ crumb.title | e }}"
+          {% if crumb.url %},"item": "{{ base_url }}{{ crumb.url }}"{% endif %}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }
+    </script>
+    <nav class="article-breadcrumbs" aria-label="Хлебные крошки">
+      <ol class="article-breadcrumbs__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+        {% for crumb in breadcrumbs if crumb %}
+        <li class="article-breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
           {% if not loop.first %}
-          <span style="color: #64748b;">/</span>
+          <span class="article-breadcrumbs__sep" aria-hidden="true">/</span>
           {% endif %}
           {% if crumb.url %}
-          <a href="{{ crumb.url }}" style="color: #94a3b8; text-decoration: none; font-size: 14px;">{{ crumb.title }}</a>
+          <a href="{{ crumb.url }}" class="article-breadcrumbs__link" itemprop="item" itemscope itemtype="https://schema.org/WebPage" itemid="{{ base_url }}{{ crumb.url }}">
+            <span itemprop="name">{{ crumb.title }}</span>
+          </a>
+          <meta itemprop="position" content="{{ loop.index }}">
           {% else %}
-          <span style="color: #3b82f6; font-size: 14px; font-weight: 600;">{{ crumb.title[:50] }}{% if crumb.title|length > 50 %}...{% endif %}</span>
+          <span class="article-breadcrumbs__current" itemprop="name">{{ crumb.title[:80] }}{% if crumb.title|length > 80 %}...{% endif %}</span>
+          <meta itemprop="position" content="{{ loop.index }}">
           {% endif %}
         </li>
         {% endfor %}
@@ -77,7 +97,7 @@
 <!-- Article Content -->
 <section style="padding: 60px 0; background: #f8fafc;">
   <div class="container">
-    <div style="display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: start;">
+    <div class="article-layout" style="display: grid; {% if sidebar_blocks %}grid-template-columns: 1fr 340px; gap: 48px;{% endif %} align-items: start;">
       <!-- Main Content -->
       <article style="background: white; border-radius: 2rem; padding: 48px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
         <!-- Featured Image -->
@@ -92,9 +112,9 @@
           {{ article.excerpt }}
         </p>
         
-        <!-- Content -->
+        <!-- Content (с подстановкой шорткодов [имя]) -->
         <div class="article-content" style="font-size: 16px; line-height: 1.8; color: #334155;">
-          {{ article.content | safe }}
+          {{ article_content | safe }}
         </div>
         
         <!-- Share -->
@@ -116,46 +136,42 @@
         </div>
       </article>
       
-      <!-- Sidebar -->
-      <aside style="position: sticky; top: 100px;">
-        <!-- CTA Card -->
-        <div style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 2rem; padding: 32px; margin-bottom: 24px; color: white;">
-          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.8; margin-bottom: 12px;">
-            Documatica
-          </div>
-          <h3 style="font-size: 20px; font-weight: 800; margin: 0 0 12px; line-height: 1.3;">
-            Создайте УПД за 2 минуты
-          </h3>
-          <p style="font-size: 14px; opacity: 0.9; margin-bottom: 20px; line-height: 1.5;">
-            Автозаполнение по ИНН, актуальная форма 2026 года
-          </p>
-          <a href="/dashboard/upd/create/" style="display: block; text-align: center; background: white; color: #3b82f6; padding: 14px 24px; border-radius: 1rem; font-weight: 700; font-size: 13px; text-decoration: none;">
-            Попробовать бесплатно
-          </a>
+      <!-- Sidebar (настраивается в админке: Сайдбар новостей) -->
+      {% if sidebar_blocks %}
+      <aside class="article-sidebar" style="position: sticky; top: 100px;">
+        {% for block in sidebar_blocks %}
+        {% if block.type == 'cta_card' %}
+        <div class="article-sidebar-cta" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 2rem; padding: 32px; margin-bottom: 24px; color: white;">
+          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.8; margin-bottom: 12px;">Documatica</div>
+          <h3 style="font-size: 20px; font-weight: 800; margin: 0 0 12px; line-height: 1.3;">Создайте УПД за 2 минуты</h3>
+          <p style="font-size: 14px; opacity: 0.9; margin-bottom: 20px; line-height: 1.5;">Автозаполнение по ИНН, актуальная форма 2026 года</p>
+          <a href="/dashboard/upd/create/" style="display: block; text-align: center; background: white; color: #3b82f6; padding: 14px 24px; border-radius: 1rem; font-weight: 700; font-size: 13px; text-decoration: none;">Попробовать бесплатно</a>
         </div>
-        
-        <!-- Related Articles -->
-        {% if related %}
-        <div style="background: white; border-radius: 2rem; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
-          <h3 style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 0 0 20px;">
-            Похожие статьи
-          </h3>
+        {% elif block.type == 'related_articles' and related %}
+        <div class="article-sidebar-related" style="background: white; border-radius: 2rem; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 24px;">
+          <h3 style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 0 0 20px;">Похожие статьи</h3>
           <div style="display: flex; flex-direction: column; gap: 20px;">
             {% for item in related %}
             <a href="/news/{{ item.slug }}/" style="display: block; text-decoration: none;">
-              <h4 style="font-size: 15px; font-weight: 600; color: #0f172a; margin: 0 0 6px; line-height: 1.4;">
-                {{ item.title }}
-              </h4>
+              <h4 style="font-size: 15px; font-weight: 600; color: #0f172a; margin: 0 0 6px; line-height: 1.4;">{{ item.title }}</h4>
               <span style="font-size: 12px; color: #94a3b8;">{{ item.created_at[:10] }}</span>
             </a>
             {% endfor %}
           </div>
         </div>
+        {% elif block.type == 'shortcode' and block.html %}
+        <div class="article-sidebar-shortcode" style="margin-bottom: 24px;">{{ block.html | safe }}</div>
         {% endif %}
+        {% endfor %}
       </aside>
+      {% endif %}
     </div>
   </div>
 </section>
 
-<link rel="stylesheet" href="/static/css/article.css?v=1.0">
+{% endblock %}
+
+{% block extra_css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/article.css?v=1.1">
 {% endblock %}

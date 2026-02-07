@@ -1,0 +1,38 @@
+{# Одна секция для рендера шорткода — те же include, что и в dynamic_page #}
+{% if section.section_type == 'hero' %}
+  {% include "components/blocks/hero.html" %}
+{% elif section.section_type == 'features' %}
+  {% include "components/blocks/features.html" %}
+{% elif section.section_type == 'about' %}
+  {% include "components/blocks/about.html" %}
+{% elif section.section_type == 'cta' %}
+  {% include "components/blocks/cta.html" %}
+{% elif section.section_type == 'pricing' %}
+  {% include "components/blocks/pricing.html" %}
+{% elif section.section_type == 'document_types' %}
+  {% include "components/blocks/document_types.html" %}
+{% elif section.section_type == 'upd_types' %}
+  {% include "components/blocks/upd_types.html" %}
+{% elif section.section_type == 'faq' %}
+  {% include "components/blocks/faq.html" %}
+{% elif section.section_type == 'useful_materials' %}
+  {% include "components/blocks/useful_materials.html" %}
+{% elif section.section_type == 'seo_text' %}
+  {% include "components/blocks/seo_text.html" %}
+{% elif section.section_type == 'form_section' %}
+  {% include "components/blocks/form_section.html" %}
+{% elif section.section_type == 'articles_preview' %}
+  {% include "components/blocks/articles_preview.html" %}
+{% elif section.section_type == 'articles_list' %}
+  {% include "components/blocks/articles_list.html" %}
+{% else %}
+  <section class="{{ section.css_classes | default('section') }}">
+    <div class="container">
+      {% for block in section.blocks %}
+        {% if block.is_visible %}
+          <div class="{{ block.css_classes | default('') }}">{{ block.content.text | default(block.content.title) | default('') | safe }}</div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

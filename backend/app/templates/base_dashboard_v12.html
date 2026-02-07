@@ -484,6 +484,29 @@
   <!-- Charts & Tables -->
   <script src="/static/js/lib/apexcharts.min.js"></script>
   <script src="/static/js/lib/dataTables.min.js"></script>
+  <script>
+    (function () {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get('yandex_registered') === '1') {
+          var key = 'metrika_user_registered_yandex_sent';
+          if (window.sessionStorage && sessionStorage.getItem(key) !== '1') {
+            if (typeof ym !== 'undefined') {
+              ym(76440544, 'reachGoal', 'user_registered_yandex');
+              console.log('[Yandex Metrika] Goal sent: user_registered_yandex');
+            }
+            sessionStorage.setItem(key, '1');
+          }
+          params.delete('yandex_registered');
+          var qs = params.toString();
+          var cleanUrl = window.location.pathname + (qs ? ('?' + qs) : '') + window.location.hash;
+          window.history.replaceState({}, document.title, cleanUrl);
+        }
+      } catch (e) {
+        console.warn('[Yandex Metrika] yandex_registered handler error', e);
+      }
+    })();
+  </script>
   {% block extra_js %}{% endblock %}
 </body>
 

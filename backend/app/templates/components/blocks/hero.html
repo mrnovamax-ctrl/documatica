@@ -1,0 +1,82 @@
+{# Hero Section — классы 1:1 как в .cursor/skills/terminal-v12/src/pages/hero.html #}
+
+{% set bg_class = '' %}
+{% if section.background_style == 'white' %}
+  {% set bg_class = 'bg-white' %}
+{% elif section.background_style == 'surface' %}
+  {% set bg_class = 'bg-surface' %}
+{% elif section.background_style == 'surface_light' %}
+  {% set bg_class = 'bg-surface-light' %}
+{% elif section.background_style == 'dark' %}
+  {% set bg_class = 'bg-dark' %}
+{% elif section.background_style == 'primary' %}
+  {% set bg_class = 'bg-primary' %}
+{% elif section.background_style == 'gold' %}
+  {% set bg_class = 'bg-gold' %}
+{% elif section.background_style == 'pattern_dots_light' %}
+  {% set bg_class = 'pattern-dots-light' %}
+{% elif section.background_style == 'pattern_dots_dark' %}
+  {% set bg_class = 'pattern-dots-dark' %}
+{% elif section.background_style == 'pattern_grid_lines' %}
+  {% set bg_class = 'pattern-grid-lines' %}
+{% elif section.background_style == 'pattern_radial_blue' %}
+  {% set bg_class = 'pattern-radial-blue' %}
+{% elif section.background_style == 'pattern_radial_gold' %}
+  {% set bg_class = 'pattern-radial-gold' %}
+{% elif section.background_style == 'gradient_blue' %}
+  {% set bg_class = 'bg-gradient-blue' %}
+{% elif section.background_style == 'gradient_gold' %}
+  {% set bg_class = 'bg-gradient-gold' %}
+{% endif %}
+{% set hero_variant = (section.settings or {}).get('hero_variant', 'default') %}
+{% set hero_mod = ' hero--large' if hero_variant == 'large' else '' %}
+{% set hero_mod = hero_mod or (' hero--compact' if hero_variant == 'compact' else '') %}
+{% set hero_mod = hero_mod or (' hero--pattern' if hero_variant == 'pattern' else '') %}
+{% set is_dark_bg = section.background_style in ['dark', 'primary', 'gold', 'pattern_dots_dark'] %}
+
+<section class="hero{{ hero_mod }} {{ bg_class }}{% if section.css_classes %} {{ section.css_classes }}{% endif %}{% if is_dark_bg %} section--dark{% endif %}" id="hero">
+  <div class="container position-relative hero-container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 hero-content">
+        {% for block in section.blocks %}
+          {% if block.block_type == 'label' and block.is_visible %}
+            <span class="hero-badge {{ block.css_classes or '' }}"><span class="ai-node"></span>{{ block.content.text | default('') }}</span>
+          {% elif block.block_type == 'heading' and block.is_visible %}
+            {% set title_text = block.content.text %}
+            {% set accent = block.content.accent %}
+            {% if accent and accent in title_text %}
+              {% set title_html = title_text | replace(accent, '<span class="text-primary-light">' ~ accent ~ '</span>') %}
+            {% elif accent %}
+              {% set title_html = title_text ~ ' <span class="text-primary-light">' ~ accent ~ '</span>' %}
+            {% else %}
+              {% set title_html = title_text %}
+            {% endif %}
+            <h1 class="hero-title {{ block.css_classes or '' }}">{{ title_html | safe }}</h1>
+          {% elif block.block_type == 'paragraph' and block.is_visible %}
+            <div class="hero-subtitle {{ block.css_classes or '' }}{% if is_dark_bg %} text-slate-300{% else %} text-slate-700{% endif %}">{{ block.content.text | safe }}</div>
+          {% elif block.block_type == 'button' and block.is_visible %}
+            {% set prev_is_button = loop.previtem is defined and loop.previtem.block_type == 'button' and loop.previtem.is_visible %}
+            {% set next_is_button = loop.nextitem is defined and loop.nextitem.block_type == 'button' and loop.nextitem.is_visible %}
+            {% if not prev_is_button %}<div class="hero-actions">{% endif %}
+            <a href="{{ block.content.url | default('#') }}" class="{{ block.css_classes }}">
+              {{ block.content.text }}
+            </a>
+            {% if not next_is_button %}</div>{% endif %}
+          {% elif block.block_type == 'note' and block.is_visible %}
+            <div class="hero-note {{ block.css_classes or '' }}">
+              {{ block.content.text }}
+              {% if block.content.accent %}
+                • <span class="hero-note-accent">{{ block.content.accent }}</span>
+              {% endif %}
+            </div>
+          {% elif block.block_type == 'link_group' and block.is_visible %}
+            {% include "components/blocks/_link_group_render.html" %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="col-lg-6 hero-visual d-flex justify-content-center align-items-center">
+        {% include "components/hero_ai_animation.html" %}
+      </div>
+    </div>
+  </div>
+</section>

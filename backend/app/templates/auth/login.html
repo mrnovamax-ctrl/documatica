@@ -42,7 +42,11 @@
         </label>
         <a href="/forgot-password/" class="auth-forgot-v12">Забыли пароль?</a>
       </div>
-      
+
+      <div class="auth-captcha-v12">
+        <div id="captcha-container" class="smart-captcha-container smart-captcha" data-sitekey="ysc1_UVwsHWs8tnnv15c5CchnGi3MQPnEkJ3fgBsQqwx0f036dc2d"></div>
+      </div>
+
       <button type="submit" class="auth-btn-v12">
         Войти
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -116,9 +120,12 @@ document.getElementById('login-form').addEventListener('submit', async function(
   e.preventDefault();
   
   const formData = new FormData(this);
+  const smartTokenInput = document.querySelector('#captcha-container input[name="smart-token"], input[name="smart-token"]');
+  const smartToken = smartTokenInput ? smartTokenInput.value : '';
   const data = {
     email: formData.get('email'),
-    password: formData.get('password')
+    password: formData.get('password'),
+    smart_token: smartToken || null
   };
   
   try {

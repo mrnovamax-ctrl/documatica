@@ -5,17 +5,16 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from app.core.config import Settings
 
-# SQLite для простоты (можно заменить на PostgreSQL)
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/documatica.db")
+settings = Settings()
 
-# Для SQLite
-if DATABASE_URL.startswith("sqlite"):
-    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-else:
-    # Для PostgreSQL убираем asyncpg для синхронного доступа
-    sync_url = DATABASE_URL.replace("+asyncpg", "")
-    engine = create_engine(sync_url)
+# Используем только PostgreSQL
+DATABASE_URL = settings.DATABASE_URL
+
+# Убираем asyncpg для синхронного доступа
+sync_url = DATABASE_URL.replace("+asyncpg", "")
+engine = create_engine(sync_url)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

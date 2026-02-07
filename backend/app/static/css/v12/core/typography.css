@@ -958,8 +958,6 @@ body {
 .cta-section-v12 {
   padding: 100px 0;
   background-color: #f8fafc;
-  background-image: radial-gradient(circle, rgba(59, 130, 246, 0.2) 1px, transparent 1px);
-  background-size: 32px 32px;
 }
 
 .cta-card-v12 {

@@ -41,10 +41,13 @@
   
   <!-- CSS -->
   <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
-  <!-- Documatica v12.0 Design System (NO old style.css) -->
-  <link rel="stylesheet" href="/static/css/documatica.css?v=12.16">
+  <!-- Terminal v12.0 Design System (skill core.css — один файл, обновлять из скилла) -->
+  <link rel="stylesheet" href="/static/css/v12/core.css?v=1">
+  <!-- Documatica v12.0 — поверх core: свои переопределения и доп. компоненты -->
+  <link rel="stylesheet" href="/static/css/documatica.css?v=12.17">
   {% block extra_css %}{% endblock %}
-  
+  {% block extra_head %}{% endblock %}
+
   <!-- Iconify -->
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   

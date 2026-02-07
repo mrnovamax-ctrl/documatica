@@ -153,6 +153,21 @@ pricing:
     button_text: Купить пакет
     button_url: /dashboard/tariffs/
     style: enterprise
+about:
+  label: О нас
+  title: Кто стоит за
+  title_accent: Documatica
+  description: Мы — команда экспертов в области автоматизации документооборота и искусственного интеллекта. Наша миссия — сделать работу с бухгалтерскими документами простой, быстрой и безошибочной для каждого бизнеса.
+  mission: Documatica использует передовые технологии машинного обучения для проверки документов на соответствие законодательству РФ. Каждый документ проходит AI-валидацию на ошибки, несоответствия и риски до момента отправки контрагенту.
+  stats:
+  - value: 50,000+
+    label: Documents processed
+  - value: 98.7%
+    label: AI accuracy rate
+  - value: 2,500+
+    label: Active businesses
+  - value: 24/7
+    label: System availability
 cta:
   label: Начните сейчас
   title: Готовы

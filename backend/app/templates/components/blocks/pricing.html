@@ -1,0 +1,212 @@
+{# Pricing Section - Terminal v12.0 (5 вариантов из pricing.html) #}
+{# Классы и структура из референса; стили в core.css #}
+
+{% set bg_class = 'pricing-section-v12' %}
+{% if section.background_style == 'white' %}
+  {% set bg_class = 'pricing-section-v12 bg-white' %}
+{% elif section.background_style == 'surface' %}
+  {% set bg_class = 'pricing-section-v12 bg-surface' %}
+{% elif section.background_style == 'surface_light' %}
+  {% set bg_class = 'pricing-section-v12 bg-surface-light' %}
+{% elif section.background_style == 'dark' %}
+  {% set bg_class = 'pricing-section-v12 bg-dark' %}
+{% elif section.background_style == 'primary' %}
+  {% set bg_class = 'pricing-section-v12 bg-primary' %}
+{% elif section.background_style == 'gold' %}
+  {% set bg_class = 'pricing-section-v12 bg-gold' %}
+{% elif section.background_style == 'pattern_dots_light' %}
+  {% set bg_class = 'pricing-section-v12 pattern-dots-light' %}
+{% elif section.background_style == 'pattern_dots_dark' %}
+  {% set bg_class = 'pricing-section-v12 pattern-dots-dark' %}
+{% elif section.background_style == 'pattern_grid_lines' %}
+  {% set bg_class = 'pricing-section-v12 pattern-grid-lines' %}
+{% elif section.background_style == 'pattern_radial_blue' %}
+  {% set bg_class = 'pricing-section-v12 pattern-radial-blue' %}
+{% elif section.background_style == 'pattern_radial_gold' %}
+  {% set bg_class = 'pricing-section-v12 pattern-radial-gold' %}
+{% elif section.background_style == 'gradient_blue' %}
+  {% set bg_class = 'pricing-section-v12 bg-gradient-blue' %}
+{% elif section.background_style == 'gradient_gold' %}
+  {% set bg_class = 'pricing-section-v12 bg-gradient-gold' %}
+{% endif %}
+
+{% set _s = section.settings if section.settings is defined and section.settings else {} %}
+{% set variant = _s.get('pricing_variant', 'basic') %}
+{% set grid_cols = 'pricing-grid--2' if variant == 'compact' else 'pricing-grid--3' %}
+{% set show_toggle = (variant == 'toggle') %}
+
+{% set card_blocks = section.blocks | selectattr('block_type', 'equalto', 'pricing_card') | list %}
+{% set title_blocks = section.blocks | rejectattr('block_type', 'equalto', 'pricing_card') | list %}
+{% set cards = card_blocks[:3] if variant != 'compact' else card_blocks[:2] %}
+{% set ns = namespace(old_table=none) %}
+{% for blk in section.blocks %}
+  {% if blk.block_type == 'pricing_table' and blk.content.get('plans') %}{% set ns.old_table = blk %}{% endif %}
+{% endfor %}
+
+<section class="{{ bg_class }} {{ section.css_classes }}{% if section.is_dark_bg is defined and section.is_dark_bg %} section--dark{% endif %}" id="pricing">
+  <div class="container">
+    {% if ns.old_table %}
+    {# Fallback: старый блок pricing_table с content.plans #}
+    {% set pricing = ns.old_table.content %}
+    <div class="pricing-header-v12">
+      <div class="pricing-label-v12"><span class="ai-node"></span>{{ pricing.label | default("Тарифы") }}</div>
+      <h2 class="pricing-title-v12">{{ pricing.title | default("Инвестируйте в") }}<br><span class="accent text-primary-light">{{ pricing.title_accent | default("простоту") }}</span></h2>
+    </div>
+    <div class="pricing-grid-v12 section-grid grid-2-col gap-medium">
+      {% for plan in pricing.plans %}
+      <div class="pricing-card-v12{% if plan.featured %} featured{% endif %}{% if plan.style == 'enterprise' %} enterprise{% endif %}">
+        {% if plan.badge %}<span class="pricing-badge-v12">{{ plan.badge }}</span>{% endif %}
+        <div class="pricing-plan-v12">{{ plan.name }}</div>
+        <div class="pricing-amount-v12">{{ plan.price }}</div>
+        <div class="pricing-period-v12">{{ plan.period }}</div>
+        <ul class="pricing-features-v12">
+          {% for feature in plan.features %}
+          <li{% if not feature.enabled %} class="disabled"{% endif %}>
+            {% if feature.enabled %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            {% else %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            {% endif %}
+            {{ feature.text }}
+          </li>
+          {% endfor %}
+        </ul>
+        <a href="{{ plan.button_url | default('/register') }}" class="pricing-btn-v12 {{ plan.style | default('outline') }}">{{ plan.button_text }}</a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    {% for blk in title_blocks %}
+      {% if blk.block_type == 'label' and blk.content.text %}
+        <div class="subsection-title">
+          <span class="ai-node"></span>
+          {{ blk.content.text }}
+        </div>
+      {% elif blk.block_type == 'heading' %}
+        <h2 class="section-title">
+          {{ blk.content.text | default('Тарифы') }}{% if blk.content.accent %} <span class="text-primary-light">{{ blk.content.accent }}</span>{% endif %}
+        </h2>
+      {% endif %}
+    {% endfor %}
+
+    {% if show_toggle %}
+    <div class="pricing-toggle">
+      <span class="pricing-toggle-label active" id="monthlyLabel">MONTHLY</span>
+      <div class="pricing-toggle-switch" id="billingToggle">
+        <div class="pricing-toggle-knob"></div>
+      </div>
+      <span class="pricing-toggle-label" id="annualLabel">ANNUAL</span>
+    </div>
+    {% endif %}
+
+    <div class="pricing-grid {{ grid_cols }}">
+      {% for card in cards %}
+        {% set c = card.content %}
+        {% set featured = c.get('is_featured') %}
+        {% set card_bg = c.get('card_background') or 'default' %}
+        {% set tag_style = c.get('tag_style') or 'default' %}
+        {% set btn_style = c.get('button_style') or 'btn btn-secondary' %}
+        {% set currency = c.get('currency') or '₽' %}
+        {% set plan_name = c.get('plan_name') or 'Plan' %}
+        {% set plan_desc = c.get('plan_desc') or '' %}
+        {% set price_m = c.get('price_month') %}
+        {% set price_y = c.get('price_year') %}
+        {% set price_u = c.get('price_unit') %}
+        {% set term_m = c.get('term_month') or '/mo' %}
+        {% set term_y = c.get('term_year') or '/yr' %}
+        {% set term_u = c.get('term_unit') or '/шт' %}
+        {% set features = c.get('features') or [] %}
+        {% set btn_text = c.get('button_text') or 'Выбрать' %}
+        {% set btn_url = c.get('button_url') or '#' %}
+
+        {% set card_class = 'pricing-card' %}
+        {% if variant == 'compact' %}{% set card_class = card_class + ' pricing-card--compact' %}{% endif %}
+        {% if card_bg == 'dotted' %}{% set card_class = card_class + ' pricing-card--dotted' %}
+        {% elif card_bg == 'dotted_blue' %}{% set card_class = card_class + ' pricing-card--dotted-blue' %}
+        {% elif card_bg == 'dotted_gold' %}{% set card_class = card_class + ' pricing-card--dotted-gold' %}
+        {% elif card_bg == 'dark' %}{% set card_class = card_class + ' pricing-card--dark' %}
+        {% endif %}
+        {% if featured %}{% set card_class = card_class + ' pricing-card--featured' %}{% endif %}
+
+        <div class="{{ card_class }}">
+          {% if c.get('tag') %}
+          <span class="pricing-badge{% if tag_style == 'gold' %} pricing-badge--gold{% endif %}">{{ c.tag }}</span>
+          {% endif %}
+
+          <div class="pricing-header">
+            <h3 class="pricing-plan">{{ plan_name }}</h3>
+            {% if plan_desc %}<p class="pricing-desc">{{ plan_desc }}</p>{% endif %}
+          </div>
+
+          <div class="pricing-price-wrapper">
+            <span class="pricing-currency">{{ currency }}</span>
+            {% if show_toggle and price_m != none and price_m != '' and price_y != none and price_y != '' %}
+            <span class="pricing-value" data-monthly="{{ price_m }}" data-annual="{{ price_y }}">{{ price_m }}</span>
+            <span class="pricing-term">{{ term_m }}</span>
+            {% elif price_u != none and price_u != '' %}
+            <span class="pricing-value">{{ price_u }}</span>
+            <span class="pricing-term">{{ term_u }}</span>
+            {% elif price_y != none and price_y != '' %}
+            <span class="pricing-value">{{ price_y }}</span>
+            <span class="pricing-term">{{ term_y }}</span>
+            {% else %}
+            <span class="pricing-value">{{ price_m or '0' }}</span>
+            <span class="pricing-term">{{ term_m }}</span>
+            {% endif %}
+          </div>
+
+          <ul class="pricing-features-list">
+            {% for feat in features %}
+            <li class="pricing-feature-item{% if not feat.get('enabled', true) %} pricing-feature-item--disabled{% endif %}">
+              {% if feat.get('enabled', true) %}
+              <svg class="pricing-feature-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 13l4 4L19 7"></path>
+              </svg>
+              {% else %}
+              <svg class="pricing-feature-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+              {% endif %}
+              <span>{{ feat.get('text', '') }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+
+          {% if btn_url %}
+          <a href="{{ btn_url }}" class="btn {{ btn_style }} btn-block">{{ btn_text }}</a>
+          {% else %}
+          <button type="button" class="btn {{ btn_style }} btn-block">{{ btn_text }}</button>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if show_toggle %}
+<script>
+(function() {
+  var billingToggle = document.getElementById('billingToggle');
+  if (!billingToggle) return;
+  var monthlyLabel = document.getElementById('monthlyLabel');
+  var annualLabel = document.getElementById('annualLabel');
+  var priceValues = document.querySelectorAll('.pricing-value[data-monthly]');
+  var isAnnual = false;
+  function togglePricing() {
+    isAnnual = !isAnnual;
+    billingToggle.classList.toggle('active');
+    if (monthlyLabel) monthlyLabel.classList.toggle('active');
+    if (annualLabel) annualLabel.classList.toggle('active');
+    priceValues.forEach(function(el) {
+      var monthly = el.getAttribute('data-monthly');
+      var annual = el.getAttribute('data-annual');
+      el.textContent = isAnnual ? annual : monthly;
+    });
+  }
+  billingToggle.addEventListener('click', togglePricing);
+  if (monthlyLabel) monthlyLabel.addEventListener('click', function() { if (isAnnual) togglePricing(); });
+  if (annualLabel) annualLabel.addEventListener('click', function() { if (!isAnnual) togglePricing(); });
+})();
+</script>
+{% endif %}

@@ -1,0 +1,94 @@
+{# UPD Types Section Component - Terminal v12.0 #}
+{# Один комплексный блок upd_types_grid (label, title, cards). Редактируется через YAML / Контент. #}
+
+{% set upd_block = section.blocks[0] if section.blocks else none %}
+{% if upd_block and upd_block.block_type == 'upd_types_grid' %}
+  {% set upd_types = upd_block.content %}
+  {% set _s = section.settings if section.settings is defined and section.settings else {} %}
+  {% set grid_cols = _s.get('grid_columns', 2) %}
+  {% if grid_cols not in [1, 2, 3, 4] %}{% set grid_cols = 2 %}{% endif %}
+  {% set grid_gap = _s.get('grid_gap', 'medium') %}
+  {% set grid_style = _s.get('grid_style', 'grid') %}
+  {% if grid_style == 'masonry' %}
+  {% set upd_grid_class = 'upd-types-grid masonry-grid masonry-grid--' ~ grid_cols ~ '-col gap-' ~ grid_gap %}
+  {% else %}
+  {% set upd_grid_class = 'upd-types-grid section-grid grid-' ~ grid_cols ~ '-col gap-' ~ grid_gap %}
+  {% endif %}
+  
+  {% set bg_class = 'upd-types-section' %}
+  {% if section.background_style == 'white' %}
+    {% set bg_class = 'upd-types-section bg-white' %}
+  {% elif section.background_style == 'surface' %}
+    {% set bg_class = 'upd-types-section bg-surface' %}
+  {% elif section.background_style == 'surface_light' %}
+    {% set bg_class = 'upd-types-section bg-surface-light' %}
+  {% elif section.background_style == 'dark' %}
+    {% set bg_class = 'upd-types-section bg-dark' %}
+  {% elif section.background_style == 'primary' %}
+    {% set bg_class = 'upd-types-section bg-primary' %}
+  {% elif section.background_style == 'gold' %}
+    {% set bg_class = 'upd-types-section bg-gold' %}
+  {% elif section.background_style == 'pattern_dots_light' %}
+    {% set bg_class = 'upd-types-section pattern-dots-light' %}
+  {% elif section.background_style == 'pattern_dots_dark' %}
+    {% set bg_class = 'upd-types-section pattern-dots-dark' %}
+  {% elif section.background_style == 'pattern_grid_lines' %}
+    {% set bg_class = 'upd-types-section pattern-grid-lines' %}
+  {% elif section.background_style == 'pattern_radial_blue' %}
+    {% set bg_class = 'upd-types-section pattern-radial-blue' %}
+  {% elif section.background_style == 'pattern_radial_gold' %}
+    {% set bg_class = 'upd-types-section pattern-radial-gold' %}
+  {% elif section.background_style == 'gradient_blue' %}
+    {% set bg_class = 'upd-types-section bg-gradient-blue' %}
+  {% elif section.background_style == 'gradient_gold' %}
+    {% set bg_class = 'upd-types-section bg-gradient-gold' %}
+  {% endif %}
+  {% set is_dark_bg = section.background_style in ['dark', 'primary', 'gold', 'pattern_dots_dark'] %}
+  
+  {% set upd_icons = {
+    'file-text': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>',
+    'dollar-sign': '<line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>',
+    'slash': '<circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>',
+    'layers': '<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline>',
+    'user': '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>',
+    'home': '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>',
+    'briefcase': '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>',
+    'code': '<polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline>',
+    'help-circle': '<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>'
+  } %}
+  
+  <section class="{{ bg_class }} {{ section.css_classes }}{% if is_dark_bg %} section--dark{% endif %}" id="documents">
+    <div class="container">
+      <div class="upd-types-header">
+        <div class="upd-types-label">
+          <span class="ai-node"></span>
+          {{ upd_types.label | default("Виды документов") }}
+        </div>
+        <h2 class="upd-types-title">{{ upd_types.title | default("Универсальный передаточный документ") | replace(" ", "<br>", 1) | safe }}</h2>
+      </div>
+      <div class="{{ upd_grid_class }}">
+        {% set upd_cards = upd_types.cards | default([]) %}
+        {% for item in upd_cards %}
+        <a href="{{ item.url }}" class="upd-type-card{% if item.style %} upd-type-card--{{ item.style }}{% endif %}">
+          <div class="upd-type-card-header">
+            <div class="upd-type-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                {{ upd_icons[item.icon] | default(upd_icons['file-text']) | safe }}
+              </svg>
+            </div>
+            <svg class="upd-type-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+          <div class="upd-type-card-content">
+            <div class="upd-type-card-tag">{{ item.tag }}</div>
+            <h3 class="upd-type-card-title">{{ item.title }}</h3>
+            <p class="upd-type-card-desc">{{ item.description }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}

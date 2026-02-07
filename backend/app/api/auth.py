@@ -7,7 +7,7 @@ import secrets
 from datetime import datetime, timedelta
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Depends, Response, Header, Cookie
+from fastapi import APIRouter, HTTPException, Depends, Request, Response, Header, Cookie
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
@@ -20,6 +20,7 @@ from app.schemas.auth import (
     VerifyEmail, ForgotPassword, ResetPassword, MessageResponse
 )
 from app.services.email import send_verification_email, send_password_reset_email, send_welcome_email
+from app.services.smartcaptcha import check_captcha as verify_smartcaptcha
 
 router = APIRouter()
 
@@ -126,10 +127,27 @@ async def register(data: UserRegister, response: Response, db: Session = Depends
 
 
 
+def _get_client_ip(request: Request) -> str:
+    """Получить IP клиента (учитывая прокси)."""
+    forwarded = request.headers.get("X-Forwarded-For")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    if request.client:
+        return request.client.host
+    return "127.0.0.1"
+
+
 @router.post("/login", response_model=TokenResponse)
-async def login(data: UserLogin, response: Response, db: Session = Depends(get_db)):
+async def login(
+    data: UserLogin, request: Request, response: Response, db: Session = Depends(get_db)
+):
     """Вход в систему"""
-    
+    # Проверка Yandex SmartCaptcha (если включена)
+    if not verify_smartcaptcha(data.smart_token or "", _get_client_ip(request)):
+        raise HTTPException(
+            status_code=400, detail="Пройдите проверку «Я не робот»"
+        )
+
     user = db.query(User).filter(User.email == data.email.lower()).first()
     
     # Проверка для OAuth пользователей

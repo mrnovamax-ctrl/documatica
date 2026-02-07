@@ -1,0 +1,203 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}{% if is_new %}Новый шорткод{% else %}Редактировать: {{ shortcode.title }}{% endif %}{% endblock %}
+{% block page_title %}{% if is_new %}Новый шорткод{% else %}Редактировать шорткод{% endif %}{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/shortcodes/" class="admin-btn-back">
+  <iconify-icon icon="ri:arrow-left-line" width="18"></iconify-icon>
+  К списку
+</a>
+{% if not is_new and shortcode %}
+<code class="admin-shortcode-preview">[{{ shortcode.name }}]</code>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if request.query_params.get('saved') %}
+<div class="admin-alert admin-alert-success">
+  <iconify-icon icon="ri:checkbox-circle-line" width="22"></iconify-icon>
+  Сохранено
+</div>
+{% endif %}
+{% if request.query_params.get('error') == 'duplicate' %}
+<div class="admin-alert admin-alert-error">
+  Шорткод с таким именем уже существует.
+</div>
+{% endif %}
+{% if request.query_params.get('error') == 'name' %}
+<div class="admin-alert admin-alert-error">
+  Укажите название или имя шорткода.
+</div>
+{% endif %}
+
+<form method="POST" class="admin-shortcode-form">
+  <div class="admin-form-grid admin-shortcode-form-grid">
+    <div class="shortcode-form-v12">
+      <div class="card">
+        <div class="form-group">
+          <label class="label">Название (для админки)</label>
+          <input type="text" name="title" value="{{ shortcode.title if shortcode else '' }}" required class="input" placeholder="Например: CTA УПД">
+        </div>
+        <div class="form-group">
+          <label class="label">Имя шорткода</label>
+          <input type="text" name="name" value="{{ shortcode.name if shortcode else '' }}" class="input" placeholder="cta_upd_black (латиница, цифры, _ -)">
+          <span class="form-hint">В контенте вставляйте: [имя]</span>
+        </div>
+        <div class="form-group">
+          <label class="label">Шаблон секции</label>
+          <select name="section_type" class="input" required>
+            <option value="">— Выберите шаблон —</option>
+            {% for value, label in section_types %}
+            <option value="{{ value }}" {% if shortcode and shortcode.section_type == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <span class="form-hint">Тип блока, который будет подставляться по шорткоду.</span>
+        </div>
+      </div>
+
+      {% if not is_new and shortcode and shortcode.section_type == 'cta' %}
+      <div class="card">
+        <h3 class="subsection-title">Вариант и контент CTA</h3>
+        <div class="form-group">
+          <label class="label">Вариант CTA (v12 — те же 11, что в редакторе страниц)</label>
+          <select name="cta_variant" class="input">
+            <option value="basic" {% if shortcode.section_settings.get('cta_variant') == 'basic' %}selected{% endif %}>01. Basic — стандарт</option>
+            <option value="dark" {% if shortcode.section_settings.get('cta_variant') == 'dark' %}selected{% endif %}>02. Dark — тёмный фон, точки</option>
+            <option value="gradient" {% if shortcode.section_settings.get('cta_variant') == 'gradient' %}selected{% endif %}>03. Gradient — синий градиент</option>
+            <option value="split" {% if shortcode.section_settings.get('cta_variant') == 'split' %}selected{% endif %}>04. Split — две колонки + фичи с иконками</option>
+            <option value="banner" {% if shortcode.section_settings.get('cta_variant') == 'banner' %}selected{% endif %}>05. Banner — горизонтальный компакт</option>
+            <option value="cards" {% if shortcode.section_settings.get('cta_variant') == 'cards' %}selected{% endif %}>06. Horizontal CTA Cards — карточки с иконкой</option>
+            <option value="newsletter" {% if shortcode.section_settings.get('cta_variant') == 'newsletter' %}selected{% endif %}>07. Newsletter — подписка (email + кнопка)</option>
+            <option value="countdown" {% if shortcode.section_settings.get('cta_variant') == 'countdown' %}selected{% endif %}>08. Countdown — таймер + кнопка</option>
+            <option value="minimal" {% if shortcode.section_settings.get('cta_variant') == 'minimal' %}selected{% endif %}>09. Minimal — минималистичный</option>
+            <option value="compact" {% if shortcode.section_settings.get('cta_variant') == 'compact' %}selected{% endif %}>10. Compact — компактный</option>
+            <option value="bordered" {% if shortcode.section_settings.get('cta_variant') == 'bordered' %}selected{% endif %}>11. Bordered — рамка, градиентный текст</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="label">Метка (label)</label>
+          <input type="text" name="cta_label" value="{{ cta_form.label_text if cta_form else '' }}" class="input" placeholder="Например: УПД">
+        </div>
+        <div class="form-group">
+          <label class="label">Заголовок</label>
+          <input type="text" name="cta_heading" value="{{ cta_form.heading_text if cta_form else '' }}" class="input" placeholder="Заголовок блока">
+        </div>
+        <div class="form-group">
+          <label class="label">Уровень заголовка (1–6)</label>
+          <input type="number" name="cta_heading_level" min="1" max="6" value="{{ cta_form.heading_level if cta_form else 2 }}" class="input">
+        </div>
+        <div class="form-group">
+          <label class="label">Текст абзаца</label>
+          <textarea name="cta_paragraph" class="input" rows="3" placeholder="Краткое описание">{{ cta_form.paragraph_text if cta_form else '' }}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="label">Текст кнопки</label>
+          <input type="text" name="cta_button_text" value="{{ cta_form.button_text if cta_form else 'Перейти' }}" class="input">
+        </div>
+        <div class="form-group">
+          <label class="label">URL кнопки</label>
+          <input type="text" name="cta_button_url" value="{{ cta_form.button_url if cta_form else '/dashboard/' }}" class="input" placeholder="/dashboard/">
+        </div>
+      </div>
+      {% endif %}
+
+      {% if not is_new and shortcode and shortcode.section_type == 'hero' %}
+      <div class="card">
+        <h3 class="subsection-title">Вариант Hero</h3>
+        <div class="form-group">
+          <label class="label">Вариант Hero (v12)</label>
+          <select name="hero_variant" class="input">
+            <option value="default" {% if shortcode.section_settings.get('hero_variant') == 'default' %}selected{% endif %}>01. Default — стандарт</option>
+            <option value="large" {% if shortcode.section_settings.get('hero_variant') == 'large' %}selected{% endif %}>02. Large — крупный заголовок</option>
+            <option value="compact" {% if shortcode.section_settings.get('hero_variant') == 'compact' %}selected{% endif %}>03. Compact — компактный</option>
+            <option value="pattern" {% if shortcode.section_settings.get('hero_variant') == 'pattern' %}selected{% endif %}>04. Pattern — с паттерном</option>
+          </select>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if not is_new and shortcode and shortcode.section_type == 'faq' %}
+      <div class="card">
+        <h3 class="subsection-title">Стиль аккордеона</h3>
+        <div class="form-group">
+          <label class="label">Вариант FAQ (v12)</label>
+          <select name="accordion_variant" class="input">
+            <option value="basic" {% if shortcode.section_settings.get('accordion_variant') == 'basic' %}selected{% endif %}>01. Basic</option>
+            <option value="bordered" {% if shortcode.section_settings.get('accordion_variant') == 'bordered' %}selected{% endif %}>02. Bordered</option>
+            <option value="separated" {% if shortcode.section_settings.get('accordion_variant') == 'separated' %}selected{% endif %}>03. Separated</option>
+            <option value="icons" {% if shortcode.section_settings.get('accordion_variant') == 'icons' %}selected{% endif %}>04. With Icons</option>
+            <option value="dark" {% if shortcode.section_settings.get('accordion_variant') == 'dark' %}selected{% endif %}>05. Dark</option>
+            <option value="nested" {% if shortcode.section_settings.get('accordion_variant') == 'nested' %}selected{% endif %}>06. Nested</option>
+          </select>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if not is_new and shortcode and shortcode.section_type == 'pricing' %}
+      <div class="card">
+        <h3 class="subsection-title">Стиль таблицы цен</h3>
+        <div class="form-group">
+          <label class="label">Вариант Pricing (v12)</label>
+          <select name="pricing_variant" class="input">
+            <option value="basic" {% if shortcode.section_settings.get('pricing_variant') == 'basic' %}selected{% endif %}>01. Basic</option>
+            <option value="dotted" {% if shortcode.section_settings.get('pricing_variant') == 'dotted' %}selected{% endif %}>02. Dotted</option>
+            <option value="dark" {% if shortcode.section_settings.get('pricing_variant') == 'dark' %}selected{% endif %}>03. Dark</option>
+            <option value="compact" {% if shortcode.section_settings.get('pricing_variant') == 'compact' %}selected{% endif %}>04. Compact</option>
+            <option value="toggle" {% if shortcode.section_settings.get('pricing_variant') == 'toggle' %}selected{% endif %}>05. With Billing Toggle</option>
+          </select>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if not is_new and shortcode and shortcode.section_type and shortcode.section_type != 'cta' %}
+      <div class="card">
+        <h3 class="subsection-title">Блоки и настройки (JSON)</h3>
+        <div class="form-group">
+          <label class="label">Блоки (JSON)</label>
+          <textarea name="blocks_json" class="input input--mono" rows="12">{{ (shortcode.blocks | tojson(indent=2)) if shortcode.blocks else '[]' }}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="label">Настройки секции (JSON)</label>
+          <textarea name="section_settings_json" class="input input--mono" rows="4">{{ (shortcode.section_settings | tojson(indent=2)) if shortcode.section_settings else '{}' }}</textarea>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if not is_new %}
+      <div class="card">
+        <label class="checkbox-label">
+          <input type="checkbox" name="is_active" value="1" {% if shortcode and shortcode.is_active %}checked{% endif %}>
+          Шорткод активен
+        </label>
+      </div>
+      {% endif %}
+
+      <button type="submit" class="btn-primary">Сохранить</button>
+    </div>
+    <div class="admin-sidebar-card admin-sidebar-card-sticky">
+      <div class="admin-sidebar-card-header">
+        <iconify-icon icon="ri:information-line" width="18"></iconify-icon>
+        Как пользоваться
+      </div>
+      <div class="admin-sidebar-card-body">
+        <p class="admin-sidebar-text">
+          Создайте шорткод: выберите шаблон секции, заполните поля и сохраните. Скопируйте полученный шорткод <code>[имя]</code> и вставьте в контент статьи — на сайте подставится блок.
+        </p>
+        {% if shortcode %}
+        <p class="admin-sidebar-text admin-sidebar-text-code">[{{ shortcode.name }}]</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</form>
+
+<style>
+.admin-shortcode-form-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: start; }
+.admin-shortcode-preview { background: var(--color-slate-100); padding: 6px 12px; border-radius: 8px; font-size: 14px; margin-left: 12px; }
+.admin-sidebar-card-sticky { position: sticky; top: 100px; }
+.admin-sidebar-text { margin: 0 0 12px; font-size: 13px; color: var(--color-slate-600); }
+.admin-sidebar-text:last-child { margin-bottom: 0; }
+.admin-sidebar-text-code { background: var(--color-slate-100); padding: 8px 12px; border-radius: 8px; font-size: 14px; }
+</style>
+{% endblock %}

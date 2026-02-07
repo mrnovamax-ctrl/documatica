@@ -3,15 +3,26 @@ Admin - SSR роутеры для административной панели
 """
 
 from fastapi import APIRouter
+from fastapi.responses import RedirectResponse
 
-from app.admin import auth, dashboard, content, users, articles, promocodes
+from app.admin import auth, dashboard, users, articles, promocodes, pages, categories, shortcodes, news_sidebar
 
 router = APIRouter(prefix="/admin")
 
-# Подключаем роутеры админки
+
+@router.get("", include_in_schema=False)
+async def admin_index_no_slash():
+    """Редирект /admin -> /admin/"""
+    return RedirectResponse(url="/admin/", status_code=307)
+
+
+# Подключаем роутеры админки (раздел Контент YAML удалён — страницы в CMS)
 router.include_router(auth.router)
 router.include_router(dashboard.router)
-router.include_router(content.router, prefix="/content")
+router.include_router(pages.router, prefix="/pages")  # Block Builder
 router.include_router(users.router, prefix="/users")
 router.include_router(articles.router, prefix="/articles")
+router.include_router(categories.router, prefix="/categories")
 router.include_router(promocodes.router, prefix="/promocodes")
+router.include_router(shortcodes.router, prefix="/shortcodes")
+router.include_router(news_sidebar.router, prefix="/news-sidebar")

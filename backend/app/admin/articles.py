@@ -8,10 +8,13 @@ import shutil
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Optional
-from fastapi import APIRouter, Request, Form, UploadFile, File
+from fastapi import APIRouter, Request, Form, UploadFile, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
+from sqlalchemy.orm import Session
 
 from app.core.templates import templates
+from app.database import get_db
+from app.models import ArticleCategory, Redirect
 from app.admin.context import require_admin, get_admin_context
 
 router = APIRouter()
@@ -138,14 +141,13 @@ async def articles_list(request: Request, page: int = 1, q: str = ""):
 
 
 @router.get("/create/", response_class=HTMLResponse)
-async def article_create(request: Request):
+async def article_create(request: Request, db: Session = Depends(get_db)):
     """Форма создания статьи"""
     auth_check = require_admin(request)
     if auth_check:
         return auth_check
     
-    data = load_articles()
-    categories = data.get("categories", [])
+    categories = db.query(ArticleCategory).order_by(ArticleCategory.name).all()
     
     return templates.TemplateResponse(
         request=request,
@@ -200,7 +202,7 @@ async def article_create_post(
         "category": category,
         "image": image,
         "meta_title": meta_title or title,
-        "meta_description": meta_description or excerpt[:160],
+        "meta_description": meta_description or (excerpt or "")[:160],
         "meta_keywords": meta_keywords,
         "is_published": is_published,
         "views": 0,
@@ -210,12 +212,11 @@ async def article_create_post(
     
     data["articles"].append(new_article)
     save_articles(data)
-    
     return RedirectResponse(url=f"/admin/articles/{new_article['id']}/", status_code=303)
 
 
 @router.get("/{article_id}/", response_class=HTMLResponse)
-async def article_edit(request: Request, article_id: str):
+async def article_edit(request: Request, article_id: str, db: Session = Depends(get_db)):
     """Форма редактирования статьи"""
     auth_check = require_admin(request)
     if auth_check:
@@ -225,8 +226,7 @@ async def article_edit(request: Request, article_id: str):
     if not article:
         return RedirectResponse(url="/admin/articles/", status_code=303)
     
-    data = load_articles()
-    categories = data.get("categories", [])
+    categories = db.query(ArticleCategory).order_by(ArticleCategory.name).all()
     
     return templates.TemplateResponse(
         request=request,
@@ -246,6 +246,7 @@ async def article_edit(request: Request, article_id: str):
 async def article_edit_post(
     request: Request,
     article_id: str,
+    db: Session = Depends(get_db),
     title: str = Form(...),
     slug: str = Form(""),
     excerpt: str = Form(""),
@@ -257,33 +258,43 @@ async def article_edit_post(
     meta_keywords: str = Form(""),
     is_published: bool = Form(False),
 ):
-    """Сохранение статьи"""
+    """Сохранение статьи. При смене slug создаётся 301 редирект со старого URL на новый."""
     auth_check = require_admin(request)
     if auth_check:
         return auth_check
-    
+
     data = load_articles()
-    
+    new_slug = (slug or generate_slug(title)).strip()
+
     for i, article in enumerate(data.get("articles", [])):
         if article.get("id") == article_id:
-            # Обновляем поля
+            old_slug = (article.get("slug") or "").strip()
             data["articles"][i].update({
                 "title": title,
-                "slug": slug or generate_slug(title),
+                "slug": new_slug,
                 "excerpt": excerpt,
                 "content": content,
                 "category": category,
                 "image": image,
                 "meta_title": meta_title or title,
-                "meta_description": meta_description or excerpt[:160],
+                "meta_description": meta_description or (excerpt or "")[:160],
                 "meta_keywords": meta_keywords,
                 "is_published": is_published,
                 "updated_at": datetime.now().isoformat(),
             })
+            if old_slug and old_slug != new_slug:
+                from_url = f"/news/{old_slug}/"
+                to_url = f"/news/{new_slug}/"
+                existing = db.query(Redirect).filter(
+                    Redirect.from_url == from_url,
+                    Redirect.is_active.is_(True),
+                ).first()
+                if not existing:
+                    db.add(Redirect(from_url=from_url, to_url=to_url, status_code=301))
+                    db.commit()
             break
-    
+
     save_articles(data)
-    
     return RedirectResponse(url=f"/admin/articles/{article_id}/?saved=1", status_code=303)
 
 
@@ -297,7 +308,6 @@ async def article_delete(request: Request, article_id: str):
     data = load_articles()
     data["articles"] = [a for a in data.get("articles", []) if a.get("id") != article_id]
     save_articles(data)
-    
     return RedirectResponse(url="/admin/articles/", status_code=303)
 
 
@@ -317,63 +327,129 @@ async def article_toggle_publish(request: Request, article_id: str):
             break
     
     save_articles(data)
-    
     return JSONResponse({"success": True})
 
 
 @router.post("/upload-image/")
-async def upload_image(request: Request, file: UploadFile = File(...)):
-    """Загрузка изображения статьи"""
+async def upload_image(request: Request):
+    """Загрузка изображения статьи. Тело запроса — multipart/form-data, поле «file» (разбор вручную, без FastAPI File())."""
     auth_check = require_admin(request)
     if auth_check:
         return JSONResponse({"error": "Unauthorized"}, status_code=401)
-    
-    # Проверяем тип файла
+
+    if request.headers.get("content-type", "").split(";")[0].strip().lower() != "multipart/form-data":
+        return JSONResponse(
+            {"error": "Ожидается multipart/form-data"},
+            status_code=422,
+        )
+
+    form = await request.form()
+    file = _get_upload_file_from_form(form)
+    if not file:
+        return JSONResponse({"error": "Файл не передан. Убедитесь, что поле формы называется «file»."}, status_code=422)
+
     allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
-    if file.content_type not in allowed_types:
+    allowed_ext = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+    ext = Path(getattr(file, "filename", "") or "").suffix.lower()
+    if getattr(file, "content_type", None) and file.content_type not in allowed_types and ext not in allowed_ext:
         return JSONResponse({"error": "Недопустимый формат файла"}, status_code=400)
-    
-    # Генерируем уникальное имя файла
-    file_ext = file.filename.split(".")[-1] if "." in file.filename else "jpg"
-    unique_filename = f"{uuid.uuid4()}.{file_ext}"
+    if ext not in allowed_ext:
+        ext = ".jpg"
+
+    unique_filename = f"{uuid.uuid4()}{ext}"
     file_path = UPLOAD_DIR / unique_filename
-    
-    # Сохраняем файл
     try:
-        with open(file_path, "wb") as f:
-            shutil.copyfileobj(file.file, f)
+        content = await file.read()
+        file_path.write_bytes(content)
     except Exception as e:
         return JSONResponse({"error": f"Ошибка сохранения: {str(e)}"}, status_code=500)
-    
-    # Возвращаем URL
+
     image_url = f"/static/uploads/articles/{unique_filename}"
     return JSONResponse({"success": True, "url": image_url})
 
 
+def _is_upload_file(obj) -> bool:
+    """Проверка: объект похож на Starlette UploadFile (есть асинхронный или синхронный read)."""
+    if obj is None:
+        return False
+    return callable(getattr(obj, "read", None))
+
+
+def _take_first_file(val) -> Optional[UploadFile]:
+    """Берёт первый файл из значения (один объект или список)."""
+    if val is None:
+        return None
+    if isinstance(val, (list, tuple)) and val:
+        val = val[0]
+    return val if _is_upload_file(val) else None
+
+
+def _get_upload_file_from_form(form) -> Optional[UploadFile]:
+    """Извлекает первый загруженный файл из multipart form. Работает с Starlette FormData/ImmutableMultiDict."""
+    # Явно по имени поля (кнопка «Загрузить» шлёт поле "file")
+    for field_name in ("file", "blobid0", "imagetools0", "blobid1", "imagetools1"):
+        try:
+            if hasattr(form, "getlist"):
+                v = _take_first_file(form.getlist(field_name))
+            else:
+                v = _take_first_file(form.get(field_name))
+            if v:
+                return v
+        except (KeyError, TypeError, IndexError):
+            continue
+    # Перебор всех полей формы (на случай другого имени)
+    try:
+        keys = list(form.keys()) if hasattr(form, "keys") else [k for k in form]
+        for key in keys:
+            try:
+                if hasattr(form, "getlist"):
+                    v = _take_first_file(form.getlist(key))
+                else:
+                    v = _take_first_file(form.get(key))
+                if v:
+                    return v
+            except (KeyError, TypeError, IndexError):
+                continue
+    except Exception:
+        pass
+    if hasattr(form, "items"):
+        try:
+            for _key, val in form.items():
+                v = _take_first_file(val)
+                if v:
+                    return v
+        except Exception:
+            pass
+    return None
+
+
 @router.post("/tinymce-upload/")
-async def tinymce_upload_image(request: Request, file: UploadFile = File(...)):
-    """Загрузка изображения через TinyMCE"""
+async def tinymce_upload_image(request: Request):
+    """Загрузка изображения через TinyMCE (поля blobid0, imagetools0 или file)."""
     auth_check = require_admin(request)
     if auth_check:
         return JSONResponse({"error": "Unauthorized"}, status_code=401)
-    
-    # Проверяем тип файла
+
+    form = await request.form()
+    file = _get_upload_file_from_form(form)
+    if not file:
+        return JSONResponse({"error": "Файл не передан"}, status_code=422)
+
     allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
-    if file.content_type not in allowed_types:
+    allowed_ext = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+    ext = Path(file.filename or "").suffix.lower()
+    if file.content_type and file.content_type not in allowed_types and ext not in allowed_ext:
         return JSONResponse({"error": "Недопустимый формат файла"}, status_code=400)
-    
-    # Генерируем уникальное имя файла
-    file_ext = file.filename.split(".")[-1] if "." in file.filename else "jpg"
-    unique_filename = f"{uuid.uuid4()}.{file_ext}"
+    if ext not in allowed_ext:
+        ext = ".jpg"
+
+    unique_filename = f"{uuid.uuid4()}{ext}"
     file_path = UPLOAD_DIR / unique_filename
-    
-    # Сохраняем файл
     try:
-        with open(file_path, "wb") as f:
-            shutil.copyfileobj(file.file, f)
+        content = await file.read()
+        file_path.write_bytes(content)
     except Exception as e:
         return JSONResponse({"error": f"Ошибка сохранения: {str(e)}"}, status_code=500)
-    
-    # Возвращаем URL в формате TinyMCE
+
     image_url = f"/static/uploads/articles/{unique_filename}"
     return JSONResponse({"location": image_url})

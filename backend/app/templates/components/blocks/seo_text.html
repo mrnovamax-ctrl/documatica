@@ -1,0 +1,59 @@
+{# SEO Text Section - Terminal v12.0 #}
+{# Типографика v12: type-h2, typo-body; смена фона и цвета текста через background_style #}
+
+{% set bg_class = 'seo-text-section-v12' %}
+{% if section.background_style == 'white' %}
+  {% set bg_class = 'seo-text-section-v12 bg-white' %}
+{% elif section.background_style == 'surface' %}
+  {% set bg_class = 'seo-text-section-v12 bg-surface' %}
+{% elif section.background_style == 'surface_light' %}
+  {% set bg_class = 'seo-text-section-v12 bg-surface-light' %}
+{% elif section.background_style == 'dark' %}
+  {% set bg_class = 'seo-text-section-v12 bg-dark' %}
+{% elif section.background_style == 'primary' %}
+  {% set bg_class = 'seo-text-section-v12 bg-primary' %}
+{% elif section.background_style == 'gold' %}
+  {% set bg_class = 'seo-text-section-v12 bg-gold' %}
+{% elif section.background_style == 'pattern_dots_light' %}
+  {% set bg_class = 'seo-text-section-v12 pattern-dots-light' %}
+{% elif section.background_style == 'pattern_dots_dark' %}
+  {% set bg_class = 'seo-text-section-v12 pattern-dots-dark' %}
+{% elif section.background_style == 'pattern_grid_lines' %}
+  {% set bg_class = 'seo-text-section-v12 pattern-grid-lines' %}
+{% elif section.background_style == 'pattern_radial_blue' %}
+  {% set bg_class = 'seo-text-section-v12 pattern-radial-blue' %}
+{% elif section.background_style == 'pattern_radial_gold' %}
+  {% set bg_class = 'seo-text-section-v12 pattern-radial-gold' %}
+{% elif section.background_style == 'gradient_blue' %}
+  {% set bg_class = 'seo-text-section-v12 bg-gradient-blue' %}
+{% elif section.background_style == 'gradient_gold' %}
+  {% set bg_class = 'seo-text-section-v12 bg-gradient-gold' %}
+{% endif %}
+{% set is_dark_bg = section.background_style in ['dark', 'primary', 'gold', 'pattern_dots_dark'] %}
+
+<section class="{{ bg_class }} {{ section.css_classes }}{% if is_dark_bg %} section--dark{% endif %}">
+  <div class="container">
+    <div class="seo-text-inner-v12">
+      {% for block in section.blocks %}
+        {% if block.block_type == 'heading' and block.is_visible %}
+          {% set title_text = block.content.text %}
+          {% set accent = block.content.accent %}
+          {% if accent and accent in title_text %}
+            {% set parts = title_text.split(accent) %}
+            <h2 class="type-h2 seo-text-title-v12 {{ block.css_classes }}">
+              {{ parts[0] }}<span class="text-primary-light">{{ accent }}</span>{{ parts[1] if parts|length > 1 else '' }}
+            </h2>
+          {% elif accent %}
+            <h2 class="type-h2 seo-text-title-v12 {{ block.css_classes }}">{{ title_text }} <span class="text-primary-light">{{ accent }}</span></h2>
+          {% else %}
+            <h2 class="type-h2 seo-text-title-v12 {{ block.css_classes }}">{{ title_text }}</h2>
+          {% endif %}
+        {% elif block.block_type == 'paragraph' and block.is_visible %}
+          <div class="typo-body seo-text-para-v12 {{ block.css_classes }}">{{ block.content.text | safe }}</div>
+        {% elif block.block_type == 'link_group' and block.is_visible %}
+          {% include "components/blocks/_link_group_render.html" %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
