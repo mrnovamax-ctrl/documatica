@@ -1,0 +1,117 @@
+/* ==============================================
+   DOCUMATICA V12.0 - RESPONSIVE BREAKPOINTS
+   Mobile-first approach
+   ============================================== */
+
+/* === BREAKPOINT SYSTEM === */
+/* Mobile: 320px - 767px (default, no media query needed) */
+/* Tablet: 768px - 1023px */
+/* Desktop: 1024px - 1919px */
+/* 4K: 1920px+ */
+
+/* === CONTAINER === */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--spacing-4);
+  padding-right: var(--spacing-4);
+}
+
+/* Mobile (default) */
+.container {
+  max-width: 100%;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding-left: var(--spacing-6);
+    padding-right: var(--spacing-6);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+    padding-left: var(--spacing-8);
+    padding-right: var(--spacing-8);
+  }
+}
+
+/* 4K */
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1536px;
+    padding-left: var(--spacing-12);
+    padding-right: var(--spacing-12);
+  }
+}
+
+/* === RESPONSIVE UTILITIES === */
+
+/* Hide on specific breakpoints */
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: block;
+  }
+  .hide-tablet {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hide-tablet {
+    display: block;
+  }
+  .hide-desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 1920px) {
+  .hide-desktop {
+    display: block;
+  }
+  .hide-4k {
+    display: none;
+  }
+}
+
+/* Show only on specific breakpoints */
+.show-mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .show-mobile {
+    display: none;
+  }
+  .show-tablet {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .show-tablet {
+    display: none;
+  }
+  .show-desktop {
+    display: block;
+  }
+}
+
+@media (min-width: 1920px) {
+  .show-desktop {
+    display: none;
+  }
+  .show-4k {
+    display: block;
+  }
+}

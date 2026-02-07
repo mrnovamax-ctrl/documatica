@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preloader - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link">Spacing</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="tokens.html" class="nav-link">Tokens</a>
+        <a href="backgrounds.html" class="nav-link">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>        <a href="forms.html" class="nav-link">Forms</a>        <a href="preloader.html" class="nav-link nav-link-active">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link active">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">PRELOADER</h1>
+        <p class="hero-subtitle">
+          Animated loading screen with logo animation and AI dot pulse effect
+        </p>
+      </div>
+    </section>
+
+    <!-- Live Demo -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Live Animation</h2>
+        <p class="subsection-text">Click button to see the preloader in action</p>
+        
+        <div class="card preloader-demo">
+          <button class="btn btn-primary btn-lg" id="showPreloader">SHOW PRELOADER</button>
+          <p class="content-text mt-4">Preloader will auto-hide after 2 seconds</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Static Preview -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Design Preview</h2>
+        <p class="subsection-text">Visual structure without animation</p>
+        
+        <div class="card preloader-demo-dark">
+          <div>
+            <div class="mb-2">
+              <svg width="120" height="120" viewBox="0 0 64 64" fill="none" class="svg-overflow-visible">
+                <defs>
+                  <filter id="glow-static" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+                    <feFlood flood-color="#FBBF24" flood-opacity="0.8"/>
+                    <feComposite in2="blur" operator="in" result="glow"/>
+                    <feMerge>
+                      <feMergeNode in="glow"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+                <rect x="8" y="8" width="48" height="48" rx="12" fill="white" fill-opacity="0.05" />
+                <path d="M18 24H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+                <path d="M18 32H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+                <path d="M18 40H34" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="48" cy="40" r="6" fill="#FBBF24" filter="url(#glow-static)"/>
+              </svg>
+            </div>
+            <p class="preloader-loading-text">LOADING...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animation Details -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. Animation Sequence</h2>
+        <p class="subsection-text">Multi-layer animation with staggered timing</p>
+        
+        <div class="grid grid-2-col gap-medium">
+          <div class="card">
+            <h3 class="subsection-title subsection-title-sm">Logo Paths</h3>
+            <ul class="info-list">
+              <li><strong>Path 1:</strong> Top line - 0.6s delay</li>
+              <li><strong>Path 2:</strong> Middle line - 0.8s delay</li>
+              <li><strong>Path 3:</strong> Bottom line - 1.0s delay</li>
+              <li><strong>Effect:</strong> Stroke dasharray animation</li>
+              <li><strong>Duration:</strong> 1.5s each</li>
+            </ul>
+          </div>
+          
+          <div class="card">
+            <h3 class="subsection-title subsection-title-sm">AI Dot</h3>
+            <ul class="info-list">
+              <li><strong>Animation:</strong> Pulse + glow</li>
+              <li><strong>Scale:</strong> 1 → 1.2 → 1</li>
+              <li><strong>Opacity:</strong> 0.8 → 1 → 0.8</li>
+              <li><strong>Duration:</strong> 2s infinite</li>
+              <li><strong>Timing:</strong> ease-in-out</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Implementation -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. HTML Structure</h2>
+        
+        <div class="card">
+          <pre class="code-block"><code>&lt;div id="preloader"&gt;
+  &lt;div class="preloader-logo"&gt;
+    &lt;svg width="120" height="120" viewBox="0 0 64 64" fill="none"&gt;
+      &lt;rect x="8" y="8" width="48" height="48" rx="12" 
+            fill="white" fill-opacity="0.05" /&gt;
+      &lt;path class="logo-path logo-path-1" 
+            d="M18 24H46" stroke="#3b82f6" 
+            stroke-width="5" stroke-linecap="round"/&gt;
+      &lt;path class="logo-path logo-path-2" 
+            d="M18 32H46" stroke="#3b82f6" 
+            stroke-width="5" stroke-linecap="round"/&gt;
+      &lt;path class="logo-path logo-path-3" 
+            d="M18 40H34" stroke="#3b82f6" 
+            stroke-width="5" stroke-linecap="round"/&gt;
+      &lt;circle class="ai-dot-anim" cx="48" cy="40" r="6" 
+              fill="#FBBF24" 
+              filter="drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))"/&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;p class="preloader-text"&gt;Loading...&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Guidelines -->
+    <section class="section">
+      <div class="container">
+        <div class="card info-card">
+          <h2 class="subsection-title">💡 Usage Guidelines</h2>
+          <ul class="info-list">
+            <li><strong>Purpose:</strong> Shows loading state while page assets load</li>
+            <li><strong>Auto-hide:</strong> Preloader fades out when window loads (main.js)</li>
+            <li><strong>Animation:</strong> Sequential stroke drawing + AI dot pulse</li>
+            <li><strong>Performance:</strong> CSS animations (hardware accelerated)</li>
+            <li><strong>Accessibility:</strong> Can be disabled via prefers-reduced-motion</li>
+            <li><strong>Customization:</strong> Change text via .preloader-text class</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <!-- Preloader for demo -->
+  <div id="preloader" class="hidden">
+    <div class="preloader-logo">
+      <svg width="120" height="120" viewBox="0 0 64 64" fill="none" class="svg-overflow-visible">
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+            <feFlood flood-color="#FBBF24" flood-opacity="0.8"/>
+            <feComposite in2="blur" operator="in" result="glow"/>
+            <feMerge>
+              <feMergeNode in="glow"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <rect x="8" y="8" width="48" height="48" rx="12" fill="white" fill-opacity="0.05" />
+        <path class="logo-path logo-path-1" d="M18 24H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+        <path class="logo-path logo-path-2" d="M18 32H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+        <path class="logo-path logo-path-3" d="M18 40H34" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+        <circle class="ai-dot-anim" cx="48" cy="40" r="6" fill="#FBBF24" filter="url(#glow)"/>
+      </svg>
+    </div>
+    <p class="preloader-text">Loading UI Kit...</p>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script>
+    // Preloader demo button (page-specific)
+    const showPreloaderBtn = document.getElementById('showPreloader');
+    const preloader = document.getElementById('preloader');
+    
+    if (showPreloaderBtn && preloader) {
+      showPreloaderBtn.addEventListener('click', () => {
+        // Remove hidden class and trigger reflow to restart animations
+        preloader.classList.remove('hidden');
+        
+        // Force DOM reflow to restart CSS animations
+        void preloader.offsetWidth;
+        
+        // Clone and replace logo to restart animations
+        const preloaderLogo = preloader.querySelector('.preloader-logo');
+        const newLogo = preloaderLogo.cloneNode(true);
+        preloaderLogo.parentNode.replaceChild(newLogo, preloaderLogo);
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+          preloader.classList.add('hidden');
+        }, 3000);
+      });
+    }
+  </script>
+</body>
+</html>

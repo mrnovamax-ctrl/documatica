@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Background Patterns - Documatica v12.0</title>
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link">Spacing</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="tokens.html" class="nav-link">Tokens</a>
+        <a href="backgrounds.html" class="nav-link nav-link--active">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>
+        <a href="forms.html" class="nav-link">Forms</a>
+        <a href="preloader.html" class="nav-link">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link active">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Visual Elements</span>
+        <h1 class="hero-title">BACKGROUND <span class="text-primary-light">PATTERNS</span></h1>
+        <p class="hero-subtitle">
+          Background patterns for creating depth and texture in design. Documatica v12.0 uses dot grid and gradient patterns for hero sections and decorative elements.
+        </p>
+      </div>
+    </section>
+
+    <!-- Dot Grid Patterns -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Dot Grid Patterns</h2>
+        <p class="subsection-text mb-6">Dot grid for light and dark backgrounds</p>
+        
+        <div class="grid grid-2-col gap-large">
+          <!-- Light Dot Pattern -->
+          <div class="card">
+            <h3 class="card-title mb-3">Light Dot Grid</h3>
+            <p class="card-text mb-4">Light background with blue dots. Use for hero sections and feature blocks.</p>
+            
+            <div class="pattern-preview pattern-dots-light mb-4"></div>
+            
+            <pre class="code-example-dark"><code>.pattern-dots-light {
+  background-color: #f8fafc;
+  background-image: 
+    radial-gradient(#3b82f6 1px, transparent 1px);
+  background-size: 24px 24px;
+}</code></pre>
+          </div>
+
+          <!-- Dark Dot Pattern -->
+          <div class="card">
+            <h3 class="card-title mb-3">Dark Dot Grid</h3>
+            <p class="card-text mb-4">Dark background with muted dots. Use for footer and dark mode sections.</p>
+            
+            <div class="pattern-preview pattern-dots-dark mb-4"></div>
+            
+            <pre class="code-example-dark"><code>.pattern-dots-dark {
+  background-color: #0f172a;
+  background-image: 
+    radial-gradient(rgba(59, 130, 246, 0.3) 1px, transparent 1px);
+  background-size: 24px 24px;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid Lines Pattern -->
+    <section class="section bg-surface">
+      <div class="container">
+        <h2 class="subsection-title">02. Grid Lines Pattern</h2>
+        <p class="subsection-text mb-6">Linear grid for structured sections</p>
+        
+        <div class="card">
+          <h3 class="card-title mb-3">Grid Lines</h3>
+          <p class="card-text mb-4">Vertical and horizontal lines form a grid. Use for dashboard and data visualization sections.</p>
+          
+          <div class="pattern-preview pattern-grid-lines mb-4"></div>
+          
+          <pre class="code-example-dark"><code>.pattern-grid-lines {
+  background-color: #f8fafc;
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Radial Gradient Patterns -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. Radial Gradient Backgrounds</h2>
+        <p class="subsection-text mb-6">Radial gradients for hero sections and accents</p>
+        
+        <div class="grid grid-2-col gap-large">
+          <!-- Blue Radial -->
+          <div class="card">
+            <h3 class="card-title mb-3">Blue Radial Glow</h3>
+            <p class="card-text mb-4">Blue glow from center. Use for hero with CTA or feature highlights.</p>
+            
+            <div class="pattern-preview pattern-radial-blue mb-4"></div>
+            
+            <pre class="code-example-dark"><code>.pattern-radial-blue {
+  background: 
+    radial-gradient(
+      circle at center, 
+      rgba(59, 130, 246, 0.15) 0%, 
+      transparent 70%
+    );
+}</code></pre>
+          </div>
+
+          <!-- Gold Radial -->
+          <div class="card">
+            <h3 class="card-title mb-3">Gold Radial Glow</h3>
+            <p class="card-text mb-4">Gold glow for AI features and premium elements.</p>
+            
+            <div class="pattern-preview pattern-radial-gold mb-4"></div>
+            
+            <pre class="code-example-dark"><code>.pattern-radial-gold {
+  background: 
+    radial-gradient(
+      circle at center, 
+      rgba(251, 191, 36, 0.15) 0%, 
+      transparent 70%
+    );
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solid Backgrounds -->
+    <section class="section bg-surface">
+      <div class="container">
+        <h2 class="subsection-title">04. Solid Background Classes</h2>
+        <p class="subsection-text mb-6">Solid backgrounds for sections</p>
+        
+        <div class="grid grid-3-col gap-medium">
+          <!-- White -->
+          <div class="bg-example">
+            <div class="bg-preview bg-white mb-3"></div>
+            <h4 class="subsection-title subsection-title-sm mb-2">White</h4>
+            <code class="code-inline">.bg-white</code>
+            <p class="text-sm text-secondary mt-2">#ffffff</p>
+          </div>
+
+          <!-- Surface -->
+          <div class="bg-example">
+            <div class="bg-preview bg-surface mb-3"></div>
+            <h4 class="subsection-title subsection-title-sm mb-2">Surface</h4>
+            <code class="code-inline">.bg-surface</code>
+            <p class="text-sm text-secondary mt-2">#f8fafc</p>
+          </div>
+
+          <!-- Surface Light -->
+          <div class="bg-example">
+            <div class="bg-preview bg-surface-light mb-3"></div>
+            <h4 class="subsection-title subsection-title-sm mb-2">Surface Light</h4>
+            <code class="code-inline">.bg-surface-light</code>
+            <p class="text-sm text-secondary mt-2">#f1f5f9</p>
+          </div>
+
+          <!-- Dark -->
+          <div class="bg-example">
+            <div class="bg-preview bg-dark mb-3"></div>
+            <h4 class="subsection-title subsection-title-sm mb-2">Dark</h4>
+            <code class="code-inline">.bg-dark</code>
+            <p class="text-sm text-secondary mt-2">#0f172a</p>
+          </div>
+
+          <!-- Primary -->
+          <div class="bg-example">
+            <div class="bg-preview bg-primary mb-3"></div>
+            <h4 class="subsection-title subsection-title-sm mb-2">Primary</h4>
+            <code class="code-inline">.bg-primary</code>
+            <p class="text-sm text-secondary mt-2">#3b82f6</p>
+          </div>
+
+          <!-- Gold -->
+          <div class="bg-example">
+            <div class="bg-preview bg-gold mb-3"></div>
+            <h4 class="subsection-title subsection-title-sm mb-2">Gold</h4>
+            <code class="code-inline">.bg-gold</code>
+            <p class="text-sm text-secondary mt-2">#fbbf24</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Guidelines -->
+    <section class="section">
+      <div class="container">
+        <div class="card card--info">
+          <h2 class="subsection-title">💡 Usage Guidelines</h2>
+          <ul class="mb-0">
+            <li><strong>Dot Patterns:</strong> Use for hero sections and feature blocks. Don't overload the page - maximum 2-3 sections with patterns.</li>
+            <li><strong>Radial Gradients:</strong> For accents and CTA blocks. Combine with dot pattern for depth.</li>
+            <li><strong>Grid Lines:</strong> For dashboard, analytics, and data-heavy sections.</li>
+            <li><strong>Solid Backgrounds:</strong> Alternate .bg-white and .bg-surface for visual separation of sections.</li>
+            <li><strong>Dark Mode:</strong> Use .pattern-dots-dark and .bg-dark for dark sections (footer, modals).</li>
+            <li><strong>Contrast:</strong> Always check text contrast on patterns - minimum 4.5:1 for body text, 3:1 for headings.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html> = document.getElementById('navbarToggle');
+    const navbarMobileMenu = document.getElementById('navbarMobileMenu');
+    if (navbarToggle && navbarMobileMenu) {
+      navbarToggle.addEventListener('click', () => {
+        navbarToggle.classList.toggle('active');
+        navbarMobileMenu.classList.toggle('active');
+      });
+      document.querySelectorAll('.navbar-mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navbarToggle.classList.remove('active');
+          navbarMobileMenu.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

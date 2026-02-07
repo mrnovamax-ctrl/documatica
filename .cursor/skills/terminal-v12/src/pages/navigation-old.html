@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigation Components - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <div class="topbar topbar--dark topbar--fixed">
+    <div class="container">
+      <div class="topbar__inner">
+        <a href="../hub.html" class="topbar__logo">
+          <span class="topbar__logo-mark">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+              <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+              <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+              <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+            </svg>
+          </span>
+          <span class="topbar__logo-text">documatica</span>
+        </a>
+        
+        <nav class="topbar__menu">
+          <a href="../hub.html" class="topbar__link">Hub</a>
+          <a href="colors.html" class="topbar__link">Colors</a>
+          <a href="buttons.html" class="topbar__link">Buttons</a>
+          <a href="cards.html" class="topbar__link">Cards</a>
+          <a href="typography.html" class="topbar__link">Typography</a>
+          <a href="hero.html" class="topbar__link">Hero</a>
+          <a href="forms.html" class="topbar__link">Forms</a>
+          <a href="navigation.html" class="topbar__link topbar__link--active">Navigation</a>
+        </nav>
+        
+        <div class="topbar__actions">
+          <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+          <div class="topbar__search" id="topbarSearchMain">
+            <button class="topbar__search-btn" type="button">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+            <input type="text" class="topbar__search-input" placeholder="Search...">
+          </div>
+          <div class="topbar__avatar">DS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <a href="../hub.html" class="back-link">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+          </svg>
+          BACK TO HUB
+        </a>
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">NAVIGATION <span class="text-primary-light">SYSTEM</span></h1>
+        <p class="hero-subtitle">
+          Modern navbar components with search, avatars, and dropdown menus
+        </p>
+      </div>
+    </section>
+      
+      <!-- 01. Default Light Navbar -->
+      <section class="section" id="navbar-default">
+        <div class="container">
+        <h2 class="subsection-title">01. Default Light Navbar</h2>
+        <p class="subsection-text mb-6">Clean light background with blur effect and hover states</p>
+
+        <div class="card mb-6">
+          <h3 class="card-title">LIGHT <span class="text-primary-light">NAVBAR</span></h3>
+          
+          <div class="topbar">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                      <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+                      <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+                      <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+                    </svg>
+                  </span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link topbar__link--active">Features</a>
+                  <a href="#" class="topbar__link">Pricing</a>
+                  <a href="#" class="topbar__link">Docs</a>
+                  <a href="#" class="topbar__link">Blog</a>
+                </nav>
+                
+                <div class="topbar__actions">
+                  <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+                  <div class="topbar__search">
+                    <button class="topbar__search-btn" type="button">
+                      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                      </svg>
+                    </button>
+                    <input type="text" class="topbar__search-input" placeholder="Search...">
+                  </div>
+                  <div class="topbar__avatar">DS</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      <!-- 02. Dark Dotted -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">02. Dark Dotted</h2>
+        <p class="subsection-text mb-6">Dark background with dot pattern</p>
+
+        <div class="card mb-6">
+          <h3 class="card-title">DARK <span class="text-primary-light">DOTTED</span></h3>
+          
+          <div class="topbar topbar--dark">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                      <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+                      <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+                      <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+                    </svg>
+                  </span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link topbar__link--active">Dashboard</a>
+                  <a href="#" class="topbar__link">Projects</a>
+                  <a href="#" class="topbar__link">Team</a>
+                  <a href="#" class="topbar__link">Settings</a>
+                </nav>
+                
+                <div class="topbar__actions">
+                  <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+                  <div class="topbar__search">
+                    <button class="topbar__search-btn" type="button">
+                      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                      </svg>
+                    </button>
+                    <input type="text" class="topbar__search-input" placeholder="Search...">
+                  </div>
+                  <div class="topbar__avatar">JD</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03. Fixed Light -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">03. Fixed Light</h2>
+        <p class="subsection-text mb-6">Light navbar fixed to top (scroll to test)</p>
+
+        <div class="card mb-6">
+          <h3 class="card-title">FIXED <span class="text-primary-light">LIGHT</span></h3>
+          
+          <div class="topbar topbar--fixed" style="position: relative;">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                      <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+                      <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+                      <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+                    </svg>
+                  </span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link topbar__link--active">Features</a>
+                  <a href="#" class="topbar__link">Pricing</a>
+                  <a href="#" class="topbar__link">Docs</a>
+                  <a href="#" class="topbar__link">Blog</a>
+                </nav>
+                
+                <div class="topbar__actions">
+                  <button class="topbar__btn">Sign in</button>
+                  <button class="topbar__btn-primary">Get started</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04. Fixed Dark -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">04. Fixed Dark</h2>
+        <p class="subsection-text mb-6">Dark navbar fixed to top (scroll to test)</p>
+
+        <div class="card mb-6">
+          <h3 class="card-title">FIXED <span class="text-primary-light">DARK</span></h3>
+          
+          <div class="topbar topbar--dark topbar--fixed" style="position: relative;">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                      <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+                      <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+                      <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+                    </svg>
+                  </span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link topbar__link--active">Dashboard</a>
+                  <a href="#" class="topbar__link">Analytics</a>
+                  <a href="#" class="topbar__link">Reports</a>
+                  <a href="#" class="topbar__link">Settings</a>
+                </nav>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05. Center Logo -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">05. Center Logo</h2>
+        <p class="subsection-text mb-6">Logo positioned in center with menu on sides</p>
+
+        <div class="card mb-6" style="overflow: visible;">
+          <h3 class="card-title">CENTER <span class="text-primary-light">LOGO</span></h3>
+          
+          <div class="topbar topbar--logo-center">
+            <div class="container">
+              <div class="topbar__inner">
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link topbar__link--active">Home</a>
+                  <a href="#" class="topbar__link">About</a>
+                  <a href="#" class="topbar__link">Services</a>
+                </nav>
+                
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                      <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+                      <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+                      <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+                    </svg>
+                  </span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <div class="topbar__actions">
+                  <button class="btn btn-gold btn-sm">SHOP</button>
+                  <div class="topbar__avatar">LK</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06. Dropdown Menu -->
+      <section class="section">
+        <h2 class="subsection-title">06. Dropdown with 3-Level Nesting</h2>
+        <p class="subsection-text mb-6">Multi-level dropdown navigation</p>
+
+        <div class="card mb-6" style="overflow: visible;">
+          <h3 class="card-title">DROPDOWN <span class="text-primary-light">NESTED</span></h3>
+          
+          <div class="topbar">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                      <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+                      <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+                      <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+                    </svg>
+                  </span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link">Home</a>
+                  
+                  <div class="topbar__dropdown">
+                    <a href="#" class="topbar__link topbar__dropdown-trigger">
+                      Products
+                      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </a>
+                    <div class="topbar__dropdown-menu">
+                      <a href="#" class="topbar__dropdown-item">All Products</a>
+                      <div class="topbar__dropdown-item topbar__dropdown-item--parent">
+                        Categories
+                        <div class="topbar__dropdown-submenu">
+                          <a href="#" class="topbar__dropdown-item">Electronics</a>
+                          <div class="topbar__dropdown-item topbar__dropdown-item--parent">
+                            Computers
+                            <div class="topbar__dropdown-submenu">
+                              <a href="#" class="topbar__dropdown-item">Laptops</a>
+                              <a href="#" class="topbar__dropdown-item">Desktops</a>
+                              <a href="#" class="topbar__dropdown-item">Tablets</a>
+                            </div>
+                          </div>
+                          <a href="#" class="topbar__dropdown-item">Mobile Phones</a>
+                        </div>
+                      </div>
+                      <a href="#" class="topbar__dropdown-item">New Arrivals</a>
+                      <a href="#" class="topbar__dropdown-item">Best Sellers</a>
+                    </div>
+                  </div>
+                  
+                  <a href="#" class="topbar__link">About</a>
+                  <a href="#" class="topbar__link">Contact</a>
+                </nav>
+                
+                <div class="topbar__actions">
+                  <button class="btn btn-primary btn-sm">SIGN IN</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07. Mega Menu -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">07. Mega Menu</h2>
+        <p class="subsection-text mb-6">Large dropdown with grid layout</p>
+
+        <div class="card mb-6" style="overflow: visible;">
+          <h3 class="card-title">MEGA <span class="text-primary-light">MENU</span></h3>
+          
+          <div class="topbar">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                      <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+                      <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+                      <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+                    </svg>
+                  </span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link">Home</a>
+                  
+                  <div class="topbar__mega">
+                    <a href="#" class="topbar__link topbar__dropdown-trigger">
+                      Solutions
+                      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </a>
+                    <div class="topbar__mega-menu">
+                      <div class="topbar__mega-grid">
+                        <div class="topbar__mega-section">
+                          <h4 class="topbar__mega-title">For Business</h4>
+                          <a href="#" class="topbar__mega-link">
+                            <div class="topbar__mega-link-icon">📊</div>
+                            <div class="topbar__mega-link-content">
+                              <div class="topbar__mega-link-title">Analytics</div>
+                              <div class="topbar__mega-link-desc">Track performance metrics</div>
+                            </div>
+                          </a>
+                          <a href="#" class="topbar__mega-link">
+                            <div class="topbar__mega-link-icon">🚀</div>
+                            <div class="topbar__mega-link-content">
+                              <div class="topbar__mega-link-title">Growth Tools</div>
+                              <div class="topbar__mega-link-desc">Scale your business</div>
+                            </div>
+                          </a>
+                        </div>
+                        
+                        <div class="topbar__mega-section">
+                          <h4 class="topbar__mega-title">For Developers</h4>
+                          <a href="#" class="topbar__mega-link">
+                            <div class="topbar__mega-link-icon">🔧</div>
+                            <div class="topbar__mega-link-content">
+                              <div class="topbar__mega-link-title">API Documentation</div>
+                              <div class="topbar__mega-link-desc">Integrate with ease</div>
+                            </div>
+                          </a>
+                          <a href="#" class="topbar__mega-link">
+                            <div class="topbar__mega-link-icon">💻</div>
+                            <div class="topbar__mega-link-content">
+                              <div class="topbar__mega-link-title">SDKs & Libraries</div>
+                              <div class="topbar__mega-link-desc">Build faster</div>
+                            </div>
+                          </a>
+                        </div>
+                        
+                        <div class="topbar__mega-section">
+                          <h4 class="topbar__mega-title">Resources</h4>
+                          <a href="#" class="topbar__mega-link">
+                            <div class="topbar__mega-link-icon">📚</div>
+                            <div class="topbar__mega-link-content">
+                              <div class="topbar__mega-link-title">Documentation</div>
+                              <div class="topbar__mega-link-desc">Learn the basics</div>
+                            </div>
+                          </a>
+                          <a href="#" class="topbar__mega-link">
+                            <div class="topbar__mega-link-icon">🎓</div>
+                            <div class="topbar__mega-link-content">
+                              <div class="topbar__mega-link-title">Tutorials</div>
+                              <div class="topbar__mega-link-desc">Step-by-step guides</div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <a href="#" class="topbar__link">Pricing</a>
+                  <a href="#" class="topbar__link">Blog</a>
+                </nav>
+                
+                <div class="topbar__actions">
+                  <button class="btn btn-primary btn-sm">GET STARTED</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Usage Guidelines -->
+      <section class="section">
+        <div class="card card--info">
+          <h2 class="subsection-title mb-3">💡 NAVBAR <span class="text-primary-light">VARIANTS</span></h2>
+          <ul class="list-styled">
+            <li><strong>Default</strong> - static light navbar with blur</li>
+            <li><strong>Dark Dotted</strong> - static dark with dot pattern</li>
+            <li><strong>Fixed Light</strong> - sticky light navbar</li>
+            <li><strong>Fixed Dark</strong> - sticky dark navbar</li>
+          </ul>
+          
+          <div class="mt-4 p-3 bg-surface-light rounded-lg">
+            <h4 class="subsection-title subsection-title-sm mb-2">MODIFIERS</h4>
+            <ul class="list-styled mb-0">
+              <li><code>.topbar--dark</code> - dark theme with dots</li>
+              <li><code>.topbar--fixed</code> - position fixed to top</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+          <h3 class="card-title">BORDERED <span class="text-primary-light">CARD</span></h3>
+          
+          <div class="topbar topbar--bordered">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark"></span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link topbar__link--active">Home</a>
+                  <a href="#" class="topbar__link">Products</a>
+                  <a href="#" class="topbar__link">About</a>
+                  <a href="#" class="topbar__link">Contact</a>
+                </nav>
+                
+                <div class="topbar__actions">
+                  <div class="topbar__avatar">MP</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04. Minimal Underline -->
+      <section class="section">
+        <h2 class="subsection-title">04. Minimal Underline</h2>
+        <p class="subsection-text mb-6">Ultra-minimal with bottom border indicators</p>
+
+        <div class="card mb-6">
+          <h3 class="card-title">MINIMAL <span class="text-primary-light">CLEAN</span></h3>
+          
+          <div class="topbar topbar--minimal">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark"></span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link topbar__link--active">Overview</a>
+                  <a href="#" class="topbar__link">API</a>
+                  <a href="#" class="topbar__link">Guides</a>
+                  <a href="#" class="topbar__link">Support</a>
+                </nav>
+                
+                <div class="topbar__actions">
+                  <button class="topbar__btn">Login</button>
+                  <div class="topbar__avatar">SK</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Usage Guidelines -->
+      <section class="section">
+        <h2 class="subsection-title">05. Floating Pill</h2>
+        <p class="subsection-text mb-6">Fully rounded floating navbar</p>
+
+        <div class="card mb-6">
+          <h3 class="card-title">FLOATING <span class="text-primary-light">PILL</span></h3>
+          
+          <div class="topbar topbar--floating">
+            <div class="container">
+              <div class="topbar__inner">
+                <a href="#" class="topbar__logo">
+                  <span class="topbar__logo-mark"></span>
+                  <span class="topbar__logo-text">documatica</span>
+                </a>
+                
+                <nav class="topbar__menu">
+                  <a href="#" class="topbar__link topbar__link--active">Files</a>
+                  <a href="#" class="topbar__link">Analytics</a>
+                  <a href="#" class="topbar__link">Team</a>
+                </nav>
+                
+                <div class="topbar__actions">
+                  <div class="topbar__avatar">LC</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Usage Guidelines -->
+      <section class="section">
+        <div class="container">
+        <div class="card card--info">
+          <h2 class="subsection-title mb-3">💡 NAVBAR <span class="text-primary-light">VARIANTS</span></h2>
+          <ul class="list-styled">
+            <li><strong>Default Light</strong> - modern blur background with search</li>
+            <li><strong>Dark Dotted</strong> - dark with dots pattern, glass effect</li>
+            <li><strong>Fixed Light/Dark</strong> - sticky navbar variants</li>
+            <li><strong>Center Logo</strong> - logo in center, menu on sides</li>
+            <li><strong>Dropdown 3-Level</strong> - nested menus up to 3 levels</li>
+            <li><strong>Mega Menu</strong> - large grid dropdown</li>
+          </ul>
+          
+          <div class="mt-4 p-3 bg-surface-light rounded-lg">
+            <h4 class="subsection-title subsection-title-sm mb-2">MODIFIERS</h4>
+            <ul class="list-styled mb-0">
+              <li><code>.topbar--dark</code> - dark theme with dots</li>
+              <li><code>.topbar--fixed</code> - position fixed to top</li>
+              <li><code>.topbar--logo-center</code> - center logo layout</li>
+            </ul>
+          </div>
+        </div>
+        </div>
+      </section>
+
+  </main>
+
+  <script>
+    // Search toggle for all search elements
+    document.querySelectorAll('.topbar__search').forEach((search, index) => {
+      const btn = search.querySelector('.topbar__search-btn');
+      const input = search.querySelector('.topbar__search-input');
+      
+      if (btn && input) {
+        btn.addEventListener('click', () => {
+          if (!search.classList.contains('is-expanded')) {
+            search.classList.add('is-expanded');
+            setTimeout(() => input.focus(), 400);
+          }
+        });
+        
+        input.addEventListener('blur', () => {
+          if (!input.value) {
+            search.classList.remove('is-expanded');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

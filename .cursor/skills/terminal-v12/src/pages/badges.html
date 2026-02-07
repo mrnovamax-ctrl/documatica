@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badges - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <div class="topbar topbar--dark topbar--fixed">
+    <div class="container">
+      <div class="topbar__inner">
+        <a href="../hub.html" class="topbar__logo">
+          <span class="topbar__logo-mark">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+              <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+              <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+              <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+            </svg>
+          </span>
+          <span class="topbar__logo-text">documatica</span>
+        </a>
+        
+        <nav class="topbar__menu">
+          <a href="../hub.html" class="topbar__link">Hub</a>
+          <a href="colors.html" class="topbar__link">Colors</a>
+          <a href="buttons.html" class="topbar__link">Buttons</a>
+          <a href="badges.html" class="topbar__link topbar__link--active">Badges</a>
+          <a href="cards.html" class="topbar__link">Cards</a>
+          <a href="typography.html" class="topbar__link">Typography</a>
+          <a href="hero.html" class="topbar__link">Hero</a>
+          <a href="forms.html" class="topbar__link">Forms</a>
+          <a href="navigation.html" class="topbar__link">Navigation</a>
+        </nav>
+        
+        <div class="topbar__actions">
+          <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+          <div class="topbar__search" id="topbarSearchMain">
+            <button class="topbar__search-btn" type="button">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+            <input type="text" class="topbar__search-input" placeholder="Search...">
+          </div>
+          <div class="topbar__avatar">DS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">BADGES <span class="text-primary-light">SYSTEM</span></h1>
+        <p class="hero-subtitle">
+          Status indicators and labels for highlighting important information across your interface
+        </p>
+      </div>
+    </section>
+
+    <!-- 01. Status Badges -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Status Badges</h2>
+        <p class="subsection-text mb-6">Semantic color badges for states and statuses</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="badge badge--success">SUCCESS</span>
+            <span class="badge badge--warning">WARNING</span>
+            <span class="badge badge--danger">DANGER</span>
+            <span class="badge badge--info">INFO</span>
+            <span class="badge badge--neutral">NEUTRAL</span>
+            <span class="badge badge--primary">PRIMARY</span>
+            <span class="badge badge--smart">AI SMART</span>
+            <span class="badge badge--dark">PREMIUM</span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="badge badge--success"&gt;SUCCESS&lt;/span&gt;
+&lt;span class="badge badge--warning"&gt;WARNING&lt;/span&gt;
+&lt;span class="badge badge--danger"&gt;DANGER&lt;/span&gt;
+&lt;span class="badge badge--info"&gt;INFO&lt;/span&gt;
+&lt;span class="badge badge--neutral"&gt;NEUTRAL&lt;/span&gt;
+&lt;span class="badge badge--primary"&gt;PRIMARY&lt;/span&gt;
+&lt;span class="badge badge--smart"&gt;AI SMART&lt;/span&gt;
+&lt;span class="badge badge--dark"&gt;PREMIUM&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 02. Outline Badges -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Outline Badges</h2>
+        <p class="subsection-text mb-6">Subtle bordered variants with transparent backgrounds</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="badge badge--outline badge--outline-primary">PRIMARY</span>
+            <span class="badge badge--outline badge--outline-success">SUCCESS</span>
+            <span class="badge badge--outline badge--outline-warning">WARNING</span>
+            <span class="badge badge--outline badge--outline-danger">DANGER</span>
+            <span class="badge badge--outline badge--outline-neutral">NEUTRAL</span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="badge badge--outline badge--outline-primary"&gt;PRIMARY&lt;/span&gt;
+&lt;span class="badge badge--outline badge--outline-success"&gt;SUCCESS&lt;/span&gt;
+&lt;span class="badge badge--outline badge--outline-warning"&gt;WARNING&lt;/span&gt;
+&lt;span class="badge badge--outline badge--outline-danger"&gt;DANGER&lt;/span&gt;
+&lt;span class="badge badge--outline badge--outline-neutral"&gt;NEUTRAL&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 03. With Dot Indicator -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. With Dot Indicator</h2>
+        <p class="subsection-text mb-6">Status badges with animated dot indicators</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="badge badge--dot badge--success">
+              <span class="badge__dot"></span>
+              ACTIVE
+            </span>
+            <span class="badge badge--dot badge--warning">
+              <span class="badge__dot"></span>
+              PENDING
+            </span>
+            <span class="badge badge--dot badge--danger">
+              <span class="badge__dot"></span>
+              OFFLINE
+            </span>
+            <span class="badge badge--dot badge--info">
+              <span class="badge__dot badge__dot--pulse"></span>
+              PROCESSING
+            </span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="badge badge--dot badge--success"&gt;
+  &lt;span class="badge__dot"&gt;&lt;/span&gt;
+  ACTIVE
+&lt;/span&gt;
+
+&lt;!-- Pulsing dot --&gt;
+&lt;span class="badge badge--dot badge--info"&gt;
+  &lt;span class="badge__dot badge__dot--pulse"&gt;&lt;/span&gt;
+  PROCESSING
+&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 04. Sizes -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. Badge Sizes</h2>
+        <p class="subsection-text mb-6">Three size variants: small, default, and large</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="badge badge--sm badge--primary">SMALL</span>
+            <span class="badge badge--primary">DEFAULT</span>
+            <span class="badge badge--lg badge--primary">LARGE</span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="badge badge--sm badge--primary"&gt;SMALL&lt;/span&gt;
+&lt;span class="badge badge--primary"&gt;DEFAULT&lt;/span&gt;
+&lt;span class="badge badge--lg badge--primary"&gt;LARGE&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 05. Pill Badges -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. Pill Badges</h2>
+        <p class="subsection-text mb-6">Fully rounded pill-shaped badges</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="badge badge--pill badge--primary">NEW</span>
+            <span class="badge badge--pill badge--smart">AI POWERED</span>
+            <span class="badge badge--pill badge--dark">PRO</span>
+            <span class="badge badge--pill badge--success">VERIFIED</span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="badge badge--pill badge--primary"&gt;NEW&lt;/span&gt;
+&lt;span class="badge badge--pill badge--smart"&gt;AI POWERED&lt;/span&gt;
+&lt;span class="badge badge--pill badge--dark"&gt;PRO&lt;/span&gt;
+&lt;span class="badge badge--pill badge--success"&gt;VERIFIED&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 06. With Icons -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. With Icons</h2>
+        <p class="subsection-text mb-6">Badges with inline SVG icons</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="badge badge--success badge--icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+              </svg>
+              COMPLETED
+            </span>
+            <span class="badge badge--warning badge--icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01"></path>
+              </svg>
+              ALERT
+            </span>
+            <span class="badge badge--info badge--icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              HELP
+            </span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="badge badge--success badge--icon"&gt;
+  &lt;svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"&gt;
+    &lt;path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"&gt;&lt;/path&gt;
+  &lt;/svg&gt;
+  COMPLETED
+&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 07. Counter Badges -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. Counter Badges</h2>
+        <p class="subsection-text mb-6">Circular badges for notification counts</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="badge badge--counter badge--danger">3</span>
+            <span class="badge badge--counter badge--primary">12</span>
+            <span class="badge badge--counter badge--success">99+</span>
+            <span class="badge badge--counter badge--dark">NEW</span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="badge badge--counter badge--danger"&gt;3&lt;/span&gt;
+&lt;span class="badge badge--counter badge--primary"&gt;12&lt;/span&gt;
+&lt;span class="badge badge--counter badge--success"&gt;99+&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 08. Removable Tags -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">08. Removable Tags</h2>
+        <p class="subsection-text mb-6">Interactive tags with remove buttons and v12.0 Spring animation</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="tag">
+              Document Analysis
+              <button class="tag__remove" aria-label="Remove tag">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </span>
+            <span class="tag tag--primary">
+              AI Processing
+              <button class="tag__remove" aria-label="Remove tag">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </span>
+            <span class="tag">
+              Enterprise
+              <button class="tag__remove" aria-label="Remove tag">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="tag"&gt;
+  Document Analysis
+  &lt;button class="tag__remove" aria-label="Remove tag"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+  &lt;/button&gt;
+&lt;/span&gt;
+
+&lt;!-- JavaScript for removal animation --&gt;
+&lt;script&gt;
+document.querySelectorAll('.tag__remove').forEach(btn =&gt; {
+  btn.addEventListener('click', (e) =&gt; {
+    const tag = btn.closest('.tag');
+    tag.classList.add('tag--removing');
+    setTimeout(() =&gt; tag.remove(), 400);
+  });
+});
+&lt;/script&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 09. Category Tags -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">09. Category Tags</h2>
+        <p class="subsection-text mb-6">Tags with colored dot indicators for categorization</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <span class="category-tag">
+              <span class="category-tag__dot category-tag__dot--blue"></span>
+              Contracts
+            </span>
+            <span class="category-tag">
+              <span class="category-tag__dot category-tag__dot--green"></span>
+              Invoices
+            </span>
+            <span class="category-tag">
+              <span class="category-tag__dot category-tag__dot--gold"></span>
+              Reports
+            </span>
+            <span class="category-tag">
+              <span class="category-tag__dot category-tag__dot--red"></span>
+              Urgent
+            </span>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;span class="category-tag"&gt;
+  &lt;span class="category-tag__dot category-tag__dot--blue"&gt;&lt;/span&gt;
+  Contracts
+&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 10. Label Badges -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">10. Label Badges</h2>
+        <p class="subsection-text mb-6">Key-value pair badges for metadata and properties</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-1">
+            <div class="label-badge">
+              <span class="label-badge__key">STATUS</span>
+              <span class="label-badge__value label-badge__value--success">ACTIVE</span>
+            </div>
+            <div class="label-badge">
+              <span class="label-badge__key">VERSION</span>
+              <span class="label-badge__value label-badge__value--primary">V12.0</span>
+            </div>
+            <div class="label-badge">
+              <span class="label-badge__key">LICENSE</span>
+              <span class="label-badge__value">MIT</span>
+            </div>
+            <div class="label-badge">
+              <span class="label-badge__key">TIER</span>
+              <span class="label-badge__value label-badge__value--warning">PRO</span>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;div class="label-badge"&gt;
+  &lt;span class="label-badge__key"&gt;STATUS&lt;/span&gt;
+  &lt;span class="label-badge__value label-badge__value--success"&gt;ACTIVE&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 11. Avatar Status Badges -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">11. Avatar Status Badges</h2>
+        <p class="subsection-text mb-6">Status indicators for user avatars and profile images</p>
+        
+        <div class="card p-8">
+          <div class="flex flex-wrap items-center gap-8">
+            <div class="avatar-badge-wrap">
+              <div class="topbar__avatar">ON</div>
+              <span class="avatar-badge avatar-badge--online"></span>
+            </div>
+            <div class="avatar-badge-wrap">
+              <div class="topbar__avatar">BS</div>
+              <span class="avatar-badge avatar-badge--busy"></span>
+            </div>
+            <div class="avatar-badge-wrap">
+              <div class="topbar__avatar">AW</div>
+              <span class="avatar-badge avatar-badge--away"></span>
+            </div>
+            <div class="avatar-badge-wrap">
+              <div class="topbar__avatar">OF</div>
+              <span class="avatar-badge avatar-badge--offline"></span>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;div class="avatar-badge-wrap"&gt;
+  &lt;div class="topbar__avatar"&gt;ON&lt;/div&gt;
+  &lt;span class="avatar-badge avatar-badge--online"&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- Usage Guidelines -->
+    <section class="section">
+      <div class="container">
+        <div class="card info-card">
+          <h2 class="subsection-title">USAGE GUIDELINES</h2>
+          <ul class="list-check">
+            <li><strong>Semantic Colors:</strong> Use success (green), warning (yellow), danger (red), info (blue) for appropriate contexts</li>
+            <li><strong>Text Content:</strong> Keep badge text short and uppercase (2-12 characters recommended)</li>
+            <li><strong>Smart Badge:</strong> Use .badge--smart only for AI-powered or premium features with gradient effect</li>
+            <li><strong>Dot Indicators:</strong> Use pulsing dot (.badge__dot--pulse) for active processing states</li>
+            <li><strong>Sizes:</strong> Small for compact spaces, default for general use, large for emphasis</li>
+            <li><strong>Icons:</strong> 14px SVG icons only, ensure proper stroke-width for clarity</li>
+            <li><strong>Counter Badges:</strong> For notification counts and numeric indicators</li>
+            <li><strong>Tags:</strong> Use removable tags for filters and selected items with animated removal</li>
+            <li><strong>Category Tags:</strong> Use for document classification with colored dot system</li>
+            <li><strong>Label Badges:</strong> Use for metadata display (key-value pairs like version, status, license)</li>
+            <li><strong>Avatar Badges:</strong> Online (green), busy (red), away (gold), offline (gray)</li>
+            <li><strong>Tag Animation:</strong> Click remove button triggers v12.0 Spring physics (scale + rotate + fade)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Component Classes -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">COMPONENT CLASSES</h2>
+        <div class="grid grid-2-col">
+          
+          <div class="card">
+            <h3 class="type-h5 mb-4">Base Classes</h3>
+            <ul class="list-default">
+              <li><code>.badge</code> - Base badge component</li>
+              <li><code>.badge--sm</code> - Small size (10px font)</li>
+              <li><code>.badge--lg</code> - Large size (14px font)</li>
+              <li><code>.badge--pill</code> - Fully rounded pill shape</li>
+              <li><code>.badge--icon</code> - With inline icon</li>
+              <li><code>.badge--counter</code> - Circular counter badge</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Color Variants</h3>
+            <ul class="list-default">
+              <li><code>.badge--success</code> - Green success state</li>
+              <li><code>.badge--warning</code> - Yellow warning state</li>
+              <li><code>.badge--danger</code> - Red danger state</li>
+              <li><code>.badge--info</code> - Blue info state</li>
+              <li><code>.badge--neutral</code> - Gray neutral state</li>
+              <li><code>.badge--primary</code> - Brand blue</li>
+              <li><code>.badge--smart</code> - Gold gradient AI badge</li>
+              <li><code>.badge--dark</code> - Dark premium badge</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Outline Variants</h3>
+            <ul class="list-default">
+              <li><code>.badge--outline</code> - Base outline modifier</li>
+              <li><code>.badge--outline-primary</code> - Blue outline</li>
+              <li><code>.badge--outline-success</code> - Green outline</li>
+              <li><code>.badge--outline-warning</code> - Yellow outline</li>
+              <li><code>.badge--outline-danger</code> - Red outline</li>
+              <li><code>.badge--outline-neutral</code> - Gray outline</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Advanced Components</h3>
+            <ul class="list-default">
+              <li><code>.badge--dot</code> - Badge with dot indicator</li>
+              <li><code>.badge__dot</code> - Dot element</li>
+              <li><code>.badge__dot--pulse</code> - Animated pulsing dot</li>
+              <li><code>.tag</code> - Removable tag component</li>
+              <li><code>.tag--primary</code> - Primary tag variant</li>
+              <li><code>.tag__remove</code> - Remove button</li>
+              <li><code>.category-tag</code> - Category tag with dot</li>
+              <li><code>.category-tag__dot</code> - Colored dot (blue/green/gold/red)</li>
+              <li><code>.label-badge</code> - Key-value badge container</li>
+              <li><code>.label-badge__key</code> - Badge key (dark)</li>
+              <li><code>.label-badge__value</code> - Badge value (light/colored)</li>
+              <li><code>.avatar-badge</code> - Avatar status indicator</li>
+              <li><code>.avatar-badge--online</code> - Online status (green)</li>
+              <li><code>.avatar-badge--busy</code> - Busy status (red)</li>
+              <li><code>.avatar-badge--away</code> - Away status (gold)</li>
+              <li><code>.avatar-badge--offline</code> - Offline status (gray)</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

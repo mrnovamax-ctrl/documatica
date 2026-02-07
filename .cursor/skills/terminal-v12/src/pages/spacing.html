@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spacing System - Documatica v12.0</title>
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link nav-link--active">Spacing</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="tokens.html" class="nav-link">Tokens</a>
+        <a href="backgrounds.html" class="nav-link">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>
+        <a href="forms.html" class="nav-link">Forms</a>
+        <a href="preloader.html" class="nav-link">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link active">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1 class="hero-title">SPACING <span class="text-primary-light">SYSTEM</span></h1>
+        <p class="hero-subtitle">The "Air System" - breathing room rules for consistent vertical rhythm</p>
+      </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="section">
+      <div class="container">
+        <p class="text-lg mb-6 max-w-800">
+          Proper spacing creates visual hierarchy and "breathing room" in design. Documatica v12.0 uses a 4px-based system for all spacing values.
+        </p>
+      </div>
+    </section>
+
+    <!-- Spacing Scale Overview -->
+    <section class="section bg-surface">
+      <div class="container">
+        <h2 class="section-title">Spacing Scale</h2>
+        
+        <div class="grid grid-2-col gap-large mb-6">
+          <div class="card">
+            <h3 class="card-title mb-3">Base Unit: 4px</h3>
+            <p class="card-text mb-4">All spacing is a multiple of 4px. This creates a consistent system and simplifies calculations.</p>
+            <div class="spacing-scale-demo">
+              <div class="spacing-bar spacing-bar--1"></div>
+              <div class="spacing-bar spacing-bar--2"></div>
+              <div class="spacing-bar spacing-bar--3"></div>
+              <div class="spacing-bar spacing-bar--4"></div>
+              <div class="spacing-bar spacing-bar--6"></div>
+              <div class="spacing-bar spacing-bar--8"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title mb-3">Scale Values</h3>
+            <ul class="spacing-scale-list">
+              <li><code class="code-inline">1</code> = 4px = 0.25rem</li>
+              <li><code class="code-inline">2</code> = 8px = 0.5rem</li>
+              <li><code class="code-inline">3</code> = 12px = 0.75rem</li>
+              <li><code class="code-inline">4</code> = 16px = 1rem</li>
+              <li><code class="code-inline">6</code> = 24px = 1.5rem</li>
+              <li><code class="code-inline">8</code> = 32px = 2rem</li>
+              <li><code class="code-inline">12</code> = 48px = 3rem</li>
+              <li><code class="code-inline">16</code> = 64px = 4rem</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Margin vs Padding -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Margin vs Padding</h2>
+
+        <div class="grid grid-2-col gap-large mb-6">
+          <!-- Margin Example -->
+          <div>
+            <h3 class="h3-title">Margin - External Spacing</h3>
+            <p class="subsection-text mb-4">Use margin for distance BETWEEN elements</p>
+            
+            <div class="spacing-demo-container">
+              <div class="spacing-demo-box mb-4">
+                <div class="demo-label">.mb-4</div>
+                Box 1
+              </div>
+              <div class="spacing-demo-box mb-4">
+                <div class="demo-label">.mb-4</div>
+                Box 2
+              </div>
+              <div class="spacing-demo-box">
+                Box 3
+              </div>
+            </div>
+
+            <pre class="code-example-dark mt-4"><code>&lt;div class="box mb-4"&gt;Box 1&lt;/div&gt;
+&lt;div class="box mb-4"&gt;Box 2&lt;/div&gt;
+&lt;div class="box"&gt;Box 3&lt;/div&gt;</code></pre>
+          </div>
+
+          <!-- Padding Example -->
+          <div>
+            <h3 class="h3-title">Padding - Internal Spacing</h3>
+            <p class="subsection-text mb-4">Use padding for distance INSIDE an element</p>
+            
+            <div class="spacing-demo-container">
+              <div class="spacing-demo-box-padded p-2">
+                <div class="demo-label">.p-2</div>
+                Small padding
+              </div>
+              <div class="spacing-demo-box-padded p-4 mt-3">
+                <div class="demo-label">.p-4</div>
+                Medium padding
+              </div>
+              <div class="spacing-demo-box-padded p-6 mt-3">
+                <div class="demo-label">.p-6</div>
+                Large padding
+              </div>
+            </div>
+
+            <pre class="code-example-dark mt-4"><code>&lt;div class="box p-2"&gt;Small&lt;/div&gt;
+&lt;div class="box p-4"&gt;Medium&lt;/div&gt;
+&lt;div class="box p-6"&gt;Large&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Directional Spacing -->
+    <section class="section bg-surface">
+      <div class="container">
+        <h2 class="section-title">Directional Spacing</h2>
+
+        <div class="grid grid-3-col gap-medium mb-6">
+          <!-- Top -->
+          <div class="card">
+            <h3 class="card-title mb-3">Top</h3>
+            <div class="spacing-direction-demo">
+              <div class="spacing-direction-box mt-6">
+                <div class="demo-label">.mt-6</div>
+                Content
+              </div>
+            </div>
+            <code class="code-inline mt-3 block">.mt-6</code>
+          </div>
+
+          <!-- Bottom -->
+          <div class="card">
+            <h3 class="card-title mb-3">Bottom</h3>
+            <div class="spacing-direction-demo">
+              <div class="spacing-direction-box mb-6">
+                <div class="demo-label">.mb-6</div>
+                Content
+              </div>
+            </div>
+            <code class="code-inline mt-3 block">.mb-6</code>
+          </div>
+
+          <!-- Horizontal -->
+          <div class="card">
+            <h3 class="card-title mb-3">Horizontal (X)</h3>
+            <div class="spacing-direction-demo">
+              <div class="spacing-direction-box mx-6">
+                <div class="demo-label">.mx-6</div>
+                Content
+              </div>
+            </div>
+            <code class="code-inline mt-3 block">.mx-6</code>
+          </div>
+
+          <!-- Vertical -->
+          <div class="card">
+            <h3 class="card-title mb-3">Vertical (Y)</h3>
+            <div class="spacing-direction-demo">
+              <div class="spacing-direction-box my-4">
+                <div class="demo-label">.my-4</div>
+                Content
+              </div>
+            </div>
+            <code class="code-inline mt-3 block">.my-4</code>
+          </div>
+
+          <!-- All sides -->
+          <div class="card">
+            <h3 class="card-title mb-3">All Sides</h3>
+            <div class="spacing-direction-demo">
+              <div class="spacing-direction-box m-4">
+                <div class="demo-label">.m-4</div>
+                Content
+              </div>
+            </div>
+            <code class="code-inline mt-3 block">.m-4</code>
+          </div>
+
+          <!-- Padding horizontal -->
+          <div class="card">
+            <h3 class="card-title mb-3">Padding X</h3>
+            <div class="spacing-direction-demo">
+              <div class="spacing-direction-box-padded px-6">
+                <div class="demo-label">.px-6</div>
+                Content
+              </div>
+            </div>
+            <code class="code-inline mt-3 block">.px-6</code>
+          </div>
+        </div>
+
+        <div class="card card--info mt-6">
+          <h3 class="info-title">Naming Convention</h3>
+          <div class="spacing-grid">
+            <div class="spacing-item">
+              <code class="code-inline">m</code>
+              <span class="spacing-label">margin</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">p</code>
+              <span class="spacing-label">padding</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">t</code>
+              <span class="spacing-label">top</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">b</code>
+              <span class="spacing-label">bottom</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">l</code>
+              <span class="spacing-label">left</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">r</code>
+              <span class="spacing-label">right</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">x</code>
+              <span class="spacing-label">horizontal (left + right)</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">y</code>
+              <span class="spacing-label">vertical (top + bottom)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Component Spacing Rules -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Component Spacing Rules</h2>
+        <p class="text-lg mb-8 max-w-700">
+          Standard spacing for different component types
+        </p>
+
+        <!-- Buttons -->
+        <div class="spacing-rule-section mb-8">
+          <h3 class="h3-title mb-6">🔘 Buttons</h3>
+          
+          <div class="card mb-6">
+            <h4 class="subsection-title subsection-title-sm mb-3">Horizontal Spacing</h4>
+            <p class="subsection-text mb-4">Between buttons in a row: <code class="code-inline">.mr-3</code> (12px)</p>
+            
+            <div class="mb-4">
+              <button class="btn btn-primary mr-3">BUTTON 1</button>
+              <button class="btn btn-outline mr-3">BUTTON 2</button>
+              <button class="btn btn-dark">BUTTON 3</button>
+            </div>
+
+            <pre class="code-example-dark"><code>&lt;button class="btn btn-primary mr-3"&gt;Button 1&lt;/button&gt;
+&lt;button class="btn btn-outline mr-3"&gt;Button 2&lt;/button&gt;
+&lt;button class="btn btn-dark"&gt;Button 3&lt;/button&gt;</code></pre>
+          </div>
+
+          <div class="card">
+            <h4 class="subsection-title subsection-title-sm mb-3">Vertical Spacing</h4>
+            <p class="subsection-text mb-4">Between buttons in a column: <code class="code-inline">.mb-3</code> (12px)</p>
+            
+            <div class="mb-4 max-w-300">
+              <button class="btn btn-primary btn-block mb-3">PRIMARY ACTION</button>
+              <button class="btn btn-outline btn-block mb-3">SECONDARY ACTION</button>
+              <button class="btn btn-text btn-block">TERTIARY ACTION</button>
+            </div>
+
+            <pre class="code-example-dark"><code>&lt;button class="btn btn-primary btn-block mb-3"&gt;Primary&lt;/button&gt;
+&lt;button class="btn btn-outline btn-block mb-3"&gt;Secondary&lt;/button&gt;
+&lt;button class="btn btn-text btn-block"&gt;Tertiary&lt;/button&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="spacing-rule-section mb-8">
+          <h3 class="h3-title mb-6">🎴 Cards</h3>
+          
+          <div class="card mb-6">
+            <h4 class="subsection-title subsection-title-sm mb-3">Card Padding</h4>
+            <p class="subsection-text mb-4">Standard padding inside a card: <code class="code-inline">.p-6</code> (24px)</p>
+            
+            <div class="grid grid-2-col gap-medium mb-4">
+              <div class="card-example p-6">
+                <div class="demo-label">.p-6</div>
+                <h4>Card Title</h4>
+                <p>Card content with standard padding</p>
+              </div>
+              <div class="card-example p-8">
+                <div class="demo-label">.p-8</div>
+                <h4>Large Card</h4>
+                <p>Card with extra padding for hero sections</p>
+              </div>
+            </div>
+
+            <pre class="code-example-dark"><code>&lt;div class="card p-6"&gt;...&lt;/div&gt;
+&lt;div class="card p-8"&gt;...&lt;/div&gt;</code></pre>
+          </div>
+
+          <div class="card">
+            <h4 class="subsection-title subsection-title-sm mb-3">Card Spacing</h4>
+            <p class="subsection-text mb-4">Between cards: <code class="code-inline">.mb-4</code> (16px) or <code class="code-inline">.mb-6</code> (24px)</p>
+            
+            <div class="mb-4">
+              <div class="card-example p-4 mb-4">
+                <div class="demo-label">.mb-4</div>
+                Card 1
+              </div>
+              <div class="card-example p-4 mb-4">
+                <div class="demo-label">.mb-4</div>
+                Card 2
+              </div>
+              <div class="card-example p-4">
+                Card 3
+              </div>
+            </div>
+
+            <pre class="code-example-dark"><code>&lt;div class="card mb-4"&gt;Card 1&lt;/div&gt;
+&lt;div class="card mb-4"&gt;Card 2&lt;/div&gt;
+&lt;div class="card"&gt;Card 3&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- Sections -->
+        <div class="spacing-rule-section mb-8">
+          <h3 class="h3-title mb-6">📄 Sections</h3>
+          
+          <div class="card">
+            <h4 class="subsection-title subsection-title-sm mb-3">Section Padding</h4>
+            <p class="subsection-text mb-4">Vertical section spacing: <code class="code-inline">.py-12</code> (48px) on desktop, <code class="code-inline">.py-8</code> (32px) on mobile</p>
+            
+            <div class="section-spacing-demo mb-4">
+              <div class="section-demo py-8">
+                <div class="demo-label">.py-8</div>
+                <h3>Section Title</h3>
+                <p>Section content</p>
+              </div>
+              <div class="section-demo py-12">
+                <div class="demo-label">.py-12</div>
+                <h3>Large Section</h3>
+                <p>More breathing room</p>
+              </div>
+            </div>
+
+            <pre class="code-example-dark"><code>&lt;section class="section py-8"&gt;...&lt;/section&gt;
+&lt;section class="section py-12"&gt;...&lt;/section&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="spacing-rule-section">
+          <h3 class="h3-title mb-6">📝 Typography</h3>
+          
+          <div class="card">
+            <h4 class="subsection-title subsection-title-sm mb-3">Text Spacing</h4>
+            <p class="subsection-text mb-4">Vertical rhythm for text elements</p>
+            
+            <div class="typography-spacing-demo mb-4">
+              <h2 class="mb-2">Heading 2 (.mb-2)</h2>
+              <p class="mb-4">Paragraph with standard spacing below. Lorem ipsum dolor sit amet.</p>
+              <h3 class="mb-2">Heading 3 (.mb-2)</h3>
+              <p class="mb-3">Smaller paragraph with less spacing. Lorem ipsum dolor.</p>
+              <ul class="mb-4">
+                <li>List item 1</li>
+                <li>List item 2</li>
+                <li>List item 3</li>
+              </ul>
+            </div>
+
+            <div class="card card--info">
+              <h5 class="info-title">Typography Rules</h5>
+              <ul class="list-simple">
+                <li><strong>H1, H2:</strong> .mb-2 or .mb-3</li>
+                <li><strong>H3, H4:</strong> .mb-2</li>
+                <li><strong>Paragraphs:</strong> .mb-4</li>
+                <li><strong>Lists:</strong> .mb-4</li>
+                <li><strong>Last element:</strong> no margin-bottom</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gap for Grid & Flex -->
+    <section class="section bg-surface">
+      <div class="container">
+        <h2 class="section-title">Gap for Grid & Flexbox</h2>
+        <p class="text-lg mb-8 max-w-700">
+          Use <code class="code-inline">gap</code> instead of margin for Grid and Flexbox layouts
+        </p>
+
+        <div class="grid grid-2-col gap-large">
+          <!-- Grid Gap -->
+          <div class="card">
+            <h3 class="card-title mb-3">Grid Gap</h3>
+            <p class="subsection-text mb-4">Standard values: <code class="code-inline">.gap-small</code>, <code class="code-inline">.gap-medium</code>, <code class="code-inline">.gap-large</code></p>
+            
+            <div class="mb-4">
+              <p class="mb-2"><strong>gap-small (1rem / 16px):</strong></p>
+              <div class="grid grid-3-col gap-small mb-4">
+                <div class="gap-demo-box">1</div>
+                <div class="gap-demo-box">2</div>
+                <div class="gap-demo-box">3</div>
+              </div>
+
+              <p class="mb-2"><strong>gap-medium (1.5rem / 24px):</strong></p>
+              <div class="grid grid-3-col gap-medium mb-4">
+                <div class="gap-demo-box">1</div>
+                <div class="gap-demo-box">2</div>
+                <div class="gap-demo-box">3</div>
+              </div>
+
+              <p class="mb-2"><strong>gap-large (2rem / 32px):</strong></p>
+              <div class="grid grid-3-col gap-large">
+                <div class="gap-demo-box">1</div>
+                <div class="gap-demo-box">2</div>
+                <div class="gap-demo-box">3</div>
+              </div>
+            </div>
+
+            <pre class="code-example-dark"><code>&lt;div class="grid grid-3-col gap-medium"&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <!-- Flex Gap -->
+          <div class="card">
+            <h3 class="card-title mb-3">Flexbox Gap</h3>
+            <p class="subsection-text mb-4">Gap works for flex containers too</p>
+            
+            <div class="mb-4">
+              <p class="mb-2"><strong>Horizontal (gap-small):</strong></p>
+              <div class="flex-row gap-small mb-4">
+                <div class="gap-demo-box flex-1">Flex 1</div>
+                <div class="gap-demo-box flex-1">Flex 2</div>
+                <div class="gap-demo-box flex-1">Flex 3</div>
+              </div>
+
+              <p class="mb-2"><strong>Vertical (gap-medium):</strong></p>
+              <div class="flex-col gap-medium max-w-300">
+                <div class="gap-demo-box">Item 1</div>
+                <div class="gap-demo-box">Item 2</div>
+                <div class="gap-demo-box">Item 3</div>
+              </div>
+            </div>
+
+            <pre class="code-example-dark"><code>&lt;div class="flex-row gap-small"&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+
+        <div class="card card--warning mt-6">
+          <h3 class="warning-title-gold">⚠️ Gap vs Margin</h3>
+          <p class="subsection-text mb-3">
+            <strong>DO NOT use</strong> margin on grid/flex children when you can use gap on the container.
+          </p>
+          <div class="grid grid-2-col gap-medium">
+            <div>
+              <p class="mb-2"><strong>❌ Wrong:</strong></p>
+              <pre class="code-example-dark"><code>&lt;div class="grid"&gt;
+  &lt;div class="m-2"&gt;1&lt;/div&gt;
+  &lt;div class="m-2"&gt;2&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+            <div>
+              <p class="mb-2"><strong>✅ Correct:</strong></p>
+              <pre class="code-example-dark"><code>&lt;div class="grid gap-medium"&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form Controls Spacing -->
+    <section class="section bg-surface">
+      <div class="container">
+        <h2 class="section-title">Form Controls Spacing</h2>
+        <p class="text-lg mb-8 max-w-700">
+          Proper spacing between form elements improves readability and prevents visual "sticking"
+        </p>
+
+        <div class="grid grid-2-col gap-large">
+          <!-- Form Group Spacing -->
+          <div class="card">
+            <h3 class="card-title mb-3">Form Group Spacing</h3>
+            <p class="subsection-text mb-4">Use <code class="code-inline">.mb-6</code> (24px) between form groups</p>
+            
+            <div class="form-demo">
+              <div class="form-group mb-6">
+                <label class="label">Project Name</label>
+                <input type="text" class="input" placeholder="My Project">
+              </div>
+              
+              <div class="form-group mb-6">
+                <label class="label">Description</label>
+                <textarea class="input" rows="3" placeholder="Description..."></textarea>
+              </div>
+              
+              <button class="btn btn-primary">SUBMIT</button>
+            </div>
+
+            <pre class="code-example-dark mt-4"><code>&lt;div class="form-group mb-6"&gt;
+  &lt;label class="label"&gt;Project Name&lt;/label&gt;
+  &lt;input type="text" class="input"&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group mb-6"&gt;
+  &lt;label class="label"&gt;Description&lt;/label&gt;
+  &lt;textarea class="input"&gt;&lt;/textarea&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <!-- Checkbox/Radio Spacing -->
+          <div class="card">
+            <h3 class="card-title mb-3">Checkbox & Radio Spacing</h3>
+            <p class="subsection-text mb-4">Use <code class="code-inline">.mb-3</code> (12px) between individual controls</p>
+            
+            <div class="form-demo">
+              <div class="form-group">
+                <label class="label">Choose Options</label>
+                
+                <label class="checkbox checkbox--block mb-3">
+                  <input type="checkbox" class="checkbox__input" checked>
+                  <span class="checkbox__box">
+                    <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                      <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="checkbox__label">Option 1</span>
+                </label>
+                
+                <label class="checkbox checkbox--block mb-3">
+                  <input type="checkbox" class="checkbox__input">
+                  <span class="checkbox__box">
+                    <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                      <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="checkbox__label">Option 2</span>
+                </label>
+                
+                <label class="checkbox checkbox--block">
+                  <input type="checkbox" class="checkbox__input">
+                  <span class="checkbox__box">
+                    <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                      <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="checkbox__label">Option 3</span>
+                </label>
+              </div>
+            </div>
+
+            <pre class="code-example-dark mt-4"><code>&lt;!-- Vertical (block) layout --&gt;
+&lt;label class="checkbox checkbox--block mb-3"&gt;
+  &lt;input type="checkbox" class="checkbox__input"&gt;
+  &lt;span class="checkbox__box"&gt;...&lt;/span&gt;
+  &lt;span class="checkbox__label"&gt;Option 1&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Last item: NO mb-3 --&gt;
+&lt;label class="checkbox checkbox--block"&gt;...&lt;/label&gt;
+
+&lt;!-- Horizontal (inline) layout --&gt;
+&lt;label class="checkbox"&gt;Option 1&lt;/label&gt;
+&lt;label class="checkbox"&gt;Option 2&lt;/label&gt;</code></pre>
+          </div>
+        </div>
+
+        <div class="card card--info mt-6">
+          <h3 class="info-title">Form Spacing Rules</h3>
+          <ul class="list-simple">
+            <li><strong>Form Groups:</strong> Use <code class="code-inline">.mb-6</code> (24px) between groups</li>
+            <li><strong>Vertical Checkboxes/Radios:</strong> Add <code class="code-inline">.checkbox--block</code> modifier + <code class="code-inline">.mb-3</code> (12px), except last</li>
+            <li><strong>Horizontal Checkboxes/Radios:</strong> Default inline layout with automatic <code class="code-inline">margin-left: 1.5rem</code> (24px)</li>
+            <li><strong>Toggle Switches:</strong> Use <code class="code-inline">.mb-3</code> (12px) between items, except last</li>
+            <li><strong>Within form-group:</strong> <code class="code-inline">gap: 0.5rem</code> (8px) between label and input</li>
+            <li><strong>Submit Buttons:</strong> No margin-bottom on last form-group before buttons</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Air System -->
+    <section class="section">\n      <div class="container">
+        <h2 class="section-title">💨 The Air System</h2>
+        <p class="text-lg mb-8 max-w-800">
+          "Air" in design is the space between elements. Proper spacing creates comfortable perception.
+        </p>
+
+        <div class="grid grid-3-col gap-large mb-6">
+          <div class="card">
+            <div class="icon-box icon-box--blue mb-3">
+              <span class="emoji-lg">🌬️</span>
+            </div>
+            <h3 class="card-title mb-2">Breathing Room</h3>
+            <p class="card-text">Sufficient space between elements for easy perception</p>
+          </div>
+
+          <div class="card">
+            <div class="icon-box icon-box--gold mb-3">
+              <span class="emoji-lg">📏</span>
+            </div>
+            <h3 class="card-title mb-2">Consistency</h3>
+            <p class="card-text">Same spacing for similar elements creates rhythm</p>
+          </div>
+
+          <div class="card">
+            <div class="icon-box icon-box--green mb-3">
+              <span class="emoji-lg">🎯</span>
+            </div>
+            <h3 class="card-title mb-2">Hierarchy</h3>
+            <p class="card-text">Different spacing shows relationships between elements</p>
+          </div>
+        </div>
+
+        <div class="card card--info">
+          <h3 class="info-title">Golden Rules of Air</h3>
+          <ul class="list-simple">
+            <li><strong>More air between sections</strong> - use .py-12 or .py-16</li>
+            <li><strong>Medium air between groups</strong> - use .mb-6 or .mb-8</li>
+            <li><strong>Less air inside a group</strong> - use .mb-3 or .mb-4</li>
+            <li><strong>Minimum air between related elements</strong> - use .mb-2</li>
+            <li><strong>Gap for layout</strong> - use gap instead of margin in grid/flex</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Reference -->
+    <section class="section bg-surface">
+      <div class="container">
+        <h2 class="section-title">⚡ Quick Reference</h2>
+
+        <div class="grid grid-2-col gap-large">
+          <div class="card">
+            <h3 class="card-title mb-4">Common Patterns</h3>
+            <table class="spacing-reference-table">
+              <thead>
+                <tr>
+                  <th>Element</th>
+                  <th>Class</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Section padding</td>
+                  <td><code class="code-inline">.py-12</code></td>
+                  <td>48px</td>
+                </tr>
+                <tr>
+                  <td>Card padding</td>
+                  <td><code class="code-inline">.p-6</code></td>
+                  <td>24px</td>
+                </tr>
+                <tr>
+                  <td>Card spacing</td>
+                  <td><code class="code-inline">.mb-4</code></td>
+                  <td>16px</td>
+                </tr>
+                <tr>
+                  <td>Button spacing</td>
+                  <td><code class="code-inline">.mr-3</code></td>
+                  <td>12px</td>
+                </tr>
+                <tr>
+                  <td>Heading spacing</td>
+                  <td><code class="code-inline">.mb-2</code></td>
+                  <td>8px</td>
+                </tr>
+                <tr>
+                  <td>Paragraph spacing</td>
+                  <td><code class="code-inline">.mb-4</code></td>
+                  <td>16px</td>
+                </tr>
+                <tr>
+                  <td>Grid gap</td>
+                  <td><code class="code-inline">.gap-medium</code></td>
+                  <td>24px</td>
+                </tr>
+                <tr>
+                  <td>Button group spacing</td>
+                  <td><code class="code-inline">.gap-small</code></td>
+                  <td>16px</td>
+                </tr>
+                <tr>
+                  <td>Form group spacing</td>
+                  <td><code class="code-inline">.mb-6</code></td>
+                  <td>24px</td>
+                </tr>
+                <tr>
+                  <td>Checkbox/Radio/Toggle</td>
+                  <td><code class="code-inline">.mb-3</code></td>
+                  <td>12px</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title mb-4">Utility Classes</h3>
+            <div class="spacing-utilities-grid">
+              <div>
+                <h4 class="subsection-title-sm mb-2">Margin</h4>
+                <code class="code-inline block mb-1">.m-{size}</code>
+                <code class="code-inline block mb-1">.mt-{size}</code>
+                <code class="code-inline block mb-1">.mb-{size}</code>
+                <code class="code-inline block mb-1">.ml-{size}</code>
+                <code class="code-inline block mb-1">.mr-{size}</code>
+                <code class="code-inline block mb-1">.mx-{size}</code>
+                <code class="code-inline block">.my-{size}</code>
+              </div>
+              <div>
+                <h4 class="subsection-title-sm mb-2">Padding</h4>
+                <code class="code-inline block mb-1">.p-{size}</code>
+                <code class="code-inline block mb-1">.pt-{size}</code>
+                <code class="code-inline block mb-1">.pb-{size}</code>
+                <code class="code-inline block mb-1">.pl-{size}</code>
+                <code class="code-inline block mb-1">.pr-{size}</code>
+                <code class="code-inline block mb-1">.px-{size}</code>
+                <code class="code-inline block">.py-{size}</code>
+              </div>
+              <div>
+                <h4 class="subsection-title-sm mb-2">Gap</h4>
+                <code class="code-inline block mb-1">.gap-small</code>
+                <code class="code-inline block mb-1">.gap-medium</code>
+                <code class="code-inline block">.gap-large</code>
+              </div>
+              <div>
+                <h4 class="subsection-title-sm mb-2">Sizes</h4>
+                <p class="masonry-text">1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html> = document.getElementById('navbarToggle');
+    const navbarMobileMenu = document.getElementById('navbarMobileMenu');
+    if (navbarToggle && navbarMobileMenu) {
+      navbarToggle.addEventListener('click', () => {
+        navbarToggle.classList.toggle('active');
+        navbarMobileMenu.classList.toggle('active');
+      });
+      document.querySelectorAll('.navbar-mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navbarToggle.classList.remove('active');
+          navbarMobileMenu.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

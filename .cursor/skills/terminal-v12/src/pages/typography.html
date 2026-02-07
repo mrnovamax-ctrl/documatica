@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typography - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link">Spacing</a>
+        <a href="typography.html" class="nav-link nav-link-active">Typography</a>
+        <a href="tokens.html" class="nav-link">Tokens</a>
+        <a href="backgrounds.html" class="nav-link">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>        <a href="forms.html" class="nav-link">Forms</a>        <a href="preloader.html" class="nav-link">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link active">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Design System</span>
+        <h1 class="hero-title">TYPOGRAPHY</h1>
+        <p class="hero-subtitle">
+          Complete type system with Inter font family. Headings, display text, body copy, labels, and text styles.
+        </p>
+      </div>
+    </section>
+
+    <!-- Font Family -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Font Family</h2>
+        <p class="subsection-text">Primary typeface: Inter — versatile sans-serif from Google Fonts</p>
+        
+        <div class="type-box">
+          <p class="font-display">Inter</p>
+          <p class="font-meta">Primary Font • Sans-Serif • Google Fonts</p>
+          <p class="font-alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+          <p class="font-alphabet font-alphabet--lower">abcdefghijklmnopqrstuvwxyz</p>
+          <p class="font-alphabet">0123456789 !@#$%^&*()_+-=</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Font Weights -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Font Weights</h2>
+        <p class="subsection-text">Four weights available: Regular (400), Medium (500), Bold (700), Black (900)</p>
+        
+        <div class="weights-grid">
+          <div class="weight-item">
+            <span class="weight-sample weight-sample--regular">Aa</span>
+            <span class="weight-name">Regular</span>
+            <span class="weight-value">400</span>
+          </div>
+          <div class="weight-item">
+            <span class="weight-sample weight-sample--medium">Aa</span>
+            <span class="weight-name">Medium</span>
+            <span class="weight-value">500</span>
+          </div>
+          <div class="weight-item">
+            <span class="weight-sample weight-sample--bold">Aa</span>
+            <span class="weight-name">Bold</span>
+            <span class="weight-value">700</span>
+          </div>
+          <div class="weight-item">
+            <span class="weight-sample weight-sample--black">Aa</span>
+            <span class="weight-name">Black</span>
+            <span class="weight-value">900</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Headings -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. Headings</h2>
+        <p class="subsection-text">Six heading levels from H1 (72px) to H6 (16px)</p>
+        
+        <div class="headings-list">
+          <div class="heading-item">
+            <span class="heading-meta">H1 / 72px / Black / -0.02em</span>
+            <h1 class="type-h1">Documatica <span class="text-primary-light">Intelligence</span></h1>
+          </div>
+          <div class="heading-item">
+            <span class="heading-meta">H2 / 48px / Black / -0.02em</span>
+            <h2 class="type-h2">AI Platform for Documents</h2>
+          </div>
+          <div class="heading-item">
+            <span class="heading-meta">H3 / 36px / Bold / -0.01em</span>
+            <h3 class="type-h3">Intelligent Processing Engine</h3>
+          </div>
+          <div class="heading-item">
+            <span class="heading-meta">H4 / 24px / Bold / 0em</span>
+            <h4 class="type-h4">Next Generation Document Management</h4>
+          </div>
+          <div class="heading-item">
+            <span class="heading-meta">H5 / 20px / Bold / 0em</span>
+            <h5 class="type-h5">Enterprise-Level Security</h5>
+          </div>
+          <div class="heading-item">
+            <span class="heading-meta">H6 / 16px / Bold / 0.05em / Uppercase</span>
+            <h6 class="type-h6">ISO 27001 Certified</h6>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Heading Rules -->
+    <section class="section bg-surface">
+      <div class="container">
+        <h2 class="subsection-title">📋 Heading Rules & Best Practices</h2>
+        <p class="subsection-text mb-6">Guidelines for using headings correctly in Documatica v12.0</p>
+
+        <!-- Two-Color Headings -->
+        <div class="card mb-6">
+          <h3 class="card-title mb-4">🎨 Two-Color Headings</h3>
+          <p class="card-text mb-4">For long H1 headings use two-color pattern: first word dark (default) + second word light blue (.text-primary-light)</p>
+          
+          <div class="card card--warning mb-4">
+            <p class="mb-2"><strong>⚠️ Important rule:</strong></p>
+            <ul class="mb-0">
+              <li>✅ Two-color headings - ONLY for compound headings (2+ words)</li>
+              <li>✅ Single-word headings - ALWAYS one color ("CARDS", "LAYOUT")</li>
+              <li>❌ NEVER split one word by color ("BUT<span class="text-primary-light">TONS</span>" - wrong!)</li>
+            </ul>
+          </div>
+          
+          <!-- Example 1: Default + Light Blue -->
+          <div class="mb-6">
+            <p class="text-sm text-secondary mb-2"><strong>Pattern 1:</strong> Default + Light Blue (recommended)</p>
+            <h1 class="type-h1 mb-3">
+              Intelligent <span class="text-primary-light">Processing</span>
+            </h1>
+            <pre class="code-example-dark"><code>&lt;h1 class="type-h1"&gt;
+  Intelligent &lt;span class="text-primary-light"&gt;Processing&lt;/span&gt;
+&lt;/h1&gt;</code></pre>
+          </div>
+
+          <!-- Example 2: Default + Light Blue Long -->
+          <div class="mb-6">
+            <p class="text-sm text-secondary mb-2"><strong>Pattern 2:</strong> For long headings</p>
+            <h1 class="type-h1 mb-3">
+              Document <span class="text-primary-light">Management Platform</span>
+            </h1>
+            <pre class="code-example-dark"><code>&lt;h1 class="type-h1"&gt;
+  Document &lt;span class="text-primary-light"&gt;Management Platform&lt;/span&gt;
+&lt;/h1&gt;</code></pre>
+          </div>
+
+          <!-- Example 3: Brand Logo Pattern -->
+          <div class="mb-6">
+            <p class="text-sm text-secondary mb-2"><strong>Pattern 3:</strong> Logo Style (.brand-text + .brand-light)</p>
+            <h1 class="type-h1 mb-3">
+              <span class="brand-text">docu<span class="brand-light">matica</span></span>
+            </h1>
+            <pre class="code-example-dark"><code>&lt;h1 class="type-h1"&gt;
+  &lt;span class="brand-text"&gt;docu&lt;span class="brand-light"&gt;matica&lt;/span&gt;&lt;/span&gt;
+&lt;/h1&gt;</code></pre>
+          </div>
+
+          <!-- Example 4: Dark Background Pattern -->
+          <div class="mb-4">
+            <p class="text-sm text-secondary mb-2"><strong>Pattern 4:</strong> Two-color headings on dark background (.text-white + .text-primary-light)</p>
+          </div>
+          
+          <div class="pattern-dots-dark p-6 rounded-lg mb-4">
+            <h1 class="type-h1 mb-4">
+              <span class="text-white">Security</span> <span class="text-primary-light">Enterprise</span>
+            </h1>
+            <h1 class="type-h1">
+              <span class="text-white">Documatica</span> <span class="text-primary-light">Platform</span>
+            </h1>
+          </div>
+          
+          <pre class="code-example-dark"><code>&lt;div class="pattern-dots-dark"&gt;
+  &lt;h1 class="type-h1"&gt;
+    &lt;span class="text-white"&gt;Security&lt;/span&gt; &lt;span class="text-primary-light"&gt;Enterprise&lt;/span&gt;
+  &lt;/h1&gt;
+  &lt;h1 class="type-h1"&gt;
+    &lt;span class="text-white"&gt;Documatica&lt;/span&gt; &lt;span class="text-primary-light"&gt;Platform&lt;/span&gt;
+  &lt;/h1&gt;
+&lt;/div&gt;</code></pre>
+
+          <div class="card card--info mt-4">
+            <p class="mb-2"><strong>📘 Dark background rules:</strong></p>
+            <ul class="mb-0">
+              <li>✅ First word: <code class="code-inline">.text-white</code> (#ffffff)</li>
+              <li>✅ Second+ word: <code class="code-inline">.text-primary-light</code> (#60a5fa)</li>
+              <li>✅ Use with: <code class="code-inline">.bg-dark</code>, <code class="code-inline">.pattern-dots-dark</code></li>
+              <li>❌ Without <code class="code-inline">.text-white</code> on first word text will be poorly visible</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Heading Hierarchy -->
+        <div class="card mb-6">
+          <h3 class="card-title mb-4">📊Heading Hierarchy</h3>
+          <p class="card-text mb-4">Follow heading hierarchy for proper document structure</p>
+          
+          <div class="grid grid-2-col gap-medium">
+            <div>
+              <h4 class="subsection-title subsection-title-sm mb-3 text-success">✅ Correct</h4>
+              <div class="p-4 bg-surface-light rounded">
+                <div class="mb-3">
+                  <code class="code-inline">H1</code> <span class="text-sm text-secondary">→ One per page (main heading)</span>
+                </div>
+                <div class="mb-3">
+                  <code class="code-inline">H2</code> <span class="text-sm text-secondary">→ Main sections</span>
+                </div>
+                <div class="mb-3">
+                  <code class="code-inline">H3</code> <span class="text-sm text-secondary">→ Subsections</span>
+                </div>
+                <div class="mb-3">
+                  <code class="code-inline">H4-H6</code> <span class="text-sm text-secondary">→ Details</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="subsection-title subsection-title-sm mb-3 text-danger">❌ Incorrect</h4>
+              <div class="p-4 bg-surface-light rounded">
+                <div class="mb-3">
+                  <span class="text-sm text-secondary">❌ Multiple H1 per page</span>
+                </div>
+                <div class="mb-3">
+                  <span class="text-sm text-secondary">❌ Skipping levels (H1 → H3)</span>
+                </div>
+                <div class="mb-3">
+                  <span class="text-sm text-secondary">❌ Using H for text size</span>
+                </div>
+                <div class="mb-3">
+                  <span class="text-sm text-secondary">❌ H6 for small text (use .text-sm)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Letter Spacing -->
+        <div class="card mb-6">
+          <h3 class="card-title mb-4">📐 Letter Spacing (Tracking)</h3>
+          <p class="card-text mb-4">Negative tracking for large headings improves readability</p>
+          
+          <div class="spacing-scale-list">
+            <div class="spacing-item">
+              <code class="code-inline">H1, H2</code>
+              <span class="text-secondary">→</span>
+              <code class="code-inline">-0.02em</code>
+              <span class="text-sm text-secondary">(tighter)</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">H3</code>
+              <span class="text-secondary">→</span>
+              <code class="code-inline">-0.01em</code>
+              <span class="text-sm text-secondary">(slightly tighter)</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">H4, H5</code>
+              <span class="text-secondary">→</span>
+              <code class="code-inline">0em</code>
+              <span class="text-sm text-secondary">(normal)</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">H6</code>
+              <span class="text-secondary">→</span>
+              <code class="code-inline">0.05em</code>
+              <span class="text-sm text-secondary">(for uppercase)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vertical Rhythm -->
+        <div class="card">
+          <h3 class="card-title mb-4">📏 Vertical Rhythm</h3>
+          <p class="card-text mb-4">Proper spacing for headings (see <a href="spacing.html" class="text-primary">Spacing System</a>)</p>
+          
+          <div class="spacing-scale-list">
+            <div class="spacing-item">
+              <code class="code-inline">H1, H2</code>
+              <span class="text-secondary">→</span>
+              <code class="code-inline">.mb-2</code>
+              <span class="text-sm text-secondary">(8px bottom)</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">H3, H4</code>
+              <span class="text-secondary">→</span>
+              <code class="code-inline">.mb-3</code>
+              <span class="text-sm text-secondary">(12px bottom)</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">H5, H6</code>
+              <span class="text-secondary">→</span>
+              <code class="code-inline">.mb-2</code>
+              <span class="text-sm text-secondary">(8px bottom)</span>
+            </div>
+            <div class="spacing-item">
+              <code class="code-inline">Paragraphs</code>
+              <span class="text-secondary">→</span>
+              <code class="code-inline">.mb-4</code>
+              <span class="text-sm text-secondary">(16px bottom)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Display Text -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. Display Text</h2>
+        <p class="subsection-text">Large hero text for landing pages and marketing materials</p>
+        
+        <div class="display-box">
+          <span class="display-meta">Display XL / 96px / Black / -0.03em / Uppercase</span>
+          <p class="type-display-xl">MEGA</p>
+        </div>
+        <div class="display-box">
+          <span class="display-meta">Display LG / 72px / Black / -0.02em / Uppercase</span>
+          <p class="type-display-lg">HEADLINE</p>
+        </div>
+        <div class="display-box">
+          <span class="display-meta">Display MD / 48px / Black / -0.02em</span>
+          <p class="type-display-md">Section Hero</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Body Text -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. Body Text</h2>
+        <p class="subsection-text">Four body text sizes for different content needs</p>
+        
+        <div class="body-list">
+          <div class="body-item">
+            <span class="body-meta">Body Large / 18px / Regular / 1.75 line-height</span>
+            <p class="type-body-lg">Documatica uses advanced machine learning algorithms for automatic analysis, classification, and data extraction from documents. The platform supports over 50 file formats and recognizes text in 40+ languages.</p>
+          </div>
+          <div class="body-item">
+            <span class="body-meta">Body Base / 16px / Regular / 1.625 line-height</span>
+            <p class="type-body-base">Documatica uses advanced machine learning algorithms for automatic analysis, classification, and data extraction from documents. The platform supports over 50 file formats and recognizes text in 40+ languages.</p>
+          </div>
+          <div class="body-item">
+            <span class="body-meta">Body Small / 14px / Regular / 1.5 line-height</span>
+            <p class="type-body-sm">Documatica uses advanced machine learning algorithms for automatic analysis, classification, and data extraction from documents. The platform supports over 50 file formats.</p>
+          </div>
+          <div class="body-item">
+            <span class="body-meta">Body XS / 12px / Regular / 1.5 line-height</span>
+            <p class="type-body-xs">Documatica uses advanced machine learning algorithms for automatic analysis and classification of documents.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Labels & Captions -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. Labels & Captions</h2>
+        <p class="subsection-text">Small text for labels, tags, captions, and metadata</p>
+        
+        <div class="labels-grid">
+          <div class="label-item">
+            <span class="label-meta">Label LG / 14px / Black / 0.2em / Uppercase</span>
+            <p class="type-label-lg">SECTION LABEL</p>
+          </div>
+          <div class="label-item">
+            <span class="label-meta">Label MD / 12px / Black / 0.15em / Uppercase</span>
+            <p class="type-label-md">STATUS LABEL</p>
+          </div>
+          <div class="label-item">
+            <span class="label-meta">Label SM / 10px / Black / 0.3em / Uppercase</span>
+            <p class="type-label-sm">MICRO LABEL</p>
+          </div>
+          <div class="label-item">
+            <span class="label-meta">Caption / 12px / Medium / 0em</span>
+            <p class="type-caption">Caption for images or tables</p>
+          </div>
+          <div class="label-item">
+            <span class="label-meta">Overline / 11px / Black / 0.5em / Uppercase</span>
+            <p class="type-overline">CATEGORY</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Text Styles -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. Text Styles</h2>
+        <p class="subsection-text">Common text formatting styles and modifiers</p>
+        
+        <div class="styles-list">
+          <div class="style-item">
+            <span class="style-demo type-strong">Bold text (Strong)</span>
+            <code class="style-code">&lt;strong&gt; or .type-strong</code>
+          </div>
+          <div class="style-item">
+            <span class="style-demo type-emphasis">Italic text (Emphasis)</span>
+            <code class="style-code">&lt;em&gt; or .type-emphasis</code>
+          </div>
+          <div class="style-item">
+            <span class="style-demo type-underline">Underlined text</span>
+            <code class="style-code">.type-underline</code>
+          </div>
+          <div class="style-item">
+            <span class="style-demo type-strikethrough">Strikethrough text</span>
+            <code class="style-code">&lt;del&gt; or .type-strikethrough</code>
+          </div>
+          <div class="style-item">
+            <span class="style-demo type-link">Link with underline</span>
+            <code class="style-code">&lt;a href="#"&gt; or .type-link</code>
+          </div>
+          <div class="style-item">
+            <span class="style-demo type-highlight">Highlighted text</span>
+            <code class="style-code">&lt;mark&gt; or .type-highlight</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lists -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">10. Lists System</h2>
+        <p class="subsection-text">Comprehensive list styles for unordered, ordered, and custom lists</p>
+        
+        <div class="grid grid-2-col mb-8">
+          
+          <!-- Default Unordered -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Default Unordered</h3>
+            <ul class="list-default">
+              <li>Intelligent document processing</li>
+              <li>AI-powered text extraction</li>
+              <li>Multi-language support</li>
+              <li>Real-time collaboration</li>
+              <li>Enterprise-level security</li>
+            </ul>
+            <code class="style-code">&lt;ul class="list-default"&gt;</code>
+          </div>
+
+          <!-- Circle Markers -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Circle Markers</h3>
+            <ul class="list-circle">
+              <li>Cloud storage integration</li>
+              <li>Version control system</li>
+              <li>Automated workflows</li>
+              <li>Custom templates</li>
+              <li>API access</li>
+            </ul>
+            <code class="style-code">&lt;ul class="list-circle"&gt;</code>
+          </div>
+
+          <!-- Square Markers -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Square Markers</h3>
+            <ul class="list-square">
+              <li>Advanced analytics dashboard</li>
+              <li>User role management</li>
+              <li>Audit trail logging</li>
+              <li>Compliance reporting</li>
+              <li>Data encryption</li>
+            </ul>
+            <code class="style-code">&lt;ul class="list-square"&gt;</code>
+          </div>
+
+          <!-- Decimal Numbering -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Decimal Numbering</h3>
+            <ol class="list-decimal">
+              <li>Upload your document</li>
+              <li>AI analyzes content structure</li>
+              <li>Extract key information</li>
+              <li>Review and validate data</li>
+              <li>Export to desired format</li>
+            </ol>
+            <code class="style-code">&lt;ol class="list-decimal"&gt;</code>
+          </div>
+
+          <!-- Roman Numerals -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Roman Numerals</h3>
+            <ol class="list-roman">
+              <li>Initial project setup</li>
+              <li>Team onboarding phase</li>
+              <li>Development sprint</li>
+              <li>Quality assurance</li>
+              <li>Production deployment</li>
+            </ol>
+            <code class="style-code">&lt;ol class="list-roman"&gt;</code>
+          </div>
+
+          <!-- Alphabetic -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Alphabetic</h3>
+            <ol class="list-alpha">
+              <li>Configure system settings</li>
+              <li>Import existing documents</li>
+              <li>Train AI model</li>
+              <li>Test automation rules</li>
+              <li>Monitor performance</li>
+            </ol>
+            <code class="style-code">&lt;ol class="list-alpha"&gt;</code>
+          </div>
+
+        </div>
+
+        <!-- Styled Lists -->
+        <h3 class="type-h4 mb-4 mt-8">Custom Styled Lists</h3>
+        <div class="grid grid-2-col mb-8">
+          
+          <!-- Checkmark List -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Checkmark List</h3>
+            <ul class="list-check">
+              <li>Premium AI features included</li>
+              <li>24/7 customer support</li>
+              <li>Unlimited storage space</li>
+              <li>Advanced security protocols</li>
+              <li>Priority processing queue</li>
+            </ul>
+            <code class="style-code">&lt;ul class="list-check"&gt;</code>
+          </div>
+
+          <!-- Arrow List (Interactive) -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Arrow List (Hover)</h3>
+            <ul class="list-arrow">
+              <li>Navigate to dashboard</li>
+              <li>Select document category</li>
+              <li>Choose processing mode</li>
+              <li>Review extracted data</li>
+              <li>Approve and finalize</li>
+            </ul>
+            <code class="style-code">&lt;ul class="list-arrow"&gt;</code>
+          </div>
+
+          <!-- Star List -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Star List</h3>
+            <ul class="list-star">
+              <li>99.9% uptime guarantee</li>
+              <li>Award-winning interface</li>
+              <li>Industry-leading accuracy</li>
+              <li>Featured in major publications</li>
+              <li>Trusted by Fortune 500</li>
+            </ul>
+            <code class="style-code">&lt;ul class="list-star"&gt;</code>
+          </div>
+
+          <!-- Nested List -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Nested List</h3>
+            <ul class="list-nested">
+              <li>Document Management
+                <ul>
+                  <li>Upload and organize</li>
+                  <li>Version control</li>
+                  <li>Sharing permissions</li>
+                </ul>
+              </li>
+              <li>AI Processing
+                <ul>
+                  <li>Text extraction</li>
+                  <li>Data validation</li>
+                  <li>Auto-categorization</li>
+                </ul>
+              </li>
+              <li>Export Options
+                <ul>
+                  <li>PDF format</li>
+                  <li>Excel spreadsheet</li>
+                  <li>JSON API</li>
+                </ul>
+              </li>
+            </ul>
+            <code class="style-code">&lt;ul class="list-nested"&gt;</code>
+          </div>
+
+          <!-- Unstyled List -->
+          <div class="card">
+            <h3 class="type-h5 mb-4">Unstyled List</h3>
+            <ul class="list-none">
+              <li>Navigation items</li>
+              <li>Menu components</li>
+              <li>Tag collections</li>
+              <li>Breadcrumb trails</li>
+              <li>Toolbar buttons</li>
+            </ul>
+            <code class="style-code">&lt;ul class="list-none"&gt;</code>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Examples -->
+    <section class="section">
+      <div class="container">
+        <div class="card info-card">
+          <h2 class="subsection-title">💡 Usage Guidelines</h2>
+          <ul class="info-list">
+            <li><strong>Headings:</strong> Use semantic HTML (h1-h6) with .type-h* classes for styling</li>
+            <li><strong>Display Text:</strong> For hero sections and landing pages, not for content headings</li>
+            <li><strong>Body Text:</strong> Default is .type-body-base (16px), use others contextually</li>
+            <li><strong>Labels:</strong> Always uppercase with wide letter-spacing for v12.0 style</li>
+            <li><strong>Line Height:</strong> Headings tight (1.1-1.5), body generous (1.5-1.75)</li>
+            <li><strong>Responsive:</strong> Display and heading sizes scale down on mobile automatically</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html> = document.getElementById('navbarToggle');
+    const navbarMobileMenu = document.getElementById('navbarMobileMenu');
+    
+    if (navbarToggle && navbarMobileMenu) {
+      navbarToggle.addEventListener('click', () => {
+        navbarToggle.classList.toggle('active');
+        navbarMobileMenu.classList.toggle('active');
+      });
+      
+      const mobileLinks = document.querySelectorAll('.navbar-mobile-nav-link');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navbarToggle.classList.remove('active');
+          navbarMobileMenu.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

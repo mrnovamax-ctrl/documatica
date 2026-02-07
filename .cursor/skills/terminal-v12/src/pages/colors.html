@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colors - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link nav-link--active">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link">Spacing</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="tokens.html" class="nav-link">Tokens</a>
+        <a href="backgrounds.html" class="nav-link">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>
+        <a href="forms.html" class="nav-link">Forms</a>
+        <a href="preloader.html" class="nav-link">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link active">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <!-- Page Header -->
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Design System</span>
+        <h1 class="hero-title">COLORS</h1>
+        <p class="hero-subtitle">
+          Documatica v12.0 brand palette. Use only these colors to maintain consistent style.
+        </p>
+      </div>
+    </section>
+
+    <!-- Primary Colors -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">Primary Colors</h2>
+        
+        <div class="grid grid-2-col gap-medium">
+          <div class="color-showcase-card">
+            <div class="color-box color-blue"></div>
+            <div class="color-info">
+              <h3 class="color-name">Core Blue</h3>
+              <p class="color-code">#3b82f6</p>
+              <p class="color-usage">Primary actions, links, accents</p>
+              <code class="color-var">var(--color-brand-blue)</code>
+            </div>
+          </div>
+
+          <div class="color-showcase-card">
+            <div class="color-box color-gold"></div>
+            <div class="color-info">
+              <h3 class="color-name">Smart Gold</h3>
+              <p class="color-code">#fbbf24</p>
+              <p class="color-usage">AI features, premium elements</p>
+              <code class="color-var">var(--color-brand-gold)</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Neutral Scale -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">Neutral Scale (Slate)</h2>
+        
+        <div class="color-grid">
+          <div class="color-swatch color-swatch--slate-50">
+            <div class="color-swatch-name">Slate 50</div>
+            <div class="color-swatch-code">#f8fafc</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-100">
+            <div class="color-swatch-name">Slate 100</div>
+            <div class="color-swatch-code">#f1f5f9</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-200">
+            <div class="color-swatch-name">Slate 200</div>
+            <div class="color-swatch-code">#e2e8f0</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-300">
+            <div class="color-swatch-name">Slate 300</div>
+            <div class="color-swatch-code">#cbd5e1</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-400">
+            <div class="color-swatch-name">Slate 400</div>
+            <div class="color-swatch-code">#94a3b8</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-500">
+            <div class="color-swatch-name">Slate 500</div>
+            <div class="color-swatch-code">#64748b</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-600">
+            <div class="color-swatch-name">Slate 600</div>
+            <div class="color-swatch-code">#475569</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-700">
+            <div class="color-swatch-name">Slate 700</div>
+            <div class="color-swatch-code">#334155</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-800">
+            <div class="color-swatch-name">Slate 800</div>
+            <div class="color-swatch-code">#1e293b</div>
+          </div>
+          <div class="color-swatch color-swatch--slate-900">
+            <div class="color-swatch-name">Slate 900</div>
+            <div class="color-swatch-code">#0f172a</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Semantic Colors -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">Semantic Colors</h2>
+        
+        <div class="grid grid-2-col gap-large">
+          <div class="color-showcase-card">
+            <div class="color-box color-box--success"></div>
+            <div class="color-info">
+              <h3 class="color-name">Success</h3>
+              <p class="color-code">#10b981</p>
+              <p class="color-usage">Successful operations, confirmations</p>
+              <code class="color-var">var(--color-success)</code>
+            </div>
+          </div>
+
+          <div class="color-showcase-card">
+            <div class="color-box color-box--warning"></div>
+            <div class="color-info">
+              <h3 class="color-name">Warning</h3>
+              <p class="color-code">#f59e0b</p>
+              <p class="color-usage">Warnings</p>
+              <code class="color-var">var(--color-warning)</code>
+            </div>
+          </div>
+
+          <div class="color-showcase-card">
+            <div class="color-box color-box--error"></div>
+            <div class="color-info">
+              <h3 class="color-name">Error</h3>
+              <p class="color-code">#ef4444</p>
+              <p class="color-usage">Errors, deletion</p>
+              <code class="color-var">var(--color-error)</code>
+            </div>
+          </div>
+
+          <div class="color-showcase-card">
+            <div class="color-box color-box--info"></div>
+            <div class="color-info">
+              <h3 class="color-name">Info</h3>
+              <p class="color-code">#3b82f6</p>
+              <p class="color-usage">Informational messages</p>
+              <code class="color-var">var(--color-info)</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Rules -->
+    <section class="section">
+      <div class="container">
+        <div class="card card--warning">
+          <h2 class="warning-title">
+            ⚠️ Usage Rules
+          </h2>
+          <ul class="warning-list">
+            <li>✅ Use ONLY colors from the official palette</li>
+            <li>✅ Always use CSS variables: <code>var(--color-brand-blue)</code></li>
+            <li>❌ DO NOT use random colors (#ff0000, #123456, etc.)</li>
+            <li>❌ DO NOT use direct hex codes in components</li>
+            <li>✅ For gradients, combine only brand colors</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html> = document.getElementById('navbarToggle');
+    const navbarMobileMenu = document.getElementById('navbarMobileMenu');
+    if (navbarToggle && navbarMobileMenu) {
+      navbarToggle.addEventListener('click', () => {
+        navbarToggle.classList.toggle('active');
+        navbarMobileMenu.classList.toggle('active');
+      });
+      document.querySelectorAll('.navbar-mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navbarToggle.classList.remove('active');
+          navbarMobileMenu.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

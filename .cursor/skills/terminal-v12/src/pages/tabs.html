@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabs - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <div class="navbar navbar--dark">
+    <div class="container">
+      <div class="navbar-inner">
+        <div class="navbar-brand">
+          <span class="brand-text">documatica</span>
+        </div>
+        
+        <nav class="navbar-menu">
+          <a href="../hub.html" class="nav-link">Hub</a>
+          <a href="colors.html" class="nav-link">Colors</a>
+          <a href="buttons.html" class="nav-link">Buttons</a>
+          <a href="modals.html" class="nav-link">Modals</a>
+          <a href="tabs.html" class="nav-link">Tabs</a>
+        </nav>
+        
+        <div class="navbar-actions">
+          <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+          <button class="navbar-toggle" id="navbarToggle">
+            <span class="navbar-toggle-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <div class="container">
+        <div class="navbar-mobile-actions">
+          <button class="btn btn-gold btn-sm w-full">UPGRADE AI</button>
+        </div>
+        <ul class="navbar-mobile-nav">
+          <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+          <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+          <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+          <li class="navbar-mobile-nav-item"><a href="modals.html" class="navbar-mobile-nav-link">Modals</a></li>
+          <li class="navbar-mobile-nav-item"><a href="tabs.html" class="navbar-mobile-nav-link">Tabs</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">TAB <span class="text-primary-light">NAVIGATION</span></h1>
+        <p class="hero-subtitle">
+          Organize content into tabs with v12.0 Spring animations and multiple variants
+        </p>
+      </div>
+    </section>
+
+    <!-- 01. Basic Tabs -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. BASIC <span class="text-primary-light">TABS</span></h2>
+        <p class="subsection-text mb-8">Default tabs with underline indicator and Spring animation</p>
+
+        <div class="tabs" id="basicTabs">
+          <div class="tab-list">
+            <button class="tab active" data-tab="basic-overview">OVERVIEW</button>
+            <button class="tab" data-tab="basic-features">FEATURES</button>
+            <button class="tab" data-tab="basic-pricing">PRICING</button>
+            <button class="tab" data-tab="basic-support">SUPPORT</button>
+          </div>
+
+          <div class="tab-panel active" id="basic-overview">
+            <h3 class="type-h3 mb-4">PRODUCT OVERVIEW</h3>
+            <p class="mb-4">Documatica v12.0 is a comprehensive design system built with production-grade components for deployment across 100+ projects.</p>
+            <p>Features include Spring physics animations, BEM naming conventions, responsive design, and dark mode support throughout all components.</p>
+          </div>
+
+          <div class="tab-panel" id="basic-features">
+            <h3 class="type-h3 mb-4">KEY FEATURES</h3>
+            <div class="grid grid-2-col gap-6">
+              <div class="card p-6">
+                <h4 class="type-h4 mb-3">RESPONSIVE DESIGN</h4>
+                <p>All components work seamlessly across mobile, tablet, desktop, and 4K displays.</p>
+              </div>
+              <div class="card p-6">
+                <h4 class="type-h4 mb-3">SPRING ANIMATIONS</h4>
+                <p>v12.0 Spring easing cubic-bezier(0.34, 1.56, 0.64, 1) on all interactions.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="basic-pricing">
+            <h3 class="type-h3 mb-4">PRICING PLANS</h3>
+            <div class="grid grid-3-col gap-6">
+              <div class="card p-6">
+                <span class="badge badge-primary mb-4">STARTER</span>
+                <div class="type-h2 mb-2">$29</div>
+                <p>Perfect for small projects and personal use</p>
+              </div>
+              <div class="card p-6">
+                <span class="badge badge-gold mb-4">PRO</span>
+                <div class="type-h2 mb-2">$99</div>
+                <p>For teams and production deployments</p>
+              </div>
+              <div class="card p-6">
+                <span class="badge badge-dark mb-4">ENTERPRISE</span>
+                <div class="type-h2 mb-2">$299</div>
+                <p>Unlimited projects with priority support</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="basic-support">
+            <h3 class="type-h3 mb-4">SUPPORT OPTIONS</h3>
+            <p class="mb-6">Get help with implementation, customization, and technical issues.</p>
+            <div class="grid grid-2-col gap-6">
+              <button class="btn btn-primary">CONTACT SUPPORT</button>
+              <button class="btn btn-ghost">VIEW DOCUMENTATION</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02. Pills Tabs -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. PILLS <span class="text-primary-light">TABS</span></h2>
+        <p class="subsection-text mb-8">Rounded pill-style tabs with filled active state</p>
+
+        <div class="tabs" id="pillsTabs">
+          <div class="tab-list tab-list--pills">
+            <button class="tab active" data-tab="pills-all">ALL</button>
+            <button class="tab" data-tab="pills-design">DESIGN</button>
+            <button class="tab" data-tab="pills-development">DEVELOPMENT</button>
+            <button class="tab" data-tab="pills-marketing">MARKETING</button>
+          </div>
+
+          <div class="tab-panel active" id="pills-all">
+            <div class="grid grid-3-col gap-4">
+              <div class="card p-6">
+                <span class="badge badge-primary mb-3">DESIGN</span>
+                <h4 class="type-h4 mb-2">UI Kit Complete</h4>
+                <p>All components designed and ready</p>
+              </div>
+              <div class="card p-6">
+                <span class="badge badge-success mb-3">DEVELOPMENT</span>
+                <h4 class="type-h4 mb-2">Core CSS Built</h4>
+                <p>12,000+ lines of production code</p>
+              </div>
+              <div class="card p-6">
+                <span class="badge badge-gold mb-3">MARKETING</span>
+                <h4 class="type-h4 mb-2">Landing Pages</h4>
+                <p>Hero sections and CTAs ready</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="pills-design">
+            <div class="card p-8">
+              <h3 class="type-h3 mb-4">DESIGN ASSETS</h3>
+              <p class="mb-6">Complete design system with color palette, typography, spacing scale, and component library.</p>
+              <button class="btn btn-primary">DOWNLOAD ASSETS</button>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="pills-development">
+            <div class="card p-8">
+              <h3 class="type-h3 mb-4">DEVELOPMENT TOOLS</h3>
+              <p class="mb-6">Production-ready CSS, JavaScript utilities, and comprehensive documentation.</p>
+              <button class="btn btn-primary">VIEW GITHUB</button>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="pills-marketing">
+            <div class="card p-8">
+              <h3 class="type-h3 mb-4">MARKETING MATERIALS</h3>
+              <p class="mb-6">Landing page templates, email designs, and social media graphics.</p>
+              <button class="btn btn-primary">EXPLORE TEMPLATES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03. Bordered Tabs -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. BORDERED <span class="text-primary-light">TABS</span></h2>
+        <p class="subsection-text mb-8">Tabs within a bordered container with dark active state</p>
+
+        <div class="tabs" id="borderedTabs">
+          <div class="tab-list tab-list--bordered">
+            <button class="tab active" data-tab="bordered-monthly">MONTHLY</button>
+            <button class="tab" data-tab="bordered-yearly">YEARLY</button>
+            <button class="tab" data-tab="bordered-lifetime">LIFETIME</button>
+          </div>
+
+          <div class="tab-panel active" id="bordered-monthly">
+            <div class="tab-content-card">
+              <h3 class="type-h3 mb-4">MONTHLY BILLING</h3>
+              <div class="type-h1 text-primary mb-4">$29<span class="type-h4 text-slate-500">/month</span></div>
+              <p class="mb-6">Pay month-to-month with no commitment. Cancel anytime.</p>
+              <ul class="mb-6" style="list-style: none; padding: 0;">
+                <li class="mb-3">✓ All components</li>
+                <li class="mb-3">✓ Regular updates</li>
+                <li class="mb-3">✓ Community support</li>
+              </ul>
+              <button class="btn btn-primary w-full">START MONTHLY PLAN</button>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="bordered-yearly">
+            <div class="tab-content-card">
+              <h3 class="type-h3 mb-4">YEARLY BILLING</h3>
+              <div class="type-h1 text-primary mb-4">$290<span class="type-h4 text-slate-500">/year</span></div>
+              <p class="mb-6">Save 17% with annual billing. Best value for ongoing projects.</p>
+              <ul class="mb-6" style="list-style: none; padding: 0;">
+                <li class="mb-3">✓ Everything in Monthly</li>
+                <li class="mb-3">✓ Priority support</li>
+                <li class="mb-3">✓ Early access to features</li>
+              </ul>
+              <button class="btn btn-gradient w-full">START YEARLY PLAN</button>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="bordered-lifetime">
+            <div class="tab-content-card">
+              <h3 class="type-h3 mb-4">LIFETIME ACCESS</h3>
+              <div class="type-h1 text-primary mb-4">$990<span class="type-h4 text-slate-500">once</span></div>
+              <p class="mb-6">One-time payment for unlimited access forever.</p>
+              <ul class="mb-6" style="list-style: none; padding: 0;">
+                <li class="mb-3">✓ Everything in Yearly</li>
+                <li class="mb-3">✓ Lifetime updates</li>
+                <li class="mb-3">✓ VIP support channel</li>
+              </ul>
+              <button class="btn btn-dark w-full">GET LIFETIME ACCESS</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04. Tabs with Badges -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. TABS WITH <span class="text-primary-light">BADGES</span></h2>
+        <p class="subsection-text mb-8">Tabs with notification badges and counts</p>
+
+        <div class="tabs" id="badgeTabs">
+          <div class="tab-list">
+            <button class="tab active tab--with-icon" data-tab="badge-inbox">
+              <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+              INBOX<span class="tab-badge">12</span>
+            </button>
+            <button class="tab tab--with-icon" data-tab="badge-pending">
+              <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              PENDING<span class="tab-badge">5</span>
+            </button>
+            <button class="tab tab--with-icon" data-tab="badge-archived">
+              <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+              </svg>
+              ARCHIVED
+            </button>
+          </div>
+
+          <div class="tab-panel active" id="badge-inbox">
+            <div class="grid gap-3">
+              <div class="card p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="type-h5">New Project Invitation</h4>
+                  <span class="badge badge-primary">NEW</span>
+                </div>
+                <p class="text-sm text-slate-600">You have been invited to join Project Alpha</p>
+              </div>
+              <div class="card p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="type-h5">Design Review Ready</h4>
+                  <span class="badge badge-warning">REVIEW</span>
+                </div>
+                <p class="text-sm text-slate-600">UI Kit v12.0 is ready for your review</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="badge-pending">
+            <div class="card p-6">
+              <h3 class="type-h3 mb-4">PENDING APPROVALS</h3>
+              <p>You have 5 items waiting for approval. Review and approve or reject each item.</p>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="badge-archived">
+            <div class="card p-6">
+              <h3 class="type-h3 mb-4">ARCHIVED ITEMS</h3>
+              <p>No archived items. Items you archive will appear here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05. Card Tabs -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. CARD <span class="text-primary-light">TABS</span></h2>
+        <p class="subsection-text mb-8">Tabs styled as cards with icons and hover effects</p>
+
+        <div class="tabs" id="cardTabs">
+          <div class="tab-list tab-list--cards">
+            <button class="tab active" data-tab="card-analytics">
+              <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+              <span class="type-h5">ANALYTICS</span>
+              <span class="tab-card-desc">View statistics</span>
+            </button>
+            <button class="tab" data-tab="card-reports">
+              <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              <span class="type-h5">REPORTS</span>
+              <span class="tab-card-desc">Download files</span>
+            </button>
+            <button class="tab" data-tab="card-settings">
+              <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <span class="type-h5">SETTINGS</span>
+              <span class="tab-card-desc">Manage account</span>
+            </button>
+          </div>
+
+          <div class="tab-panel active" id="card-analytics">
+            <div class="tab-content-card">
+              <h3 class="type-h3 mb-6">ANALYTICS DASHBOARD</h3>
+              <div class="grid grid-3-col gap-6">
+                <div>
+                  <div class="text-xs uppercase font-bold text-slate-500 mb-2 tracking-wider">TOTAL USERS</div>
+                  <div class="type-h1 text-primary">24,589</div>
+                  <div class="text-sm text-success mt-2">↑ 12.5% this month</div>
+                </div>
+                <div>
+                  <div class="text-xs uppercase font-bold text-slate-500 mb-2 tracking-wider">REVENUE</div>
+                  <div class="type-h1 text-success">$45,231</div>
+                  <div class="text-sm text-success mt-2">↑ 8.2% this month</div>
+                </div>
+                <div>
+                  <div class="text-xs uppercase font-bold text-slate-500 mb-2 tracking-wider">CONVERSION</div>
+                  <div class="type-h1 text-gold">3.24%</div>
+                  <div class="text-sm text-error mt-2">↓ 0.4% this month</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="card-reports">
+            <div class="tab-content-card">
+              <h3 class="type-h3 mb-6">MONTHLY REPORTS</h3>
+              <div class="grid gap-4">
+                <div class="card p-6">
+                  <h4 class="type-h5 mb-3">January 2026 Report</h4>
+                  <p class="mb-4" style="font-size: 14px; color: var(--color-slate-500);">Generated Feb 1, 2026</p>
+                  <button class="btn btn-sm btn-ghost">DOWNLOAD</button>
+                </div>
+                <div class="card p-6">
+                  <h4 class="type-h5 mb-3">December 2025 Report</h4>
+                  <p class="mb-4" style="font-size: 14px; color: var(--color-slate-500);">Generated Jan 1, 2026</p>
+                  <button class="btn btn-sm btn-ghost">DOWNLOAD</button>
+                </div>
+                <div class="card p-6">
+                  <h4 class="type-h5 mb-3">November 2025 Report</h4>
+                  <p class="mb-4" style="font-size: 14px; color: var(--color-slate-500);">Generated Dec 1, 2025</p>
+                  <button class="btn btn-sm btn-ghost">DOWNLOAD</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="card-settings">
+            <div class="tab-content-card">
+              <h3 class="type-h3 mb-6">ACCOUNT SETTINGS</h3>
+              <div class="mb-6">
+                <label class="form-label">EMAIL NOTIFICATIONS</label>
+                <div class="mb-3">
+                  <label class="checkbox">
+                    <input type="checkbox" class="checkbox__input" checked>
+                    <div class="checkbox__box">
+                      <svg class="checkbox__icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <span class="checkbox__label">Send me weekly reports</span>
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label class="checkbox">
+                    <input type="checkbox" class="checkbox__input" checked>
+                    <div class="checkbox__box">
+                      <svg class="checkbox__icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <span class="checkbox__label">Project updates</span>
+                  </label>
+                </div>
+              </div>
+              <button class="btn btn-primary">SAVE SETTINGS</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06. Vertical Tabs -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. VERTICAL <span class="text-primary-light">TABS</span></h2>
+        <p class="subsection-text mb-8">Side-by-side layout with vertical tab navigation</p>
+
+        <div class="tabs tabs--vertical" id="verticalTabs">
+          <div class="tab-list">
+            <button class="tab active" data-tab="vertical-account">ACCOUNT</button>
+            <button class="tab" data-tab="vertical-security">SECURITY</button>
+            <button class="tab" data-tab="vertical-billing">BILLING</button>
+            <button class="tab" data-tab="vertical-notifications">NOTIFICATIONS</button>
+          </div>
+
+          <div style="flex: 1;">
+            <div class="tab-panel active" id="vertical-account">
+              <div class="tab-content-card">
+                <h3 class="type-h3 mb-6">ACCOUNT SETTINGS</h3>
+                <div class="mb-6">
+                  <label class="form-label">FULL NAME</label>
+                  <input type="text" class="input" value="John Doe">
+                </div>
+                <div class="mb-6">
+                  <label class="form-label">EMAIL</label>
+                  <input type="email" class="input" value="john@example.com">
+                </div>
+                <button class="btn btn-primary">UPDATE ACCOUNT</button>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="vertical-security">
+              <div class="tab-content-card">
+                <h3 class="type-h3 mb-6">SECURITY SETTINGS</h3>
+                <div class="mb-6">
+                  <label class="form-label">CURRENT PASSWORD</label>
+                  <input type="password" class="input">
+                </div>
+                <div class="mb-6">
+                  <label class="form-label">NEW PASSWORD</label>
+                  <input type="password" class="input">
+                </div>
+                <button class="btn btn-primary">CHANGE PASSWORD</button>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="vertical-billing">
+              <div class="tab-content-card">
+                <h3 class="type-h3 mb-6">BILLING INFORMATION</h3>
+                <p class="mb-6">Current plan: <strong>Pro ($99/month)</strong></p>
+                <button class="btn btn-gradient">UPGRADE TO ENTERPRISE</button>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="vertical-notifications">
+              <div class="tab-content-card">
+                <h3 class="type-h3 mb-6">NOTIFICATION PREFERENCES</h3>
+                <div class="mb-4">
+                  <label class="checkbox">
+                    <input type="checkbox" class="checkbox__input" checked>
+                    <div class="checkbox__box">
+                      <svg class="checkbox__icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <span class="checkbox__label">Email notifications</span>
+                  </label>
+                </div>
+                <div class="mb-6">
+                  <label class="checkbox">
+                    <input type="checkbox" class="checkbox__input">
+                    <div class="checkbox__box">
+                      <svg class="checkbox__icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <span class="checkbox__label">Push notifications</span>
+                  </label>
+                </div>
+                <button class="btn btn-primary">SAVE PREFERENCES</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07. Dark Tabs -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. DARK <span class="text-primary-light">TABS</span></h2>
+        <p class="subsection-text mb-8">Dark theme with dotted pattern and gold active state</p>
+
+        <div class="tabs" id="darkTabs">
+          <div class="tab-list tab-list--dark">
+            <button class="tab active" data-tab="dark-dashboard">DASHBOARD</button>
+            <button class="tab" data-tab="dark-projects">PROJECTS</button>
+            <button class="tab" data-tab="dark-team">TEAM</button>
+            <button class="tab" data-tab="dark-activity">ACTIVITY</button>
+          </div>
+
+          <div class="tab-panel active" id="dark-dashboard">
+            <div class="grid grid-3-col gap-6">
+              <div class="card p-6">
+                <span class="badge badge-gold mb-3">ACTIVE</span>
+                <div class="type-h2 mb-2">8</div>
+                <p class="text-slate-600">Active Projects</p>
+              </div>
+              <div class="card p-6">
+                <span class="badge badge-primary mb-3">MEMBERS</span>
+                <div class="type-h2 mb-2">24</div>
+                <p class="text-slate-600">Team Members</p>
+              </div>
+              <div class="card p-6">
+                <span class="badge badge-success mb-3">COMPLETED</span>
+                <div class="type-h2 mb-2">156</div>
+                <p class="text-slate-600">Tasks Done</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="dark-projects">
+            <div class="card p-8">
+              <h3 class="type-h3 mb-4">YOUR PROJECTS</h3>
+              <p>Manage all your projects from one place. Create, edit, and track progress.</p>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="dark-team">
+            <div class="card p-8">
+              <h3 class="type-h3 mb-4">TEAM MEMBERS</h3>
+              <p>View and manage your team. Invite new members and set permissions.</p>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="dark-activity">
+            <div class="card p-8">
+              <h3 class="type-h3 mb-4">RECENT ACTIVITY</h3>
+              <p>Track all recent changes and updates across your projects.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTA - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="cta.html" class="nav-link nav-link--active">CTA</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="hero.html" class="nav-link">Hero</a>
+        <a href="forms.html" class="nav-link">Forms</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cta.html" class="navbar-mobile-nav-link active">CTA</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Marketing Components</span>
+        <h1 class="hero-title">CALL TO <span class="text-primary-light">ACTION</span></h1>
+        <p class="hero-subtitle">
+          10+ CTA variants for conversions. All components reuse buttons, cards, spacing, and typography from core.css.
+        </p>
+      </div>
+    </section>
+
+    <!-- Basic CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Basic CTA</h2>
+        <p class="subsection-text">Standard centered call-to-action section</p>
+        
+        <div class="cta-section">
+          <div class="cta-content">
+            <span class="cta-badge">Limited Offer</span>
+            <h2 class="cta-title">READY TO GET <span class="text-primary-light">STARTED?</span></h2>
+            <p class="cta-subtitle">
+              Join thousands of teams already using Documatica to build better documentation faster.
+            </p>
+            <div class="cta-actions">
+              <button class="btn btn-primary btn-lg">START FREE TRIAL</button>
+              <button class="btn btn-ghost btn-lg">WATCH DEMO</button>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="cta-section"&gt;
+  &lt;div class="cta-content"&gt;
+    &lt;span class="cta-badge"&gt;Limited Offer&lt;/span&gt;
+    &lt;h2 class="cta-title"&gt;READY TO GET STARTED?&lt;/h2&gt;
+    &lt;p class="cta-subtitle"&gt;Join thousands...&lt;/p&gt;
+    &lt;div class="cta-actions"&gt;
+      &lt;button class="btn btn-primary btn-lg"&gt;START FREE TRIAL&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- Dark CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Dark CTA</h2>
+        <p class="subsection-text">Dark background with dotted pattern</p>
+        
+        <div class="cta-section cta-section--dark">
+          <div class="cta-content">
+            <span class="cta-badge">Premium Features</span>
+            <h2 class="cta-title">UPGRADE TO <span class="text-primary-light">PRO</span></h2>
+            <p class="cta-subtitle">
+              Unlock advanced analytics, priority support, and unlimited projects.
+            </p>
+            <div class="cta-actions">
+              <button class="btn btn-gold btn-lg">UPGRADE NOW</button>
+              <button class="btn btn-outline btn-lg">COMPARE PLANS</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gradient CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. Gradient CTA</h2>
+        <p class="subsection-text">Blue to dark gradient background</p>
+        
+        <div class="cta-section cta-section--gradient">
+          <div class="cta-content">
+            <span class="cta-badge">New Release</span>
+            <h2 class="cta-title">DOCUMATICA <span class="text-primary-light">V12.0</span></h2>
+            <p class="cta-subtitle">
+              Experience the future of documentation with our latest release featuring AI-powered insights.
+            </p>
+            <div class="cta-actions">
+              <button class="btn btn-ghost btn-lg">EXPLORE FEATURES</button>
+              <button class="btn btn-outline btn-lg">READ CHANGELOG</button>
+            </div>
+            
+            <div class="cta-social-proof">
+              <div class="cta-avatars">
+                <div class="cta-avatar cta-avatar--blue"></div>
+                <div class="cta-avatar cta-avatar--gold"></div>
+                <div class="cta-avatar cta-avatar--green"></div>
+                <div class="cta-avatar cta-avatar--red"></div>
+              </div>
+              <span class="cta-social-text">Join 10,000+ happy users</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Split CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. Split CTA</h2>
+        <p class="subsection-text">Two-column layout with content and visual</p>
+        
+        <div class="cta-section cta-split">
+          <div class="cta-split-content">
+            <span class="cta-badge">Enterprise Solution</span>
+            <h2 class="cta-title">BUILT FOR <span class="text-primary-light">TEAMS</span></h2>
+            <p class="cta-subtitle">
+              Collaborate seamlessly with your team using real-time editing, comments, and version control.
+            </p>
+            <div class="cta-actions">
+              <button class="btn btn-primary btn-lg">REQUEST DEMO</button>
+              <button class="btn btn-ghost btn-lg">CONTACT SALES</button>
+            </div>
+            
+            <div class="cta-features">
+              <div class="cta-feature">
+                <div class="cta-feature-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                  </svg>
+                </div>
+                <span class="cta-feature-text">Unlimited users</span>
+              </div>
+              <div class="cta-feature">
+                <div class="cta-feature-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                  </svg>
+                </div>
+                <span class="cta-feature-text">Advanced security</span>
+              </div>
+              <div class="cta-feature">
+                <div class="cta-feature-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  </svg>
+                </div>
+                <span class="cta-feature-text">Lightning fast</span>
+              </div>
+            </div>
+          </div>
+          <div class="cta-split-visual">
+            <div class="cta-split-placeholder">VISUAL</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Banner CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. Banner CTA</h2>
+        <p class="subsection-text">Horizontal compact layout</p>
+        
+        <div class="cta-banner">
+          <div class="cta-banner-content">
+            <h3 class="cta-banner-title">GET 30% OFF <span class="text-primary-light">TODAY</span></h3>
+            <p class="cta-banner-text">Limited time offer - upgrade to annual plan and save big</p>
+          </div>
+          <div class="cta-banner-actions">
+            <button class="btn btn-gold">CLAIM OFFER</button>
+            <button class="btn btn-outline">LEARN MORE</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Horizontal CTA Cards -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. Horizontal CTA Cards</h2>
+        <p class="subsection-text">Using kit-card--cta variant with action buttons</p>
+        
+        <div class="grid gap-4">
+          <a href="#" class="kit-card kit-card--cta">
+            <div class="kit-card-content">
+              <h3 class="kit-card-title">QUICK START</h3>
+              <p class="kit-card-text">Get up and running in minutes with our comprehensive quickstart guide.</p>
+            </div>
+            <div class="kit-card__button">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--cta">
+            <div class="kit-card-content">
+              <h3 class="kit-card-title">DOCUMENTATION</h3>
+              <p class="kit-card-text">Explore detailed documentation and API references for developers.</p>
+            </div>
+            <div class="kit-card__button">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--cta">
+            <div class="kit-card-content">
+              <h3 class="kit-card-title">24/7 SUPPORT</h3>
+              <p class="kit-card-text">Our support team is here to help you 24/7 with any questions.</p>
+            </div>
+            <div class="kit-card__button">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. Newsletter CTA</h2>
+        <p class="subsection-text">Email subscription form</p>
+        
+        <div class="cta-newsletter">
+          <h3 class="cta-newsletter-title">STAY <span class="text-primary-light">UPDATED</span></h3>
+          <p class="cta-newsletter-text">Get the latest updates, tips, and exclusive offers delivered to your inbox.</p>
+          <form class="cta-newsletter-form">
+            <input type="email" class="cta-newsletter-input" placeholder="Enter your email">
+            <button type="submit" class="btn btn-primary">SUBSCRIBE</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Countdown CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">08. Countdown CTA</h2>
+        <p class="subsection-text">Urgency-driven with timer</p>
+        
+        <div class="cta-countdown">
+          <span class="cta-badge">Flash Sale</span>
+          <h2 class="cta-title cta-countdown-title">SALE ENDS <span class="text-primary-light">SOON</span></h2>
+          <p class="cta-subtitle cta-countdown-subtitle">Don't miss out on this limited-time offer</p>
+          
+          <div class="cta-countdown-timer">
+            <div class="cta-countdown-item">
+              <div class="cta-countdown-value" data-countdown="days">12</div>
+              <div class="cta-countdown-label">Days</div>
+            </div>
+            <div class="cta-countdown-item">
+              <div class="cta-countdown-value" data-countdown="hours">08</div>
+              <div class="cta-countdown-label">Hours</div>
+            </div>
+            <div class="cta-countdown-item">
+              <div class="cta-countdown-value" data-countdown="minutes">34</div>
+              <div class="cta-countdown-label">Minutes</div>
+            </div>
+            <div class="cta-countdown-item">
+              <div class="cta-countdown-value" data-countdown="seconds">56</div>
+              <div class="cta-countdown-label">Seconds</div>
+            </div>
+          </div>
+          
+          <div class="cta-actions">
+            <button class="btn btn-gold btn-lg">CLAIM DISCOUNT</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Minimal CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">09. Minimal CTA</h2>
+        <p class="subsection-text">Clean and simple variant</p>
+        
+        <div class="cta-section cta-section--minimal">
+          <div class="cta-content">
+            <span class="cta-badge">Simple & Clean</span>
+            <h2 class="cta-title">LESS IS <span class="text-primary-light">MORE</span></h2>
+            <p class="cta-subtitle">
+              Focus on what matters with our minimalist approach to documentation.
+            </p>
+            <div class="cta-actions">
+              <button class="btn btn-primary btn-lg">TRY IT NOW</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compact CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">10. Compact CTA</h2>
+        <p class="subsection-text">Space-efficient variant</p>
+        
+        <div class="cta-section cta-section--compact">
+          <div class="cta-content">
+            <h2 class="cta-title">QUICK <span class="text-primary-light">ACTION</span></h2>
+            <p class="cta-subtitle">Perfect for tight spaces and inline CTAs.</p>
+            <div class="cta-actions">
+              <button class="btn btn-primary">TAKE ACTION</button>
+              <button class="btn btn-ghost">LEARN MORE</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bordered CTA -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">11. Bordered CTA</h2>
+        <p class="subsection-text">Bold border with gradient text</p>
+        
+        <div class="cta-section cta-section--bordered">
+          <div class="cta-content">
+            <span class="cta-badge">Featured</span>
+            <h2 class="cta-title">PREMIUM EXPERIENCE</h2>
+            <p class="cta-subtitle">
+              Stand out with our bordered variant featuring gradient text effects.
+            </p>
+            <div class="cta-actions">
+              <button class="btn btn-primary btn-lg">EXPLORE NOW</button>
+              <button class="btn btn-ghost btn-lg">VIEW DETAILS</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

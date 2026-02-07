@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buttons - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link nav-link--active">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link">Spacing</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="tokens.html" class="nav-link">Tokens</a>
+        <a href="backgrounds.html" class="nav-link">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>
+        <a href="forms.html" class="nav-link">Forms</a>
+        <a href="preloader.html" class="nav-link">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link active">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">BUTTONS</h1>
+        <p class="hero-subtitle">
+          5 button variants × 4 sizes = 20 combinations. All with "v12.0 Spring" physics.
+        </p>
+      </div>
+    </section>
+
+    <!-- Primary Buttons -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Primary Buttons</h2>
+        <p class="subsection-text">Main action buttons with blue background</p>
+        <div class="button-demo">
+          <button class="btn btn-primary btn-sm">SMALL</button>
+          <button class="btn btn-primary">MEDIUM</button>
+          <button class="btn btn-primary btn-lg">LARGE</button>
+          <button class="btn btn-primary btn-massive">MASSIVE</button>
+        </div>
+        <pre class="code-block"><code>&lt;button class="btn btn-primary"&gt;Click me&lt;/button&gt;
+&lt;button class="btn btn-primary btn-sm"&gt;Small&lt;/button&gt;
+&lt;button class="btn btn-primary btn-lg"&gt;Large&lt;/button&gt;
+&lt;button class="btn btn-primary btn-massive"&gt;Massive&lt;/button&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- Gold Buttons -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Gold Buttons (AI)</h2>
+        <p class="subsection-text">AI-powered features with gold accent</p>
+        <div class="button-demo">
+          <button class="btn btn-gold btn-sm">AI SMALL</button>
+          <button class="btn btn-gold">AI MEDIUM</button>
+          <button class="btn btn-gold btn-lg">AI LARGE</button>
+          <button class="btn btn-gold btn-massive">AI MASSIVE</button>
+        </div>
+        <pre class="code-block"><code>&lt;button class="btn btn-gold"&gt;AI Feature&lt;/button&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- Outline Buttons -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. Outline Buttons</h2>
+        <p class="subsection-text">Secondary actions with transparent background</p>
+        <div class="button-demo">
+          <button class="btn btn-outline btn-sm">SMALL</button>
+          <button class="btn btn-outline">MEDIUM</button>
+          <button class="btn btn-outline btn-lg">LARGE</button>
+          <button class="btn btn-outline btn-massive">MASSIVE</button>
+        </div>
+        <pre class="code-block"><code>&lt;button class="btn btn-outline"&gt;Secondary&lt;/button&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- Ghost Buttons -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. Ghost Buttons</h2>
+        <p class="subsection-text">Minimal style for subtle interactions</p>
+        <div class="button-demo">
+          <button class="btn btn-ghost btn-sm">SMALL</button>
+          <button class="btn btn-ghost">MEDIUM</button>
+          <button class="btn btn-ghost btn-lg">LARGE</button>
+          <button class="btn btn-ghost btn-massive">MASSIVE</button>
+        </div>
+        <pre class="code-block"><code>&lt;button class="btn btn-ghost"&gt;Ghost&lt;/button&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- Link Buttons -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. Link Buttons</h2>
+        <p class="subsection-text">Text-only buttons for inline navigation</p>
+        <div class="button-demo">
+          <button class="btn btn-link btn-sm">LINK SMALL</button>
+          <button class="btn btn-link">LINK MEDIUM</button>
+          <button class="btn btn-link btn-lg">LINK LARGE</button>
+        </div>
+        <pre class="code-block"><code>&lt;button class="btn btn-link"&gt;Link Style&lt;/button&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- States -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. Button States</h2>
+        <p class="subsection-text">Interactive states with v12.0 Spring physics</p>
+        <div class="button-demo">
+          <button class="btn btn-primary">NORMAL</button>
+          <button class="btn btn-primary" disabled>DISABLED</button>
+          <button class="btn btn-outline">Normal Outline</button>
+          <button class="btn btn-outline" disabled>Disabled Outline</button>
+        </div>
+        <div class="card card--info">
+          <h3 class="info-title">"v12.0 Spring" Interactivity</h3>
+          <ul class="list-simple">
+            <li>• <strong>Hover:</strong> translateY(-2px) + enhanced shadow</li>
+            <li>• <strong>Active:</strong> translateY(1px) + scale(0.96)</li>
+            <li>• <strong>Transition:</strong> cubic-bezier(0.34, 1.56, 0.64, 1) - spring physics</li>
+            <li>• <strong>Disabled:</strong> opacity 0.6 + grayscale filter</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html> = document.getElementById('navbarToggle');
+    const navbarMobileMenu = document.getElementById('navbarMobileMenu');
+    if (navbarToggle && navbarMobileMenu) {
+      navbarToggle.addEventListener('click', () => {
+        navbarToggle.classList.toggle('active');
+        navbarMobileMenu.classList.toggle('active');
+      });
+      document.querySelectorAll('.navbar-mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navbarToggle.classList.remove('active');
+          navbarMobileMenu.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documatica v12.0 - UI Kit Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/core.css">
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-logo">
+            <svg width="120" height="120" viewBox="0 0 64 64" fill="none">
+                <rect x="8" y="8" width="48" height="48" rx="12" fill="white" fill-opacity="0.05" />
+                <path class="logo-path logo-path-1" d="M18 24H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+                <path class="logo-path logo-path-2" d="M18 32H46" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+                <path class="logo-path logo-path-3" d="M18 40H34" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+                <circle class="ai-dot-anim" cx="48" cy="40" r="6" fill="#FBBF24" filter="drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))"/>
+            </svg>
+        </div>
+        <div class="preloader-text">
+            documatica intelligence systems v12.0
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-inner">
+            <div class="navbar-brand">
+                <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+                    <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+                    <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+                </svg>
+                <span class="brand-text">docu<span class="brand-light">matica</span></span>
+            </div>
+            
+            <div class="navbar-menu">
+                <a href="#buttons" class="nav-link">Buttons</a>
+                <a href="#colors" class="nav-link">Colors</a>
+                <a href="#forms" class="nav-link">Forms</a>
+                <a href="#cards" class="nav-link">Cards</a>
+            </div>
+            
+            <div class="navbar-actions">
+                <button class="btn btn-ghost btn-sm">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        
+        <!-- Section: Style Anatomy -->
+        <section id="colors" class="section">
+            <div class="container">
+                <h2 class="section-title">1. Style Anatomy</h2>
+                
+                <div class="grid grid-2-col gap-large">
+                    <!-- Logo -->
+                    <div class="color-showcase-card">
+                        <div class="logo-display">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" class="logo-svg">
+                                <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+                                <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+                            </svg>
+                        </div>
+                        <p class="logo-text-display">docu<span class="text-muted">matica</span></p>
+                    </div>
+                    
+                    <!-- Color Palette -->
+                    <div class="color-grid">
+                        <div class="color-box color-blue">
+                            <span class="color-label">Brand</span>
+                            <span class="color-name">Core Blue</span>
+                        </div>
+                        <div class="color-box color-gold">
+                            <span class="color-label">Action</span>
+                            <span class="color-name">Smart Gold</span>
+                        </div>
+                        <div class="color-box color-dark">
+                            <span class="color-label">Ink</span>
+                            <span class="color-name">Dark Slate</span>
+                        </div>
+                        <div class="color-box color-light">
+                            <span class="color-label">Base</span>
+                            <span class="color-name">Soft Grey</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Buttons -->
+        <section id="buttons" class="section">
+            <div class="container">
+                <h2 class="section-title">2. Button Library</h2>
+                
+                <div class="button-showcase">
+                    <!-- Primary -->
+                    <div class="showcase-group">
+                        <h3 class="showcase-subtitle">Primary Buttons</h3>
+                        <div class="button-row">
+                            <button class="btn btn-primary btn-sm">Small Primary</button>
+                            <button class="btn btn-primary">Medium Primary</button>
+                            <button class="btn btn-primary btn-lg">Large Primary</button>
+                            <button class="btn btn-primary btn-massive">Massive CTA</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Secondary (Gold) -->
+                    <div class="showcase-group">
+                        <h3 class="showcase-subtitle">AI Smart Actions</h3>
+                        <div class="button-row">
+                            <button class="btn btn-gold btn-sm">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                                AI Action
+                            </button>
+                            <button class="btn btn-gold">Smart Assistant</button>
+                            <button class="btn btn-gold btn-lg">Generate Report</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Outline -->
+                    <div class="showcase-group">
+                        <h3 class="showcase-subtitle">Outline Buttons</h3>
+                        <div class="button-row">
+                            <button class="btn btn-outline btn-sm">Cancel</button>
+                            <button class="btn btn-outline">Learn More</button>
+                            <button class="btn btn-outline btn-lg">View Details</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Ghost -->
+                    <div class="showcase-group">
+                        <h3 class="showcase-subtitle">Ghost Buttons</h3>
+                        <div class="button-row">
+                            <button class="btn btn-ghost btn-sm">Settings</button>
+                            <button class="btn btn-ghost">Profile</button>
+                            <button class="btn btn-ghost btn-lg">Dashboard</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Link -->
+                    <div class="showcase-group">
+                        <h3 class="showcase-subtitle">Link Buttons</h3>
+                        <div class="button-row">
+                            <button class="btn btn-link">
+                                Read Documentation
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </button>
+                            <button class="btn btn-link">
+                                View Source Code
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Forms -->
+        <section id="forms" class="section bg-surface">
+            <div class="container">
+                <h2 class="section-title">3. Form Elements</h2>
+                
+                <div class="form-showcase">
+                    <div class="form-group">
+                        <label class="form-label">Standard field</label>
+                        <input type="text" class="input" placeholder="Enter text...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">AI Query</label>
+                        <div class="input-ai-wrapper">
+                            <div class="ai-indicator"></div>
+                            <input type="text" class="input input-ai" placeholder="AI query...">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Dropdown</label>
+                        <select class="input">
+                            <option>Select an option</option>
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" class="toggle-input">
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-text">Automation Active</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Cards -->
+        <section id="cards" class="section">
+            <div class="container">
+                <h2 class="section-title">4. Cards</h2>
+                
+                <div class="grid grid-3-col gap-medium">
+                    <div class="card">
+                        <div class="card-icon">
+                            <svg width="48" height="48" fill="none" stroke="#3b82f6" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Smart Documents</h3>
+                        <p class="card-text">Automatic categorization and tagging of documents using AI. Search content in seconds.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon card-icon-gold">
+                            <svg width="48" height="48" fill="none" stroke="#FBBF24" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">AI Assistant</h3>
+                        <p class="card-text">Intelligent assistant for creating, editing and analyzing documents. Works 24/7.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <svg width="48" height="48" fill="none" stroke="#3b82f6" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Security</h3>
+                        <p class="card-text">Data encryption, access control and complete action audit. GDPR and ISO 27001 compliant.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+                    <path d="M12 16H52V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+                    <path d="M18 24H46M18 32H46M18 40H34" stroke="black" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+                </svg>
+                <span class="footer-text">docu<span class="text-muted">matica</span></span>
+            </div>
+            <p class="footer-copy">
+                &copy; 2026 Documatica Intelligence Systems v12.0
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

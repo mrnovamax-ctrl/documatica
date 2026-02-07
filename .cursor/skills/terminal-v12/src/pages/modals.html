@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modals - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <div class="navbar navbar--dark">
+    <div class="container">
+      <div class="navbar-inner">
+        <div class="navbar-brand">
+          <span class="brand-text">documatica</span>
+        </div>
+        
+        <nav class="navbar-menu">
+          <a href="../hub.html" class="nav-link">Hub</a>
+          <a href="colors.html" class="nav-link">Colors</a>
+          <a href="buttons.html" class="nav-link">Buttons</a>
+          <a href="cards.html" class="nav-link">Cards</a>
+          <a href="modals.html" class="nav-link">Modals</a>
+        </nav>
+        
+        <div class="navbar-actions">
+          <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+          <button class="navbar-toggle" id="navbarToggle">
+            <span class="navbar-toggle-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <div class="container">
+        <div class="navbar-mobile-actions">
+          <button class="btn btn-gold btn-sm w-full">UPGRADE AI</button>
+        </div>
+        <ul class="navbar-mobile-nav">
+          <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+          <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+          <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+          <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+          <li class="navbar-mobile-nav-item"><a href="modals.html" class="navbar-mobile-nav-link">Modals</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">MODAL <span class="text-primary-light">DIALOGS</span></h1>
+        <p class="hero-subtitle">
+          Modal windows with v12.0 Spring animations, backdrop blur, multiple sizes and variants
+        </p>
+      </div>
+    </section>
+
+    <!-- 01. Basic Modals & Sizes -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. BASIC MODALS <span class="text-primary-light">& SIZES</span></h2>
+        <p class="subsection-text mb-6">Standard modals with header, body, footer. Sizes: sm (400px), md (600px), lg (800px), xl (1000px)</p>
+
+        <div class="grid grid-3-col gap-4">
+          <button class="btn btn-primary" data-modal="modalBasicSm">SMALL MODAL</button>
+          <button class="btn btn-primary" data-modal="modalBasicMd">MEDIUM MODAL</button>
+          <button class="btn btn-primary" data-modal="modalBasicLg">LARGE MODAL</button>
+          <button class="btn btn-primary" data-modal="modalBasicXl">EXTRA LARGE</button>
+          <button class="btn btn-gradient" data-modal="modalFullscreen">FULLSCREEN</button>
+          <button class="btn btn-dark" data-modal="modalDark">DARK MODAL</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02. Confirmation Modals -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. CONFIRMATION <span class="text-primary-light">MODALS</span></h2>
+        <p class="subsection-text mb-6">Modals for user confirmations with icons and centered content</p>
+
+        <div class="grid grid-3-col gap-4">
+          <button class="btn btn-primary" data-modal="modalConfirm">CONFIRM ACTION</button>
+          <button class="btn btn-success" data-modal="modalSuccess">SUCCESS</button>
+          <button class="btn btn-warning" data-modal="modalWarning">WARNING</button>
+          <button class="btn btn-error" data-modal="modalDanger">DELETE</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03. Form Modals -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. FORM <span class="text-primary-light">MODALS</span></h2>
+        <p class="subsection-text mb-6">Modals with forms and inputs</p>
+
+        <div class="grid grid-3-col gap-4">
+          <button class="btn btn-primary" data-modal="modalForm">CREATE USER</button>
+          <button class="btn btn-gradient" data-modal="modalScrollable">SCROLLABLE CONTENT</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODAL DEFINITIONS ==================== -->
+
+  <!-- Small Modal -->
+  <div class="modal-backdrop" id="modalBasicSm">
+    <div class="modal modal--sm">
+      <div class="modal-header">
+        <h3 class="modal-title">SMALL MODAL</h3>
+        <button class="modal-close" data-modal-close="modalBasicSm">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>This is a small modal dialog (400px width). Perfect for quick confirmations and simple messages.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalBasicSm">CANCEL</button>
+        <button class="btn btn-primary">CONFIRM</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medium Modal -->
+  <div class="modal-backdrop" id="modalBasicMd">
+    <div class="modal modal--md">
+      <div class="modal-header">
+        <h3 class="modal-title">MEDIUM MODAL</h3>
+        <button class="modal-close" data-modal-close="modalBasicMd">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>This is a medium modal dialog (600px width). The default size for most use cases.</p>
+        <p>It provides enough space for forms, detailed content, and longer messages while remaining compact and focused.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalBasicMd">CANCEL</button>
+        <button class="btn btn-primary">SAVE CHANGES</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Large Modal -->
+  <div class="modal-backdrop" id="modalBasicLg">
+    <div class="modal modal--lg">
+      <div class="modal-header">
+        <h3 class="modal-title">LARGE MODAL</h3>
+        <button class="modal-close" data-modal-close="modalBasicLg">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>This is a large modal dialog (800px width). Great for complex forms, detailed content, or when you need more horizontal space.</p>
+        <p>Use this size when displaying tables, multi-column layouts, or extensive information that benefits from additional width.</p>
+        <p>The content area can accommodate rich media, multiple form sections, or side-by-side comparisons.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalBasicLg">CLOSE</button>
+        <button class="btn btn-primary">PROCEED</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extra Large Modal -->
+  <div class="modal-backdrop" id="modalBasicXl">
+    <div class="modal modal--xl">
+      <div class="modal-header">
+        <h3 class="modal-title">EXTRA LARGE MODAL</h3>
+        <button class="modal-close" data-modal-close="modalBasicXl">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>This is an extra large modal dialog (1000px width). Use for complex workflows, dashboards, or content-heavy interfaces.</p>
+        <p>This size is ideal for displaying detailed analytics, comprehensive forms with multiple sections, or embedded content like videos and presentations.</p>
+        <div class="grid grid-2-col gap-6 mt-6">
+          <div class="card p-6">
+            <h4 class="type-h4 mb-4">LEFT COLUMN</h4>
+            <p>Example content in a two-column layout. Perfect for comparison views or split interfaces.</p>
+          </div>
+          <div class="card p-6">
+            <h4 class="type-h4 mb-4">RIGHT COLUMN</h4>
+            <p>Additional content demonstrating the available space in an XL modal.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalBasicXl">CANCEL</button>
+        <button class="btn btn-gradient">APPLY CHANGES</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Modal -->
+  <div class="modal-backdrop" id="modalFullscreen">
+    <div class="modal modal--fullscreen">
+      <div class="modal-header">
+        <h3 class="modal-title">FULLSCREEN MODAL</h3>
+        <button class="modal-close" data-modal-close="modalFullscreen">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>This modal takes up the entire viewport. Perfect for immersive experiences, complex workflows, or when you need maximum screen space.</p>
+        <p>Use fullscreen modals for:</p>
+        <ul class="list-styled">
+          <li>Image or video viewers</li>
+          <li>Document editors</li>
+          <li>Complex multi-step forms</li>
+          <li>Data visualization dashboards</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalFullscreen">EXIT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark Modal -->
+  <div class="modal-backdrop" id="modalDark">
+    <div class="modal modal--md modal--dark">
+      <div class="modal-header">
+        <h3 class="modal-title">DARK MODE</h3>
+        <button class="modal-close" data-modal-close="modalDark">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Dark modal with dotted pattern background. Matches the dark navbar theme from Documatica v12.0.</p>
+        <p>Uses white text on dark slate background for excellent readability and modern aesthetics.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalDark">CLOSE</button>
+        <button class="btn btn-gold">CONFIRM</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div class="modal-backdrop" id="modalConfirm">
+    <div class="modal modal--sm modal--confirm">
+      <div class="modal-header">
+        <h3 class="modal-title">CONFIRM ACTION</h3>
+        <button class="modal-close" data-modal-close="modalConfirm">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <p>Are you sure you want to proceed with this action? This operation cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalConfirm">CANCEL</button>
+        <button class="btn btn-primary">CONFIRM</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-backdrop" id="modalSuccess">
+    <div class="modal modal--sm modal--confirm modal--success">
+      <div class="modal-header">
+        <h3 class="modal-title">SUCCESS</h3>
+        <button class="modal-close" data-modal-close="modalSuccess">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        <p>Your changes have been saved successfully! All updates are now live.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" data-modal-close="modalSuccess">GOT IT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Warning Modal -->
+  <div class="modal-backdrop" id="modalWarning">
+    <div class="modal modal--sm modal--confirm modal--warning">
+      <div class="modal-header">
+        <h3 class="modal-title">WARNING</h3>
+        <button class="modal-close" data-modal-close="modalWarning">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+        </div>
+        <p>Please review your changes carefully before proceeding. Some settings may affect system behavior.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalWarning">CANCEL</button>
+        <button class="btn btn-warning">PROCEED ANYWAY</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Danger/Delete Modal -->
+  <div class="modal-backdrop" id="modalDanger">
+    <div class="modal modal--sm modal--confirm modal--danger">
+      <div class="modal-header">
+        <h3 class="modal-title">DELETE ITEM</h3>
+        <button class="modal-close" data-modal-close="modalDanger">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+        </div>
+        <p>This action cannot be undone. All data associated with this item will be permanently deleted.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalDanger">CANCEL</button>
+        <button class="btn btn-error">DELETE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Modal -->
+  <div class="modal-backdrop" id="modalForm">
+    <div class="modal modal--md">
+      <div class="modal-header">
+        <h3 class="modal-title">CREATE NEW USER</h3>
+        <button class="modal-close" data-modal-close="modalForm">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-6">
+            <label class="form-label">FULL NAME</label>
+            <input type="text" class="input" placeholder="Enter full name">
+          </div>
+          <div class="mb-6">
+            <label class="form-label">EMAIL ADDRESS</label>
+            <input type="email" class="input" placeholder="user@example.com">
+          </div>
+          <div class="mb-6">
+            <label class="form-label">ROLE</label>
+            <div class="select-wrapper">
+              <select class="select">
+                <option>Administrator</option>
+                <option>Editor</option>
+                <option>Viewer</option>
+              </select>
+              <svg class="select__chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="mb-6">
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <div class="checkbox__box">
+                <svg class="checkbox__icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <span class="checkbox__label">Send welcome email</span>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalForm">CANCEL</button>
+        <button class="btn btn-primary">CREATE USER</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scrollable Modal -->
+  <div class="modal-backdrop" id="modalScrollable">
+    <div class="modal modal--md modal--scrollable">
+      <div class="modal-header">
+        <h3 class="modal-title">SCROLLABLE CONTENT</h3>
+        <button class="modal-close" data-modal-close="modalScrollable">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 class="type-h4 mb-4">TERMS AND CONDITIONS</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+        <p>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.</p>
+        <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-modal-close="modalScrollable">DECLINE</button>
+        <button class="btn btn-primary">ACCEPT</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

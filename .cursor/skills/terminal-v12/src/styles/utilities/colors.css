@@ -1,0 +1,104 @@
+/* ==============================================
+   DOCUMATICA V12.0 DESIGN SYSTEM
+   Color Utilities
+   Version: 1.0.0
+   ============================================== */
+
+/* === BACKGROUND COLORS === */
+
+/* Brand Colors */
+.bg-brand-blue { background-color: var(--color-brand-blue); }
+.bg-brand-gold { background-color: var(--color-brand-gold); }
+.bg-primary { background-color: var(--color-primary); }
+
+/* Neutral Grays */
+.bg-white { background-color: white; }
+.bg-slate-50 { background-color: var(--color-slate-50); }
+.bg-slate-100 { background-color: var(--color-slate-100); }
+.bg-slate-200 { background-color: var(--color-slate-200); }
+.bg-slate-300 { background-color: var(--color-slate-300); }
+.bg-slate-400 { background-color: var(--color-slate-400); }
+.bg-slate-500 { background-color: var(--color-slate-500); }
+.bg-slate-600 { background-color: var(--color-slate-600); }
+.bg-slate-700 { background-color: var(--color-slate-700); }
+.bg-slate-800 { background-color: var(--color-slate-800); }
+.bg-slate-900 { background-color: var(--color-slate-900); }
+.bg-black { background-color: black; }
+
+/* Semantic Colors */
+.bg-success { background-color: var(--color-success); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-error { background-color: var(--color-error); }
+.bg-info { background-color: var(--color-info); }
+
+/* Surface Colors */
+.bg-surface { background-color: var(--color-bg-surface); }
+.bg-elevated { background-color: var(--color-bg-elevated); }
+
+/* Transparent */
+.bg-transparent { background-color: transparent; }
+
+/* === BACKGROUND GRADIENTS === */
+.bg-gradient-blue {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #1e40af 100%);
+}
+
+.bg-gradient-gold {
+  background: linear-gradient(135deg, var(--color-brand-gold) 0%, #f59e0b 100%);
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-brand-gold) 100%);
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(135deg, var(--color-slate-900) 0%, #1e293b 100%);
+}
+
+/* === BORDER COLORS === */
+
+/* Brand Colors */
+.border-brand-blue { border-color: var(--color-brand-blue); }
+.border-brand-gold { border-color: var(--color-brand-gold); }
+.border-primary { border-color: var(--color-primary); }
+
+/* Neutral Grays */
+.border-white { border-color: white; }
+.border-slate-50 { border-color: var(--color-slate-50); }
+.border-slate-100 { border-color: var(--color-slate-100); }
+.border-slate-200 { border-color: var(--color-slate-200); }
+.border-slate-300 { border-color: var(--color-slate-300); }
+.border-slate-400 { border-color: var(--color-slate-400); }
+.border-slate-500 { border-color: var(--color-slate-500); }
+.border-slate-600 { border-color: var(--color-slate-600); }
+.border-slate-700 { border-color: var(--color-slate-700); }
+.border-slate-800 { border-color: var(--color-slate-800); }
+.border-slate-900 { border-color: var(--color-slate-900); }
+.border-black { border-color: black; }
+
+/* Semantic Colors */
+.border-success { border-color: var(--color-success); }
+.border-warning { border-color: var(--color-warning); }
+.border-error { border-color: var(--color-error); }
+.border-info { border-color: var(--color-info); }
+
+/* Transparent */
+.border-transparent { border-color: transparent; }
+
+/* === OPACITY === */
+.opacity-0 { opacity: 0; }
+.opacity-10 { opacity: 0.1; }
+.opacity-20 { opacity: 0.2; }
+.opacity-30 { opacity: 0.3; }
+.opacity-40 { opacity: 0.4; }
+.opacity-50 { opacity: 0.5; }
+.opacity-60 { opacity: 0.6; }
+.opacity-70 { opacity: 0.7; }
+.opacity-80 { opacity: 0.8; }
+.opacity-90 { opacity: 0.9; }
+.opacity-100 { opacity: 1; }
+
+/* === HOVER OPACITY === */
+.hover-opacity-80:hover { opacity: 0.8; }
+.hover-opacity-70:hover { opacity: 0.7; }
+.hover-opacity-60:hover { opacity: 0.6; }

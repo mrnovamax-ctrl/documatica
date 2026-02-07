@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigation Components - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <div class="navbar navbar--dark">
+    <div class="container">
+      <div class="navbar-inner">
+        <div class="navbar-brand">
+          <span class="brand-text">documatica</span>
+        </div>
+        
+        <nav class="navbar-menu">
+          <a href="../hub.html" class="nav-link">Hub</a>
+          <a href="colors.html" class="nav-link">Colors</a>
+          <a href="buttons.html" class="nav-link">Buttons</a>
+          <a href="badges.html" class="nav-link">Badges</a>
+          <a href="cards.html" class="nav-link">Cards</a>
+          <a href="typography.html" class="nav-link">Typography</a>
+          <a href="hero.html" class="nav-link">Hero</a>
+          <a href="forms.html" class="nav-link">Forms</a>
+          <a href="navigation.html" class="nav-link">Navigation</a>
+        </nav>
+        
+        <div class="navbar-actions">
+          <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+          <div class="navbar-search" id="navbarSearch">
+            <button class="navbar-search-btn" id="navbarSearchBtn" type="button">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+            <input type="text" class="navbar-search-input" placeholder="Search..." id="navbarSearchInput">
+          </div>
+          <div class="navbar-avatar">DS</div>
+          <button class="navbar-toggle" id="navbarToggle">
+            <span class="navbar-toggle-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <div class="container">
+        <div class="navbar-mobile-actions">
+          <button class="btn btn-gold btn-sm w-full">UPGRADE AI</button>
+        </div>
+        <ul class="navbar-mobile-nav">
+          <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+          <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+          <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+          <li class="navbar-mobile-nav-item"><a href="badges.html" class="navbar-mobile-nav-link">Badges</a></li>
+          <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+          <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+          <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+          <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+          <li class="navbar-mobile-nav-item"><a href="navigation.html" class="navbar-mobile-nav-link">Navigation</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">NAVIGATION <span class="text-primary-light">SYSTEM</span></h1>
+        <p class="hero-subtitle">
+          Responsive navigation components with mobile menu
+        </p>
+      </div>
+    </section>
+
+      <!-- ========================================
+           RESPONSIVE NAVBAR SYSTEM
+           ======================================== -->
+      
+      <!-- 01. Light Navbar -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">01. LIGHT <span class="text-primary-light">NAVBAR</span></h2>
+        <p class="subsection-text mb-6">Responsive navbar with mobile menu (burger appears on screens < 1024px)</p>
+
+        <div class="card mb-6">
+          <div class="navbar-demo">
+            <div class="navbar">
+              <div class="container">
+                <div class="navbar-inner">
+                  <div class="navbar-brand">
+                    <span class="brand-text">documatica</span>
+                  </div>
+                  
+                  <nav class="navbar-menu">
+                    <a href="#" class="nav-link">Dashboard</a>
+                    
+                    <div class="navbar-dropdown">
+                      <a href="#" class="nav-link">Products ▾</a>
+                      <div class="navbar-dropdown-menu">
+                        <a href="#" class="navbar-dropdown-item">PRODUCT A</a>
+                        
+                        <div class="navbar-dropdown-item navbar-dropdown-item--has-submenu">
+                          <span>PRODUCT B</span>
+                          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="12" height="12">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                          </svg>
+                          
+                          <div class="navbar-dropdown-submenu">
+                            <a href="#" class="navbar-dropdown-item">LEVEL 2A</a>
+                            
+                            <div class="navbar-dropdown-item navbar-dropdown-item--has-submenu">
+                              <span>LEVEL 2B</span>
+                              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="12" height="12">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                              </svg>
+                              
+                              <div class="navbar-dropdown-submenu">
+                                <a href="#" class="navbar-dropdown-item">LEVEL 3A</a>
+                                
+                                <div class="navbar-dropdown-item navbar-dropdown-item--has-submenu">
+                                  <span>LEVEL 3B</span>
+                                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="12" height="12">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                                  </svg>
+                                  
+                                  <div class="navbar-dropdown-submenu">
+                                    <a href="#" class="navbar-dropdown-item">LEVEL 4A</a>
+                                    <a href="#" class="navbar-dropdown-item">LEVEL 4B</a>
+                                    <a href="#" class="navbar-dropdown-item">LEVEL 4C</a>
+                                  </div>
+                                </div>
+                                
+                                <a href="#" class="navbar-dropdown-item">LEVEL 3C</a>
+                              </div>
+                            </div>
+                            
+                            <a href="#" class="navbar-dropdown-item">LEVEL 2C</a>
+                          </div>
+                        </div>
+                        
+                        <a href="#" class="navbar-dropdown-item">PRODUCT C</a>
+                      </div>
+                    </div>
+                    
+                    <a href="#" class="nav-link">Team</a>
+                    <a href="#" class="nav-link">Settings</a>
+                  </nav>
+                  
+                  <div class="navbar-actions">
+                    <button class="btn btn-primary btn-sm">SIGN IN</button>
+                    <button class="navbar-toggle" data-navbar="demo1">
+                      <span class="navbar-toggle-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="navbar-mobile-menu" data-navbar-menu="demo1">
+              <div class="navbar-mobile-actions">
+                <button class="btn btn-primary btn-sm w-full">SIGN IN</button>
+              </div>
+              <ul class="navbar-mobile-nav">
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">Dashboard</a></li>
+                
+                <li class="navbar-mobile-nav-item">
+                  <button type="button" class="navbar-mobile-nav-link navbar-mobile-nav-toggle" data-submenu="light-products">
+                    PRODUCTS
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </button>
+                  <ul class="navbar-mobile-submenu" data-submenu-content="light-products">
+                    <li><a href="#" class="navbar-mobile-submenu-link">PRODUCT A</a></li>
+                    <li><a href="#" class="navbar-mobile-submenu-link">PRODUCT B</a></li>
+                    <li><a href="#" class="navbar-mobile-submenu-link">PRODUCT C</a></li>
+                  </ul>
+                </li>
+                
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">Team</a></li>
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">Settings</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="navbar"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="navbar-inner"&gt;
+      &lt;div class="navbar-brand"&gt;
+        &lt;span class="brand-text"&gt;documatica&lt;/span&gt;
+      &lt;/div&gt;
+      
+      &lt;nav class="navbar-menu"&gt;
+        &lt;a href="#" class="nav-link"&gt;Dashboard&lt;/a&gt;
+        &lt;a href="#" class="nav-link"&gt;Projects&lt;/a&gt;
+        &lt;a href="#" class="nav-link"&gt;Team&lt;/a&gt;
+        &lt;a href="#" class="nav-link"&gt;Settings&lt;/a&gt;
+      &lt;/nav&gt;
+      
+      &lt;div class="navbar-actions"&gt;
+        &lt;button class="btn btn-primary btn-sm"&gt;SIGN IN&lt;/button&gt;
+        &lt;button class="navbar-toggle" id="navbarToggle"&gt;
+          &lt;span class="navbar-toggle-icon"&gt;
+            &lt;span&gt;&lt;/span&gt;
+            &lt;span&gt;&lt;/span&gt;
+            &lt;span&gt;&lt;/span&gt;
+          &lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="navbar-mobile-menu" id="navbarMobileMenu"&gt;
+  &lt;ul class="navbar-mobile-nav"&gt;
+    &lt;li class="navbar-mobile-nav-item"&gt;&lt;a href="#" class="navbar-mobile-nav-link"&gt;Dashboard&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="navbar-mobile-nav-item"&gt;&lt;a href="#" class="navbar-mobile-nav-link"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="navbar-mobile-nav-item"&gt;&lt;a href="#" class="navbar-mobile-nav-link"&gt;Team&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="navbar-mobile-nav-item"&gt;&lt;a href="#" class="navbar-mobile-nav-link"&gt;Settings&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- 02. Dark Navbar with Dotted Pattern -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">02. DARK <span class="text-primary-light">NAVBAR</span></h2>
+        <p class="subsection-text mb-6">Dark navbar with dotted pattern background</p>
+
+        <div class="card mb-6">
+          <div class="navbar-demo">
+            <div class="navbar navbar--dark">
+              <div class="container">
+                <div class="navbar-inner">
+                  <div class="navbar-brand">
+                    <span class="brand-text">documatica</span>
+                  </div>
+                  
+                  <nav class="navbar-menu">
+                    <a href="#" class="nav-link">Dashboard</a>
+                    <a href="#" class="nav-link">Projects</a>
+                    <a href="#" class="nav-link">Team</a>
+                    <a href="#" class="nav-link">Settings</a>
+                  </nav>
+                  
+                  <div class="navbar-actions">
+                    <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+                    <div class="navbar-search" id="navbarSearchDemo">
+                      <button class="navbar-search-btn" id="navbarSearchBtnDemo" type="button">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                      </button>
+                      <input type="text" class="navbar-search-input" placeholder="Search..." id="navbarSearchInputDemo">
+                    </div>
+                    <div class="navbar-avatar">DS</div>
+                    <button class="navbar-toggle" data-navbar="demo2">
+                      <span class="navbar-toggle-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="navbar-mobile-menu" data-navbar-menu="demo2">
+              <div class="navbar-mobile-actions">
+                <button class="btn btn-gold btn-sm w-full">UPGRADE AI</button>
+              </div>
+              <ul class="navbar-mobile-nav">
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">Dashboard</a></li>
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">Projects</a></li>
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">Team</a></li>
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">Settings</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="navbar navbar--dark"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="navbar-inner"&gt;
+      &lt;div class="navbar-brand"&gt;
+        &lt;span class="brand-text"&gt;documatica&lt;/span&gt;
+      &lt;/div&gt;
+      
+      &lt;nav class="navbar-menu"&gt;
+        &lt;a href="#" class="nav-link"&gt;Dashboard&lt;/a&gt;
+        &lt;a href="#" class="nav-link"&gt;Projects&lt;/a&gt;
+        &lt;a href="#" class="nav-link"&gt;Team&lt;/a&gt;
+        &lt;a href="#" class="nav-link"&gt;Settings&lt;/a&gt;
+      &lt;/nav&gt;
+      
+      &lt;div class="navbar-actions"&gt;
+        &lt;button class="btn btn-gold btn-sm"&gt;UPGRADE AI&lt;/button&gt;
+        &lt;div class="navbar-search" id="navbarSearch"&gt;
+          &lt;button class="navbar-search-btn" id="navbarSearchBtn" type="button"&gt;
+            &lt;svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"&gt;
+              &lt;path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"&gt;&lt;/path&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+          &lt;input type="text" class="navbar-search-input" placeholder="Search..." id="navbarSearchInput"&gt;
+        &lt;/div&gt;
+        &lt;div class="navbar-avatar"&gt;DS&lt;/div&gt;
+        &lt;button class="navbar-toggle" id="navbarToggle"&gt;
+          &lt;span class="navbar-toggle-icon"&gt;
+            &lt;span&gt;&lt;/span&gt;
+            &lt;span&gt;&lt;/span&gt;
+            &lt;span&gt;&lt;/span&gt;
+          &lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="navbar-mobile-menu" id="navbarMobileMenu"&gt;
+  &lt;div class="navbar-mobile-actions"&gt;
+    &lt;button class="btn btn-gold btn-sm w-full"&gt;UPGRADE AI&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;ul class="navbar-mobile-nav"&gt;
+    &lt;li class="navbar-mobile-nav-item"&gt;&lt;a href="#" class="navbar-mobile-nav-link"&gt;Dashboard&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="navbar-mobile-nav-item"&gt;&lt;a href="#" class="navbar-mobile-nav-link"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="navbar-mobile-nav-item"&gt;&lt;a href="#" class="navbar-mobile-nav-link"&gt;Team&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="navbar-mobile-nav-item"&gt;&lt;a href="#" class="navbar-mobile-nav-link"&gt;Settings&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+
+        <div class="alert alert-info mt-6">
+          <p><strong>FEATURES:</strong></p>
+          <ul class="mt-2">
+            <li>Dark background: <code>var(--color-slate-900)</code></li>
+            <li>Dotted pattern overlay</li>
+            <li>White text and hover to gold</li>
+            <li>Search with expand/collapse</li>
+            <li>Avatar display</li>
+            <li>Mobile menu with dark theme</li>
+          </ul>
+        </div>
+        </div>
+      </section>
+
+      <!-- 03. Dropdown Menu -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">03. NAVBAR <span class="text-primary-light">DROPDOWN</span></h2>
+        <p class="subsection-text mb-6">Dropdown menu with dark theme and gold hover</p>
+
+        <div class="card mb-6">
+          <div class="navbar-demo">
+            <div class="navbar navbar--dark">
+              <div class="container">
+                <div class="navbar-inner">
+                  <div class="navbar-brand">
+                    <span class="brand-text">documatica</span>
+                  </div>
+                  
+                  <nav class="navbar-menu">
+                    <a href="#" class="nav-link">HOME</a>
+                    
+                    <div class="navbar-dropdown">
+                      <a href="#" class="nav-link navbar-dropdown-trigger">
+                        PRODUCTS
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                      </a>
+                      <div class="navbar-dropdown-menu">
+                        <a href="#" class="navbar-dropdown-item">PRODUCT A</a>
+                        
+                        <div class="navbar-dropdown-item navbar-dropdown-item--has-submenu">
+                          PRODUCT B
+                          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                          </svg>
+                          <div class="navbar-dropdown-submenu">
+                            <a href="#" class="navbar-dropdown-item">LEVEL 2 - ITEM 1</a>
+                            
+                            <div class="navbar-dropdown-item navbar-dropdown-item--has-submenu">
+                              LEVEL 2 - ITEM 2
+                              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                              </svg>
+                              <div class="navbar-dropdown-submenu">
+                                <a href="#" class="navbar-dropdown-item">LEVEL 3 - ITEM 1</a>
+                                
+                                <div class="navbar-dropdown-item navbar-dropdown-item--has-submenu">
+                                  LEVEL 3 - ITEM 2
+                                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                                  </svg>
+                                  <div class="navbar-dropdown-submenu">
+                                    <a href="#" class="navbar-dropdown-item">LEVEL 4 - ITEM 1</a>
+                                    <a href="#" class="navbar-dropdown-item">LEVEL 4 - ITEM 2</a>
+                                    <a href="#" class="navbar-dropdown-item">LEVEL 4 - ITEM 3</a>
+                                  </div>
+                                </div>
+                                
+                                <a href="#" class="navbar-dropdown-item">LEVEL 3 - ITEM 3</a>
+                              </div>
+                            </div>
+                            
+                            <a href="#" class="navbar-dropdown-item">LEVEL 2 - ITEM 3</a>
+                          </div>
+                        </div>
+                        
+                        <a href="#" class="navbar-dropdown-item">PRODUCT C</a>
+                        <a href="#" class="navbar-dropdown-item">PRODUCT D</a>
+                      </div>
+                    </div>
+
+                    <div class="navbar-dropdown">
+                      <a href="#" class="nav-link navbar-dropdown-trigger">
+                        SERVICES
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                      </a>
+                      <div class="navbar-dropdown-menu">
+                        <a href="#" class="navbar-dropdown-item">CONSULTING</a>
+                        <a href="#" class="navbar-dropdown-item">DEVELOPMENT</a>
+                        <a href="#" class="navbar-dropdown-item">SUPPORT</a>
+                      </div>
+                    </div>
+
+                    <a href="#" class="nav-link">ABOUT</a>
+                  </nav>
+                  
+                  <div class="navbar-actions">
+                    <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+                    <button class="navbar-toggle" data-navbar="dropdown">
+                      <span class="navbar-toggle-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="navbar-mobile-menu" data-navbar-menu="dropdown">
+              <div class="navbar-mobile-actions">
+                <button class="btn btn-gold btn-sm w-full">UPGRADE AI</button>
+              </div>
+              <ul class="navbar-mobile-nav">
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">HOME</a></li>
+                
+                <li class="navbar-mobile-nav-item navbar-mobile-nav-item--has-submenu">
+                  <button type="button" class="navbar-mobile-nav-link navbar-mobile-nav-toggle" data-submenu="dropdown-products">
+                    PRODUCTS
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </button>
+                  <ul class="navbar-mobile-submenu" data-submenu-content="dropdown-products">
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">PRODUCT A</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">PRODUCT B</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">PRODUCT C</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">PRODUCT D</a></li>
+                  </ul>
+                </li>
+                
+                <li class="navbar-mobile-nav-item navbar-mobile-nav-item--has-submenu">
+                  <button type="button" class="navbar-mobile-nav-link navbar-mobile-nav-toggle" data-submenu="dropdown-services">
+                    SERVICES
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </button>
+                  <ul class="navbar-mobile-submenu" data-submenu-content="dropdown-services">
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">CONSULTING</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">DEVELOPMENT</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">SUPPORT</a></li>
+                  </ul>
+                </li>
+                
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">ABOUT</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;!-- Level 1 --&gt;
+&lt;div class="navbar-dropdown"&gt;
+  &lt;a href="#" class="nav-link navbar-dropdown-trigger"&gt;
+    PRODUCTS
+    &lt;svg&gt;...chevron down...&lt;/svg&gt;
+  &lt;/a&gt;
+  &lt;div class="navbar-dropdown-menu"&gt;
+    &lt;a href="#" class="navbar-dropdown-item"&gt;PRODUCT A&lt;/a&gt;
+    
+    &lt;!-- Level 2 --&gt;
+    &lt;div class="navbar-dropdown-item navbar-dropdown-item--has-submenu"&gt;
+      PRODUCT B
+      &lt;svg&gt;...chevron right...&lt;/svg&gt;
+      &lt;div class="navbar-dropdown-submenu"&gt;
+        &lt;a href="#" class="navbar-dropdown-item"&gt;LEVEL 2 - ITEM 1&lt;/a&gt;
+        
+        &lt;!-- Level 3 --&gt;
+        &lt;div class="navbar-dropdown-item navbar-dropdown-item--has-submenu"&gt;
+          LEVEL 2 - ITEM 2
+          &lt;svg&gt;...chevron right...&lt;/svg&gt;
+          &lt;div class="navbar-dropdown-submenu"&gt;
+            &lt;a href="#" class="navbar-dropdown-item"&gt;LEVEL 3 - ITEM 1&lt;/a&gt;
+            
+            &lt;!-- Level 4 --&gt;
+            &lt;div class="navbar-dropdown-item navbar-dropdown-item--has-submenu"&gt;
+              LEVEL 3 - ITEM 2
+              &lt;svg&gt;...chevron right...&lt;/svg&gt;
+              &lt;div class="navbar-dropdown-submenu"&gt;
+                &lt;a href="#" class="navbar-dropdown-item"&gt;LEVEL 4 - ITEM 1&lt;/a&gt;
+                &lt;a href="#" class="navbar-dropdown-item"&gt;LEVEL 4 - ITEM 2&lt;/a&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <div class="alert alert-info mt-6">
+          <p><strong>FEATURES:</strong></p>
+          <ul class="mt-2">
+            <li>Dotted pattern background (like main navbar)</li>
+            <li>Gold hover effect</li>
+            <li>Spring physics animation</li>
+            <li>Chevron rotation on hover</li>
+            <li>Slide-in effect on item hover</li>
+            <li><strong>4 levels of nesting</strong> - submenu appears on right</li>
+            <li>Each level has own z-index (110, 120, 130, 140)</li>
+          </ul>
+        </div>
+        </div>
+      </section>
+
+      <!-- 04. Mega Menu -->
+      <section class="section">
+        <div class="container">
+        <h2 class="subsection-title">04. NAVBAR <span class="text-primary-light">MEGA MENU</span></h2>
+        <p class="subsection-text mb-6">Wide dropdown with 3-column grid layout</p>
+
+        <div class="card mb-6">
+          <div class="navbar-demo">
+            <div class="navbar navbar--dark">
+              <div class="container">
+                <div class="navbar-inner">
+                  <div class="navbar-brand">
+                    <span class="brand-text">documatica</span>
+                  </div>
+                  
+                  <nav class="navbar-menu">
+                    <a href="#" class="nav-link">HOME</a>
+                    
+                    <div class="navbar-mega">
+                      <a href="#" class="nav-link navbar-mega-trigger">
+                        SOLUTIONS
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                      </a>
+                      <div class="navbar-mega-menu">
+                        <div class="navbar-mega-grid">
+                          <div class="navbar-mega-section">
+                            <h4 class="navbar-mega-title">FOR BUSINESS</h4>
+                            <a href="#" class="navbar-mega-link">
+                              <div class="navbar-mega-link-icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                              </div>
+                              <div class="navbar-mega-link-content">
+                                <div class="navbar-mega-link-title">ENTERPRISE</div>
+                                <div class="navbar-mega-link-desc">Solutions for large teams</div>
+                              </div>
+                            </a>
+                            <a href="#" class="navbar-mega-link">
+                              <div class="navbar-mega-link-icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                              </div>
+                              <div class="navbar-mega-link-content">
+                                <div class="navbar-mega-link-title">STARTUP</div>
+                                <div class="navbar-mega-link-desc">Fast-growing companies</div>
+                              </div>
+                            </a>
+                          </div>
+
+                          <div class="navbar-mega-section">
+                            <h4 class="navbar-mega-title">BY USE CASE</h4>
+                            <a href="#" class="navbar-mega-link">
+                              <div class="navbar-mega-link-icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                              </div>
+                              <div class="navbar-mega-link-content">
+                                <div class="navbar-mega-link-title">DOCUMENTATION</div>
+                                <div class="navbar-mega-link-desc">Knowledge management</div>
+                              </div>
+                            </a>
+                            <a href="#" class="navbar-mega-link">
+                              <div class="navbar-mega-link-icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                              </div>
+                              <div class="navbar-mega-link-content">
+                                <div class="navbar-mega-link-title">COLLABORATION</div>
+                                <div class="navbar-mega-link-desc">Work together efficiently</div>
+                              </div>
+                            </a>
+                          </div>
+
+                          <div class="navbar-mega-section">
+                            <h4 class="navbar-mega-title">RESOURCES</h4>
+                            <a href="#" class="navbar-mega-link">
+                              <div class="navbar-mega-link-icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                              </div>
+                              <div class="navbar-mega-link-content">
+                                <div class="navbar-mega-link-title">LEARNING CENTER</div>
+                                <div class="navbar-mega-link-desc">Guides and tutorials</div>
+                              </div>
+                            </a>
+                            <a href="#" class="navbar-mega-link">
+                              <div class="navbar-mega-link-icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                              </div>
+                              <div class="navbar-mega-link-content">
+                                <div class="navbar-mega-link-title">SUPPORT</div>
+                                <div class="navbar-mega-link-desc">Get help from our team</div>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <a href="#" class="nav-link">PRICING</a>
+                  </nav>
+                  
+                  <div class="navbar-actions">
+                    <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+                    <button class="navbar-toggle" data-navbar="mega">
+                      <span class="navbar-toggle-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="navbar-mobile-menu" data-navbar-menu="mega">
+              <div class="navbar-mobile-actions">
+                <button class="btn btn-gold btn-sm w-full">UPGRADE AI</button>
+              </div>
+              <ul class="navbar-mobile-nav">
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">HOME</a></li>
+                
+                <li class="navbar-mobile-nav-item navbar-mobile-nav-item--has-submenu">
+                  <button type="button" class="navbar-mobile-nav-link navbar-mobile-nav-toggle" data-submenu="mega-solutions">
+                    SOLUTIONS
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </button>
+                  <ul class="navbar-mobile-submenu" data-submenu-content="mega-solutions">
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">ENTERPRISE</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">DOCUMENTATION</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">COLLABORATION</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">LEARNING CENTER</a></li>
+                    <li class="navbar-mobile-submenu-item"><a href="#" class="navbar-mobile-submenu-link">SUPPORT</a></li>
+                  </ul>
+                </li>
+                
+                <li class="navbar-mobile-nav-item"><a href="#" class="navbar-mobile-nav-link">PRICING</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="navbar-mega"&gt;
+  &lt;a href="#" class="nav-link navbar-mega-trigger"&gt;
+    SOLUTIONS
+    &lt;svg&gt;...chevron...&lt;/svg&gt;
+  &lt;/a&gt;
+  &lt;div class="navbar-mega-menu"&gt;
+    &lt;div class="navbar-mega-grid"&gt;
+      &lt;div class="navbar-mega-section"&gt;
+        &lt;h4 class="navbar-mega-title"&gt;CATEGORY&lt;/h4&gt;
+        &lt;a href="#" class="navbar-mega-link"&gt;
+          &lt;div class="navbar-mega-link-icon"&gt;&lt;svg&gt;...&lt;/svg&gt;&lt;/div&gt;
+          &lt;div class="navbar-mega-link-content"&gt;
+            &lt;div class="navbar-mega-link-title"&gt;TITLE&lt;/div&gt;
+            &lt;div class="navbar-mega-link-desc"&gt;Description&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <div class="alert alert-info mt-6">
+          <p><strong>FEATURES:</strong></p>
+          <ul class="mt-2">
+            <li>900px wide layout with 3-column grid</li>
+            <li>Dotted pattern background (like main navbar)</li>
+            <li>Icon + Title + Description format</li>
+            <li>Gold category titles and icon colors</li>
+            <li>Slide-in + scale animations on hover</li>
+            <li>Centered positioning under trigger</li>
+          </ul>
+        </div>
+        </div>
+      </section>
+
+      <!-- Usage Guidelines -->
+      <section class="section">
+        <div class="container">
+        <div class="card card--info">
+          <h2 class="subsection-title mb-3">NAVIGATION <span class="text-primary-light">SYSTEM</span></h2>
+          
+          <div class="mb-4">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">BASE CLASS</h4>
+            <p class="text-sm text-slate-600 mb-2"><code>.navbar</code> - Responsive navbar with mobile menu</p>
+          </div>
+          
+          <div class="mb-4">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">MODIFIERS</h4>
+            <ul class="list-styled mb-0">
+              <li><code>.navbar--dark</code> - dark theme with dotted pattern background</li>
+            </ul>
+          </div>
+          
+          <div class="mb-4">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">ELEMENTS</h4>
+            <ul class="list-styled mb-0">
+              <li><code>.navbar-inner</code> - flex container for navbar content</li>
+              <li><code>.navbar-brand</code> - brand logo container</li>
+              <li><code>.brand-text</code> - brand name text</li>
+              <li><code>.navbar-menu</code> - navigation links (hidden on mobile)</li>
+              <li><code>.nav-link</code> - navigation link</li>
+              <li><code>.navbar-actions</code> - action buttons and search</li>
+              <li><code>.navbar-search</code> - expandable search input</li>
+              <li><code>.navbar-search-btn</code> - search button</li>
+              <li><code>.navbar-search-input</code> - search input field</li>
+              <li><code>.navbar-avatar</code> - user avatar circle</li>
+              <li><code>.navbar-toggle</code> - mobile menu burger button</li>
+              <li><code>.navbar-toggle-icon</code> - hamburger icon with animation</li>
+              <li><code>.navbar-mobile-menu</code> - mobile dropdown menu</li>
+              <li><code>.navbar-mobile-actions</code> - button in mobile menu</li>
+              <li><code>.navbar-mobile-nav</code> - mobile navigation list</li>
+              <li><code>.navbar-mobile-nav-item</code> - mobile nav item</li>
+              <li><code>.navbar-mobile-nav-link</code> - mobile nav link</li>
+            </ul>
+          </div>
+          
+          <div class="p-3 bg-surface-light rounded-lg">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">USAGE RULES</h4>
+            <ul class="list-styled mb-0">
+              <li>All components defined in <code>core.css</code></li>
+              <li>No inline styles allowed</li>
+              <li>Use v12.0 Spring easing: <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code></li>
+              <li>Responsive: burger menu appears on mobile (< 1024px)</li>
+              <li>Dark variant: white text, gold hover, dotted pattern</li>
+              <li>Mobile menu: animated slideDown, full-width actions</li>
+            </ul>
+          </div>
+        </div>
+        </div>
+      </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"></path>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"></path>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">© 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tables - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <div class="topbar topbar--dark topbar--fixed">
+    <div class="container">
+      <div class="topbar__inner">
+        <a href="../hub.html" class="topbar__logo">
+          <span class="topbar__logo-mark">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+              <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.15"></path>
+              <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+              <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+            </svg>
+          </span>
+          <span class="topbar__logo-text">documatica</span>
+        </a>
+        
+        <nav class="topbar__menu">
+          <a href="../hub.html" class="topbar__link">Hub</a>
+          <a href="colors.html" class="topbar__link">Colors</a>
+          <a href="buttons.html" class="topbar__link">Buttons</a>
+          <a href="badges.html" class="topbar__link">Badges</a>
+          <a href="cards.html" class="topbar__link">Cards</a>
+          <a href="typography.html" class="topbar__link">Typography</a>
+          <a href="hero.html" class="topbar__link">Hero</a>
+          <a href="forms.html" class="topbar__link">Forms</a>
+          <a href="navigation.html" class="topbar__link">Navigation</a>
+        </nav>
+        
+        <div class="topbar__actions">
+          <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+          <div class="topbar__search" id="topbarSearchMain">
+            <button class="topbar__search-btn" type="button">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+            <input type="text" class="topbar__search-input" placeholder="Search...">
+          </div>
+          <div class="topbar__avatar">DS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">TABLES <span class="text-primary-light">SYSTEM</span></h1>
+        <p class="hero-subtitle">
+          Comprehensive data tables with sorting, actions, and responsive design
+        </p>
+      </div>
+    </section>
+
+    <!-- 01. Basic Table -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Basic Table</h2>
+        <p class="subsection-text mb-6">Standard table with hover states and clean design</p>
+        
+        <div class="card p-0">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>DOCUMENT</th>
+                  <th>TYPE</th>
+                  <th>DATE</th>
+                  <th>AMOUNT</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Contract_TechPro.pdf</td>
+                  <td>Contract</td>
+                  <td>Jun 15, 2026</td>
+                  <td>$125,000</td>
+                  <td><span class="badge badge--success">READY</span></td>
+                </tr>
+                <tr>
+                  <td>Invoice_#1284.pdf</td>
+                  <td>Invoice</td>
+                  <td>Jun 14, 2026</td>
+                  <td>$45,500</td>
+                  <td><span class="badge badge--warning">REVIEW</span></td>
+                </tr>
+                <tr>
+                  <td>Service_Report.pdf</td>
+                  <td>Report</td>
+                  <td>Jun 12, 2026</td>
+                  <td>$89,000</td>
+                  <td><span class="badge badge--success">READY</span></td>
+                </tr>
+                <tr>
+                  <td>Delivery_Note_#456.pdf</td>
+                  <td>Delivery</td>
+                  <td>Jun 10, 2026</td>
+                  <td>$15,200</td>
+                  <td><span class="badge badge--danger">REJECTED</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;div class="table-wrapper"&gt;
+  &lt;table class="table"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;DOCUMENT&lt;/th&gt;
+        &lt;th&gt;TYPE&lt;/th&gt;
+        &lt;th&gt;STATUS&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Contract_TechPro.pdf&lt;/td&gt;
+        &lt;td&gt;Contract&lt;/td&gt;
+        &lt;td&gt;&lt;span class="badge badge--success"&gt;READY&lt;/span&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 02. Striped Table -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Striped Table</h2>
+        <p class="subsection-text mb-6">Alternating row colors for better readability</p>
+        
+        <div class="card p-0">
+          <div class="table-wrapper">
+            <table class="table table--striped">
+              <thead>
+                <tr>
+                  <th>TAX ID</th>
+                  <th>ORGANIZATION</th>
+                  <th>REGION</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="table__mono">7707083893</td>
+                  <td>Sberbank Corp</td>
+                  <td>Moscow</td>
+                  <td><span class="badge badge--success">ACTIVE</span></td>
+                </tr>
+                <tr>
+                  <td class="table__mono">7710140679</td>
+                  <td>VTB Bank</td>
+                  <td>Moscow</td>
+                  <td><span class="badge badge--success">ACTIVE</span></td>
+                </tr>
+                <tr>
+                  <td class="table__mono">7728168971</td>
+                  <td>Gazprom Energy</td>
+                  <td>St. Petersburg</td>
+                  <td><span class="badge badge--success">ACTIVE</span></td>
+                </tr>
+                <tr>
+                  <td class="table__mono">7736050003</td>
+                  <td>Rosneft Oil</td>
+                  <td>Moscow</td>
+                  <td><span class="badge badge--warning">CHECK</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;table class="table table--striped"&gt;
+  &lt;!-- Adds alternating row backgrounds --&gt;
+&lt;/table&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 03. With Actions -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. With Actions</h2>
+        <p class="subsection-text mb-6">Tables with checkboxes and action buttons</p>
+        
+        <div class="card p-0">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    <label class="table-check">
+                      <input type="checkbox" id="selectAll">
+                      <span class="table-check__box"></span>
+                    </label>
+                  </th>
+                  <th>NAME</th>
+                  <th>SIZE</th>
+                  <th>MODIFIED</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <label class="table-check">
+                      <input type="checkbox" class="row-checkbox">
+                      <span class="table-check__box"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <div class="table-file">
+                      <svg class="table-file__icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                      Annual_Report_2026.pdf
+                    </div>
+                  </td>
+                  <td class="table__muted">2.4 MB</td>
+                  <td class="table__muted">2 hours ago</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="Download">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action" aria-label="Edit">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label class="table-check">
+                      <input type="checkbox" class="row-checkbox">
+                      <span class="table-check__box"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <div class="table-file">
+                      <svg class="table-file__icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                      Financial_Statement_Q2.xlsx
+                    </div>
+                  </td>
+                  <td class="table__muted">1.8 MB</td>
+                  <td class="table__muted">Yesterday</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="Download">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action" aria-label="Edit">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label class="table-check">
+                      <input type="checkbox" class="row-checkbox">
+                      <span class="table-check__box"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <div class="table-file">
+                      <svg class="table-file__icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                      Marketing_Plan_2026.pptx
+                    </div>
+                  </td>
+                  <td class="table__muted">5.2 MB</td>
+                  <td class="table__muted">3 days ago</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="Download">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action" aria-label="Edit">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;!-- Checkbox --&gt;
+&lt;label class="table-check"&gt;
+  &lt;input type="checkbox"&gt;
+  &lt;span class="table-check__box"&gt;&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Actions --&gt;
+&lt;div class="table-actions"&gt;
+  &lt;button class="table-action"&gt;&lt;svg&gt;...&lt;/svg&gt;&lt;/button&gt;
+  &lt;button class="table-action table-action--danger"&gt;&lt;svg&gt;...&lt;/svg&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 04. User Table -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. User Table</h2>
+        <p class="subsection-text mb-6">Tables with avatar and user information</p>
+        
+        <div class="card p-0">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>USER</th>
+                  <th>ROLE</th>
+                  <th>DEPARTMENT</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="table-user">
+                      <div class="table-user__avatar table-user__avatar--blue">DN</div>
+                      <div class="table-user__info">
+                        <span class="table-user__name">David Norton</span>
+                        <span class="table-user__role">d.norton@company.com</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Manager</td>
+                  <td>Operations</td>
+                  <td><span class="badge badge--success">ACTIVE</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="table-user">
+                      <div class="table-user__avatar table-user__avatar--green">SM</div>
+                      <div class="table-user__info">
+                        <span class="table-user__name">Sarah Miller</span>
+                        <span class="table-user__role">s.miller@company.com</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Developer</td>
+                  <td>Engineering</td>
+                  <td><span class="badge badge--success">ACTIVE</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="table-user">
+                      <div class="table-user__avatar">JW</div>
+                      <div class="table-user__info">
+                        <span class="table-user__name">John Wilson</span>
+                        <span class="table-user__role">j.wilson@company.com</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Designer</td>
+                  <td>Creative</td>
+                  <td><span class="badge badge--warning">PENDING</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;div class="table-user"&gt;
+  &lt;div class="table-user__avatar table-user__avatar--blue"&gt;DN&lt;/div&gt;
+  &lt;div class="table-user__info"&gt;
+    &lt;span class="table-user__name"&gt;David Norton&lt;/span&gt;
+    &lt;span class="table-user__role"&gt;d.norton@company.com&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 05. Compact Table -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. Compact Table</h2>
+        <p class="subsection-text mb-6">Reduced padding for dense data presentation</p>
+        
+        <div class="card p-0">
+          <div class="table-wrapper">
+            <table class="table table--compact">
+              <thead>
+                <tr>
+                  <th>CODE</th>
+                  <th>PRODUCT</th>
+                  <th>QTY</th>
+                  <th>PRICE</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="table__mono">PRD-001</td>
+                  <td>Professional License</td>
+                  <td>12</td>
+                  <td>$99.00</td>
+                  <td class="table__success">$1,188.00</td>
+                </tr>
+                <tr>
+                  <td class="table__mono">PRD-002</td>
+                  <td>Enterprise Support</td>
+                  <td>1</td>
+                  <td>$499.00</td>
+                  <td class="table__success">$499.00</td>
+                </tr>
+                <tr>
+                  <td class="table__mono">PRD-003</td>
+                  <td>Cloud Storage (1TB)</td>
+                  <td>5</td>
+                  <td>$29.00</td>
+                  <td class="table__success">$145.00</td>
+                </tr>
+                <tr>
+                  <td class="table__mono">PRD-004</td>
+                  <td>API Access</td>
+                  <td>2</td>
+                  <td>$199.00</td>
+                  <td class="table__success">$398.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;table class="table table--compact"&gt;
+  &lt;!-- Reduced padding for compact display --&gt;
+&lt;/table&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 06. Progress & Stats -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. Progress & <span class="text-primary-light">Stats</span></h2>
+        <p class="subsection-text mb-6">Tables with progress bars and visual statistics</p>
+        
+        <div class="card p-0">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>METRIC</th>
+                  <th>CURRENT</th>
+                  <th>TARGET</th>
+                  <th>PROGRESS</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="table-stat">
+                      <div class="table-stat-icon table-stat-icon--success">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                      </div>
+                      <div class="table-stat-value">
+                        <span class="table-stat-number">2,845</span>
+                        <span class="table-stat-label">Active Users</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table__success">2,845</td>
+                  <td>3,000</td>
+                  <td>
+                    <div class="table-progress">
+                      <div class="table-progress-bar">
+                        <div class="table-progress-fill table-progress-fill--success" style="width: 95%;"></div>
+                      </div>
+                      <span class="table-progress-text">95% Complete</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--success">ON TRACK</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-stat">
+                      <div class="table-stat-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                      </div>
+                      <div class="table-stat-value">
+                        <span class="table-stat-number">$487K</span>
+                        <span class="table-stat-label">Revenue</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table__success">$487,250</td>
+                  <td>$500,000</td>
+                  <td>
+                    <div class="table-progress">
+                      <div class="table-progress-bar">
+                        <div class="table-progress-fill table-progress-fill--warning" style="width: 97%;"></div>
+                      </div>
+                      <span class="table-progress-text">97% Complete</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--success">ON TRACK</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-stat">
+                      <div class="table-stat-icon table-stat-icon--warning">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                      </div>
+                      <div class="table-stat-value">
+                        <span class="table-stat-number">156</span>
+                        <span class="table-stat-label">Tasks Done</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>156</td>
+                  <td>250</td>
+                  <td>
+                    <div class="table-progress">
+                      <div class="table-progress-bar">
+                        <div class="table-progress-fill table-progress-fill--warning" style="width: 62%;"></div>
+                      </div>
+                      <span class="table-progress-text">62% Complete</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--warning">AT RISK</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-stat">
+                      <div class="table-stat-icon table-stat-icon--error">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                      </div>
+                      <div class="table-stat-value">
+                        <span class="table-stat-number">23</span>
+                        <span class="table-stat-label">Open Issues</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table__danger">23</td>
+                  <td>10</td>
+                  <td>
+                    <div class="table-progress">
+                      <div class="table-progress-bar">
+                        <div class="table-progress-fill table-progress-fill--error" style="width: 43%;"></div>
+                      </div>
+                      <span class="table-progress-text">43% Complete</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--danger">DELAYED</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;!-- Progress Bar --&gt;
+&lt;div class="table-progress"&gt;
+  &lt;div class="table-progress-bar"&gt;
+    &lt;div class="table-progress-fill table-progress-fill--success" style="width: 75%;"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="table-progress-label"&gt;
+    &lt;span class="table-progress-percent"&gt;75%&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Stat Icon --&gt;
+&lt;div class="table-stat"&gt;
+  &lt;div class="table-stat-icon table-stat-icon--success"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;div class="table-stat-value"&gt;
+    &lt;span class="table-stat-number"&gt;2,845&lt;/span&gt;
+    &lt;span class="table-stat-label"&gt;Active Users&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 08. Rich Content -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">08. Rich <span class="text-primary-light">Content</span></h2>
+        <p class="subsection-text mb-6">Tables with images, multiple badges, and complex data</p>
+        
+        <div class="card p-0">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>PRODUCT</th>
+                  <th>CATEGORY</th>
+                  <th>STOCK</th>
+                  <th>PRICE</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="table-product">
+                      <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=120&h=120&fit=crop" alt="Headphones" class="table-image">
+                      <div class="table-product-info">
+                        <span class="table-product-name">Wireless Headphones Pro</span>
+                        <span class="table-product-sku">SKU: WHP-2024-BLK</span>
+                        <div class="table-tags mt-2">
+                          <span class="badge badge--sm badge--info">NEW</span>
+                          <span class="badge badge--sm badge--success">BESTSELLER</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Electronics</td>
+                  <td><span class="badge badge--success">IN STOCK</span><br><span class="table__muted">245 units</span></td>
+                  <td class="table__success">$299.99</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="View">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action" aria-label="Edit">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-product">
+                      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=120&h=120&fit=crop" alt="Watch" class="table-image">
+                      <div class="table-product-info">
+                        <span class="table-product-name">Smart Watch Ultra</span>
+                        <span class="table-product-sku">SKU: SWU-2024-SLV</span>
+                        <div class="table-tags mt-2">
+                          <span class="badge badge--sm badge--warning">LIMITED</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Wearables</td>
+                  <td><span class="badge badge--warning">LOW STOCK</span><br><span class="table__muted">12 units</span></td>
+                  <td class="table__success">$599.99</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="View">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action" aria-label="Edit">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-product">
+                      <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=120&h=120&fit=crop" alt="Sunglasses" class="table-image">
+                      <div class="table-product-info">
+                        <span class="table-product-name">Designer Sunglasses</span>
+                        <span class="table-product-sku">SKU: DSG-2024-BRN</span>
+                        <div class="table-tags mt-2">
+                          <span class="badge badge--sm">PREMIUM</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Accessories</td>
+                  <td><span class="badge badge--success">IN STOCK</span><br><span class="table__muted">87 units</span></td>
+                  <td class="table__success">$189.99</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="View">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action" aria-label="Edit">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="table-product">
+                      <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=120&h=120&fit=crop" alt="Sneakers" class="table-image">
+                      <div class="table-product-info">
+                        <span class="table-product-name">Running Sneakers Elite</span>
+                        <span class="table-product-sku">SKU: RSE-2024-WHT</span>
+                        <div class="table-tags mt-2">
+                          <span class="badge badge--sm badge--danger">SALE</span>
+                          <span class="badge badge--sm badge--success">POPULAR</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Footwear</td>
+                  <td><span class="badge badge--danger">OUT OF STOCK</span><br><span class="table__muted">0 units</span></td>
+                  <td class="table__danger"><s>$149.99</s> $99.99</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="View">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action" aria-label="Edit">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;div class="table-product"&gt;
+  &lt;img src="..." class="table-image"&gt;
+  &lt;div class="table-product-info"&gt;
+    &lt;span class="table-product-name"&gt;Product Name&lt;/span&gt;
+    &lt;span class="table-product-sku"&gt;SKU: ABC-123&lt;/span&gt;
+    &lt;div class="table-tags mt-2"&gt;
+      &lt;span class="badge badge--sm badge--info"&gt;NEW&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 09. Grouped Headers -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">09. Grouped <span class="text-primary-light">Headers</span></h2>
+        <p class="subsection-text mb-6">Multi-level headers for complex data organization</p>
+        
+        <div class="card p-0">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th rowspan="2">EMPLOYEE</th>
+                  <th colspan="3">Q1 2026</th>
+                  <th colspan="3">Q2 2026</th>
+                  <th rowspan="2">TOTAL</th>
+                </tr>
+                <tr>
+                  <th>JAN</th>
+                  <th>FEB</th>
+                  <th>MAR</th>
+                  <th>APR</th>
+                  <th>MAY</th>
+                  <th>JUN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="table-user">
+                      <div class="table-user__avatar table-user__avatar--blue">AJ</div>
+                      <div class="table-user__info">
+                        <span class="table-user__name">Alice Johnson</span>
+                        <span class="table-user__role">Sales Manager</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table__success">$45K</td>
+                  <td class="table__success">$52K</td>
+                  <td class="table__success">$48K</td>
+                  <td class="table__success">$55K</td>
+                  <td class="table__success">$61K</td>
+                  <td class="table__success">$58K</td>
+                  <td><strong class="table__success">$319K</strong></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="table-user">
+                      <div class="table-user__avatar table-user__avatar--green">BM</div>
+                      <div class="table-user__info">
+                        <span class="table-user__name">Bob Martinez</span>
+                        <span class="table-user__role">Account Executive</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table__success">$38K</td>
+                  <td class="table__success">$42K</td>
+                  <td class="table__success">$39K</td>
+                  <td class="table__success">$44K</td>
+                  <td class="table__success">$41K</td>
+                  <td class="table__success">$46K</td>
+                  <td><strong class="table__success">$250K</strong></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="table-user">
+                      <div class="table-user__avatar">CW</div>
+                      <div class="table-user__info">
+                        <span class="table-user__name">Carol White</span>
+                        <span class="table-user__role">Business Dev</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table__success">$51K</td>
+                  <td class="table__success">$49K</td>
+                  <td class="table__success">$53K</td>
+                  <td class="table__success">$57K</td>
+                  <td class="table__success">$59K</td>
+                  <td class="table__success">$62K</td>
+                  <td><strong class="table__success">$331K</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;thead&gt;
+  &lt;tr&gt;
+    &lt;th rowspan="2"&gt;EMPLOYEE&lt;/th&gt;
+    &lt;th colspan="3"&gt;Q1 2026&lt;/th&gt;
+    &lt;th colspan="3"&gt;Q2 2026&lt;/th&gt;
+    &lt;th rowspan="2"&gt;TOTAL&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;JAN&lt;/th&gt;
+    &lt;th&gt;FEB&lt;/th&gt;
+    &lt;th&gt;MAR&lt;/th&gt;
+    &lt;!-- ... --&gt;
+  &lt;/tr&gt;
+&lt;/thead&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 10. Table with Header -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">10. Table with <span class="text-primary-light">Header</span></h2>
+        <p class="subsection-text mb-6">Tables with title header section for better context and organization</p>
+        
+        <div class="card p-0">
+          <div class="table-header">
+            <h3 class="table-header__title">ALL DOCUMENTS</h3>
+          </div>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NUMBER</th>
+                  <th>TYPE</th>
+                  <th>COUNTERPARTY</th>
+                  <th>AMOUNT</th>
+                  <th>DATE</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1-03022026</td>
+                  <td>UPD</td>
+                  <td>DNT LLC</td>
+                  <td>3,000.00 ₽</td>
+                  <td>03.02.2026</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="Download">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1-03022026</td>
+                  <td>UPD</td>
+                  <td>DNT LLC</td>
+                  <td>3,000.00 ₽</td>
+                  <td>03.02.2026</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="Download">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1-03022026</td>
+                  <td>UPD</td>
+                  <td>DNT LLC</td>
+                  <td>3,000.00 ₽</td>
+                  <td>03.02.2026</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="Download">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1-03022026</td>
+                  <td>UPD</td>
+                  <td>DNT LLC</td>
+                  <td>3,000.00 ₽</td>
+                  <td>03.02.2026</td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="table-action" aria-label="Download">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                      </button>
+                      <button class="table-action table-action--danger" aria-label="Delete">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;div class="card p-0"&gt;
+  &lt;div class="table-header"&gt;
+    &lt;h3 class="table-header__title"&gt;ALL DOCUMENTS&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="table-wrapper"&gt;
+    &lt;table class="table"&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;NUMBER&lt;/th&gt;
+          &lt;th&gt;TYPE&lt;/th&gt;
+          &lt;th&gt;COUNTERPARTY&lt;/th&gt;
+          &lt;th&gt;AMOUNT&lt;/th&gt;
+          &lt;th&gt;DATE&lt;/th&gt;
+          &lt;th&gt;ACTIONS&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;!-- ... --&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- Usage Guidelines -->
+    <section class="section">
+      <div class="container">
+        <div class="card info-card">
+          <h2 class="subsection-title">USAGE GUIDELINES</h2>
+          <ul class="list-check">
+            <li><strong>Table Wrapper:</strong> Always wrap tables in .table-wrapper for proper border-radius and overflow</li>
+            <li><strong>Headers:</strong> Use uppercase text in th elements for consistency</li>
+            <li><strong>Hover States:</strong> All table rows have v12.0 Spring hover animation</li>
+            <li><strong>Striped Variant:</strong> Use .table--striped for alternating row colors</li>
+            <li><strong>Compact Variant:</strong> Use .table--compact for dense data with reduced padding</li>
+            <li><strong>Cell Modifiers:</strong> .table__mono for code, .table__muted for secondary info</li>
+            <li><strong>Checkboxes:</strong> Use .table-check component with custom styling</li>
+            <li><strong>Actions:</strong> Place action buttons in .table-actions container</li>
+            <li><strong>User Display:</strong> Use .table-user for avatar + info combination</li>
+            <li><strong>Expandable Rows:</strong> Toggle .expanded class on row, .visible on content row</li>
+            <li><strong>Progress Bars:</strong> Use .table-progress with color variants (success, warning, error)</li>
+            <li><strong>Rich Content:</strong> Combine .table-product with .table-image for product tables</li>
+            <li><strong>Grouped Headers:</strong> Use colspan/rowspan for multi-level headers</li>
+            <li><strong>Responsive:</strong> Tables scroll horizontally on mobile (min-width: 600px)</li>
+            <li><strong>Status Badges:</strong> Combine with badge components for status indicators</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Component Classes -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">COMPONENT CLASSES</h2>
+        <div class="grid grid-2-col">
+          
+          <div class="card">
+            <h3 class="type-h5 mb-4">Base Structure</h3>
+            <ul class="list-default">
+              <li><code>.table-wrapper</code> - Container with border and radius</li>
+              <li><code>.table</code> - Base table component</li>
+              <li><code>.table--striped</code> - Alternating row colors</li>
+              <li><code>.table--compact</code> - Reduced padding</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Cell Modifiers</h3>
+            <ul class="list-default">
+              <li><code>.table__mono</code> - Monospace font for codes</li>
+              <li><code>.table__muted</code> - Gray secondary text</li>
+              <li><code>.table__success</code> - Green success text</li>
+              <li><code>.table__danger</code> - Red danger text</li>
+              <li><code>.table__sortable</code> - Sortable header</li>
+              <li><code>.table__sortable--active</code> - Active sort state</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Interactive Elements</h3>
+            <ul class="list-default">
+              <li><code>.table-check</code> - Checkbox container</li>
+              <li><code>.table-check__box</code> - Custom checkbox</li>
+              <li><code>.table-actions</code> - Action buttons container</li>
+              <li><code>.table-action</code> - Single action button</li>
+              <li><code>.table-action--danger</code> - Danger action variant</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">User Display</h3>
+            <ul class="list-default">
+              <li><code>.table-user</code> - User info container</li>
+              <li><code>.table-user__avatar</code> - Avatar circle</li>
+              <li><code>.table-user__avatar--blue</code> - Blue avatar</li>
+              <li><code>.table-user__avatar--green</code> - Green avatar</li>
+              <li><code>.table-user__info</code> - Text info column</li>
+              <li><code>.table-user__name</code> - User name</li>
+              <li><code>.table-user__role</code> - User role/email</li>
+              <li><code>.table-file</code> - File display with icon</li>
+              <li><code>.table-file__icon</code> - File icon</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Expandable Rows</h3>
+            <ul class="list-default">
+              <li><code>.table-row-expandable</code> - Clickable row</li>
+              <li><code>.table-expand-icon</code> - Arrow icon</li>
+              <li><code>.expanded</code> - Active expanded state</li>
+              <li><code>.table-expanded-content</code> - Hidden content row</li>
+              <li><code>.visible</code> - Show expanded content</li>
+              <li><code>.table-expanded-inner</code> - Content padding</li>
+              <li><code>.table-expanded-grid</code> - Grid layout</li>
+              <li><code>.table-expanded-item</code> - Single field</li>
+              <li><code>.table-expanded-label</code> - Field label</li>
+              <li><code>.table-expanded-value</code> - Field value</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Progress & Stats</h3>
+            <ul class="list-default">
+              <li><code>.table-progress</code> - Progress container</li>
+              <li><code>.table-progress-bar</code> - Progress bar track</li>
+              <li><code>.table-progress-fill</code> - Progress fill</li>
+              <li><code>.table-progress-fill--success</code> - Green fill</li>
+              <li><code>.table-progress-fill--warning</code> - Orange fill</li>
+              <li><code>.table-progress-fill--error</code> - Red fill</li>
+              <li><code>.table-progress-label</code> - Label container</li>
+              <li><code>.table-progress-text</code> - Progress text</li>
+              <li><code>.table-progress-percent</code> - Percentage</li>
+              <li><code>.table-stat</code> - Stat container</li>
+              <li><code>.table-stat-icon</code> - Icon wrapper</li>
+              <li><code>.table-stat-icon--success</code> - Green variant</li>
+              <li><code>.table-stat-value</code> - Text container</li>
+              <li><code>.table-stat-number</code> - Main number</li>
+              <li><code>.table-stat-label</code> - Description</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Rich Content</h3>
+            <ul class="list-default">
+              <li><code>.table-product</code> - Product container</li>
+              <li><code>.table-image</code> - Product image</li>
+              <li><code>.table-product-info</code> - Text info</li>
+              <li><code>.table-product-name</code> - Product name</li>
+              <li><code>.table-product-sku</code> - SKU code</li>
+              <li><code>.table-tags</code> - Tags container</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="type-h5 mb-4">Editable Cells</h3>
+            <ul class="list-default">
+              <li><code>.table-editable</code> - Editable cell wrapper</li>
+              <li><code>.table-edit-icon</code> - Edit icon</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

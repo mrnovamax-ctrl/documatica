@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Tokens - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link">Spacing</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="tokens.html" class="nav-link nav-link-active">Tokens</a>
+        <a href="backgrounds.html" class="nav-link">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>        <a href="forms.html" class="nav-link">Forms</a>        <a href="preloader.html" class="nav-link">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link active">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">System</span>
+        <h1 class="hero-title">DESIGN <span class="text-primary-light">TOKENS</span></h1>
+        <p class="hero-subtitle">
+          Single source of truth for design decisions. CSS variables for colors, spacing, typography, shadows, and transitions.
+        </p>
+      </div>
+    </section>
+
+    <!-- Brand Colors -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Brand Colors</h2>
+        <p class="subsection-text">Primary brand colors for main actions and AI features</p>
+        
+        <div class="token-grid">
+          <div class="token-card">
+            <div class="color-swatch-large" style="background: var(--color-brand-blue);"></div>
+            <div class="token-label">Brand Blue</div>
+            <div class="token-value">--color-brand-blue: #3b82f6</div>
+          </div>
+          <div class="token-card">
+            <div class="color-swatch-large" style="background: var(--color-brand-gold);"></div>
+            <div class="token-label">Smart Gold (AI)</div>
+            <div class="token-value">--color-brand-gold: #fbbf24</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slate Scale -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Slate Scale (Neutrals)</h2>
+        <p class="subsection-text">10 shades from light to dark for UI backgrounds and text</p>
+        
+        <div class="color-list">
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-50);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 50</div>
+              <div class="color-hex">#f8fafc</div>
+            </div>
+            <div class="token-value">--color-slate-50</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-100);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 100</div>
+              <div class="color-hex">#f1f5f9</div>
+            </div>
+            <div class="token-value">--color-slate-100</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-200);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 200</div>
+              <div class="color-hex">#e2e8f0</div>
+            </div>
+            <div class="token-value">--color-slate-200</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-300);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 300</div>
+              <div class="color-hex">#cbd5e1</div>
+            </div>
+            <div class="token-value">--color-slate-300</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-400);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 400</div>
+              <div class="color-hex">#94a3b8</div>
+            </div>
+            <div class="token-value">--color-slate-400</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-500);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 500</div>
+              <div class="color-hex">#64748b</div>
+            </div>
+            <div class="token-value">--color-slate-500</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-600);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 600</div>
+              <div class="color-hex">#475569</div>
+            </div>
+            <div class="token-value">--color-slate-600</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-700);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 700</div>
+              <div class="color-hex">#334155</div>
+            </div>
+            <div class="token-value">--color-slate-700</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-800);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 800</div>
+              <div class="color-hex">#1e293b</div>
+            </div>
+            <div class="token-value">--color-slate-800</div>
+          </div>
+          <div class="color-item">
+            <div class="color-swatch-small" style="background: var(--color-slate-900);"></div>
+            <div class="color-info">
+              <div class="color-name">Slate 900</div>
+              <div class="color-hex">#0f172a</div>
+            </div>
+            <div class="token-value">--color-slate-900</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Semantic Colors -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. Semantic Colors</h2>
+        <p class="subsection-text">Status and feedback colors for UI states</p>
+        
+        <div class="token-grid">
+          <div class="token-card">
+            <div class="color-swatch-large" style="background: var(--color-success);"></div>
+            <div class="token-label">Success</div>
+            <div class="token-value">--color-success: #10b981</div>
+          </div>
+          <div class="token-card">
+            <div class="color-swatch-large" style="background: var(--color-warning);"></div>
+            <div class="token-label">Warning</div>
+            <div class="token-value">--color-warning: #f59e0b</div>
+          </div>
+          <div class="token-card">
+            <div class="color-swatch-large" style="background: var(--color-error);"></div>
+            <div class="token-label">Error</div>
+            <div class="token-value">--color-error: #ef4444</div>
+          </div>
+          <div class="token-card">
+            <div class="color-swatch-large" style="background: var(--color-info);"></div>
+            <div class="token-label">Info</div>
+            <div class="token-value">--color-info: #3b82f6</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spacing Scale -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. Spacing Scale</h2>
+        <p class="subsection-text">Consistent spacing values from 4px to 96px</p>
+        
+        <div class="spacing-demo">
+          <div class="spacing-box spacing-box--1"></div>
+          <div>
+            <div class="spacing-label">1 (4px)</div>
+            <div class="spacing-value">--spacing-1: 0.25rem</div>
+          </div>
+        </div>
+        <div class="spacing-demo">
+          <div class="spacing-box spacing-box--2"></div>
+          <div>
+            <div class="spacing-label">2 (8px)</div>
+            <div class="spacing-value">--spacing-2: 0.5rem</div>
+          </div>
+        </div>
+        <div class="spacing-demo">
+          <div class="spacing-box spacing-box--3"></div>
+          <div>
+            <div class="spacing-label">3 (12px)</div>
+            <div class="spacing-value">--spacing-3: 0.75rem</div>
+          </div>
+        </div>
+        <div class="spacing-demo">
+          <div class="spacing-box spacing-box--4"></div>
+          <div>
+            <div class="spacing-label">4 (16px)</div>
+            <div class="spacing-value">--spacing-4: 1rem</div>
+          </div>
+        </div>
+        <div class="spacing-demo">
+          <div class="spacing-box spacing-box--6"></div>
+          <div>
+            <div class="spacing-label">6 (24px)</div>
+            <div class="spacing-value">--spacing-6: 1.5rem</div>
+          </div>
+        </div>
+        <div class="spacing-demo">
+          <div class="spacing-box" style="width: 32px; height: 40px;"></div>
+          <div>
+            <div class="spacing-label">8 (32px)</div>
+            <div class="spacing-value">--spacing-8: 2rem</div>
+          </div>
+        </div>
+        <div class="spacing-demo">
+          <div class="spacing-box" style="width: 48px; height: 40px;"></div>
+          <div>
+            <div class="spacing-label">12 (48px)</div>
+            <div class="spacing-value">--spacing-12: 3rem</div>
+          </div>
+        </div>
+        <div class="spacing-demo">
+          <div class="spacing-box" style="width: 64px; height: 40px;"></div>
+          <div>
+            <div class="spacing-label">16 (64px)</div>
+            <div class="spacing-value">--spacing-16: 4rem</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Border Radius -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. Border Radius</h2>
+        <p class="subsection-text">Consistent corner rounding from subtle to full circle</p>
+        
+        <div class="token-grid">
+          <div class="token-card">
+            <div class="radius-demo" style="border-radius: var(--radius-sm);">sm<br>6px</div>
+            <div class="token-label mt-4">Small</div>
+            <div class="token-value">--radius-sm: 0.375rem</div>
+          </div>
+          <div class="token-card">
+            <div class="radius-demo" style="border-radius: var(--radius-md);">md<br>8px</div>
+            <div class="token-label mt-4">Medium</div>
+            <div class="token-value">--radius-md: 0.5rem</div>
+          </div>
+          <div class="token-card">
+            <div class="radius-demo" style="border-radius: var(--radius-lg);">lg<br>12px</div>
+            <div class="token-label mt-4">Large</div>
+            <div class="token-value">--radius-lg: 0.75rem</div>
+          </div>
+          <div class="token-card">
+            <div class="radius-demo" style="border-radius: var(--radius-xl);">xl<br>16px</div>
+            <div class="token-label mt-4">Extra Large</div>
+            <div class="token-value">--radius-xl: 1rem</div>
+          </div>
+          <div class="token-card">
+            <div class="radius-demo" style="border-radius: var(--radius-2xl);">2xl<br>24px</div>
+            <div class="token-label mt-4">2X Large</div>
+            <div class="token-value">--radius-2xl: 1.5rem</div>
+          </div>
+          <div class="token-card">
+            <div class="radius-demo" style="border-radius: var(--radius-full);">full</div>
+            <div class="token-label mt-4">Full</div>
+            <div class="token-value">--radius-full: 9999px</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shadows -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. Shadows</h2>
+        <p class="subsection-text">Elevation system from subtle to prominent</p>
+        
+        <div class="token-grid">
+          <div class="token-card">
+            <div class="shadow-demo" style="box-shadow: var(--shadow-sm);">Small</div>
+            <div class="token-label mt-4">Shadow SM</div>
+            <div class="token-value">--shadow-sm</div>
+          </div>
+          <div class="token-card">
+            <div class="shadow-demo" style="box-shadow: var(--shadow-md);">Medium</div>
+            <div class="token-label mt-4">Shadow MD</div>
+            <div class="token-value">--shadow-md</div>
+          </div>
+          <div class="token-card">
+            <div class="shadow-demo" style="box-shadow: var(--shadow-lg);">Large</div>
+            <div class="token-label mt-4">Shadow LG</div>
+            <div class="token-value">--shadow-lg</div>
+          </div>
+          <div class="token-card">
+            <div class="shadow-demo" style="box-shadow: var(--shadow-xl);">Extra Large</div>
+            <div class="token-label mt-4">Shadow XL</div>
+            <div class="token-value">--shadow-xl</div>
+          </div>
+          <div class="token-card">
+            <div class="shadow-demo" style="box-shadow: var(--shadow-2xl);">2X Large</div>
+            <div class="token-label mt-4">Shadow 2XL</div>
+            <div class="token-value">--shadow-2xl</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transitions -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. Transitions</h2>
+        <p class="subsection-text">Animation timing functions including "v12.0 Spring"</p>
+        
+        <div class="token-grid">
+          <div class="token-card">
+            <div class="token-label">Spring (v12.0)</div>
+            <div class="token-value">--transition-spring</div>
+            <p class="content-text mt-2">all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)</p>
+          </div>
+          <div class="token-card">
+            <div class="token-label">Base</div>
+            <div class="token-value">--transition-base</div>
+            <p class="content-text mt-2">all 0.3s ease</p>
+          </div>
+          <div class="token-card">
+            <div class="token-label">Fast</div>
+            <div class="token-value">--transition-fast</div>
+            <p class="content-text mt-2">all 0.15s ease</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Guidelines -->
+    <section class="section">
+      <div class="container">
+        <div class="card info-card">
+          <h2 class="subsection-title">💡 Using Design Tokens</h2>
+          <ul class="info-list">
+            <li><strong>CSS Variables:</strong> Use var(--token-name) instead of hardcoded values</li>
+            <li><strong>Consistency:</strong> Tokens ensure visual consistency across the entire system</li>
+            <li><strong>Maintainability:</strong> Change once in :root, updates everywhere</li>
+            <li><strong>Dark Mode Ready:</strong> Easy to override tokens for theme switching</li>
+            <li><strong>Spacing:</strong> Use spacing scale for margins, paddings, gaps</li>
+            <li><strong>Colors:</strong> Brand colors for actions, slate for UI, semantic for states</li>
+            <li><strong>Spring Physics:</strong> Always use --transition-spring for interactive elements</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html> = document.getElementById('navbarToggle');
+    const navbarMobileMenu = document.getElementById('navbarMobileMenu');
+    
+    if (navbarToggle && navbarMobileMenu) {
+      navbarToggle.addEventListener('click', () => {
+        navbarToggle.classList.toggle('active');
+        navbarMobileMenu.classList.toggle('active');
+      });
+      
+      const mobileLinks = document.querySelectorAll('.navbar-mobile-nav-link');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navbarToggle.classList.remove('active');
+          navbarMobileMenu.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

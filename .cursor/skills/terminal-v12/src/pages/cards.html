@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cards - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link nav-link-active">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link">Spacing</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="tokens.html" class="nav-link">Tokens</a>
+        <a href="backgrounds.html" class="nav-link">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>
+        <a href="forms.html" class="nav-link">Forms</a>
+        <a href="preloader.html" class="nav-link">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link active">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">CARDS</h1>
+        <p class="hero-subtitle">
+          Card components for features, stats, content, promos, CTAs - with spring physics and consistent styling
+        </p>
+      </div>
+    </section>
+
+    <!-- Stat Cards -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Stat Cards</h2>
+        <p class="subsection-text">Display key metrics and statistics - different widths and backgrounds</p>
+        
+        <div class="cards-inline">
+          
+          <div class="kit-card kit-card--stat kit-card--third">
+            <div class="kit-card-content">
+              <span class="kit-card__label">Total Documents</span>
+              <span class="kit-card__value">1,284</span>
+              <span class="kit-card__change kit-card__change--up">+12% per week</span>
+            </div>
+          </div>
+
+          <div class="kit-card kit-card--stat kit-card--quarter">
+            <div class="kit-card-content">
+              <span class="kit-card__label">AI Audits</span>
+              <span class="kit-card__value">856</span>
+              <span class="kit-card__change">99.8% accuracy</span>
+            </div>
+          </div>
+
+          <div class="kit-card kit-card--stat kit-card--brand kit-card--auto">
+            <div class="kit-card-content">
+              <span class="kit-card__label">API Status</span>
+              <span class="kit-card__value">Active</span>
+              <span class="kit-card__change">34.2 ms response</span>
+            </div>
+          </div>
+
+          <div class="kit-card kit-card--stat kit-card--quarter kit-card--blue">
+            <div class="kit-card-content">
+              <span class="kit-card__label">Revenue</span>
+              <span class="kit-card__value">₽2.4M</span>
+              <span class="kit-card__change">+23% growth</span>
+            </div>
+          </div>
+
+          <div class="kit-card kit-card--stat kit-card--quarter kit-card--dark">
+            <div class="kit-card-content">
+              <span class="kit-card__label">Users</span>
+              <span class="kit-card__value">8,342</span>
+              <span class="kit-card__change kit-card__change--up">+156 today</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Feature Cards</h2>
+        <p class="subsection-text">Showcase features with icons and descriptions - Grid 3 columns</p>
+        
+        <div class="grid grid-3-col">
+          
+          <a href="#" class="kit-card kit-card--feature">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Automation</span>
+              <h3 class="kit-card-title">Automation</h3>
+              <p class="kit-card-text">Intelligent scenarios for processing incoming documentation.</p>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--feature">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Analytics</span>
+              <h3 class="kit-card-title">Analytics</h3>
+              <p class="kit-card-text">Deep analysis of financial flows and legal metrics.</p>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--feature">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Security</span>
+              <h3 class="kit-card-title">Security</h3>
+              <p class="kit-card-text">Military-grade AES-256 data encryption.</p>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--feature">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">AI Assistant</span>
+              <h3 class="kit-card-title">Chatbot</h3>
+              <p class="kit-card-text">24/7 AI support for document queries.</p>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--feature">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Business</span>
+              <h3 class="kit-card-title">Integrations</h3>
+              <p class="kit-card-text">Connect with 1C, SAP, and other ERP systems.</p>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--feature">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Templates</span>
+              <h3 class="kit-card-title">Templates</h3>
+              <p class="kit-card-text">500+ ready-made document templates.</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Promo Cards -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. Promo Cards</h2>
+        <p class="subsection-text">Promotional cards with visual emphasis - Grid 2 columns</p>
+        
+        <div class="grid grid-2-col">
+          
+          <div class="kit-card">
+            <span class="kit-card__bar"></span>
+            <div class="kit-card-content">
+              <h3 class="kit-card-title">Your business<br>in the flow.</h3>
+              <p class="kit-card-text">Smart generation of contracts and reports in 30 seconds.</p>
+            </div>
+            <div class="kit-card__visual">
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="kit-card kit-card--promo">
+            <div class="kit-card-badge">
+              <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"></path>
+              </svg>
+            </div>
+            <div class="kit-card-content">
+              <h3 class="kit-card-title">Flawless<br>structure</h3>
+              <p class="kit-card-text">No errors. Only logic.</p>
+            </div>
+            <span class="kit-card__meta">Documatica v12.0</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Cards -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. Content Cards</h2>
+        <p class="subsection-text">Article and content display cards - mixed sizes</p>
+        
+        <div class="cards-inline">
+          
+          <a href="#" class="kit-card kit-card--article kit-card--half">
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Featured Guide</span>
+              <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+              <span class="kit-card__meta">Tax Optimization 2026</span>
+              <h3 class="kit-card-title">How AI changes<br>the architecture <span class="text-brand">of taxation</span></h3>
+              <p class="kit-card-text">Complete breakdown of algorithms for automatic tax filing and risk minimization.</p>
+            </div>
+          </a>
+
+          <div class="cards-stack flex-1">
+            <a href="#" class="kit-card kit-card--info kit-card--compact">
+              <div class="kit-card-content">
+                <span class="kit-card-badge">Protocol Update</span>
+                <h4 class="kit-card-title">TIN validation in 0.2s</h4>
+                <span class="kit-card-text">Integration with USRLE v12.0</span>
+              </div>
+            </a>
+            <a href="#" class="kit-card kit-card--info kit-card--compact">
+              <div class="kit-card-content">
+                <span class="kit-card-badge">AI Insights</span>
+                <h4 class="kit-card-title">Contract risks: NLP Audit</h4>
+                <span class="kit-card-text">Technical case breakdown</span>
+              </div>
+            </a>
+            <a href="#" class="kit-card kit-card--info">
+              <div class="kit-card-content">
+                <span class="kit-card-badge">Tutorial</span>
+                <h4 class="kit-card-title">API Quick Start Guide</h4>
+                <span class="kit-card-text">From zero to production in 10 min</span>
+              </div>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Card -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. CTA Card</h2>
+        <p class="subsection-text">Call-to-action card with button - half width</p>
+        
+        <div class="kit-card kit-card--cta kit-card--half">
+          <div class="kit-card-content">
+            <h3 class="kit-card-title">More knowledge</h3>
+            <p class="kit-card-text">Explore Documatica publication archive</p>
+          </div>
+          <a href="#" class="kit-card__button">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- List Cards -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. Feature Grid</h2>
+        <p class="subsection-text">Feature cards in auto-width inline layout - Grid 4 columns</p>
+        
+        <div class="grid grid-4-col">
+          
+          <a href="#" class="kit-card kit-card--feature kit-card--compact">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Security</span>
+              <h4 class="kit-card-title">Encryption</h4>
+              <p class="kit-card-text">AES-256</p>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--feature kit-card--compact">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">API</span>
+              <h4 class="kit-card-title">Developer SDK</h4>
+              <p class="kit-card-text">Python & Node.js</p>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--feature kit-card--compact">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Workflow</span>
+              <h4 class="kit-card-title">Automation</h4>
+              <p class="kit-card-text">Custom flows</p>
+            </div>
+          </a>
+
+          <a href="#" class="kit-card kit-card--feature kit-card--compact">
+            <div class="kit-card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+              </svg>
+            </div>
+            <svg class="kit-card__arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+            <div class="kit-card-content">
+              <span class="kit-card-badge">Compliance</span>
+              <h4 class="kit-card-title">Audit Logs</h4>
+              <p class="kit-card-text">Full trail</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Full Width Example -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. Full Width Card</h2>
+        <p class="subsection-text">Large promotional card at full container width</p>
+        
+        <div class="kit-card kit-card--promo kit-card--full kit-card--large">
+          <div class="kit-card-badge">
+            <svg fill="currentColor" viewBox="0 0 24 24" width="32" height="32">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <div class="kit-card-content">
+            <h3 class="kit-card-title text-hero">Documatica AI Platform</h3>
+            <p class="kit-card-text text-lg">Transform your document workflow with intelligent automation, advanced analytics, and enterprise-grade security. Built for teams who demand precision.</p>
+          </div>
+          <span class="kit-card__meta">v12.0 Release — January 2026</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Guidelines -->
+    <section class="section">
+      <div class="container">
+        <div class="card">
+          <h2 class="subsection-title">💡 Card Width Modifiers</h2>
+          <ul class="info-list">
+            <li><strong>.kit-card--full</strong> - 100% width of container</li>
+            <li><strong>.kit-card--half</strong> - max-width: 600px (half of typical container)</li>
+            <li><strong>.kit-card--third</strong> - max-width: 400px (one third)</li>
+            <li><strong>.kit-card--quarter</strong> - max-width: 300px (compact cards)</li>
+            <li><strong>.kit-card--auto</strong> - auto width with min-width: 280px (wraps inline)</li>
+            <li><strong>.kit-card--compact</strong> - reduced padding (1.25rem instead of 2rem)</li>
+            <li><strong>.kit-card--large</strong> - increased padding (3rem)</li>
+            <li><strong>.cards-inline</strong> - flex wrap layout for mixed-width cards</li>
+            <li><strong>.cards-stack</strong> - vertical stack layout</li>
+            <li><strong>Responsive:</strong> All width constraints removed on mobile (max-width: 768px)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"/>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"/>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html> = document.getElementById('navbarToggle');
+    const navbarMobileMenu = document.getElementById('navbarMobileMenu');
+    
+    if (navbarToggle && navbarMobileMenu) {
+      navbarToggle.addEventListener('click', () => {
+        navbarToggle.classList.toggle('active');
+        navbarMobileMenu.classList.toggle('active');
+      });
+      
+      const mobileLinks = document.querySelectorAll('.navbar-mobile-nav-link');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navbarToggle.classList.remove('active');
+          navbarMobileMenu.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

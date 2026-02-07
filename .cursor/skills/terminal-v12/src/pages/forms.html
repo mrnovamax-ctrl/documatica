@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Controls - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <div class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H48V48H12V16Z" fill="#3b82f6" fill-opacity="0.1"></path>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"></path>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+        </svg>
+        <span class="brand-text">docu<span class="brand-light">matica</span></span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="../hub.html" class="nav-link">Hub</a>
+        <a href="colors.html" class="nav-link">Colors</a>
+        <a href="buttons.html" class="nav-link">Buttons</a>
+        <a href="cards.html" class="nav-link">Cards</a>
+        <a href="layout.html" class="nav-link">Layout</a>
+        <a href="spacing.html" class="nav-link">Spacing</a>
+        <a href="typography.html" class="nav-link">Typography</a>
+        <a href="tokens.html" class="nav-link">Tokens</a>
+        <a href="backgrounds.html" class="nav-link">Backgrounds</a>
+        <a href="hero.html" class="nav-link">Hero</a>
+        <a href="forms.html" class="nav-link nav-link--active">Forms</a>
+        <a href="preloader.html" class="nav-link">Preloader</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm">v12.0</button>
+        <button class="navbar-toggle" id="navbarToggle">
+          <div class="navbar-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <ul class="navbar-mobile-nav">
+        <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+        <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+        <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+        <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+        <li class="navbar-mobile-nav-item"><a href="layout.html" class="navbar-mobile-nav-link">Layout</a></li>
+        <li class="navbar-mobile-nav-item"><a href="spacing.html" class="navbar-mobile-nav-link">Spacing</a></li>
+        <li class="navbar-mobile-nav-item"><a href="typography.html" class="navbar-mobile-nav-link">Typography</a></li>
+        <li class="navbar-mobile-nav-item"><a href="tokens.html" class="navbar-mobile-nav-link">Tokens</a></li>
+        <li class="navbar-mobile-nav-item"><a href="backgrounds.html" class="navbar-mobile-nav-link">Backgrounds</a></li>
+        <li class="navbar-mobile-nav-item"><a href="hero.html" class="navbar-mobile-nav-link">Hero</a></li>
+        <li class="navbar-mobile-nav-item"><a href="forms.html" class="navbar-mobile-nav-link active">Forms</a></li>
+        <li class="navbar-mobile-nav-item"><a href="preloader.html" class="navbar-mobile-nav-link">Preloader</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Components</span>
+        <h1 class="hero-title">FORM <span class="text-primary-light">CONTROLS</span></h1>
+        <p class="hero-subtitle">
+          Input fields, toggles, checkboxes, radio buttons, and sliders with v12.0 Spring physics
+        </p>
+      </div>
+    </section>
+
+    <!-- 01. Text Inputs -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. Text Inputs</h2>
+        <p class="subsection-text">Standard text input fields with focus states</p>
+        
+        <div class="card">
+          <div class="form-group">
+            <label class="label">Email Address</label>
+            <input type="email" class="input" placeholder="name@company.com">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Password</label>
+            <input type="password" class="input" placeholder="••••••••">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Full Name (with value)</label>
+            <input type="text" class="input" value="John Smith">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Disabled Input</label>
+            <input type="text" class="input" placeholder="Cannot edit this" disabled="">
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="form-group"&gt;
+  &lt;label class="label"&gt;Email Address&lt;/label&gt;
+  &lt;input type="email" class="input" placeholder="name@company.com"&gt;
+&lt;/div&gt;
+
+&lt;!-- With value --&gt;
+&lt;input type="text" class="input" value="John Smith"&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;input type="text" class="input" placeholder="Cannot edit" disabled&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 02. Input States -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. Input States</h2>
+        <p class="subsection-text">Error and success validation states with messages</p>
+        
+        <div class="card">
+          <div class="form-group">
+            <label class="label">Email (Error State)</label>
+            <input type="email" class="input input--error" value="invalid-email">
+            <span class="input-error">Please enter a valid email address</span>
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Username (Success State)</label>
+            <input type="text" class="input input--success" value="john_smith">
+            <span class="input-success">Username is available</span>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;!-- Error State --&gt;
+&lt;div class="form-group"&gt;
+  &lt;label class="label"&gt;Email&lt;/label&gt;
+  &lt;input type="email" class="input input--error" value="invalid"&gt;
+  &lt;span class="input-error"&gt;Please enter a valid email&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Success State --&gt;
+&lt;div class="form-group"&gt;
+  &lt;label class="label"&gt;Username&lt;/label&gt;
+  &lt;input type="text" class="input input--success" value="john_smith"&gt;
+  &lt;span class="input-success"&gt;Username is available&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 03. Textarea -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. Textarea</h2>
+        <p class="subsection-text">Multi-line text input for longer content</p>
+        
+        <div class="card">
+          <div class="form-group">
+            <label class="label">Message</label>
+            <textarea class="input" rows="5" placeholder="Enter your message here..."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Description (with content)</label>
+            <textarea class="input" rows="4">This is a sample description with existing content that can be edited.</textarea>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="form-group"&gt;
+  &lt;label class="label"&gt;Message&lt;/label&gt;
+  &lt;textarea class="input" rows="5" placeholder="Enter message..."&gt;&lt;/textarea&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 04. Checkboxes -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. Checkboxes</h2>
+        <p class="subsection-text">Custom styled checkboxes with icon indicators</p>
+        
+        <div class="card">
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input">
+            <span class="checkbox__box">
+              <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="checkbox__label">Default checkbox</span>
+          </label>
+          
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" checked="">
+            <span class="checkbox__box">
+              <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="checkbox__label">Checked checkbox</span>
+          </label>
+          
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" disabled="">
+            <span class="checkbox__box">
+              <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="checkbox__label">Disabled checkbox</span>
+          </label>
+          
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" checked="" disabled="">
+            <span class="checkbox__box">
+              <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="checkbox__label">Checked &amp; disabled</span>
+          </label>
+        </div>
+
+        <pre class="code-block"><code>&lt;label class="checkbox"&gt;
+  &lt;input type="checkbox" class="checkbox__input"&gt;
+  &lt;span class="checkbox__box"&gt;
+    &lt;svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10"&gt;
+      &lt;path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2"/&gt;
+    &lt;/svg&gt;
+  &lt;/span&gt;
+  &lt;span class="checkbox__label"&gt;Checkbox label&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Checked --&gt;
+&lt;input type="checkbox" class="checkbox__input" checked&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;input type="checkbox" class="checkbox__input" disabled&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 05. Radio Buttons -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. Radio Buttons</h2>
+        <p class="subsection-text">Custom styled radio buttons for mutually exclusive options</p>
+        
+        <div class="card">
+          <div class="form-group">
+            <label class="label">Choose a plan</label>
+            
+            <label class="radio">
+              <input type="radio" name="plan" class="radio__input">
+              <span class="radio__circle"></span>
+              <span class="radio__label">Free Plan</span>
+            </label>
+            
+            <label class="radio">
+              <input type="radio" name="plan" class="radio__input" checked="">
+              <span class="radio__circle"></span>
+              <span class="radio__label">Pro Plan (Selected)</span>
+            </label>
+            
+            <label class="radio">
+              <input type="radio" name="plan" class="radio__input">
+              <span class="radio__circle"></span>
+              <span class="radio__label">Enterprise Plan</span>
+            </label>
+            
+            <label class="radio">
+              <input type="radio" name="plan" class="radio__input" disabled="">
+              <span class="radio__circle"></span>
+              <span class="radio__label">Beta Plan (Disabled)</span>
+            </label>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;label class="radio"&gt;
+  &lt;input type="radio" name="plan" class="radio__input"&gt;
+  &lt;span class="radio__circle"&gt;&lt;/span&gt;
+  &lt;span class="radio__label"&gt;Free Plan&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Checked --&gt;
+&lt;input type="radio" name="plan" class="radio__input" checked&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;input type="radio" name="plan" class="radio__input" disabled&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 06. Toggle Switches -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. Toggle Switches</h2>
+        <p class="subsection-text">On/off toggle switches for settings and preferences</p>
+        
+        <div class="card">
+          <label class="toggle-label">
+            <input type="checkbox" class="toggle-input">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">Enable Notifications</span>
+          </label>
+          
+          <label class="toggle-label">
+            <input type="checkbox" class="toggle-input" checked="">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">Dark Mode (Active)</span>
+          </label>
+          
+          <label class="toggle-label">
+            <input type="checkbox" class="toggle-input">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">Auto-Save</span>
+          </label>
+          
+          <label class="toggle-label">
+            <input type="checkbox" class="toggle-input" disabled="">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">Premium Feature (Disabled)</span>
+          </label>
+        </div>
+
+        <pre class="code-block"><code>&lt;label class="toggle-label"&gt;
+  &lt;input type="checkbox" class="toggle-input"&gt;
+  &lt;span class="toggle-switch"&gt;&lt;/span&gt;
+  &lt;span class="toggle-text"&gt;Enable Notifications&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Checked --&gt;
+&lt;input type="checkbox" class="toggle-input" checked&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;input type="checkbox" class="toggle-input" disabled&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 07. Sliders / Range -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. Sliders / <span class="text-primary-light">Range</span></h2>
+        <p class="subsection-text mb-6">Range sliders with v12.0 Spring physics, multiple sizes and color variants</p>
+        
+        <!-- Basic Sliders -->
+        <div class="card mb-6">
+          <h3 class="card-title">BASIC SLIDERS</h3>
+          
+          <div class="form-group">
+            <label class="label">Volume</label>
+            <input type="range" class="slider" min="0" max="100" value="50">
+            <span class="slider-value">50%</span>
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Brightness</label>
+            <input type="range" class="slider" min="0" max="100" value="75">
+            <span class="slider-value">75%</span>
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Budget</label>
+            <input type="range" class="slider" min="0" max="100000" value="35000" step="1000">
+            <span class="slider-value slider-value--highlight">$35,000</span>
+          </div>
+        </div>
+
+        <!-- Sizes -->
+        <div class="card mb-6">
+          <h3 class="card-title">SIZE VARIANTS</h3>
+          
+          <div class="form-group">
+            <label class="label">Small (4px height)</label>
+            <input type="range" class="slider slider--sm" min="0" max="100" value="40">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Default (8px height)</label>
+            <input type="range" class="slider" min="0" max="100" value="60">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Large (12px height)</label>
+            <input type="range" class="slider slider--lg" min="0" max="100" value="80">
+          </div>
+        </div>
+
+        <!-- Color Variants -->
+        <div class="card mb-6">
+          <h3 class="card-title">COLOR VARIANTS</h3>
+          
+          <div class="form-group">
+            <label class="label">Primary</label>
+            <input type="range" class="slider slider--primary" min="0" max="100" value="75">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Smart Gold</label>
+            <input type="range" class="slider slider--gold" min="0" max="100" value="60">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Success</label>
+            <input type="range" class="slider slider--success" min="0" max="100" value="90">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Warning</label>
+            <input type="range" class="slider slider--warning" min="0" max="100" value="45">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Danger</label>
+            <input type="range" class="slider slider--danger" min="0" max="100" value="30">
+          </div>
+        </div>
+
+        <!-- With Min/Max Labels -->
+        <div class="card mb-6">
+          <h3 class="card-title">WITH MIN/MAX LABELS</h3>
+          
+          <div class="form-group">
+            <label class="label">Project Budget</label>
+            <div class="slider-wrap slider-wrap--labeled">
+              <span class="slider-min">$0</span>
+              <input type="range" class="slider slider--primary" min="0" max="100000" value="35000" step="1000">
+              <span class="slider-max">$100K</span>
+            </div>
+            <span class="slider-value slider-value--highlight">$35,000</span>
+          </div>
+        </div>
+
+        <!-- States -->
+        <div class="card mb-6">
+          <h3 class="card-title">STATES</h3>
+          
+          <div class="form-group">
+            <label class="label">Default</label>
+            <input type="range" class="slider" min="0" max="100" value="50">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Disabled</label>
+            <input type="range" class="slider" min="0" max="100" value="50" disabled>
+          </div>
+        </div>
+
+        <!-- Range Sliders (Dual Handle) -->
+        <div class="card mb-6">
+          <h3 class="card-title">RANGE SLIDERS (DUAL HANDLE)</h3>
+          
+          <div class="form-group">
+            <label class="label">Price Range</label>
+            <div class="range-slider" data-range-slider>
+              <div class="range-slider__track">
+                <div class="range-slider__fill"></div>
+              </div>
+              <input type="range" class="range-slider__input range-slider__input--min" min="0" max="1000" value="200" data-range-min>
+              <input type="range" class="range-slider__input range-slider__input--max" min="0" max="1000" value="700" data-range-max>
+            </div>
+            <div class="slider-range-values">
+              <span class="slider-range-value" data-value-min>$200</span>
+              <span class="slider-range-sep">—</span>
+              <span class="slider-range-value" data-value-max>$700</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="label">Budget Allocation</label>
+            <div class="range-slider" data-range-slider>
+              <div class="range-slider__track">
+                <div class="range-slider__fill range-slider__fill--success"></div>
+              </div>
+              <input type="range" class="range-slider__input range-slider__input--min range-slider__input--success" min="0" max="100000" value="30000" step="1000" data-range-min>
+              <input type="range" class="range-slider__input range-slider__input--max range-slider__input--success" min="0" max="100000" value="70000" step="1000" data-range-max>
+            </div>
+            <div class="slider-range-values">
+              <span class="slider-range-value" data-value-min>$30K</span>
+              <span class="slider-range-sep">—</span>
+              <span class="slider-range-value" data-value-max>$70K</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vertical Sliders -->
+        <div class="grid grid-2-col mb-6">
+          <div class="card">
+            <h3 class="card-title">VERTICAL <span class="text-primary-light">SLIDERS</span></h3>
+            
+            <div class="vertical-sliders">
+              <div class="vertical-slider-group">
+                <input type="range" class="slider slider--vertical" min="0" max="100" value="70">
+                <span class="slider-label">BASS</span>
+              </div>
+              <div class="vertical-slider-group">
+                <input type="range" class="slider slider--vertical" min="0" max="100" value="50">
+                <span class="slider-label">MID</span>
+              </div>
+              <div class="vertical-slider-group">
+                <input type="range" class="slider slider--vertical slider--gold" min="0" max="100" value="85">
+                <span class="slider-label">TREBLE</span>
+              </div>
+              <div class="vertical-slider-group">
+                <input type="range" class="slider slider--vertical slider--success" min="0" max="100" value="60">
+                <span class="slider-label">GAIN</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vertical Sliders Dark -->
+          <div class="vertical-sliders-dark">
+            <div class="vertical-slider-group">
+              <input type="range" class="slider slider--vertical slider--dark" min="0" max="100" value="70">
+              <span class="slider-label">BASS</span>
+            </div>
+            <div class="vertical-slider-group">
+              <input type="range" class="slider slider--vertical slider--dark" min="0" max="100" value="50">
+              <span class="slider-label">MID</span>
+            </div>
+            <div class="vertical-slider-group">
+              <input type="range" class="slider slider--vertical slider--dark slider--gold" min="0" max="100" value="85">
+              <span class="slider-label">TREBLE</span>
+            </div>
+            <div class="vertical-slider-group">
+              <input type="range" class="slider slider--vertical slider--dark slider--success" min="0" max="100" value="60">
+              <span class="slider-label">GAIN</span>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block mt-6"><code>&lt;!-- Basic Slider --&gt;
+&lt;div class="form-group"&gt;
+  &lt;label class="label"&gt;Volume&lt;/label&gt;
+  &lt;input type="range" class="slider" min="0" max="100" value="50"&gt;
+  &lt;span class="slider-value"&gt;50%&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Size Variants --&gt;
+&lt;input type="range" class="slider slider--sm" value="40"&gt;
+&lt;input type="range" class="slider" value="60"&gt;
+&lt;input type="range" class="slider slider--lg" value="80"&gt;
+
+&lt;!-- Color Variants --&gt;
+&lt;input type="range" class="slider slider--primary" value="75"&gt;
+&lt;input type="range" class="slider slider--gold" value="60"&gt;
+&lt;input type="range" class="slider slider--success" value="90"&gt;
+&lt;input type="range" class="slider slider--danger" value="30"&gt;
+
+&lt;!-- With Min/Max Labels --&gt;
+&lt;div class="slider-wrap slider-wrap--labeled"&gt;
+  &lt;span class="slider-min"&gt;$0&lt;/span&gt;
+  &lt;input type="range" class="slider" min="0" max="100000" value="35000"&gt;
+  &lt;span class="slider-max"&gt;$100K&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Range Slider (Dual Handle) --&gt;
+&lt;div class="range-slider" data-range-slider&gt;
+  &lt;div class="range-slider__track"&gt;
+    &lt;div class="range-slider__fill"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;input type="range" class="range-slider__input range-slider__input--min" 
+         min="0" max="1000" value="200" data-range-min&gt;
+  &lt;input type="range" class="range-slider__input range-slider__input--max" 
+         min="0" max="1000" value="700" data-range-max&gt;
+&lt;/div&gt;
+&lt;div class="slider-range-values"&gt;
+  &lt;span class="slider-range-value" data-value-min&gt;$200&lt;/span&gt;
+  &lt;span class="slider-range-sep"&gt;—&lt;/span&gt;
+  &lt;span class="slider-range-value" data-value-max&gt;$700&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Vertical Sliders --&gt;
+&lt;div class="vertical-sliders"&gt;
+  &lt;div class="vertical-slider-group"&gt;
+    &lt;input type="range" class="slider slider--vertical" min="0" max="100" value="70"&gt;
+    &lt;span class="slider-label"&gt;BASS&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="vertical-slider-group"&gt;
+    &lt;input type="range" class="slider slider--vertical slider--gold" min="0" max="100" value="85"&gt;
+    &lt;span class="slider-label"&gt;TREBLE&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 08. File Upload -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">08. File <span class="text-primary-light">Upload</span></h2>
+        <p class="subsection-text">Beautiful drag-and-drop file upload components with multiple variants</p>
+        
+        <!-- Basic Dropzone -->
+        <div class="card mb-6">
+          <h3 class="card-title">BASIC DROPZONE</h3>
+          <div class="dropzone">
+            <div class="dropzone__icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+              </svg>
+            </div>
+            <p class="dropzone__title">Drag files here</p>
+            <p class="dropzone__text">or <span class="dropzone__link">browse files</span> on your computer</p>
+            <p class="dropzone__hint">PDF, DOCX, XLSX up to 25 MB</p>
+            <input type="file" class="dropzone__input" multiple>
+          </div>
+
+          <pre class="code-block mt-6"><code>&lt;div class="dropzone"&gt;
+  &lt;div class="dropzone__icon"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;p class="dropzone__title"&gt;DRAG FILES HERE&lt;/p&gt;
+  &lt;p class="dropzone__text"&gt;or &lt;span class="dropzone__link"&gt;browse files&lt;/span&gt;&lt;/p&gt;
+  &lt;p class="dropzone__hint"&gt;PDF, DOCX, XLSX UP TO 25 MB&lt;/p&gt;
+  &lt;input type="file" class="dropzone__input" multiple&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Compact Variant -->
+        <div class="card mb-6">
+          <h3 class="card-title">COMPACT VARIANT</h3>
+          <div class="dropzone dropzone--compact">
+            <div class="dropzone__icon dropzone__icon--sm">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+              </svg>
+            </div>
+            <div class="dropzone__content">
+              <p class="dropzone__title">Upload document</p>
+              <p class="dropzone__hint">PNG, JPG, PDF up to 10 MB</p>
+            </div>
+            <button type="button" class="dropzone__btn">Choose file</button>
+            <input type="file" class="dropzone__input">
+          </div>
+
+          <pre class="code-block mt-6"><code>&lt;div class="dropzone dropzone--compact"&gt;
+  &lt;div class="dropzone__icon dropzone__icon--sm"&gt;...&lt;/div&gt;
+  &lt;div class="dropzone__content"&gt;
+    &lt;p class="dropzone__title"&gt;UPLOAD DOCUMENT&lt;/p&gt;
+    &lt;p class="dropzone__hint"&gt;PNG, JPG, PDF UP TO 10 MB&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;button class="dropzone__btn"&gt;CHOOSE FILE&lt;/button&gt;
+  &lt;input type="file" class="dropzone__input"&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- States -->
+        <div class="card mb-6">
+          <h3 class="card-title">STATES & <span class="text-primary-light">FEEDBACK</span></h3>
+          <div class="flex gap-1 flex-wrap">
+            <div class="dropzone dropzone--sm dropzone--hover flex-1 min-w-200">
+              <div class="dropzone__icon dropzone__icon--sm">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+              </div>
+              <p class="dropzone__title">Active</p>
+              <p class="dropzone__hint mt-half">Drag over</p>
+            </div>
+
+            <div class="dropzone dropzone--sm dropzone--success flex-1 min-w-200">
+              <div class="dropzone__icon dropzone__icon--sm">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <p class="dropzone__title">Success</p>
+              <p class="dropzone__hint mt-half">Uploaded</p>
+            </div>
+
+            <div class="dropzone dropzone--sm dropzone--error flex-1 min-w-200">
+              <div class="dropzone__icon dropzone__icon--sm">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+              </div>
+              <p class="dropzone__title">Error</p>
+              <p class="dropzone__hint mt-half">Failed</p>
+            </div>
+
+            <div class="dropzone dropzone--sm dropzone--disabled flex-1 min-w-200">
+              <div class="dropzone__icon dropzone__icon--sm">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                </svg>
+              </div>
+              <p class="dropzone__title">Disabled</p>
+              <p class="dropzone__hint mt-half">Locked</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- File List -->
+        <div class="card mb-6">
+          <h3 class="card-title">FILE LIST</h3>
+          <div class="file-list">
+            <div class="file-item">
+              <div class="file-item__icon file-item__icon--pdf">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <div class="file-item__info">
+                <span class="file-item__name">Contract_Agreement_2024.pdf</span>
+                <span class="file-item__meta">PDF • 1.2 MB • Uploaded</span>
+              </div>
+              <span class="file-item__status file-item__status--success">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </span>
+              <button class="file-item__action">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+              </button>
+            </div>
+
+            <div class="file-item">
+              <div class="file-item__icon file-item__icon--doc">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <div class="file-item__info">
+                <span class="file-item__name">Financial_Report_Q4.docx</span>
+                <span class="file-item__meta">DOCX • 856 KB • Uploading 67%</span>
+              </div>
+              <div class="file-item__progress">
+                <div class="file-item__progress-bar" style="width: 67%;"></div>
+              </div>
+              <button class="file-item__action">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+
+            <div class="file-item">
+              <div class="file-item__icon file-item__icon--xlsx">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <div class="file-item__info">
+                <span class="file-item__name">Budget_Analysis_2024.xlsx</span>
+                <span class="file-item__meta">XLSX • 2.4 MB • Uploaded</span>
+              </div>
+              <span class="file-item__status file-item__status--success">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </span>
+              <button class="file-item__action">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+              </button>
+            </div>
+
+            <div class="file-item file-item--error">
+              <div class="file-item__icon file-item__icon--img">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="file-item__info">
+                <span class="file-item__name">corrupted_image.png</span>
+                <span class="file-item__meta file-item__meta--error">Error: file corrupted</span>
+              </div>
+              <span class="file-item__status file-item__status--error">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+              </span>
+              <button class="file-item__action">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <pre class="code-block mt-6"><code>&lt;div class="file-list"&gt;
+  &lt;div class="file-item"&gt;
+    &lt;div class="file-item__icon file-item__icon--pdf"&gt;...&lt;/div&gt;
+    &lt;div class="file-item__info"&gt;
+      &lt;span class="file-item__name"&gt;Contract_2024.pdf&lt;/span&gt;
+      &lt;span class="file-item__meta"&gt;PDF • 1.2 MB • UPLOADED&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="file-item__status file-item__status--success"&gt;...&lt;/span&gt;
+    &lt;button class="file-item__action"&gt;...&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- AI Smart Upload -->
+        <div class="card mb-6">
+          <h3 class="card-title">AI SMART <span class="text-primary-light">UPLOAD</span></h3>
+          <div class="dropzone dropzone--smart">
+            <div class="dropzone__icon dropzone__icon--smart">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+              </svg>
+            </div>
+            <p class="dropzone__title">AI Smart Upload</p>
+            <p class="dropzone__text">AI automatically detects document type and extracts metadata</p>
+            <div class="dropzone__features">
+              <span class="dropzone__feature">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+                OCR recognition
+              </span>
+              <span class="dropzone__feature">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+                Auto-classify
+              </span>
+              <span class="dropzone__feature">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+                Data extraction
+              </span>
+            </div>
+            <input type="file" class="dropzone__input" multiple>
+          </div>
+
+          <pre class="code-block mt-6"><code>&lt;div class="dropzone dropzone--smart"&gt;
+  &lt;div class="dropzone__icon dropzone__icon--smart"&gt;...&lt;/div&gt;
+  &lt;p class="dropzone__title"&gt;AI SMART UPLOAD&lt;/p&gt;
+  &lt;div class="dropzone__features"&gt;
+    &lt;span class="dropzone__feature"&gt;OCR RECOGNITION&lt;/span&gt;
+    &lt;span class="dropzone__feature"&gt;AUTO-CLASSIFY&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;input type="file" class="dropzone__input" multiple&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09. Input with Floating Action -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">09. Input with Floating <span class="text-primary-light">Action</span></h2>
+        <p class="subsection-text">Contextual action buttons that slide into input fields on interaction</p>
+        
+        <!-- Basic Example -->
+        <div class="card mb-6">
+          <h3 class="card-title">BASIC EXAMPLE</h3>
+          <p class="mb-4 text-slate-600">Click the input to see the action button slide in</p>
+          
+          <div class="input-wrapper">
+            <input type="text" class="input" placeholder="Enter organization name..." id="orgInput">
+            <button class="input-action-btn input-action-btn--gold" id="orgBtn">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+              </svg>
+              <span class="input-action-btn__text">Add to my organizations</span>
+            </button>
+          </div>
+
+          <pre class="code-block mt-6"><code>&lt;div class="input-wrapper"&gt;
+  &lt;input type="text" class="input" placeholder="ENTER ORGANIZATION..."&gt;
+  &lt;button class="input-action-btn input-action-btn--gold"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+    &lt;span class="input-action-btn__text"&gt;ADD TO MY ORGANIZATIONS&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Color Variants -->
+        <div class="card mb-6">
+          <h3 class="card-title">COLOR VARIANTS</h3>
+          <div class="flex gap-1 flex-wrap">
+            
+            <!-- Gold Variant -->
+            <div class="input-wrapper">
+              <input type="text" class="input" placeholder="Search AI models..." id="aiInput">
+              <button class="input-action-btn input-action-btn--gold show" id="aiBtn">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                </svg>
+                <span class="input-action-btn__text">Ask AI</span>
+              </button>
+            </div>
+
+            <!-- Primary Variant -->
+            <div class="input-wrapper">
+              <input type="text" class="input" placeholder="Enter project name..." id="projectInput">
+              <button class="input-action-btn input-action-btn--primary show" id="projectBtn">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
+                </svg>
+                <span class="input-action-btn__text">Save project</span>
+              </button>
+            </div>
+
+            <!-- Success Variant -->
+            <div class="input-wrapper">
+              <input type="text" class="input" placeholder="Enter task description..." id="taskInput">
+              <button class="input-action-btn input-action-btn--success show" id="taskBtn">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="input-action-btn__text">Create task</span>
+              </button>
+            </div>
+
+            <!-- Error Variant -->
+            <div class="input-wrapper">
+              <input type="text" class="input" placeholder="Report critical issue..." id="issueInput">
+              <button class="input-action-btn input-action-btn--error show" id="issueBtn">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path>
+                </svg>
+                <span class="input-action-btn__text">Report issue</span>
+              </button>
+            </div>
+
+            <!-- Warning Variant -->
+            <div class="input-wrapper">
+              <input type="text" class="input" placeholder="Review changes..." id="reviewInput">
+              <button class="input-action-btn input-action-btn--warning show" id="reviewBtn">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="input-action-btn__text">Review now</span>
+              </button>
+            </div>
+          </div>
+
+          <pre class="code-block mt-6"><code>&lt;!-- Gold (AI features) --&gt;
+&lt;button class="input-action-btn input-action-btn--gold"&gt;...&lt;/button&gt;
+
+&lt;!-- Primary (general actions) --&gt;
+&lt;button class="input-action-btn input-action-btn--primary"&gt;...&lt;/button&gt;
+
+&lt;!-- Success (confirmations) --&gt;
+&lt;button class="input-action-btn input-action-btn--success"&gt;...&lt;/button&gt;
+
+&lt;!-- Error (critical actions) --&gt;
+&lt;button class="input-action-btn input-action-btn--error"&gt;...&lt;/button&gt;
+
+&lt;!-- Warning (review/attention) --&gt;
+&lt;button class="input-action-btn input-action-btn--warning"&gt;...&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Icon Only State -->
+        <div class="card mb-6">
+          <h3 class="card-title">ICON ONLY <span class="text-primary-light">STATE</span></h3>
+          <p class="mb-4 text-slate-600">Hover to expand and see the action text</p>
+          
+          <div class="input-wrapper">
+            <input type="text" class="input" placeholder="Quick note..." id="noteInput">
+            <button class="input-action-btn input-action-btn--primary show" id="noteBtn">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+              </svg>
+              <span class="input-action-btn__text">Quick save</span>
+            </button>
+          </div>
+
+          <pre class="code-block mt-6"><code>&lt;!-- Text expands on hover --&gt;
+&lt;button class="input-action-btn input-action-btn--primary show"&gt;
+  &lt;svg&gt;...&lt;/svg&gt;
+  &lt;span class="input-action-btn__text"&gt;QUICK SAVE&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- JavaScript Implementation -->
+        <div class="card mb-6">
+          <h3 class="card-title">JAVASCRIPT <span class="text-primary-light">IMPLEMENTATION</span></h3>
+          <pre class="code-block"><code>// Show button on input focus
+const input = document.getElementById('orgInput');
+const button = document.getElementById('orgBtn');
+
+input.addEventListener('focus', () => {
+  button.classList.add('show');
+});
+
+// Optional: hide on blur
+input.addEventListener('blur', () => {
+  setTimeout(() => {
+    if (!button.matches(':hover')) {
+      button.classList.remove('show');
+    }
+  }, 200);
+});</code></pre>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 10. AI Input -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">10. AI Input</h2>
+        <p class="subsection-text">Special input field for AI features with pulsing indicator</p>
+        
+        <div class="card">
+          <div class="form-group">
+            <label class="label">AI Assistant</label>
+            <div class="input-ai-wrapper">
+              <div class="ai-indicator"></div>
+              <input type="text" class="input input-ai" placeholder="Ask AI anything...">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="label">AI Search</label>
+            <div class="input-ai-wrapper">
+              <div class="ai-indicator"></div>
+              <input type="text" class="input input-ai" placeholder="Search with AI...">
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="form-group"&gt;
+  &lt;label class="label"&gt;AI Assistant&lt;/label&gt;
+  &lt;div class="input-ai-wrapper"&gt;
+    &lt;div class="ai-indicator"&gt;&lt;/div&gt;
+    &lt;input type="text" class="input input-ai" placeholder="Ask AI..."&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 11. Complete Form Example -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">11. Complete Form Example</h2>
+        <p class="subsection-text">Full form combining all control types</p>
+        
+        <div class="card">
+          <form>
+            <div class="form-group">
+              <label class="label">Project Name</label>
+              <input type="text" class="input" placeholder="My New Project">
+            </div>
+            
+            <div class="form-group">
+              <label class="label">Description</label>
+              <textarea class="input" rows="4" placeholder="Describe your project..."></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="label">Project Type</label>
+              
+              <label class="radio">
+                <input type="radio" name="project-type" class="radio__input" checked="">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Web Application</span>
+              </label>
+              
+              <label class="radio">
+                <input type="radio" name="project-type" class="radio__input">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Mobile App</span>
+              </label>
+              
+              <label class="radio">
+                <input type="radio" name="project-type" class="radio__input">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Desktop Software</span>
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label class="label">Features</label>
+              
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" checked="">
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">User Authentication</span>
+              </label>
+              
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" checked="">
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">Database Integration</span>
+              </label>
+              
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">Payment Processing</span>
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label class="slider-label">Team Size: <span>5</span> members</label>
+              <input type="range" class="slider" min="1" max="50" value="5">
+            </div>
+            
+            <div class="form-group">
+              <label class="toggle-label">
+                <input type="checkbox" class="toggle-input" checked="">
+                <span class="toggle-switch"></span>
+                <span class="toggle-text">Make Project Public</span>
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label class="toggle-label">
+                <input type="checkbox" class="toggle-input">
+                <span class="toggle-switch"></span>
+                <span class="toggle-text">Enable AI Assistant</span>
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">I agree to the Terms and Conditions *</span>
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">I agree to the Privacy Policy *</span>
+              </label>
+            </div>
+            
+            <div class="flex gap-1">
+              <button type="submit" class="btn btn-primary btn-lg">CREATE PROJECT</button>
+              <button type="button" class="btn btn-outline btn-lg">CANCEL</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. Complex Form: Mortgage Application -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">12. Complex Form Example: Mortgage Application</h2>
+        <p class="subsection-text">Comprehensive multi-section form with all control types</p>
+        
+        <div class="card">
+          <form>
+            <!-- Personal Information -->
+            <h3 class="text-lg font-bold mb-4 text-text-primary">Personal Information</h3>
+            
+            <div class="grid grid-2-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">First Name *</label>
+                <input type="text" class="input" placeholder="John" required>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Last Name *</label>
+                <input type="text" class="input" placeholder="Smith" required>
+              </div>
+            </div>
+            
+            <div class="grid grid-2-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">Email Address *</label>
+                <input type="email" class="input" placeholder="john.smith@example.com" required>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Phone Number *</label>
+                <input type="tel" class="input" placeholder="+1 (555) 000-0000" required>
+              </div>
+            </div>
+            
+            <div class="grid grid-2-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">Date of Birth *</label>
+                <input type="date" class="input date-input" required>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Social Security Number *</label>
+                <input type="text" class="input" placeholder="XXX-XX-XXXX" required>
+              </div>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="label">Marital Status *</label>
+              
+              <label class="radio">
+                <input type="radio" name="marital-status" class="radio__input" checked>
+                <span class="radio__circle"></span>
+                <span class="radio__label">Single</span>
+              </label>
+              
+              <label class="radio">
+                <input type="radio" name="marital-status" class="radio__input">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Married</span>
+              </label>
+              
+              <label class="radio">
+                <input type="radio" name="marital-status" class="radio__input">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Divorced</span>
+              </label>
+              
+              <label class="radio">
+                <input type="radio" name="marital-status" class="radio__input">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Widowed</span>
+              </label>
+            </div>
+
+            <!-- Employment Information -->
+            <h3 class="text-lg font-bold mb-4 mt-6 text-text-primary">Employment Information</h3>
+            
+            <div class="form-group mb-6">
+              <label class="label">Employment Status *</label>
+              <select class="input select-input" required>
+                <option value="">Select employment status</option>
+                <option value="employed">Employed Full-Time</option>
+                <option value="part-time">Employed Part-Time</option>
+                <option value="self-employed">Self-Employed</option>
+                <option value="retired">Retired</option>
+                <option value="unemployed">Unemployed</option>
+              </select>
+            </div>
+            
+            <div class="grid grid-2-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">Employer Name *</label>
+                <input type="text" class="input" placeholder="Company Inc." required>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Job Title *</label>
+                <input type="text" class="input" placeholder="Senior Developer" required>
+              </div>
+            </div>
+            
+            <div class="grid grid-2-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">Annual Income (USD) *</label>
+                <input type="number" class="input" placeholder="75000" required>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Years at Current Job *</label>
+                <input type="number" class="input" placeholder="5" min="0" max="50" required>
+              </div>
+            </div>
+
+            <!-- Property Information -->
+            <h3 class="text-lg font-bold mb-4 mt-6 text-text-primary">Property Information</h3>
+            
+            <div class="form-group mb-6">
+              <label class="label">Property Type *</label>
+              
+              <label class="radio">
+                <input type="radio" name="property-type" class="radio__input" checked>
+                <span class="radio__circle"></span>
+                <span class="radio__label">Single Family Home</span>
+              </label>
+              
+              <label class="radio">
+                <input type="radio" name="property-type" class="radio__input">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Condominium</span>
+              </label>
+              
+              <label class="radio">
+                <input type="radio" name="property-type" class="radio__input">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Townhouse</span>
+              </label>
+              
+              <label class="radio">
+                <input type="radio" name="property-type" class="radio__input">
+                <span class="radio__circle"></span>
+                <span class="radio__label">Multi-Family (2-4 units)</span>
+              </label>
+            </div>
+            
+            <div class="grid grid-2-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">Property Purchase Price (USD) *</label>
+                <input type="number" class="input" placeholder="350000" required>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Down Payment Amount (USD) *</label>
+                <input type="number" class="input" placeholder="70000" required>
+              </div>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="slider-label">Loan Term: <span>30</span> years</label>
+              <input type="range" class="slider" min="10" max="30" value="30" step="5">
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="label">Property Address *</label>
+              <input type="text" class="input" placeholder="123 Main Street" required>
+            </div>
+            
+            <div class="grid grid-3-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">City *</label>
+                <input type="text" class="input" placeholder="New York" required>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">State *</label>
+                <select class="input select-input" required>
+                  <option value="">Select state</option>
+                  <option value="NY">New York</option>
+                  <option value="CA">California</option>
+                  <option value="TX">Texas</option>
+                  <option value="FL">Florida</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">ZIP Code *</label>
+                <input type="text" class="input" placeholder="10001" required>
+              </div>
+            </div>
+
+            <!-- Financial Information -->
+            <h3 class="text-lg font-bold mb-4 mt-6 text-text-primary">Financial Information</h3>
+            
+            <div class="form-group mb-6">
+              <label class="label">Additional Income Sources</label>
+              
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">Investment Income</span>
+              </label>
+              
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">Rental Income</span>
+              </label>
+              
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">Pension/Social Security</span>
+              </label>
+              
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">Alimony/Child Support</span>
+              </label>
+            </div>
+            
+            <div class="grid grid-2-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">Monthly Debt Payments (USD)</label>
+                <input type="number" class="input" placeholder="1500">
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Available Savings (USD) *</label>
+                <input type="number" class="input" placeholder="50000" required>
+              </div>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="slider-label">Credit Score: <span>720</span></label>
+              <input type="range" class="slider" min="300" max="850" value="720" step="10">
+            </div>
+
+            <!-- Document Upload -->
+            <h3 class="text-lg font-bold mb-4 mt-6 text-text-primary">Required Documents</h3>
+            
+            <div class="grid grid-3-col gap-medium mb-6">
+              <div class="form-group">
+                <label class="label">Proof of Income *</label>
+                <div class="dropzone dropzone--compact">
+                  <div class="dropzone__icon dropzone__icon--sm">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="dropzone__content">
+                    <p class="dropzone__title">Drag files here</p>
+                    <p class="dropzone__text">or <span class="dropzone__link">browse</span></p>
+                    <p class="dropzone__hint">PDF, JPG, PNG</p>
+                  </div>
+                  <input type="file" class="dropzone__input" id="income-docs" multiple required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Bank Statements *</label>
+                <div class="dropzone dropzone--compact">
+                  <div class="dropzone__icon dropzone__icon--sm">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="dropzone__content">
+                    <p class="dropzone__title">Drag files here</p>
+                    <p class="dropzone__text">or <span class="dropzone__link">browse</span></p>
+                    <p class="dropzone__hint">PDF, JPG, PNG</p>
+                  </div>
+                  <input type="file" class="dropzone__input" id="bank-statements" multiple required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="label">Government ID *</label>
+                <div class="dropzone dropzone--compact">
+                  <div class="dropzone__icon dropzone__icon--sm">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="dropzone__content">
+                    <p class="dropzone__title">Drag files here</p>
+                    <p class="dropzone__text">or <span class="dropzone__link">browse</span></p>
+                    <p class="dropzone__hint">PDF, JPG, PNG</p>
+                  </div>
+                  <input type="file" class="dropzone__input" id="id-document" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Information -->
+            <h3 class="text-lg font-bold mb-4 mt-6 text-text-primary">Additional Information</h3>
+            
+            <div class="form-group mb-6">
+              <label class="toggle-label">
+                <input type="checkbox" class="toggle-input" checked>
+                <span class="toggle-switch"></span>
+                <span class="toggle-text">First-Time Home Buyer</span>
+              </label>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="toggle-label">
+                <input type="checkbox" class="toggle-input">
+                <span class="toggle-switch"></span>
+                <span class="toggle-text">Military Veteran</span>
+              </label>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="label">Additional Comments or Special Circumstances</label>
+              <textarea class="input" rows="5" placeholder="Please describe any additional information that may help us process your application..."></textarea>
+            </div>
+
+            <!-- Agreements -->
+            <h3 class="text-lg font-bold mb-4 mt-6 text-text-primary">Agreements & Declarations</h3>
+            
+            <div class="form-group mb-6">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">I certify that all information provided is true and accurate *</span>
+              </label>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">I authorize credit check and verification of employment *</span>
+              </label>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">I agree to the Terms of Service and Privacy Policy *</span>
+              </label>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">I would like to receive updates about my application via email</span>
+              </label>
+            </div>
+            
+            <div class="flex gap-1">
+              <button type="submit" class="btn btn-primary btn-lg">SUBMIT APPLICATION</button>
+              <button type="button" class="btn btn-outline btn-lg">SAVE AS DRAFT</button>
+              <button type="button" class="btn btn-ghost btn-lg">CANCEL</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. Form Validation Examples -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">13. Form Validation Examples</h2>
+        <p class="subsection-text">Visual examples of validation states and required field errors</p>
+        
+        <div class="card">
+          <h3 class="text-lg font-bold mb-4 text-text-primary">Registration Form with Validation Errors</h3>
+          
+          <form>
+            <div class="form-group">
+              <label class="label">Email Address *</label>
+              <input type="email" class="input input--error" value="invalid-email">
+              <span class="input-error">Please enter a valid email address</span>
+            </div>
+            
+            <div class="form-group">
+              <label class="label">Password *</label>
+              <input type="password" class="input input--error" value="123">
+              <span class="input-error">Password must be at least 8 characters</span>
+            </div>
+            
+            <div class="form-group">
+              <label class="label">Confirm Password *</label>
+              <input type="password" class="input input--error" value="12345678">
+              <span class="input-error">Passwords do not match</span>
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label text-error">I agree to the Terms and Conditions *</span>
+              </label>
+              <span class="input-error">You must accept the terms to continue</span>
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label text-error">I agree to the Privacy Policy *</span>
+              </label>
+              <span class="input-error">You must accept the privacy policy</span>
+            </div>
+            
+            <div class="flex gap-1">
+              <button type="submit" class="btn btn-primary btn-lg">REGISTER</button>
+              <button type="button" class="btn btn-outline btn-lg">CANCEL</button>
+            </div>
+          </form>
+        </div>
+        
+        <div class="card mt-4">
+          <h3 class="text-lg font-bold mb-4 text-text-primary">Valid Form (All Checks Passed)</h3>
+          
+          <form>
+            <div class="form-group">
+              <label class="label">Email Address *</label>
+              <input type="email" class="input input--success" value="user@example.com">
+              <span class="input-success">Email is valid</span>
+            </div>
+            
+            <div class="form-group">
+              <label class="label">Password *</label>
+              <input type="password" class="input input--success" value="••••••••">
+              <span class="input-success">Strong password</span>
+            </div>
+            
+            <div class="form-group">
+              <label class="label">Confirm Password *</label>
+              <input type="password" class="input input--success" value="••••••••">
+              <span class="input-success">Passwords match</span>
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" checked required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">I agree to the Terms and Conditions *</span>
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" checked required>
+                <span class="checkbox__box">
+                  <svg class="checkbox__icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <span class="checkbox__label">I agree to the Privacy Policy *</span>
+              </label>
+            </div>
+            
+            <div class="flex gap-1">
+              <button type="submit" class="btn btn-primary btn-lg">REGISTER</button>
+              <button type="button" class="btn btn-outline btn-lg">CANCEL</button>
+            </div>
+          </form>
+        </div>
+
+        <pre class="code-block mt-4"><code>&lt;!-- Error Validation --&gt;
+&lt;div class="form-group"&gt;
+  &lt;label class="label"&gt;Email *&lt;/label&gt;
+  &lt;input type="email" class="input input--error" value="invalid"&gt;
+  &lt;span class="input-error"&gt;Please enter a valid email&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Required Checkbox Validation --&gt;
+&lt;label class="checkbox"&gt;
+  &lt;input type="checkbox" required&gt;
+  &lt;span class="checkbox__label" style="color: var(--color-error);"&gt;
+    I agree to Terms *
+  &lt;/span&gt;
+&lt;/label&gt;
+&lt;span class="input-error"&gt;You must accept terms&lt;/span&gt;
+
+&lt;!-- Success State --&gt;
+&lt;input type="email" class="input input--success" value="user@example.com"&gt;
+&lt;span class="input-success"&gt;Email is valid&lt;/span&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 14. Form Control Guidelines -->
+    <section class="section">
+      <div class="container">
+        <div class="card card--info">
+          <h2 class="subsection-title">14. Form Control Guidelines</h2>
+          
+          <h3 class="text-lg font-bold mb-3 text-text-primary">Input Controls</h3>
+          <ul class="list-styled mb-4">
+            <li><strong>Text Inputs</strong> - use <code>.input</code> class for all standard inputs and textareas</li>
+            <li><strong>Form Groups</strong> - wrap label + input in <code>.form-group</code> for proper spacing (gap: 0.5rem)</li>
+            <li><strong>Labels</strong> - always use <code>.label</code> class for form labels</li>
+            <li><strong>Focus States</strong> - all inputs have blue ring focus state with <code>box-shadow</code></li>
+            <li><strong>Disabled Inputs</strong> - add <code>disabled</code> attribute for non-editable fields</li>
+          </ul>
+          
+          <h3 class="text-lg font-bold mb-3 text-text-primary">Validation States</h3>
+          <ul class="list-styled mb-4">
+            <li><strong>Error State</strong> - add <code>.input--error</code> class and <code>.input-error</code> message</li>
+            <li><strong>Success State</strong> - add <code>.input--success</code> class and <code>.input-success</code> message</li>
+            <li><strong>Message Styling</strong> - validation messages appear below inputs in red/green</li>
+          </ul>
+          
+          <h3 class="text-lg font-bold mb-3 text-text-primary">Checkboxes &amp; Radio Buttons</h3>
+          <ul class="list-styled mb-4">
+            <li><strong>Checkbox Structure</strong> - use <code>.checkbox__input</code>, <code>.checkbox__box</code>, <code>.checkbox__icon</code>, <code>.checkbox__label</code></li>
+            <li><strong>Radio Structure</strong> - use <code>.radio__input</code>, <code>.radio__circle</code>, <code>.radio__label</code></li>
+            <li><strong>Mutual Exclusion</strong> - use radio buttons for single choice, checkboxes for multiple selections</li>
+            <li><strong>Name Attribute</strong> - radio buttons in same group must share <code>name</code> attribute</li>
+          </ul>
+          
+          <h3 class="text-lg font-bold mb-3 text-text-primary">Toggle Switches</h3>
+          <ul class="list-styled mb-4">
+            <li><strong>Structure</strong> - use <code>.toggle-label</code>, <code>.toggle-input</code>, <code>.toggle-switch</code>, <code>.toggle-text</code></li>
+            <li><strong>Use Cases</strong> - binary on/off settings, not for mutually exclusive options</li>
+            <li><strong>Active State</strong> - <code>:checked</code> state shows blue background with animated switch</li>
+            <li><strong>Label Text</strong> - toggle text appears in uppercase automatically</li>
+          </ul>
+          
+          <h3 class="text-lg font-bold mb-3 text-text-primary">Sliders &amp; AI Inputs</h3>
+          <ul class="list-styled mb-4">
+            <li><strong>Range Sliders</strong> - use <code>.slider</code> class with <code>type="range"</code></li>
+            <li><strong>Slider Labels</strong> - use <code>.slider-label</code> to display current value</li>
+            <li><strong>AI Inputs</strong> - wrap in <code>.input-ai-wrapper</code> with <code>.ai-indicator</code> for AI features</li>
+            <li><strong>AI Styling</strong> - AI inputs have dark background with pulsing gold indicator</li>
+          </ul>
+          
+          <h3 class="text-lg font-bold mb-3 text-text-primary">Best Practices</h3>
+          <ul class="list-styled">
+            <li><strong>Accessibility</strong> - always associate labels with inputs using proper structure</li>
+            <li><strong>Placeholder Text</strong> - use placeholders for hints, not as replacements for labels</li>
+            <li><strong>Error Prevention</strong> - validate on blur and show clear error messages</li>
+            <li><strong>Mobile Friendly</strong> - all controls are touch-optimized with proper tap targets</li>
+            <li><strong>Consistent Spacing</strong> - maintain uniform gaps between form elements using <code>.form-group</code></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <path d="M12 16H52V48H12V16Z" fill="white" fill-opacity="0.05"></path>
+          <path d="M18 24H46M18 32H46M18 40H34" stroke="white" stroke-width="6" stroke-linecap="round"></path>
+          <circle cx="48" cy="40" r="6" fill="#FBBF24"></circle>
+        </svg>
+        <span class="footer-text">docu<span class="text-muted">matica</span></span>
+      </div>
+      <p class="footer-copy">© 2026 Documatica Intelligence Systems v12.0</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

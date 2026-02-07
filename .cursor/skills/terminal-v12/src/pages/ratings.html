@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rating System - Documatica v12.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/core.css">
+</head>
+<body>
+  
+  <div class="navbar navbar--dark">
+    <div class="container">
+      <div class="navbar-inner">
+        <div class="navbar-brand">
+          <span class="brand-text">documatica</span>
+        </div>
+        
+        <nav class="navbar-menu">
+          <a href="../hub.html" class="nav-link">Hub</a>
+          <a href="colors.html" class="nav-link">Colors</a>
+          <a href="buttons.html" class="nav-link">Buttons</a>
+          <a href="badges.html" class="nav-link">Badges</a>
+          <a href="cards.html" class="nav-link">Cards</a>
+          <a href="ratings.html" class="nav-link nav-link--active">Ratings</a>
+        </nav>
+        
+        <div class="navbar-actions">
+          <button class="btn btn-gold btn-sm">UPGRADE AI</button>
+          <div class="navbar-avatar">DS</div>
+          <button class="navbar-toggle" id="navbarToggle">
+            <span class="navbar-toggle-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="navbar-mobile-menu" id="navbarMobileMenu">
+      <div class="container">
+        <div class="navbar-mobile-actions">
+          <button class="btn btn-gold btn-sm w-full">UPGRADE AI</button>
+        </div>
+        <ul class="navbar-mobile-nav">
+          <li class="navbar-mobile-nav-item"><a href="../hub.html" class="navbar-mobile-nav-link">Hub</a></li>
+          <li class="navbar-mobile-nav-item"><a href="colors.html" class="navbar-mobile-nav-link">Colors</a></li>
+          <li class="navbar-mobile-nav-item"><a href="buttons.html" class="navbar-mobile-nav-link">Buttons</a></li>
+          <li class="navbar-mobile-nav-item"><a href="badges.html" class="navbar-mobile-nav-link">Badges</a></li>
+          <li class="navbar-mobile-nav-item"><a href="cards.html" class="navbar-mobile-nav-link">Cards</a></li>
+          <li class="navbar-mobile-nav-item"><a href="ratings.html" class="navbar-mobile-nav-link">Ratings</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">UI Components</span>
+        <h1 class="hero-title">RATING <span class="text-primary-light">SYSTEM</span></h1>
+        <p class="hero-subtitle">
+          Star ratings, breakdowns, and AI-powered confidence scores
+        </p>
+        
+        <!-- 
+          QUICK START GUIDE:
+          
+          1. BASIC RATING (just stars):
+             <div class="rating">★★★★★</div>
+          
+          2. RATING CARD (full card):
+             <div class="rating-card">
+               <div class="rating rating--lg">★★★★★</div>
+               <span class="rating-card__score">5.0</span>
+               <span class="rating-card__label">EXCELLENT</span>
+             </div>
+          
+          3. SIZES: 
+             .rating--sm (16px) | .rating--md (20px) | .rating--lg (32px) | .rating--xl (48px)
+          
+          4. COLORS:
+             .rating--blue | .rating--success | .rating--error (default: gold)
+          
+          5. STATES:
+             .rating-star-filled (filled) | .rating-star-half (half star)
+          
+          All components are READY TO USE - no extra classes needed!
+        -->
+      </div>
+    </section>
+
+    <!-- 01. Basic Ratings -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">01. BASIC <span class="text-primary-light">RATINGS</span></h2>
+        <p class="subsection-text mb-6">Simple star rating display</p>
+
+        <div class="card mb-6">
+          <div class="flex-row-responsive gap-8">
+            <div class="rating">
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star">★</span>
+              <span class="rating-star">★</span>
+            </div>
+            
+            <div class="rating">
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--half">★</span>
+            </div>
+            
+            <div class="rating">
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+              <span class="rating-star rating-star--filled">★</span>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;!-- 3 Stars --&gt;
+&lt;div class="rating"&gt;
+  &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star"&gt;★&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- 4.5 Stars (Half) --&gt;
+&lt;div class="rating"&gt;
+  &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star rating-star--half"&gt;★&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 02. Rating Sizes -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">02. RATING <span class="text-primary-light">SIZES</span></h2>
+        <p class="subsection-text mb-6">Four size options for different contexts</p>
+
+        <div class="card mb-6">
+          <div class="flex-col gap-6">
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-100">Small</span>
+              <div class="rating rating--sm">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-100">Medium</span>
+              <div class="rating rating--md">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-100">Base</span>
+              <div class="rating">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-100">Large</span>
+              <div class="rating rating--lg">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-100">XL</span>
+              <div class="rating rating--xl">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="rating rating--sm"&gt;...&lt;/div&gt;
+&lt;div class="rating rating--md"&gt;...&lt;/div&gt;
+&lt;div class="rating"&gt;...&lt;/div&gt; &lt;!-- Base (24px) --&gt;
+&lt;div class="rating rating--lg"&gt;...&lt;/div&gt;
+&lt;div class="rating rating--xl"&gt;...&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 03. Color Variants -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">03. COLOR <span class="text-primary-light">VARIANTS</span></h2>
+        <p class="subsection-text mb-6">Rating colors for different contexts</p>
+
+        <div class="card mb-6">
+          <div class="flex-col gap-6">
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-150">Gold (Default)</span>
+              <div class="rating">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-150">Blue</span>
+              <div class="rating rating--blue">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-150">Success</span>
+              <div class="rating rating--success">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+
+            <div class="flex-row gap-4 align-center">
+              <span class="text-sm font-weight-bold text-slate-600 w-150">Error</span>
+              <div class="rating rating--error">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star">★</span>
+                <span class="rating-star">★</span>
+                <span class="rating-star">★</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="rating"&gt;...&lt;/div&gt; &lt;!-- Gold --&gt;
+&lt;div class="rating rating--blue"&gt;...&lt;/div&gt;
+&lt;div class="rating rating--success"&gt;...&lt;/div&gt;
+&lt;div class="rating rating--error"&gt;...&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 04. Rating with Value -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">04. RATING WITH <span class="text-primary-light">VALUE</span></h2>
+        <p class="subsection-text mb-6">Display numeric value alongside stars</p>
+
+        <div class="card mb-6">
+          <div class="flex-col gap-6">
+            <div class="rating-display">
+              <div class="rating">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--half">★</span>
+              </div>
+              <span class="rating-value">4.5</span>
+            </div>
+
+            <div class="rating-display">
+              <div class="rating rating--lg">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+              </div>
+              <span class="rating-value rating-value--lg">5.0</span>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="rating-display"&gt;
+  &lt;div class="rating"&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+    &lt;span class="rating-star rating-star--half"&gt;★&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="rating-value"&gt;4.5&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 05. Rating Card -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">05. RATING <span class="text-primary-light">CARD</span></h2>
+        <p class="subsection-text mb-6">Highlighted rating display with metadata</p>
+
+        <div class="card mb-6">
+          <div class="flex-row-responsive gap-6">
+            <div class="rating-card">
+              <div class="rating rating--lg">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+              </div>
+              <span class="rating-card__score">5.0</span>
+              <span class="rating-card__label">EXCELLENT</span>
+              <span class="rating-card__count">Based on 1,247 reviews</span>
+            </div>
+
+            <div class="rating-card">
+              <div class="rating rating--lg rating--blue">
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--filled">★</span>
+                <span class="rating-star rating-star--half">★</span>
+              </div>
+              <span class="rating-card__score">4.7</span>
+              <span class="rating-card__label">VERY GOOD</span>
+              <span class="rating-card__count">324 customer reviews</span>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="rating-card card p-8"&gt;
+  &lt;div class="rating rating--lg"&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+    &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="rating-card__score"&gt;5.0&lt;/span&gt;
+  &lt;span class="rating-card__label"&gt;EXCELLENT&lt;/span&gt;
+  &lt;span class="rating-card__count"&gt;Based on 1,247 reviews&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 06. Rating Breakdown -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">06. RATING <span class="text-primary-light">BREAKDOWN</span></h2>
+        <p class="subsection-text mb-6">Detailed rating distribution</p>
+
+        <div class="card mb-6">
+          <div class="rating-breakdown card p-8">
+            <div class="rating-breakdown__header">
+              <span class="rating-breakdown__score">4.7</span>
+              <div class="rating-breakdown__summary">
+                <div class="rating rating--sm">
+                  <span class="rating-star rating-star--filled">★</span>
+                  <span class="rating-star rating-star--filled">★</span>
+                  <span class="rating-star rating-star--filled">★</span>
+                  <span class="rating-star rating-star--filled">★</span>
+                  <span class="rating-star rating-star--half">★</span>
+                </div>
+                <span class="rating-breakdown__count">2,456 total reviews</span>
+              </div>
+            </div>
+
+            <div class="rating-breakdown__bars">
+              <div class="rating-breakdown__row">
+                <span class="rating-breakdown__label">5</span>
+                <span class="rating-star rating-star--filled" style="font-size: 14px;">★</span>
+                <div class="rating-breakdown__bar">
+                  <div class="rating-breakdown__fill" style="width: 72%;"></div>
+                </div>
+                <span class="rating-breakdown__percent">72%</span>
+              </div>
+
+              <div class="rating-breakdown__row">
+                <span class="rating-breakdown__label">4</span>
+                <span class="rating-star rating-star--filled" style="font-size: 14px;">★</span>
+                <div class="rating-breakdown__bar">
+                  <div class="rating-breakdown__fill" style="width: 18%;"></div>
+                </div>
+                <span class="rating-breakdown__percent">18%</span>
+              </div>
+
+              <div class="rating-breakdown__row">
+                <span class="rating-breakdown__label">3</span>
+                <span class="rating-star rating-star--filled" style="font-size: 14px;">★</span>
+                <div class="rating-breakdown__bar">
+                  <div class="rating-breakdown__fill" style="width: 6%;"></div>
+                </div>
+                <span class="rating-breakdown__percent">6%</span>
+              </div>
+
+              <div class="rating-breakdown__row">
+                <span class="rating-breakdown__label">2</span>
+                <span class="rating-star rating-star--filled" style="font-size: 14px;">★</span>
+                <div class="rating-breakdown__bar">
+                  <div class="rating-breakdown__fill" style="width: 2%;"></div>
+                </div>
+                <span class="rating-breakdown__percent">2%</span>
+              </div>
+
+              <div class="rating-breakdown__row">
+                <span class="rating-breakdown__label">1</span>
+                <span class="rating-star rating-star--filled" style="font-size: 14px;">★</span>
+                <div class="rating-breakdown__bar">
+                  <div class="rating-breakdown__fill" style="width: 2%;"></div>
+                </div>
+                <span class="rating-breakdown__percent">2%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="rating-breakdown card p-8"&gt;
+  &lt;div class="rating-breakdown__header"&gt;
+    &lt;span class="rating-breakdown__score"&gt;4.7&lt;/span&gt;
+    &lt;div class="rating-breakdown__summary"&gt;
+      &lt;div class="rating rating--sm"&gt;...&lt;/div&gt;
+      &lt;span class="rating-breakdown__count"&gt;2,456 total reviews&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="rating-breakdown__bars"&gt;
+    &lt;div class="rating-breakdown__row"&gt;
+      &lt;span class="rating-breakdown__label"&gt;5&lt;/span&gt;
+      &lt;span class="rating-star rating-star--filled"&gt;★&lt;/span&gt;
+      &lt;div class="rating-breakdown__bar"&gt;
+        &lt;div class="rating-breakdown__fill" style="width: 72%;"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;span class="rating-breakdown__percent"&gt;72%&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;!-- More rows... --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 07. AI Rating Card -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">07. AI CONFIDENCE <span class="text-primary-light">SCORE</span></h2>
+        <p class="subsection-text mb-6">AI-powered rating with confidence indicators</p>
+
+        <div class="card mb-6">
+          <div class="ai-rating-card card p-8">
+            <div class="ai-rating-card__header">
+              <div class="ai-rating-card__icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                </svg>
+              </div>
+              <span class="ai-rating-card__title">AI Confidence Score</span>
+            </div>
+
+            <div class="ai-rating-card__display">
+              <span class="ai-rating-card__score">94</span>
+              <span class="ai-rating-card__unit">%</span>
+            </div>
+
+            <div class="ai-rating-card__bar">
+              <div class="ai-rating-card__bar-fill" style="width: 94%;"></div>
+            </div>
+
+            <div class="ai-rating-card__tags">
+              <span class="ai-rating-tag">HIGH ACCURACY</span>
+              <span class="ai-rating-tag">VERIFIED</span>
+              <span class="ai-rating-tag ai-rating-tag--highlight">+12% VS AVG</span>
+            </div>
+          </div>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="ai-rating-card card p-8"&gt;
+  &lt;div class="ai-rating-card__header"&gt;
+    &lt;div class="ai-rating-card__icon"&gt;
+      &lt;svg&gt;...&lt;/svg&gt;
+    &lt;/div&gt;
+    &lt;span class="ai-rating-card__title"&gt;AI Confidence Score&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="ai-rating-card__display"&gt;
+    &lt;span class="ai-rating-card__score"&gt;94&lt;/span&gt;
+    &lt;span class="ai-rating-card__unit"&gt;%&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="ai-rating-card__bar"&gt;
+    &lt;div class="ai-rating-card__bar-fill" style="width: 94%;"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="ai-rating-card__tags"&gt;
+    &lt;span class="ai-rating-tag"&gt;HIGH ACCURACY&lt;/span&gt;
+    &lt;span class="ai-rating-tag ai-rating-tag--highlight"&gt;+12% VS AVG&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 08. Interactive Rating -->
+    <section class="section">
+      <div class="container">
+        <h2 class="subsection-title">08. INTERACTIVE <span class="text-primary-light">RATING</span></h2>
+        <p class="subsection-text mb-6">Clickable rating with hover effects</p>
+
+        <div class="card mb-6">
+          <div class="rating rating--interactive rating--lg" id="interactiveRating">
+            <span class="rating-star" data-value="1">★</span>
+            <span class="rating-star" data-value="2">★</span>
+            <span class="rating-star" data-value="3">★</span>
+            <span class="rating-star" data-value="4">★</span>
+            <span class="rating-star" data-value="5">★</span>
+          </div>
+          <p class="text-sm text-slate-500 mt-4">Hover and click to rate</p>
+        </div>
+
+        <pre class="code-block"><code>&lt;div class="rating rating--interactive rating--lg"&gt;
+  &lt;span class="rating-star"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star"&gt;★&lt;/span&gt;
+  &lt;span class="rating-star"&gt;★&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- Usage Guidelines -->
+    <section class="section">
+      <div class="container">
+        <div class="card card--info">
+          <h2 class="subsection-title mb-3">RATING SYSTEM <span class="text-primary-light">RULES</span></h2>
+          
+          <div class="mb-4">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">BASE CLASSES</h4>
+            <ul class="list-styled mb-0">
+              <li><code>.rating</code> - Star rating container</li>
+              <li><code>.rating-star</code> - Individual star element</li>
+              <li><code>.rating-star--filled</code> - Filled star (gold)</li>
+              <li><code>.rating-star--half</code> - Half-filled star</li>
+            </ul>
+          </div>
+          
+          <div class="mb-4">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">SIZE MODIFIERS</h4>
+            <ul class="list-styled mb-0">
+              <li><code>.rating--sm</code> - Small (16px)</li>
+              <li><code>.rating--md</code> - Medium (20px)</li>
+              <li>Base - Default (24px)</li>
+              <li><code>.rating--lg</code> - Large (32px)</li>
+              <li><code>.rating--xl</code> - Extra large (48px)</li>
+            </ul>
+          </div>
+          
+          <div class="mb-4">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">COLOR VARIANTS</h4>
+            <ul class="list-styled mb-0">
+              <li>Default - Gold (#fbbf24)</li>
+              <li><code>.rating--blue</code> - Brand blue</li>
+              <li><code>.rating--success</code> - Green</li>
+              <li><code>.rating--error</code> - Red</li>
+            </ul>
+          </div>
+          
+          <div class="mb-4">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">COMPONENTS</h4>
+            <ul class="list-styled mb-0">
+              <li><code>.rating-display</code> - Rating with value text</li>
+              <li><code>.rating-card</code> - Card with rating and metadata</li>
+              <li><code>.rating-breakdown</code> - Detailed distribution chart</li>
+              <li><code>.ai-rating-card</code> - AI confidence score card</li>
+              <li><code>.rating--interactive</code> - Clickable rating</li>
+            </ul>
+          </div>
+          
+          <div class="p-3 bg-surface-light rounded-lg">
+            <h4 class="text-sm font-weight-bold text-slate-900 mb-2">USAGE RULES</h4>
+            <ul class="list-styled mb-0">
+              <li>All components defined in <code>core.css</code></li>
+              <li>No inline styles (except dynamic widths)</li>
+              <li>Use v12.0 Spring easing: <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code></li>
+              <li>Star character: ★ (U+2605)</li>
+              <li>Half stars use gradient mask</li>
+              <li>Interactive ratings have hover/active states</li>
+              <li>All text uppercase with letter-spacing</li>
+              <li>Responsive on all 4 breakpoints</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

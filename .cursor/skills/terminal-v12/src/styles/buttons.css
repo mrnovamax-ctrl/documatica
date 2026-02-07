@@ -1,0 +1,193 @@
+/* ==============================================
+   DOCUMATICA V12.0 - BUTTON COMPONENTS
+   "The v12.0 Spring" - Physics-based interactions
+   ============================================== */
+
+/* === BASE BUTTON === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  
+  font-weight: var(--font-weight-black);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  
+  padding: var(--spacing-5) var(--spacing-10);
+  border-radius: var(--radius-xl);
+  
+  transition: all var(--transition-spring);
+  cursor: pointer;
+  user-select: none;
+  
+  border: none;
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+/* === PRIMARY BUTTON === */
+.btn-primary {
+  background-color: var(--color-brand-blue);
+  color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-2xl), var(--shadow-blue);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: var(--shadow-base);
+}
+
+/* === SECONDARY (GOLD) BUTTON === */
+.btn-secondary {
+  background-color: var(--color-brand-gold);
+  color: var(--color-slate-900);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  transform: translateY(-4px);
+  background-color: var(--color-warning);
+  box-shadow: var(--shadow-2xl), var(--shadow-gold);
+}
+
+.btn-secondary:active:not(:disabled) {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: var(--shadow-base);
+}
+
+/* === OUTLINE BUTTON === */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-slate-900);
+  border: 2px solid var(--color-slate-900);
+  box-shadow: none;
+}
+
+.btn-outline:hover:not(:disabled) {
+  transform: translateY(-4px);
+  background-color: var(--color-slate-900);
+  color: var(--color-surface);
+  box-shadow: var(--shadow-xl);
+}
+
+.btn-outline:active:not(:disabled) {
+  transform: translateY(1px) scale(0.96);
+}
+
+/* === GHOST BUTTON === */
+.btn-ghost {
+  background-color: var(--color-slate-100);
+  color: var(--color-slate-900);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background-color: var(--color-slate-200);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-ghost:active:not(:disabled) {
+  transform: translateY(1px) scale(0.96);
+}
+
+/* === MASSIVE CTA BUTTON === */
+.btn-massive {
+  padding: var(--spacing-8) var(--spacing-16);
+  border-radius: var(--radius-2xl);
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--tracking-wider);
+  box-shadow: var(--shadow-2xl);
+}
+
+/* === ICON BUTTON === */
+.btn-icon {
+  padding: var(--spacing-4);
+  border-radius: var(--radius-lg);
+}
+
+.btn-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* === LINK BUTTON === */
+.btn-link {
+  background: none;
+  color: var(--color-slate-900);
+  padding: 0;
+  box-shadow: none;
+  gap: var(--spacing-2);
+  font-weight: var(--font-weight-black);
+  letter-spacing: var(--tracking-wider);
+}
+
+.btn-link:hover:not(:disabled) {
+  transform: translateX(0);
+  color: var(--color-primary);
+}
+
+.btn-link:hover:not(:disabled) svg {
+  transform: translateX(8px);
+}
+
+.btn-link svg {
+  transition: transform var(--transition-base);
+}
+
+.btn-link:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+/* === BUTTON SIZES === */
+.btn-sm {
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: 9px;
+  border-radius: var(--radius-sm);
+}
+
+.btn-lg {
+  padding: var(--spacing-6) var(--spacing-12);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-lg);
+}
+
+/* === BUTTON GROUP === */
+.btn-group {
+  display: inline-flex;
+  gap: var(--spacing-2);
+}
+
+.btn-group .btn {
+  flex: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .btn {
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: 9px;
+  }
+  
+  .btn-massive {
+    padding: var(--spacing-6) var(--spacing-12);
+    font-size: var(--font-size-xs);
+  }
+}
