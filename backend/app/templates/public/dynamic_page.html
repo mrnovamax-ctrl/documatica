@@ -7,9 +7,16 @@
 {% if page.meta_keywords %}
 <meta name="keywords" content="{{ page.meta_keywords }}">
 {% endif %}
-{% if page.canonical_url %}
-<link rel="canonical" href="{{ page.canonical_url }}">
-{% endif %}
+<link rel="canonical" href="{{ canonical_url }}">
+<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+{% endblock %}
+
+{% block extra_head %}
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:image" content="{{ base_url }}/static/images/og-image.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","url":"{{ canonical_url }}","name":"{{ (page.meta_title or page.title) | e }}","description":"{{ (page.meta_description or '') | e }}","publisher":{"@type":"Organization","name":"Documatica","url":"{{ base_url }}/"}}
+</script>
 {% endblock %}
 
 {% block content %}

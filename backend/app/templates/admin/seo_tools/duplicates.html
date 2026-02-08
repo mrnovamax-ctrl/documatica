@@ -1,0 +1,27 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Дубликаты meta description{% endblock %}
+{% block page_title %}Дубликаты meta description{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/seo-tools/" class="btn btn-ghost btn-sm">Назад</a>
+{% endblock %}
+
+{% block content %}
+{% if groups %}
+<div class="admin-alert admin-alert-warning" style="margin-bottom: 1.5rem;">Найдено {{ groups|length }} групп с дублирующимся meta description.</div>
+{% for g in groups %}
+<div class="admin-detail-card" style="margin-bottom: 1rem;">
+  <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.5rem;">Повторяется {{ g.count }} раз:</div>
+  <div style="font-size: 0.875rem; margin-bottom: 0.75rem; background: #f8fafc; padding: 0.75rem; border-radius: 0.5rem;">{{ g.meta_description }}</div>
+  <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.875rem;">
+    {% for a in g.articles %}
+    <li><a href="/admin/articles/{{ a.id }}/">{{ a.title }}</a> — /news/{{ a.slug }}/</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endfor %}
+{% else %}
+<div class="admin-alert admin-alert-success">Дубликатов meta description не найдено.</div>
+{% endif %}
+{% endblock %}

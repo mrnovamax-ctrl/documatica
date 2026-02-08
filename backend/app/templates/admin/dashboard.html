@@ -3,140 +3,222 @@
 {% block title %}Статистика{% endblock %}
 {% block page_title %}Статистика сервиса{% endblock %}
 
-{% block content %}
-<!-- Stats Grid -->
-<div class="admin-stats-grid">
-  <!-- Users -->
-  <div class="admin-stat-card">
-    <div class="admin-stat-icon blue">
-      <iconify-icon icon="ri:user-line" width="26"></iconify-icon>
-    </div>
-    <div class="admin-stat-value">{{ stats.users.total }}</div>
-    <div class="admin-stat-label">Пользователей</div>
-    <div class="admin-stat-sub">
-      <span class="highlight green">{{ stats.users.paid }}</span> платных,
-      <span>{{ stats.users.verified }}</span> верифицированных,
-      <span style="color: #FC3F1D; font-weight: 700;">{{ stats.users.oauth or 0 }}</span> через Яндекс
-    </div>
-  </div>
-  
-  <!-- Documents Total -->
-  <div class="admin-stat-card">
-    <div class="admin-stat-icon green">
-      <iconify-icon icon="ri:file-text-line" width="26"></iconify-icon>
-    </div>
-    <div class="admin-stat-value">{{ stats.documents.total }}</div>
-    <div class="admin-stat-label">Документов создано</div>
-    <div class="admin-stat-sub">
-      <span class="highlight blue">+{{ stats.documents.today }}</span> сегодня
-    </div>
-  </div>
-  
-  <!-- Documents Week -->
-  <div class="admin-stat-card">
-    <div class="admin-stat-icon gold">
-      <iconify-icon icon="ri:calendar-line" width="26"></iconify-icon>
-    </div>
-    <div class="admin-stat-value">{{ stats.documents.week }}</div>
-    <div class="admin-stat-label">За неделю</div>
-    <div class="admin-stat-sub">
-      {{ stats.documents.month }} за месяц
-    </div>
-  </div>
-  
-  <!-- New Users -->
-  <div class="admin-stat-card">
-    <div class="admin-stat-icon purple">
-      <iconify-icon icon="ri:user-add-line" width="26"></iconify-icon>
-    </div>
-    <div class="admin-stat-value">{{ stats.users.month }}</div>
-    <div class="admin-stat-label">Новых за месяц</div>
-    <div class="admin-stat-sub">
-      +{{ stats.users.today }} сегодня, +{{ stats.users.week }} за неделю
-    </div>
-  </div>
-</div>
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/admin-dashboard.css?v=1">
+{% endblock %}
 
-<!-- Details Section -->
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
-  <!-- Payments Stats -->
-  <div class="admin-detail-card">
+{% block content %}
+<div class="admin-dashboard">
+  <!-- Stat Cards (v12 style) -->
+  <div class="cards-inline">
+    <div class="kit-card kit-card--stat kit-card--quarter kit-card--blue">
+      <span class="kit-card__label">Пользователей</span>
+      <span class="kit-card__value">{{ stats.users.total }}</span>
+      <span class="kit-card__change">
+        +{{ stats.users.month }} за месяц
+        {% if stats.users.today %}<span class="kit-card__change--up">+{{ stats.users.today }} сегодня</span>{% endif %}
+      </span>
+    </div>
+    <div class="kit-card kit-card--stat kit-card--quarter">
+      <span class="kit-card__label">Документов создано</span>
+      <span class="kit-card__value">{{ stats.documents.total }}</span>
+      <span class="kit-card__change">+{{ stats.documents.today }} сегодня, {{ stats.documents.week }} за неделю</span>
+    </div>
+    <div class="kit-card kit-card--stat kit-card--quarter kit-card--gold">
+      <span class="kit-card__label">Выручка (факт)</span>
+      <span class="kit-card__value">{{ "{:,.0f}".format(stats.payments.total_revenue).replace(",", " ") }} ₽</span>
+      <span class="kit-card__change">{{ stats.payments.total_count }} платежей, {{ "{:,.0f}".format(stats.payments.month_revenue).replace(",", " ") }} ₽ за месяц</span>
+    </div>
+    <div class="kit-card kit-card--stat kit-card--quarter kit-card--green">
+      <span class="kit-card__label">Подписки</span>
+      <span class="kit-card__value">{{ stats.users.paid }}</span>
+      <span class="kit-card__change">{{ stats.users.free }} бесплатных, {{ stats.users.oauth or 0 }} через Яндекс</span>
+    </div>
+    <div class="kit-card kit-card--stat kit-card--quarter kit-card--dark">
+      <span class="kit-card__label">Новых за месяц</span>
+      <span class="kit-card__value">{{ stats.users.month }}</span>
+      <span class="kit-card__change">+{{ stats.users.week }} за неделю</span>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
+    <div class="chart-container">
+      <div class="chart-title">Пользователи по дням (30 дней)</div>
+      <div class="chart-wrapper">
+        <canvas id="chartUsers"></canvas>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">Документы по дням (30 дней)</div>
+      <div class="chart-wrapper">
+        <canvas id="chartDocs"></canvas>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">Выручка по дням (30 дней), ₽</div>
+      <div class="chart-wrapper">
+        <canvas id="chartRevenue"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Платежи — фактически оплаченные -->
+  <div class="admin-detail-card" style="margin-bottom: 24px;">
     <div class="admin-detail-header">
       <div class="admin-detail-icon admin-stat-icon green">
         <iconify-icon icon="ri:money-dollar-circle-line" width="20"></iconify-icon>
       </div>
-      <div class="admin-detail-title">Платежи</div>
-    </div>
-    
-    <div class="admin-detail-row">
-      <span class="admin-detail-row-label">Всего платежей</span>
-      <span class="admin-detail-row-value">{{ stats.payments.total_count }}</span>
-    </div>
-    
-    <div class="admin-detail-row">
-      <span class="admin-detail-row-label">Общая выручка</span>
-      <span class="admin-detail-row-value" style="color: #10b981; font-weight: 800;">{{ stats.payments.total_revenue|int }} руб</span>
-    </div>
-    
-    <div class="admin-detail-row">
-      <span class="admin-detail-row-label">Платежей за месяц</span>
-      <span class="admin-detail-row-value">{{ stats.payments.month_count }}</span>
-    </div>
-    
-    <div class="admin-detail-row">
-      <span class="admin-detail-row-label">Выручка за месяц</span>
-      <span class="admin-detail-row-value" style="color: #10b981;">{{ stats.payments.month_revenue|int }} руб</span>
-    </div>
-  </div>
-  
-  <!-- Quick Info -->
-  <div class="admin-detail-card">
-    <div class="admin-detail-header">
-      <div class="admin-detail-icon admin-stat-icon blue">
-        <iconify-icon icon="ri:information-line" width="20"></iconify-icon>
+      <div class="admin-detail-title">Фактически оплаченные платежи</div>
+      <div style="margin-left: auto; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <form action="/admin/payments/sync-tbank/" method="post" style="display: inline;">
+          <button type="submit" class="btn btn-primary btn-sm" title="Запросить статус у Т-Банка для pending платежей">Sync Т-Банк</button>
+        </form>
+        <a href="/admin/payments/?show_reconcile=1" class="btn btn-outline btn-sm">Сверка с банком</a>
+        <a href="/admin/payments/" class="btn btn-ghost btn-sm">Все платежи</a>
       </div>
-      <div class="admin-detail-title">Информация о системе</div>
     </div>
-    
-    <div class="admin-detail-row">
-      <span class="admin-detail-row-label">Бесплатных аккаунтов</span>
-      <span class="admin-detail-row-value">{{ stats.users.free }}</span>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <div style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Всего выручка</div>
+        <div style="font-size: 1.5rem; font-weight: 900; color: #10b981;">{{ "{:,.0f}".format(stats.payments.total_revenue).replace(",", " ") }} ₽</div>
+      </div>
+      <div>
+        <div style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Платежей всего</div>
+        <div style="font-size: 1.5rem; font-weight: 900;">{{ stats.payments.total_count }}</div>
+      </div>
+      <div>
+        <div style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">За месяц</div>
+        <div style="font-size: 1.5rem; font-weight: 900;">{{ "{:,.0f}".format(stats.payments.month_revenue).replace(",", " ") }} ₽</div>
+      </div>
+      <div>
+        <div style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Плат. за месяц</div>
+        <div style="font-size: 1.5rem; font-weight: 900;">{{ stats.payments.month_count }}</div>
+      </div>
     </div>
-    
-    <div class="admin-detail-row">
-      <span class="admin-detail-row-label">Файлов документов на диске</span>
-      <span class="admin-detail-row-value">{{ stats.files_on_disk }}</span>
+    {% if stats.recent_payments %}
+    <div style="overflow-x: auto;">
+      <table class="admin-table" style="width: 100%; font-size: 0.8125rem;">
+        <thead>
+          <tr>
+            <th style="text-align: left; padding: 0.5rem;">Пользователь</th>
+            <th style="text-align: left; padding: 0.5rem;">Сумма</th>
+            <th style="text-align: left; padding: 0.5rem;">Тип</th>
+            <th style="text-align: left; padding: 0.5rem;">Дата</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in stats.recent_payments %}
+          <tr>
+            <td style="padding: 0.5rem;">{% if p.user %}{{ p.user.email }}{% else %}—{% endif %}</td>
+            <td style="padding: 0.5rem; font-weight: 700; color: #10b981;">{{ "{:,.0f}".format(p.amount or 0).replace(",", " ") }} ₽</td>
+            <td style="padding: 0.5rem;">{{ 'Подписка' if p.payment_type == 'subscription' else 'Пакет' }}</td>
+            <td style="padding: 0.5rem; color: #64748b;">{{ (p.confirmed_at or p.created_at).strftime('%d.%m.%Y %H:%M') if (p.confirmed_at or p.created_at) else '—' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-    
-    <div class="admin-detail-row status-ok">
-      <span class="admin-detail-row-label">Статус системы</span>
-      <span class="admin-detail-row-value">
-        <iconify-icon icon="ri:checkbox-circle-fill" width="18"></iconify-icon>
-        Работает
-      </span>
+    {% else %}
+    <p style="color: #94a3b8; font-size: 0.875rem;">Пока нет подтверждённых платежей</p>
+    {% endif %}
+  </div>
+
+  <!-- Details + Quick Actions -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px;">
+    <div class="admin-detail-card">
+      <div class="admin-detail-header">
+        <div class="admin-detail-icon admin-stat-icon blue">
+          <iconify-icon icon="ri:information-line" width="20"></iconify-icon>
+        </div>
+        <div class="admin-detail-title">Информация</div>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-row-label">Бесплатных аккаунтов</span>
+        <span class="admin-detail-row-value">{{ stats.users.free }}</span>
+      </div>
+      <div class="admin-detail-row">
+        <span class="admin-detail-row-label">Документов в БД</span>
+        <span class="admin-detail-row-value">{{ stats.files_on_disk }}</span>
+      </div>
+      <div class="admin-detail-row status-ok">
+        <span class="admin-detail-row-label">Статус</span>
+        <span class="admin-detail-row-value"><iconify-icon icon="ri:checkbox-circle-fill" width="18"></iconify-icon> Работает</span>
+      </div>
+    </div>
+    <div class="admin-detail-card">
+      <div class="admin-detail-header">
+        <div class="admin-detail-icon admin-stat-icon blue">
+          <iconify-icon icon="ri:flashlight-line" width="20"></iconify-icon>
+        </div>
+        <div class="admin-detail-title">Быстрые действия</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <a href="/admin/pages/" class="btn btn-outline">
+          <iconify-icon icon="ri:edit-line" width="20" style="color: #3b82f6;"></iconify-icon>
+          Редактировать страницы
+        </a>
+        <a href="/admin/users/" class="admin-action-btn">
+          <iconify-icon icon="ri:user-settings-line" width="20" style="color: #a855f7;"></iconify-icon>
+          Управление пользователями
+        </a>
+        <a href="/" target="_blank" class="btn btn-outline">
+          <iconify-icon icon="ri:external-link-line" width="20" style="color: #22c55e;"></iconify-icon>
+          Открыть сайт
+        </a>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Quick Actions -->
-<div>
-  <div class="admin-actions-title">Быстрые действия</div>
-  
-  <div class="admin-actions-grid">
-    <a href="/admin/pages/" class="admin-action-btn">
-      <iconify-icon icon="ri:edit-line" width="20" style="color: #3b82f6;"></iconify-icon>
-      Редактировать страницы
-    </a>
-    
-    <a href="/admin/users/" class="admin-action-btn">
-      <iconify-icon icon="ri:user-settings-line" width="20" style="color: #a855f7;"></iconify-icon>
-      Управление пользователями
-    </a>
-    
-    <a href="/" target="_blank" class="admin-action-btn">
-      <iconify-icon icon="ri:external-link-line" width="20" style="color: #22c55e;"></iconify-icon>
-      Открыть сайт
-    </a>
-  </div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var labels = {{ stats.chart_labels_json | safe }};
+  var users = {{ stats.chart_users_json | safe }};
+  var docs = {{ stats.chart_docs_json | safe }};
+  var revenue = {{ stats.chart_revenue_json | safe }};
+
+  var baseOpts = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: true },
+      y: { display: true, beginAtZero: true }
+    }
+  };
+
+  if (typeof Chart !== 'undefined' && document.getElementById('chartUsers')) {
+    new Chart(document.getElementById('chartUsers'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{ label: 'Регистрации', data: users, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.15)', fill: true, tension: 0.3 }]
+      },
+      options: Object.assign({}, baseOpts, { scales: { y: { ticks: { stepSize: 1 } } } })
+    });
+  }
+  if (typeof Chart !== 'undefined' && document.getElementById('chartDocs')) {
+    new Chart(document.getElementById('chartDocs'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{ label: 'Документы', data: docs, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.15)', fill: true, tension: 0.3 }]
+      },
+      options: Object.assign({}, baseOpts, { scales: { y: { ticks: { stepSize: 1 } } } })
+    });
+  }
+  if (typeof Chart !== 'undefined' && document.getElementById('chartRevenue')) {
+    new Chart(document.getElementById('chartRevenue'), {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{ label: 'Выручка ₽', data: revenue, backgroundColor: 'rgba(251,191,36,0.8)', borderColor: '#f59e0b', borderWidth: 1 }]
+      },
+      options: baseOpts
+    });
+  }
+});
+</script>
 {% endblock %}

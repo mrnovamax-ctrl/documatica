@@ -14,17 +14,15 @@ from dotenv import load_dotenv
 # Загружаем .env
 load_dotenv()
 
+from fastapi import HTTPException
+
 from app.core.templates import templates
-from app.core.content import load_content
 from app.core.heroicons import get_icon_paths_html
 from app.database import get_db
-from app.models import Page
+from app.models import Page, Article
+from app.pages.cms_dynamic import _build_sections_for_template
 
 router = APIRouter()
-
-# Feature flag для CMS из БД
-USE_DB_CMS = os.getenv("USE_DB_CMS", "false").lower() == "true"
-print(f"[HOME] USE_DB_CMS = {USE_DB_CMS}")
 
 # Путь к данным
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
@@ -38,107 +36,73 @@ async def mailru_verification():
     return "mailru-domain: sZDnkw0eMC2tYYqi"
 
 
-def get_latest_articles(limit: int = 5) -> List[Dict]:
-    """Получение последних опубликованных статей для главной страницы"""
-    filepath = DATA_DIR / "articles.json"
-    if not filepath.exists():
-        return []
-    
-    with open(filepath, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    
-    # Поддержка старого формата (массив статей)
-    if isinstance(data, list):
-        articles = data
-    else:
-        articles = data.get("articles", [])
-    
-    # Только опубликованные
-    published = [a for a in articles if a.get("is_published", False) or a.get("status") == "published"]
-    
-    # Сортировка по дате (новые сначала)
-    published.sort(key=lambda x: x.get("created_at", ""), reverse=True)
-    
-    return published[:limit]
+def _default_home_content() -> Dict:
+    """Контент для главной, когда в CMS нет опубликованной страницы."""
+    return {
+        "meta": {"title": "Documatica — Онлайн генератор УПД", "description": "Создавайте УПД, счета-фактуры и акты онлайн."},
+        "hero": {"title": "Документы с интеллектом.", "title_accent": "интеллектом", "subtitle": "Полный цикл автоматизации документов.", "cta_text": "Создать УПД бесплатно", "cta_url": "/dashboard/upd/create/", "note": "Попробуйте прямо сейчас", "note_accent": "С проверкой от AI"},
+        "features": {"title": "Почему Documatica", "subtitle": "Всё в одном месте", "cards": [{"title": "Сверка реквизитов", "description": "Проверка по ИНН.", "icon": "check-circle"}, {"title": "Экспорт PDF", "description": "Скачивание документов.", "icon": "download"}, {"title": "Бесплатный старт", "description": "5 документов в месяц.", "icon": "gift"}]},
+        "upd_types": {"title": "УПД", "label": "Виды", "cards": [{"tag": "С НДС", "title": "УПД с НДС", "description": "Для плательщиков НДС.", "url": "/upd/s-nds/", "icon": "dollar-sign"}, {"tag": "Без НДС", "title": "УПД без НДС", "description": "Без налога.", "url": "/upd/bez-nds/", "icon": "slash"}, {"tag": "УСН", "title": "УПД для УСН", "description": "Упрощенка.", "url": "/upd/usn/", "icon": "layers"}]},
+        "pricing": {"label": "Тарифы", "title": "Инвестируйте в", "title_accent": "простоту", "plans": [{"name": "Бесплатный", "price": "0 руб", "period": "Для знакомства", "badge": "", "features": [{"text": "5 документов", "enabled": True}], "button_text": "Начать", "button_url": "/register", "style": "outline"}, {"name": "Подписка", "price": "300 руб", "period": "В месяц", "badge": "Популярный", "featured": True, "features": [{"text": "50 документов", "enabled": True}], "button_text": "Оформить", "button_url": "/dashboard/tariffs/", "style": "primary"}]},
+        "about": {"label": "О нас", "title": "Кто стоит за", "title_accent": "Documatica", "description": "Команда экспертов по документообороту."},
+        "cta": {"label": "Начните", "title": "Готовы", "title_accent": "автоматизировать?", "subtitle": "Первый УПД за 2 минуты.", "button_text": "Создать документ", "button_url": "/dashboard/upd/create/"},
+    }
+
+
+def get_latest_articles(db: Session, limit: int = 5) -> List[Article]:
+    """Последние опубликованные статьи для главной страницы (из БД)."""
+    return (
+        db.query(Article)
+        .options(joinedload(Article.category))
+        .filter(Article.is_published.is_(True))
+        .order_by(Article.created_at.desc(), Article.id.desc())
+        .limit(limit)
+        .all()
+    )
 
 
 @router.get("/", response_class=HTMLResponse)
 async def home(request: Request, db: Session = Depends(get_db)):
-    """
-    Главная страница сайта
-    ВАЖНО: URL не изменился! Только источник данных: YAML → БД
-    """
-    # Получаем последние статьи для блока новостей
-    latest_articles = get_latest_articles(5)
-    
-    # Пробуем загрузить из БД (если включен USE_DB_CMS)
-    if USE_DB_CMS:
-        try:
-            page = db.query(Page).options(joinedload(Page.sections)).filter(Page.slug == "").first()  # slug="" для главной, подгружаем секции чтобы section.settings был доступен в шаблоне
-            print(f"[HOME] Page from DB: {page}")
-            print(f"[HOME] Page status: {page.status if page else 'N/A'}")
-        except Exception as e:
-            print(f"[HOME] DB error, using YAML fallback: {e}")
-            page = None
-        
-        if page and getattr(page, "status", None) == "published":
-            # Новая версия из БД: передаём секции с гарантированным settings (dict), чтобы в шаблоне работали grid_columns и др.
-            sections_for_template = []
-            for s in sorted(page.sections, key=lambda x: x.position):
-                settings = dict(s.settings or {})
-                settings.setdefault("grid_columns", getattr(s, "grid_columns", 2))
-                settings.setdefault("grid_gap", getattr(s, "grid_gap", "medium"))
-                settings.setdefault("grid_style", getattr(s, "grid_style", "grid"))
-                bg_style = getattr(s, "background_style", None) or ""
-                section_view = type("SectionView", (), {
-                    "id": s.id,
-                    "section_type": s.section_type,
-                    "blocks": s.blocks,
-                    "background_style": bg_style,
-                    "css_classes": getattr(s, "css_classes", None),
-                    "container_width": getattr(s, "container_width", None),
-                    "is_visible": getattr(s, "is_visible", True),
-                    "settings": settings,
-                    "is_dark_bg": bg_style in ("dark", "primary", "gold", "pattern_dots_dark"),
-                })()
-                sections_for_template.append(section_view)
-            page_view = type("PageView", (), {
-                "id": page.id,
-                "title": page.title,
-                "meta_title": getattr(page, "meta_title", None),
-                "meta_description": getattr(page, "meta_description", None),
-                "meta_keywords": getattr(page, "meta_keywords", None),
-                "canonical_url": getattr(page, "canonical_url", None),
-                "sections": sections_for_template,
-            })()
-            return templates.TemplateResponse(
-                request=request,
-                name="public/dynamic_page.html",
-                context={
-                    "page": page_view,
-                    "latest_articles": latest_articles,
-                    "title": page.meta_title or page.title,
-                    "description": page.meta_description,
-                    "is_home_page": True,
-                    "heroicon_paths": get_icon_paths_html(),
-                }
-            )
-        else:
-            print(f"[HOME] Page not published or not found, using YAML fallback")
-    
-    # Fallback на YAML (старая версия)
-    content = load_content("home")
-    
+    """Главная: из CMS или fallback на статичную страницу."""
+    latest_articles = get_latest_articles(db, 5)
+    page = (
+        db.query(Page)
+        .options(joinedload(Page.sections))
+        .filter(Page.slug.in_(["", "home"]))
+        .first()
+    )
+    if page and getattr(page, "status", None) == "published":
+        sections_for_template = _build_sections_for_template(page)
+        page_view = type("PageView", (), {
+            "id": page.id,
+            "title": page.title,
+            "meta_title": getattr(page, "meta_title", None),
+            "meta_description": getattr(page, "meta_description", None),
+            "meta_keywords": getattr(page, "meta_keywords", None),
+            "canonical_url": getattr(page, "canonical_url", None),
+            "sections": sections_for_template,
+        })()
+        return templates.TemplateResponse(
+            request=request,
+            name="public/dynamic_page.html",
+            context={
+                "page": page_view,
+                "latest_articles": latest_articles,
+                "title": page.meta_title or page.title,
+                "description": page.meta_description or "",
+                "is_home_page": True,
+                "heroicon_paths": get_icon_paths_html(),
+            },
+        )
+    content = _default_home_content()
     return templates.TemplateResponse(
         request=request,
         name="public/home.html",
         context={
             "content": content,
             "latest_articles": latest_articles,
-            "title": content.get("meta", {}).get("title", "Documatica — генератор документов для бизнеса"),
-            "description": content.get("meta", {}).get("description", "Создавайте УПД, счета, акты и договоры онлайн бесплатно."),
-            "is_home_page": True,  # Флаг для отображения прелоадера
-        }
+            "heroicon_paths": get_icon_paths_html(),
+        },
     )
 
 

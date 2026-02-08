@@ -44,10 +44,14 @@
         <div class="admin-sidebar-section-title">Управление</div>
         
         {% for item in menu_items %}
+        {% if item.get('section') %}
+        <div class="admin-sidebar-section-title">{{ item.section }}</div>
+        {% else %}
         <a href="{{ item.url }}" class="admin-menu-item {% if active_menu == item.id %}active{% endif %}">
           <iconify-icon icon="{{ item.icon }}" width="20"></iconify-icon>
           <span>{{ item.title }}</span>
         </a>
+        {% endif %}
         {% endfor %}
       </div>
       

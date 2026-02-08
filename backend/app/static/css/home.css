@@ -789,41 +789,6 @@ body {
   color: var(--text-dark);
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 24px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  border: none;
-}
-
-.btn-primary {
-  background: #3b82f6;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #2563eb;
-  color: white;
-}
-
-.btn-outline {
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-}
-
-.btn-outline:hover {
-  color: var(--text-primary);
-  border-color: var(--text-secondary);
-}
-
 /* ========================================
    Hero Section v12.0 — классы как в hero.html (skill)
    .hero, .hero-badge, .hero-title, .hero-subtitle, .hero-actions
@@ -1318,19 +1283,6 @@ body {
 .home-pricing-legacy .pricing-features li svg {
   color: #34d399;
   flex-shrink: 0;
-}
-
-.btn-block {
-  width: 100%;
-}
-
-.btn-white {
-  background: white;
-  color: var(--accent-blue);
-}
-
-.btn-white:hover {
-  background: rgba(255, 255, 255, 0.9);
 }
 
 /* Footer */
@@ -2210,52 +2162,6 @@ body {
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
-}
-
-/* Buttons for About page */
-.btn-primary-massive {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem 3rem;
-  background: #3b82f6;
-  color: white;
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  border-radius: 1.5rem;
-  text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.btn-primary-massive:hover {
-  background: #2563eb;
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.4);
-}
-
-.btn-outline-large {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem 3rem;
-  background: transparent;
-  color: #64748b;
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  border: 2px solid #e2e8f0;
-  border-radius: 1.5rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.btn-outline-large:hover {
-  background: #f8fafc;
-  color: #0f172a;
-  border-color: #cbd5e1;
 }
 
 /* Utility classes */
@@ -4887,152 +4793,6 @@ body {
 .badge--outline-neutral {
   border-color: var(--color-slate-300);
   color: var(--color-slate-500);
-}
-
-/* =========================================================================
-   BUTTONS (Terminal v12 — buttons.html design system)
-   5 variants × 4 sizes
-   ========================================================================= */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  font-weight: 900;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  padding: 1.25rem 2.5rem;
-  border-radius: 1.5rem;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
-  user-select: none;
-  border: none;
-  outline: none;
-  text-decoration: none;
-}
-
-.btn:focus-visible {
-  outline: 2px solid var(--color-brand-blue);
-  outline-offset: 2px;
-}
-
-.btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  filter: grayscale(1);
-}
-
-.btn-primary {
-  background-color: var(--color-brand-blue);
-  color: var(--color-white);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 15px -3px rgba(59, 130, 246, 0.3);
-}
-
-.btn-primary:active:not(:disabled) {
-  transform: translateY(1px) scale(0.96);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-}
-
-.btn-gold {
-  background-color: var(--color-brand-gold);
-  color: var(--color-slate-900);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.btn-gold:hover:not(:disabled) {
-  transform: translateY(-2px);
-  background-color: var(--color-warning);
-  box-shadow: 0 0 25px rgba(251, 191, 36, 0.4), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-.btn-gold:active:not(:disabled) {
-  transform: translateY(1px) scale(0.96);
-}
-
-.btn-outline {
-  background-color: transparent;
-  color: var(--color-slate-900);
-  border: 2px solid var(--color-slate-900);
-  box-shadow: none;
-}
-
-.btn-outline:hover:not(:disabled) {
-  transform: translateY(-2px);
-  background-color: var(--color-slate-900);
-  color: var(--color-white);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.btn-outline:active:not(:disabled) {
-  transform: translateY(1px) scale(0.96);
-}
-
-.btn-ghost {
-  background-color: var(--color-slate-100);
-  color: var(--color-slate-900);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.btn-ghost:hover:not(:disabled) {
-  transform: translateY(-2px);
-  background-color: var(--color-slate-200);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.btn-ghost:active:not(:disabled) {
-  transform: translateY(1px) scale(0.96);
-}
-
-.btn-link {
-  background: none;
-  color: var(--color-slate-900);
-  padding: 0;
-  box-shadow: none;
-  font-weight: 900;
-  letter-spacing: 0.3em;
-}
-
-.btn-link:hover:not(:disabled) {
-  color: var(--color-brand-blue);
-}
-
-.btn-link:hover:not(:disabled) svg {
-  transform: translateX(8px);
-}
-
-.btn-link svg {
-  transition: transform 0.3s;
-}
-
-.btn-link:active:not(:disabled) {
-  transform: scale(0.96);
-}
-
-.btn-sm {
-  padding: 0.75rem 1.5rem;
-  font-size: 9px;
-  border-radius: 0.75rem;
-}
-
-.btn-lg {
-  padding: 1.5rem 3rem;
-  font-size: 12px;
-  border-radius: 1.5rem;
-}
-
-.btn-massive {
-  padding: 2rem 4rem;
-  border-radius: 2.5rem;
-  font-size: 12px;
-  letter-spacing: 0.3em;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 /* Hero: две кнопки в ряд (layout.html — grid 2 col, mobile stack) */

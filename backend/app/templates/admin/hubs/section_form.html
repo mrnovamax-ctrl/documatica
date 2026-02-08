@@ -1,0 +1,130 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}{% if is_new_section %}Новый раздел{% else %}Раздел: {{ (section.title or '')[:40] }}{% endif %}{% endblock %}
+{% block page_title %}{% if is_new_section %}Новый раздел хаба{% else %}Редактирование раздела{% endif %}{% endblock %}
+
+{% block header_actions %}
+<div class="header-actions-row">
+  {% if not is_new_section and section %}
+  <form method="POST" action="/admin/hubs/{{ hub.id }}/sections/{{ section.id }}/delete/" class="form-delete-inline">
+    <button type="submit" class="btn btn-outline" onclick="return confirm('Удалить раздел «{{ section.title }}»?');">
+      <iconify-icon icon="ri:delete-bin-line" width="18"></iconify-icon>
+      Удалить раздел
+    </button>
+  </form>
+  {% endif %}
+  <a href="/admin/hubs/{{ hub.id }}/" class="btn btn-outline">
+    <iconify-icon icon="ri:arrow-left-line" width="18"></iconify-icon>
+    К хабу
+  </a>
+</div>
+{% endblock %}
+
+{% block content %}
+{% if saved %}
+<div class="admin-alert admin-alert-success admin-core">
+  <iconify-icon icon="ri:checkbox-circle-line" width="22"></iconify-icon>
+  Раздел сохранён
+</div>
+{% endif %}
+{% if request.query_params.get('error') == 'slug' %}
+<div class="admin-alert admin-alert-danger admin-core">
+  Такой URL (slug) уже есть в этом хабе. Выберите другой.
+</div>
+{% endif %}
+
+<form method="POST" class="admin-core">
+  <div class="form-card form-card--standalone">
+    <div class="form-group">
+      <label class="label" for="section-title">Название раздела</label>
+      <input type="text" name="title" id="section-title" value="{{ section.title if section else '' }}" required
+             class="input" placeholder="Например: Ключевые слова">
+    </div>
+    <div class="form-group">
+      <label class="label" for="section-slug">URL (slug)</label>
+      <div class="slug-row">
+        <span class="slug-prefix">/hub/{{ hub.slug }}/</span>
+        <input type="text" name="slug" id="section-slug" value="{{ section.slug if section else '' }}"
+               class="input input--mono slug-input" placeholder="keywords">
+        <span class="slug-suffix">/</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="label" for="section-content">Контент раздела</label>
+      <textarea name="content" id="section-content" rows="10" class="input" placeholder="HTML или текст...">{{ section.content if section else '' }}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="label" for="section-meta-title">Meta Title</label>
+      <input type="text" name="meta_title" id="section-meta-title" value="{{ section.meta_title if section else '' }}" class="input">
+    </div>
+    <div class="form-group">
+      <label class="label" for="section-position">Порядок (position)</label>
+      <input type="number" name="position" id="section-position" value="{{ section.position if section else 0 }}" class="input" min="0">
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        <iconify-icon icon="ri:save-line" width="18"></iconify-icon>
+        {% if is_new_section %}Создать раздел{% else %}Сохранить{% endif %}
+      </button>
+    </div>
+  </div>
+</form>
+
+{% if not is_new_section and section %}
+<section class="admin-table-section admin-core">
+  <h2 class="admin-table-section__title">Привязанные статьи</h2>
+  {% if section.article_links %}
+  <div class="table-wrapper">
+    <table class="table table--striped table--pages">
+      <thead>
+        <tr>
+          <th>Статья</th>
+          <th>URL</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for link in section.article_links %}
+        <tr>
+          <td>{{ link.article.title if link.article else '—' }}</td>
+          <td class="table__muted">/news/{{ link.article.slug }}/</td>
+          <td>
+            <form method="POST" action="/admin/hubs/{{ hub.id }}/sections/{{ section.id }}/remove-article/" class="form-delete-inline">
+              <input type="hidden" name="link_id" value="{{ link.id }}">
+              <button type="submit" class="table-action table-action--danger" title="Отвязать">
+                <iconify-icon icon="ri:link-unlink-line" width="18"></iconify-icon>
+                Отвязать
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="table__muted">Статей в разделе пока нет. Добавьте ниже.</p>
+  {% endif %}
+
+  <div class="form-card form-card--add-article">
+    <div class="form-card-header">Добавить статью в раздел</div>
+    <div class="form-card-body">
+      <form method="POST" action="/admin/hubs/{{ hub.id }}/sections/{{ section.id }}/add-article/" class="form-row form-row--inline">
+        <div class="form-group">
+          <label class="label" for="article-select">Статья</label>
+          <select name="article_id" id="article-select" class="input" required>
+            <option value="">— Выберите статью —</option>
+            {% for art in articles_for_select %}
+            {% if art.id not in linked_article_ids %}
+            <option value="{{ art.id }}">{{ art.title[:80] }}{% if art.title|length > 80 %}...{% endif %}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

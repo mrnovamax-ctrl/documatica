@@ -1,13 +1,10 @@
 """
 Статьи/Новости - публичные страницы.
 Список /news/ отдаётся из CMS, если есть опубликованная страница с slug=news.
+Статьи и категории берутся из БД.
 """
 
-import json
-import time
-from functools import lru_cache
-from pathlib import Path
-from typing import Optional, List, Dict, Any, Tuple
+from typing import Optional, List
 from fastapi import APIRouter, Request, HTTPException, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session, joinedload
@@ -15,120 +12,88 @@ from sqlalchemy.orm import Session, joinedload
 from app.core.templates import templates
 from app.core.heroicons import get_icon_paths_html
 from app.database import get_db
-from app.models import Page, ArticleCategory, CategorySection, NewsSidebarItem, Shortcode
+from app.models import Page, Article, ArticleCategory, CategorySection, NewsSidebarItem, Shortcode
 from app.pages.cms_dynamic import _build_sections_for_template
 
 router = APIRouter()
 
-# Путь к данным
-DATA_DIR = Path(__file__).parent.parent.parent / "data"
 
-# TTL кэша статей (секунды)
-ARTICLES_CACHE_TTL = 60
-
-
-def _get_cache_key() -> int:
-    """Ключ кэша с учетом TTL (меняется каждые ARTICLES_CACHE_TTL секунд)"""
-    return int(time.time() // ARTICLES_CACHE_TTL)
-
-
-@lru_cache(maxsize=4)
-def _load_articles_cached(cache_key: int) -> Tuple[str, ...]:
-    """Внутренняя функция с кэшем. Возвращает JSON как строку для hashability"""
-    filepath = DATA_DIR / "articles.json"
-    if filepath.exists():
-        with open(filepath, "r", encoding="utf-8") as f:
-            return (f.read(),)
-    return ('{"articles": [], "categories": []}',)
+def get_published_articles(db: Session, category_slug: Optional[str] = None) -> List[Article]:
+    """Опубликованные статьи, опционально по категории (slug/full_slug)."""
+    q = (
+        db.query(Article)
+        .options(joinedload(Article.category))
+        .filter(Article.is_published.is_(True))
+        .order_by(Article.created_at.desc(), Article.id.desc())
+    )
+    if category_slug:
+        cat = db.query(ArticleCategory).filter(
+            (ArticleCategory.full_slug == category_slug) | (ArticleCategory.slug == category_slug)
+        ).first()
+        if cat:
+            q = q.filter(Article.category_id == cat.id)
+        else:
+            q = q.filter(Article.id == -1)
+    return q.all()
 
 
-def load_articles() -> Dict[str, Any]:
-    """Загрузка статей из JSON с кэшированием (TTL: 60 сек)"""
-    cache_key = _get_cache_key()
-    raw = _load_articles_cached(cache_key)[0]
-    data = json.loads(raw)
-    # Поддержка старого формата (массив статей)
-    if isinstance(data, list):
-        return {"articles": data, "categories": []}
-    return data
+def get_article_by_slug(db: Session, slug: str) -> Optional[Article]:
+    """Статья по slug (только опубликованная)."""
+    return (
+        db.query(Article)
+        .options(joinedload(Article.category))
+        .filter(Article.slug == slug, Article.is_published.is_(True))
+        .first()
+    )
 
 
-def get_published_articles() -> List[Dict]:
-    """Получение опубликованных статей"""
-    data = load_articles()
-    articles = [a for a in data.get("articles", []) if a.get("is_published", False)]
-    # Сортировка по дате (новые сначала)
-    articles.sort(key=lambda x: x.get("created_at", ""), reverse=True)
-    return articles
+def get_categories(db: Session) -> List[ArticleCategory]:
+    """Список категорий из БД."""
+    return db.query(ArticleCategory).order_by(ArticleCategory.name).all()
 
 
-def get_article_by_slug(slug: str) -> Optional[Dict]:
-    """Получение статьи по slug"""
-    data = load_articles()
-    for article in data.get("articles", []):
-        if article.get("slug") == slug and article.get("is_published", False):
-            return article
-    return None
+def get_category_by_slug(db: Session, slug: str) -> Optional[ArticleCategory]:
+    """Категория по slug или full_slug."""
+    return (
+        db.query(ArticleCategory)
+        .filter((ArticleCategory.full_slug == slug) | (ArticleCategory.slug == slug))
+        .first()
+    )
 
 
-def clear_articles_cache():
-    """Очистка кэша статей (вызывать при CRUD операциях)"""
-    _load_articles_cached.cache_clear()
+def increment_views(db: Session, slug: str) -> None:
+    """Увеличить счётчик просмотров статьи по slug."""
+    article = db.query(Article).filter(Article.slug == slug).first()
+    if article:
+        article.views = (article.views or 0) + 1
+        db.commit()
 
 
-def get_categories() -> List[Dict]:
-    """Получение категорий"""
-    data = load_articles()
-    return data.get("categories", [])
-
-
-def get_category_by_slug(slug: str) -> Optional[Dict]:
-    """Получение категории по slug"""
-    categories = get_categories()
-    for cat in categories:
-        if cat.get("slug") == slug:
-            return cat
-    return None
-
-
-def increment_views(slug: str):
-    """Увеличение счетчика просмотров"""
-    filepath = DATA_DIR / "articles.json"
-    data = load_articles()
-    for article in data.get("articles", []):
-        if article.get("slug") == slug:
-            article["views"] = article.get("views", 0) + 1
-            break
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    # Очистка кэша после записи
-    clear_articles_cache()
-
-
-def _get_articles_for_category(category_slug: str, limit: int = 100) -> List[Dict]:
-    """Статьи для категории (по полю category в JSON = slug категории)."""
-    data = load_articles()
-    articles = data.get("articles", [])
-    published = [a for a in articles if a.get("is_published", False) or a.get("status") == "published"]
-    filtered = [a for a in published if a.get("category") == category_slug]
-    filtered.sort(key=lambda x: x.get("created_at", ""), reverse=True)
-    return filtered[:limit]
-
-
-def _get_latest_articles(limit: int = 5) -> List[Dict]:
-    """Последние статьи для секции articles_preview (импорт из home не делаем во избежание циклических зависимостей)."""
-    filepath = DATA_DIR / "articles.json"
-    if not filepath.exists():
+def _get_articles_for_category(db: Session, category_slug: str, limit: int = 100) -> List[Article]:
+    """Статьи категории по slug/full_slug (опубликованные)."""
+    cat = get_category_by_slug(db, category_slug)
+    if not cat:
         return []
-    with open(filepath, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    if isinstance(data, list):
-        articles = data
-    else:
-        articles = data.get("articles", [])
-    published = [a for a in articles if a.get("is_published", False) or a.get("status") == "published"]
-    published.sort(key=lambda x: x.get("created_at", ""), reverse=True)
-    return published[:limit]
+    return (
+        db.query(Article)
+        .options(joinedload(Article.category))
+        .filter(Article.category_id == cat.id, Article.is_published.is_(True))
+        .order_by(Article.created_at.desc(), Article.id.desc())
+        .limit(limit)
+        .all()
+    )
+
+
+def _get_latest_articles(db: Session, limit: int = 5) -> List[Article]:
+    """Последние опубликованные статьи для секции articles_preview."""
+    return (
+        db.query(Article)
+        .options(joinedload(Article.category))
+        .filter(Article.is_published.is_(True))
+        .order_by(Article.created_at.desc(), Article.id.desc())
+        .limit(limit)
+        .all()
+    )
 
 
 @router.get("/category/{category_path:path}", response_class=HTMLResponse)
@@ -171,7 +136,7 @@ async def news_category_page(
             "is_dark_bg": (getattr(s, "background_style", None) or "").lower() in ("dark", "primary", "gold", "pattern_dots_dark"),
         })()
         sections_for_template.append(section_view)
-    articles = _get_articles_for_category(cat.slug)
+    articles = _get_articles_for_category(db, cat.full_slug, limit=500)
     per_page = 12
     total = len(articles)
     total_pages = max(1, (total + per_page - 1) // per_page)
@@ -180,7 +145,7 @@ async def news_category_page(
     articles_page = articles[start:end]
     # Дочерние категории (для сайдбара и для фильтра в articles_list)
     children = db.query(ArticleCategory).filter(ArticleCategory.parent_id == cat.id).order_by(ArticleCategory.position).all()
-    latest_in_category = _get_articles_for_category(cat.slug, limit=5)
+    latest_in_category = _get_articles_for_category(db, cat.full_slug, limit=5)
     all_cats_for_page = [cat] + list(children)
     categories_for_filter = [
         {"name": c.name, "slug": c.slug, "url": f"/news/category/{c.full_slug}/"}
@@ -221,12 +186,9 @@ async def news_index(request: Request, db: Session = Depends(get_db), category: 
         .first()
     )
     if cms_page:
-        articles = get_published_articles()
-        categories = get_categories()
-        current_category = None
-        if category:
-            current_category = get_category_by_slug(category)
-            articles = [a for a in articles if a.get("category") == category]
+        articles = get_published_articles(db, category_slug=category)
+        categories = get_categories(db)
+        current_category = get_category_by_slug(db, category) if category else None
         per_page = 12
         total = len(articles)
         total_pages = max(1, (total + per_page - 1) // per_page)
@@ -258,18 +220,15 @@ async def news_index(request: Request, db: Session = Depends(get_db), category: 
             "total": total,
         }
         if any(s.section_type == "articles_preview" for s in cms_page.sections):
-            ctx["latest_articles"] = _get_latest_articles(5)
+            ctx["latest_articles"] = _get_latest_articles(db, 5)
         return templates.TemplateResponse(request=request, name="public/dynamic_page.html", context=ctx)
 
-    articles = get_published_articles()
-    categories = get_categories()
-    current_category = None
-    if category:
-        current_category = get_category_by_slug(category)
-        articles = [a for a in articles if a.get("category") == category]
+    articles = get_published_articles(db, category_slug=category)
+    categories = get_categories(db)
+    current_category = get_category_by_slug(db, category) if category else None
     per_page = 12
     total = len(articles)
-    total_pages = (total + per_page - 1) // per_page
+    total_pages = max(1, (total + per_page - 1) // per_page)
     start = (page - 1) * per_page
     end = start + per_page
     articles_page = articles[start:end]
@@ -277,7 +236,7 @@ async def news_index(request: Request, db: Session = Depends(get_db), category: 
         request=request,
         name="public/news/index.html",
         context={
-            "title": current_category["name"] if current_category else "Статьи и новости",
+            "title": current_category.name if current_category else "Статьи и новости",
             "description": "Полезные статьи о налогах, бухгалтерии и документообороте для ИП и ООО",
             "articles": articles_page,
             "categories": categories,
@@ -303,32 +262,31 @@ async def news_article_redirect_trailing_slash(request: Request, slug: str):
 @router.get("/{slug}/", response_class=HTMLResponse)
 async def news_article(request: Request, slug: str, db: Session = Depends(get_db)):
     """Страница статьи. В контенте поддерживаются шорткоды [имя]."""
-    article = get_article_by_slug(slug)
-
+    article = get_article_by_slug(db, slug)
     if not article:
         raise HTTPException(status_code=404, detail="Статья не найдена")
 
-    increment_views(slug)
-    category = get_category_by_slug(article.get("category", ""))
+    increment_views(db, slug)
+    category = article.category
 
-    all_articles = get_published_articles()
-    related = [
-        a for a in all_articles
-        if a.get("category") == article.get("category") and a.get("slug") != slug
-    ][:3]
+    all_articles = get_published_articles(db)
+    related = [a for a in all_articles if a.category_id == article.category_id and a.slug != slug][:3]
 
     breadcrumb_list = [{"title": "Новости", "url": "/news/"}]
     if category:
         breadcrumb_list.append({
-            "title": category.get("name", ""),
-            "url": f"/news/?category={article.get('category', '')}",
+            "title": category.name,
+            "url": f"/news/?category={category.slug}",
         })
-    breadcrumb_list.append({"title": article.get("title", ""), "url": None})
+    breadcrumb_list.append({"title": article.title, "url": None})
 
     base_url = str(request.base_url).rstrip("/")
 
     from app.core.shortcodes import process_shortcodes, render_shortcode_to_html
-    article_content = process_shortcodes(article.get("content") or "", request, db)
+    from app.core.toc import process_article_toc
+
+    raw_content = process_shortcodes(article.content or "", request, db)
+    article_content, toc_items = process_article_toc(raw_content)
 
     # Сайдбар новостей: порядок и блоки из админки (CTA, похожие статьи, шорткоды)
     sidebar_items = (
@@ -348,19 +306,23 @@ async def news_article(request: Request, slug: str, db: Session = Depends(get_db
         else:
             sidebar_blocks.append({"type": si.block_type})
 
+    canonical_url = f"{base_url}/news/{article.slug}/"
+
     return templates.TemplateResponse(
         request=request,
         name="public/news/article.html",
         context={
-            "title": article.get("meta_title") or article.get("title"),
-            "description": article.get("meta_description") or article.get("excerpt"),
+            "title": article.meta_title or article.title,
+            "description": article.meta_description or article.excerpt,
             "article": article,
             "article_content": article_content,
+            "toc_items": toc_items,
             "category": category,
             "related": related,
             "sidebar_blocks": sidebar_blocks,
             "breadcrumbs": breadcrumb_list,
             "base_url": base_url,
+            "canonical_url": canonical_url,
             "use_custom_breadcrumbs": True,
         }
     )

@@ -1,0 +1,79 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}SEO-инструменты{% endblock %}
+{% block page_title %}SEO-инструменты{% endblock %}
+
+{% block content %}
+<div class="admin-core">
+  <div class="admin-detail-card" style="margin-bottom: 1.5rem;">
+    <div class="admin-detail-header">
+      <div class="admin-detail-icon admin-stat-icon blue">
+        <iconify-icon icon="ri:search-line" width="20"></iconify-icon>
+      </div>
+      <div class="admin-detail-title">Доступные инструменты</div>
+    </div>
+    <div style="display: grid; gap: 1rem;">
+      <a href="/admin/seo-tools/interlinker/" class="admin-action-btn" style="display: flex; align-items: center; gap: 1rem; text-decoration: none; padding: 1rem 1.25rem; border-radius: 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0;">
+        <div style="width: 48px; height: 48px; border-radius: 0.5rem; background: #dbeafe; display: flex; align-items: center; justify-content: center;">
+          <iconify-icon icon="ri:link-m" width="24" style="color: #3b82f6;"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 1rem; color: #0f172a;">Автоматический перелинковщик</div>
+          <div style="font-size: 0.8125rem; color: #64748b;">Добавить ключевую фразу и URL. Инструмент найдёт точные вхождения в теле статей и вставит ссылки с лимитом на статью.</div>
+        </div>
+        <iconify-icon icon="ri:arrow-right-s-line" width="24" style="color: #94a3b8; margin-left: auto;"></iconify-icon>
+      </a>
+      <a href="/admin/seo-tools/meta-editor/" class="admin-action-btn" style="display: flex; align-items: center; gap: 1rem; text-decoration: none; padding: 1rem 1.25rem; border-radius: 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0;">
+        <div style="width: 48px; height: 48px; border-radius: 0.5rem; background: #d1fae5; display: flex; align-items: center; justify-content: center;">
+          <iconify-icon icon="ri:edit-line" width="24" style="color: #10b981;"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 1rem; color: #0f172a;">Редактор meta</div>
+          <div style="font-size: 0.8125rem; color: #64748b;">Редактирование meta title и description для статей списком. SERP-превью.</div>
+        </div>
+        <iconify-icon icon="ri:arrow-right-s-line" width="24" style="color: #94a3b8; margin-left: auto;"></iconify-icon>
+      </a>
+      <a href="/admin/seo-tools/redirects/" class="admin-action-btn" style="display: flex; align-items: center; gap: 1rem; text-decoration: none; padding: 1rem 1.25rem; border-radius: 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0;">
+        <div style="width: 48px; height: 48px; border-radius: 0.5rem; background: #fef3c7; display: flex; align-items: center; justify-content: center;">
+          <iconify-icon icon="ri:links-line" width="24" style="color: #f59e0b;"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 1rem; color: #0f172a;">Менеджер редиректов</div>
+          <div style="font-size: 0.8125rem; color: #64748b;">Добавление и удаление 301/302 редиректов из БД.</div>
+        </div>
+        <iconify-icon icon="ri:arrow-right-s-line" width="24" style="color: #94a3b8; margin-left: auto;"></iconify-icon>
+      </a>
+      <a href="/admin/seo-tools/link-checker/" class="admin-action-btn" style="display: flex; align-items: center; gap: 1rem; text-decoration: none; padding: 1rem 1.25rem; border-radius: 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0;">
+        <div style="width: 48px; height: 48px; border-radius: 0.5rem; background: #fee2e2; display: flex; align-items: center; justify-content: center;">
+          <iconify-icon icon="ri:link-unlink-m" width="24" style="color: #ef4444;"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 1rem; color: #0f172a;">Проверка внутренних ссылок</div>
+          <div style="font-size: 0.8125rem; color: #64748b;">Поиск битых внутренних ссылок в статьях.</div>
+        </div>
+        <iconify-icon icon="ri:arrow-right-s-line" width="24" style="color: #94a3b8; margin-left: auto;"></iconify-icon>
+      </a>
+      <a href="/admin/seo-tools/orphans/" class="admin-action-btn" style="display: flex; align-items: center; gap: 1rem; text-decoration: none; padding: 1rem 1.25rem; border-radius: 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0;">
+        <div style="width: 48px; height: 48px; border-radius: 0.5rem; background: #e0e7ff; display: flex; align-items: center; justify-content: center;">
+          <iconify-icon icon="ri:file-search-line" width="24" style="color: #6366f1;"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 1rem; color: #0f172a;">Страницы-сироты</div>
+          <div style="font-size: 0.8125rem; color: #64748b;">Страницы без входящих внутренних ссылок.</div>
+        </div>
+        <iconify-icon icon="ri:arrow-right-s-line" width="24" style="color: #94a3b8; margin-left: auto;"></iconify-icon>
+      </a>
+      <a href="/admin/seo-tools/duplicates/" class="admin-action-btn" style="display: flex; align-items: center; gap: 1rem; text-decoration: none; padding: 1rem 1.25rem; border-radius: 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0;">
+        <div style="width: 48px; height: 48px; border-radius: 0.5rem; background: #fce7f3; display: flex; align-items: center; justify-content: center;">
+          <iconify-icon icon="ri:file-copy-line" width="24" style="color: #ec4899;"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 1rem; color: #0f172a;">Дубликаты meta description</div>
+          <div style="font-size: 0.8125rem; color: #64748b;">Статьи с одинаковым meta description.</div>
+        </div>
+        <iconify-icon icon="ri:arrow-right-s-line" width="24" style="color: #94a3b8; margin-left: auto;"></iconify-icon>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

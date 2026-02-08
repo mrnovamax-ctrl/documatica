@@ -23,9 +23,9 @@
           </div>
         </div>
         <div class="article-card-content">
-          <span class="article-card-category">{{ articles_preview[0].category | default("Статьи") }}</span>
+          <span class="article-card-category">{{ articles_preview[0].category.name if articles_preview[0].category else "Статьи" }}</span>
           <h3 class="article-card-title article-card-title--large">{{ articles_preview[0].title }}</h3>
-          <p class="article-card-excerpt">{{ articles_preview[0].excerpt | default(articles_preview[0].content[:150] + '...') | striptags | truncate(160) }}</p>
+          <p class="article-card-excerpt">{{ (articles_preview[0].excerpt or (articles_preview[0].content or '')[:150] + '...') | striptags | truncate(160) }}</p>
         </div>
       </a>
       {% endif %}
@@ -33,14 +33,14 @@
         {% for article in articles_preview[1:3] %}
         <a href="/news/{{ article.slug }}/" class="article-card article-card--small">
           <div class="article-card-header">
-            <span class="article-card-tag{% if loop.index == 1 %} article-card-tag--blue{% else %} article-card-tag--amber{% endif %}">{{ article.category | default("Статьи") }}</span>
+            <span class="article-card-tag{% if loop.index == 1 %} article-card-tag--blue{% else %} article-card-tag--amber{% endif %}">{{ article.category.name if article.category else "Статьи" }}</span>
             <div class="article-card-arrow article-card-arrow--small">
               <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
             </div>
           </div>
           <div class="article-card-content">
             <h4 class="article-card-title article-card-title--small">{{ article.title | truncate(50) }}</h4>
-            <p class="article-card-meta">{{ article.category | default("Статьи") }}</p>
+            <p class="article-card-meta">{{ article.category.name if article.category else "Статьи" }}</p>
           </div>
         </a>
         {% endfor %}
@@ -57,7 +57,7 @@
         </div>
         <div class="article-card-content">
           <h4 class="article-card-title article-card-title--small">{{ article.title | truncate(45) }}</h4>
-          <p class="article-card-meta">{{ article.category | default("Статьи") }}</p>
+          <p class="article-card-meta">{{ article.category.name if article.category else "Статьи" }}</p>
         </div>
       </a>
       {% endfor %}

@@ -1,0 +1,123 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}{% if is_new %}Новый хаб{% else %}Редактирование: {{ (hub.title or '')[:30] }}{% endif %}{% endblock %}
+{% block page_title %}{% if is_new %}Новый хаб{% else %}Редактирование хаба{% endif %}{% endblock %}
+
+{% block header_actions %}
+<div class="header-actions-row">
+  {% if not is_new and hub and hub.is_published %}
+  <a href="/hub/{{ hub.slug }}/" target="_blank" class="btn btn-outline" rel="noopener">
+    <iconify-icon icon="ri:external-link-line" width="18"></iconify-icon>
+    Открыть
+  </a>
+  {% endif %}
+  <a href="/admin/hubs/" class="btn btn-outline">
+    <iconify-icon icon="ri:arrow-left-line" width="18"></iconify-icon>
+    К списку
+  </a>
+</div>
+{% endblock %}
+
+{% block content %}
+{% if saved %}
+<div class="admin-alert admin-alert-success admin-core">
+  <iconify-icon icon="ri:checkbox-circle-line" width="22"></iconify-icon>
+  Хаб сохранён
+</div>
+{% endif %}
+{% if request.query_params.get('error') == 'slug' %}
+<div class="admin-alert admin-alert-danger admin-core">
+  Такой URL (slug) уже занят. Выберите другой.
+</div>
+{% endif %}
+
+<form method="POST" class="admin-core">
+  <div class="form-card form-card--standalone">
+    <div class="form-group">
+      <label class="label" for="hub-title">Название хаба</label>
+      <input type="text" name="title" id="hub-title" value="{{ hub.title if hub else '' }}" required
+             class="input" placeholder="Например: SEO">
+    </div>
+    <div class="form-group">
+      <label class="label" for="hub-slug">URL (slug)</label>
+      <div class="slug-row">
+        <span class="slug-prefix">/hub/</span>
+        <input type="text" name="slug" id="hub-slug" value="{{ hub.slug if hub else '' }}"
+               class="input input--mono slug-input" placeholder="seo">
+        <span class="slug-suffix">/</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="label" for="hub-content">Контент главной страницы хаба</label>
+      <textarea name="content" id="hub-content" rows="12" class="input" placeholder="HTML или текст...">{{ hub.content if hub else '' }}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="label" for="hub-meta-title">Meta Title</label>
+      <input type="text" name="meta_title" id="hub-meta-title" value="{{ hub.meta_title if hub else '' }}" class="input">
+    </div>
+    <div class="form-group">
+      <label class="label" for="hub-meta-desc">Meta Description</label>
+      <textarea name="meta_description" id="hub-meta-desc" rows="2" class="input">{{ hub.meta_description if hub else '' }}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="label" for="hub-meta-kw">Meta Keywords</label>
+      <input type="text" name="meta_keywords" id="hub-meta-kw" value="{{ hub.meta_keywords if hub else '' }}" class="input">
+    </div>
+    <div class="form-group">
+      <label class="checkbox-label">
+        <input type="checkbox" name="is_published" value="true" {% if hub and hub.is_published %}checked{% endif %}>
+        <span>Опубликован</span>
+      </label>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        <iconify-icon icon="ri:save-line" width="18"></iconify-icon>
+        {% if is_new %}Создать хаб{% else %}Сохранить{% endif %}
+      </button>
+    </div>
+  </div>
+</form>
+
+{% if not is_new and hub %}
+<section class="admin-table-section admin-core">
+  <h2 class="admin-table-section__title">Разделы хаба</h2>
+  {% if hub.sections %}
+  <div class="table-wrapper">
+    <table class="table table--striped table--pages">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>URL</th>
+          <th>Статей</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for section in hub.sections %}
+        <tr>
+          <td>{{ section.title }}</td>
+          <td class="table__muted">/hub/{{ hub.slug }}/{{ section.slug }}/</td>
+          <td>{{ section.article_links | length }}</td>
+          <td>
+            <div class="table-actions">
+              <a href="/admin/hubs/{{ hub.id }}/sections/{{ section.id }}/" class="table-action table-action--primary">
+                <iconify-icon icon="ri:edit-line" width="18"></iconify-icon>
+                Редактировать
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  <p>
+    <a href="/admin/hubs/{{ hub.id }}/sections/create/" class="btn btn-outline">
+      <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+      Добавить раздел
+    </a>
+  </p>
+</section>
+{% endif %}
+{% endblock %}

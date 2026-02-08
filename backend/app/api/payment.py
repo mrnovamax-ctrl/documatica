@@ -60,6 +60,30 @@ def generate_token(data: dict, password: str) -> str:
     return hashlib.sha256(concat.encode('utf-8')).hexdigest()
 
 
+async def get_state_from_tbank(payment_id: str) -> Optional[str]:
+    """
+    Запрос статуса платежа в Т-Банке (GetState).
+    Возвращает Status (CONFIRMED, PENDING, REJECTED и т.д.) или None при ошибке.
+    """
+    terminal_key = getattr(settings, 'TBANK_TERMINAL_KEY', None)
+    terminal_password = getattr(settings, 'TBANK_PASSWORD', None)
+    if not terminal_key or not terminal_password or is_mock_mode():
+        return None
+    data = {"TerminalKey": terminal_key, "PaymentId": payment_id}
+    data["Token"] = generate_token(data, terminal_password)
+    try:
+        async with httpx.AsyncClient() as client:
+            r = await client.post(f"{get_api_url()}/GetState", json=data, timeout=10.0)
+            if r.status_code != 200:
+                return None
+            result = r.json()
+            if result.get("Success"):
+                return result.get("Status")
+    except Exception:
+        pass
+    return None
+
+
 class CreatePaymentRequest(BaseModel):
     tariff: str  # "subscription" или "pay_per_doc"
     package_count: Optional[int] = None  # Для pay_per_doc: количество документов

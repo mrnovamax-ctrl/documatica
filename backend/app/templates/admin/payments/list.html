@@ -6,10 +6,40 @@
 {% block header_actions %}
 <div class="admin-header-meta">
   Всего: <strong>{{ total_payments }}</strong>
+  <span style="margin-left: 1rem; color: #10b981; font-weight: 800;">Фактически получено: {{ "{:,.0f}".format(confirmed_revenue | default(0)).replace(",", " ") }} ₽ ({{ confirmed_count | default(0) }} плат.)</span>
+  <a href="#" class="btn btn-outline btn-sm" style="margin-left: 1rem;" onclick="document.getElementById('reconcileForm').style.display = document.getElementById('reconcileForm').style.display === 'none' ? 'block' : 'none'; return false;">Сверка с банком</a>
+  <form action="/admin/payments/sync-tbank/" method="post" style="display: inline;">
+    <button type="submit" class="btn btn-ghost btn-sm" title="Запросить статус у Т-Банка для pending/created платежей">Sync Т-Банк</button>
+  </form>
 </div>
 {% endblock %}
 
 {% block content %}
+{% if reconcile == 'ok' %}
+<div class="admin-alert admin-alert-success" style="margin-bottom: 1.5rem;">
+  Сверка выполнена. Обновлено платежей: {{ reconcile_updated | default(0) }}{% if reconcile_not_found %}. Не найдено в БД: {{ reconcile_not_found }}{% endif %}
+</div>
+{% elif reconcile == 'empty' %}
+<div class="admin-alert admin-alert-error" style="margin-bottom: 1.5rem;">
+  Введите хотя бы один order_id.
+</div>
+{% elif sync == 'ok' %}
+<div class="admin-alert admin-alert-success" style="margin-bottom: 1.5rem;">
+  Синхронизация с Т-Банком выполнена. Обновлено: {{ reconcile_updated | default(0) }} платежей.
+</div>
+{% endif %}
+
+<div id="reconcileForm" style="display: {% if show_reconcile %}block{% else %}none{% endif %}; margin-bottom: 1.5rem; padding: 1.5rem; background: #f8fafc; border-radius: 1rem; border: 1px solid #e2e8f0;">
+  <h4 style="margin: 0 0 0.75rem; font-size: 0.875rem;">Сверка с выпиской банка</h4>
+  <p style="font-size: 0.8125rem; color: #64748b; margin-bottom: 1rem;">Вставьте order_id (№ заказа) из выписки Т-Банка — по одному в строку. Платежи будут помечены как подтверждённые.</p>
+  <form action="/admin/payments/reconcile/" method="post">
+    <textarea name="order_ids_text" rows="6" style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; font-family: monospace; font-size: 0.8125rem;" placeholder="3a856f6f-2fba-4b84-8e1d-e787334d9370&#10;b7286b63-8ce9-46de-a5ec-ec8fe62e17f3&#10;..."></textarea>
+    <div style="margin-top: 0.75rem;">
+      <button type="submit" class="btn btn-primary btn-sm">Выполнить сверку</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('reconcileForm').style.display='none'">Отмена</button>
+    </div>
+  </form>
+</div>
 <div class="admin-table-container">
   <div class="admin-table-header admin-table-row-7col">
     <div class="admin-table-th">Пользователь</div>
@@ -102,19 +132,19 @@
 {% if total_pages > 1 %}
 <div class="admin-pagination">
   {% if page > 1 %}
-  <a href="?page={{ page - 1 }}" class="admin-pagination-btn">
+  <a href="?page={{ page - 1 }}" class="btn btn-ghost btn-sm">
     <iconify-icon icon="ri:arrow-left-s-line" width="20"></iconify-icon>
   </a>
   {% endif %}
 
   {% for p in range(1, total_pages + 1) %}
-  <a href="?page={{ p }}" class="admin-pagination-btn {% if p == page %}active{% endif %}">
+  <a href="?page={{ p }}" class="btn btn-ghost btn-sm {% if p == page %}active{% endif %}">
     {{ p }}
   </a>
   {% endfor %}
 
   {% if page < total_pages %}
-  <a href="?page={{ page + 1 }}" class="admin-pagination-btn">
+  <a href="?page={{ page + 1 }}" class="btn btn-ghost btn-sm">
     <iconify-icon icon="ri:arrow-right-s-line" width="20"></iconify-icon>
   </a>
   {% endif %}

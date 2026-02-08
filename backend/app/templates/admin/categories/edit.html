@@ -4,11 +4,11 @@
 {% block page_title %}Категория: {{ category.name }}{% endblock %}
 
 {% block header_actions %}
-<a href="/admin/categories/" class="admin-btn-back">
+<a href="/admin/categories/" class="btn btn-outline">
   <iconify-icon icon="ri:arrow-left-line" width="18"></iconify-icon>
   К списку
 </a>
-<a href="/news/category/{{ category.full_slug }}/" target="_blank" class="admin-btn-secondary" rel="noopener">
+<a href="/news/category/{{ category.full_slug }}/" target="_blank" class="btn btn-outline" rel="noopener">
   <iconify-icon icon="ri:external-link-line" width="18"></iconify-icon>
   Предпросмотр
 </a>
@@ -16,14 +16,6 @@
 
 {% block content %}
 <style>
-.admin-form-card { max-width: 36rem; background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
-.admin-form-group { margin-bottom: 1.25rem; }
-.admin-form-label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; }
-.admin-form-input { width: 100%; padding: 0.625rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; }
-.admin-form-actions { display: flex; gap: 0.75rem; margin-top: 1rem; }
-.admin-btn-submit { padding: 0.625rem 1.25rem; background: #3b82f6; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; }
-.admin-radio-group { display: flex; gap: 1.5rem; margin-top: 0.5rem; }
-.admin-radio-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9375rem; }
 .cat-sections-wrap { background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; }
 .cat-sections-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
 .cat-section-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; }
@@ -43,57 +35,59 @@
 .cat-modal-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
 </style>
 
-{% if request.query_params.get('error') == 'slug' %}
-<div class="admin-form-error" style="margin-bottom:1rem;">Укажите корректный slug.</div>
-{% elif request.query_params.get('error') == 'exists' %}
-<div class="admin-form-error" style="margin-bottom:1rem;">Категория с таким путём уже существует.</div>
-{% endif %}
+<div class="admin-core">
+  {% if request.query_params.get('error') == 'slug' %}
+  <div class="form-error">Укажите корректный slug.</div>
+  {% elif request.query_params.get('error') == 'exists' %}
+  <div class="form-error">Категория с таким путём уже существует.</div>
+  {% endif %}
 
-<form method="post" action="/admin/categories/{{ category.id }}/edit/" class="admin-form-card">
-  <div class="admin-form-group">
-    <label class="admin-form-label" for="name">Название</label>
-    <input type="text" id="name" name="name" class="admin-form-input" required value="{{ category.name }}">
-  </div>
-  <div class="admin-form-group">
-    <label class="admin-form-label" for="slug">Slug</label>
-    <input type="text" id="slug" name="slug" class="admin-form-input" required value="{{ category.slug }}" pattern="[a-z0-9\-]+">
-  </div>
-  <div class="admin-form-group">
-    <label class="admin-form-label" for="parent_id">Родитель</label>
-    <select id="parent_id" name="parent_id" class="admin-form-input">
-      <option value="">— Корневая —</option>
-      {% for p in (parents | default([])) %}
-      <option value="{{ p.id }}" {% if category.parent_id == p.id %}selected{% endif %}>{{ p.name }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div class="admin-form-group">
-    <label class="admin-form-label">Макет</label>
-    <div class="admin-radio-group">
-      <label class="admin-radio-label"><input type="radio" name="layout" value="no_sidebar" {% if category.layout == 'no_sidebar' %}checked{% endif %}> Без сайдбара</label>
-      <label class="admin-radio-label"><input type="radio" name="layout" value="with_sidebar" {% if category.layout == 'with_sidebar' %}checked{% endif %}> С сайдбаром</label>
+  <form method="post" action="/admin/categories/{{ category.id }}/edit/" class="form-card form-card--standalone">
+    <div class="form-group">
+      <label class="label" for="name">Название</label>
+      <input type="text" id="name" name="name" class="input" required value="{{ category.name }}">
     </div>
-  </div>
-  <div class="admin-form-group">
-    <label class="admin-form-label" for="meta_title">Meta title</label>
-    <input type="text" id="meta_title" name="meta_title" class="admin-form-input" value="{{ category.meta_title or '' }}">
-  </div>
-  <div class="admin-form-group">
-    <label class="admin-form-label" for="meta_description">Meta description</label>
-    <textarea id="meta_description" name="meta_description" class="admin-form-input" rows="2">{{ category.meta_description or '' }}</textarea>
-  </div>
-  <div class="admin-form-group">
-    <label class="admin-form-label" for="meta_keywords">Meta keywords</label>
-    <input type="text" id="meta_keywords" name="meta_keywords" class="admin-form-input" value="{{ category.meta_keywords or '' }}">
-  </div>
-  <div class="admin-form-group">
-    <label class="admin-form-label" for="canonical_url">Canonical URL</label>
-    <input type="text" id="canonical_url" name="canonical_url" class="admin-form-input" value="{{ category.canonical_url or '' }}">
-  </div>
-  <div class="admin-form-actions">
-    <button type="submit" class="admin-btn-submit">Сохранить мета и макет</button>
-  </div>
-</form>
+    <div class="form-group">
+      <label class="label" for="slug">Slug</label>
+      <input type="text" id="slug" name="slug" class="input" required value="{{ category.slug }}" pattern="[a-z0-9\-]+">
+    </div>
+    <div class="form-group">
+      <label class="label" for="parent_id">Родитель</label>
+      <select id="parent_id" name="parent_id" class="input">
+        <option value="">— Корневая —</option>
+        {% for p in (parents | default([])) %}
+        <option value="{{ p.id }}" {% if category.parent_id == p.id %}selected{% endif %}>{{ p.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="label">Макет</label>
+      <div class="radio-group">
+        <label class="checkbox-label"><input type="radio" name="layout" value="no_sidebar" {% if category.layout == 'no_sidebar' %}checked{% endif %}> Без сайдбара</label>
+        <label class="checkbox-label"><input type="radio" name="layout" value="with_sidebar" {% if category.layout == 'with_sidebar' %}checked{% endif %}> С сайдбаром</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="label" for="meta_title">Meta title</label>
+      <input type="text" id="meta_title" name="meta_title" class="input" value="{{ category.meta_title or '' }}">
+    </div>
+    <div class="form-group">
+      <label class="label" for="meta_description">Meta description</label>
+      <textarea id="meta_description" name="meta_description" class="input" rows="2">{{ category.meta_description or '' }}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="label" for="meta_keywords">Meta keywords</label>
+      <input type="text" id="meta_keywords" name="meta_keywords" class="input" value="{{ category.meta_keywords or '' }}">
+    </div>
+    <div class="form-group">
+      <label class="label" for="canonical_url">Canonical URL</label>
+      <input type="text" id="canonical_url" name="canonical_url" class="input" value="{{ category.canonical_url or '' }}">
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Сохранить мета и макет</button>
+    </div>
+  </form>
+</div>
 
 <div class="cat-sections-wrap">
   <h2 class="cat-sections-title">Секции страницы категории</h2>
@@ -139,13 +133,14 @@
         <option value="image">image</option>
       </select>
     </div>
-    <div class="admin-form-group">
-      <label class="admin-form-label" for="modalBlockContent">Content (JSON)</label>
-      <textarea id="modalBlockContent" class="admin-form-input" rows="4">{"text": ""}</textarea>
+    <div class="form-group">
+      <label class="label" for="modalBlockContent">Content (JSON)</label>
+      <textarea id="modalBlockContent" class="input" rows="4">{"text": ""}</textarea>
     </div>
-    <div class="admin-form-actions">
-      <button type="button" class="admin-btn-submit" id="modalAddBlockSubmit">Добавить</button>
-      <button type="button" class="admin-btn-cancel" id="modalAddBlockCancel">Отмена</button>
+    <div class="form-actions">
+      <button type="button" class="btn btn-primary" id="modalAddBlockSubmit">Добавить</button>
+      <button type="button" class="btn btn-outline" id="modalAddBlockCancel">Отмена</button>
+    </div>
     </div>
   </div>
 </div>

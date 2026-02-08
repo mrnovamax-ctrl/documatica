@@ -115,13 +115,17 @@ def get_admin_context(
         "menu_items": [
             {"id": "dashboard", "title": "Статистика", "url": "/admin/", "icon": "ri-dashboard-line"},
             {"id": "pages", "title": "Страницы", "url": "/admin/pages/", "icon": "ri-layout-grid-line"},
+            {"section": "Контент"},
             {"id": "articles", "title": "Статьи", "url": "/admin/articles/", "icon": "ri-article-line"},
             {"id": "categories", "title": "Категории статей", "url": "/admin/categories/", "icon": "ri-folder-line"},
+            {"id": "hubs", "title": "Хабы", "url": "/admin/hubs/", "icon": "ri-bookmark-line"},
             {"id": "users", "title": "Пользователи", "url": "/admin/users/", "icon": "ri-user-line"},
             {"id": "payments", "title": "Платежи", "url": "/admin/payments/", "icon": "ri-cash-line"},
             {"id": "promocodes", "title": "Промокоды", "url": "/admin/promocodes/", "icon": "ri-price-tag-3-line"},
             {"id": "shortcodes", "title": "Шорткоды", "url": "/admin/shortcodes/", "icon": "ri-code-s-slash-line"},
             {"id": "news_sidebar", "title": "Сайдбар новостей", "url": "/admin/news-sidebar/", "icon": "ri-layout-right-line"},
+            {"section": "SEO"},
+            {"id": "seo_tools", "title": "SEO-инструменты", "url": "/admin/seo-tools/", "icon": "ri-search-line"},
         ],
         **kwargs
     }

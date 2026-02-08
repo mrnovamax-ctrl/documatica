@@ -71,6 +71,39 @@ class PageUpdate(BaseModel):
     status: Optional[str] = None
 
 
+class BlockInStructure(BaseModel):
+    """Block payload for full structure save (no id — backend creates)."""
+    block_type: str
+    position: int = 0
+    content: Optional[Dict[str, Any]] = None
+    css_classes: Optional[str] = None
+
+
+class SectionInStructure(BaseModel):
+    """Section payload for full structure save (no id — backend creates)."""
+    section_type: str
+    position: int = 0
+    background_style: str = "light"
+    css_classes: Optional[str] = None
+    container_width: str = "default"
+    padding_y: str = "default"
+    grid_columns: int = 2
+    grid_gap: str = "medium"
+    grid_style: str = "grid"
+    settings: Optional[Dict[str, Any]] = None
+    blocks: List["BlockInStructure"] = []
+
+
+class PageStructurePayload(BaseModel):
+    """Full page structure: meta + sections with nested blocks. Replaces all sections/blocks on save."""
+    page_meta: Optional[Dict[str, Any]] = None  # title, meta_title, meta_description, meta_keywords, page_type
+    sections: List[SectionInStructure] = []
+
+
+# Forward ref for nested model
+SectionInStructure.model_rebuild()
+
+
 # ============================================================================
 # Sections API
 # ============================================================================
@@ -387,4 +420,61 @@ async def update_page(
     
     db.commit()
     
+    return {"success": True}
+
+
+@router.put("/pages/{page_id}/structure/")
+async def replace_page_structure(
+    page_id: int,
+    payload: PageStructurePayload,
+    db: Session = Depends(get_db)
+):
+    """
+    Replace the full page structure (sections + blocks) in one transaction.
+    All changes in the builder are applied only when the user clicks Save; this endpoint
+    applies the accumulated structure. Optionally updates page meta from payload.page_meta.
+    """
+    page = db.query(Page).filter(Page.id == page_id).first()
+    if not page:
+        raise HTTPException(status_code=404, detail="Page not found")
+
+    # Update page meta if provided
+    if payload.page_meta:
+        for key in ("title", "meta_title", "meta_description", "meta_keywords", "page_type"):
+            if key in payload.page_meta and payload.page_meta[key] is not None:
+                setattr(page, key, payload.page_meta[key])
+
+    # Delete all existing sections (cascade deletes blocks)
+    for section in list(page.sections):
+        db.delete(section)
+
+    # Create new sections and blocks from payload
+    for sec in payload.sections:
+        new_section = PageSection(
+            page_id=page_id,
+            section_type=sec.section_type,
+            position=sec.position,
+            background_style=sec.background_style,
+            css_classes=sec.css_classes,
+            container_width=sec.container_width,
+            padding_y=sec.padding_y,
+            grid_columns=sec.grid_columns,
+            grid_gap=sec.grid_gap,
+            grid_style=sec.grid_style,
+            settings=sec.settings,
+        )
+        db.add(new_section)
+        db.flush()  # so new_section.id is available
+        for pos, blk in enumerate(sec.blocks or []):
+            content = blk.content if blk.content is not None else {}
+            new_block = ContentBlock(
+                section_id=new_section.id,
+                block_type=blk.block_type,
+                position=blk.position if blk.position is not None else pos,
+                content=content,
+                css_classes=blk.css_classes,
+            )
+            db.add(new_block)
+
+    db.commit()
     return {"success": True}

@@ -236,93 +236,6 @@
   }
 }
 
-/* ========================================
-   Admin Buttons (Terminal v12.0)
-   ======================================== */
-
-.admin-btn-primary,
-.admin-btn-secondary,
-.admin-btn-success,
-.admin-btn-danger,
-.admin-btn-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: var(--admin-radius-lg);
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: var(--admin-spring);
-}
-
-.admin-btn-primary {
-  background: var(--admin-primary);
-  color: white;
-}
-
-.admin-btn-primary:hover {
-  background: var(--admin-primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
-}
-
-.admin-btn-primary:active {
-  transform: translateY(0) scale(0.98);
-}
-
-.admin-btn-secondary {
-  background: white;
-  color: var(--admin-slate-600);
-  border: 1px solid var(--admin-slate-200);
-}
-
-.admin-btn-secondary:hover {
-  background: var(--admin-slate-50);
-  border-color: var(--admin-primary);
-  color: var(--admin-primary);
-  transform: translateY(-2px);
-}
-
-.admin-btn-success {
-  background: var(--admin-success);
-  color: white;
-}
-
-.admin-btn-success:hover {
-  background: #059669;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
-}
-
-.admin-btn-danger {
-  background: var(--admin-danger);
-  color: white;
-}
-
-.admin-btn-danger:hover {
-  background: #dc2626;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
-}
-
-.admin-btn-back {
-  background: white;
-  color: var(--admin-slate-600);
-  border: 1px solid var(--admin-slate-200);
-}
-
-.admin-btn-back:hover {
-  background: var(--admin-slate-50);
-  border-color: var(--admin-primary);
-  color: var(--admin-primary);
-  transform: translateY(-2px);
-}
-
 .admin-stat-icon {
   width: 52px;
   height: 52px;
@@ -1490,57 +1403,6 @@ a.admin-btn-secondary:hover {
   margin-bottom: 0;
 }
 
-.builder-v12 .page-info-label,
-.builder-v12 .section-setting-label {
-  display: block;
-  font-size: 0.6875rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--admin-slate-500);
-  margin-bottom: 0.5rem;
-}
-
-/* Input / select (v12 form controls) */
-.builder-v12 .page-info-input,
-.builder-v12 .section-setting-select {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: var(--admin-slate-50);
-  border: 1px solid var(--admin-slate-200);
-  border-radius: 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--admin-slate-900);
-  font-family: inherit;
-  transition: var(--admin-spring);
-}
-
-.builder-v12 .page-info-input::placeholder,
-.builder-v12 .section-setting-select::placeholder {
-  color: var(--admin-slate-400);
-  opacity: 0.8;
-}
-
-.builder-v12 .page-info-input:focus,
-.builder-v12 .section-setting-select:focus {
-  outline: none;
-  background: white;
-  border-color: var(--admin-primary);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
-
-.builder-v12 .page-info-input[readonly] {
-  background: var(--admin-slate-100);
-  color: var(--admin-slate-500);
-  cursor: default;
-}
-
-.builder-v12 textarea.page-info-input {
-  min-height: 80px;
-  resize: vertical;
-}
-
 /* Секции (карточки v12) */
 .builder-v12 .sections-container {
   background: white;
@@ -1650,10 +1512,124 @@ a.admin-btn-secondary:hover {
 }
 
 /* Кнопка «Добавить блок» в стиле outline v12 */
-.builder-v12 .admin-btn-secondary {
+.builder-v12 .btn.btn-outline {
   width: 100%;
   margin-top: 0.5rem;
   justify-content: center;
 }
 
 /* Кнопка «Сохранить» показывается по markAsChanged(); скрыта по умолчанию */
+
+/* ===== Meta Editor (v12-style tables + forms) ===== */
+.meta-editor-search {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+.meta-editor-search .form-group--inline {
+  margin-bottom: 0;
+}
+
+.meta-editor-search .input--sm {
+  width: 180px;
+  font-size: 0.8125rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.meta-editor-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--admin-slate-600);
+  cursor: pointer;
+}
+
+.meta-editor-filter input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.meta-editor-alert {
+  margin-bottom: 1.5rem;
+}
+
+.admin-core .table--meta-editor {
+  table-layout: fixed;
+}
+
+.admin-core .table--meta-editor th:nth-child(1),
+.admin-core .table--meta-editor td:nth-child(1) { width: 18%; word-break: break-word; }
+.admin-core .table--meta-editor th:nth-child(2),
+.admin-core .table--meta-editor td:nth-child(2) { width: 22%; }
+.admin-core .table--meta-editor th:nth-child(3),
+.admin-core .table--meta-editor td:nth-child(3) { width: 38%; }
+.admin-core .table--meta-editor th:nth-child(4),
+.admin-core .table--meta-editor td:nth-child(4) { width: 22%; min-width: 140px; }
+
+.admin-core .table-file {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-core .table-file__link {
+  color: var(--color-slate-900);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.admin-core .table-file__link:hover {
+  color: var(--color-brand-blue);
+}
+
+.admin-core .table-file__slug {
+  font-size: 0.75rem;
+}
+
+.admin-core .form-group--compact {
+  margin-bottom: 0;
+}
+
+.admin-core .form-group--compact .input--sm {
+  width: 100%;
+  font-size: 0.8125rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.admin-core .form-group--compact textarea.input--sm {
+  min-height: 2.5rem;
+  resize: vertical;
+}
+
+.serp-preview {
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.serp-preview__title {
+  color: #1a0dab;
+  font-weight: 400;
+}
+
+.serp-preview__url {
+  color: #006621;
+  font-size: 0.65rem;
+}
+
+.serp-preview__desc {
+  color: #545454;
+  margin-top: 2px;
+}
+
+.admin-empty-cell {
+  padding: 3rem 2rem !important;
+  text-align: center;
+  color: var(--admin-slate-400);
+}
+
+.meta-editor-actions {
+  margin-top: 1rem;
+}

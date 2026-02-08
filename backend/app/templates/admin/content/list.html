@@ -14,16 +14,18 @@
 </div>
 
 <!-- Search -->
-<form method="get" style="margin: 20px 0 32px;">
-  <div style="display: flex; gap: 12px; align-items: center;">
-    <input type="text" name="q" value="{{ search_query or '' }}" placeholder="Поиск по названию, пути или URL..."
-           class="admin-input" style="max-width: 420px;">
-    <button type="submit" class="admin-btn-primary">Найти</button>
-    {% if search_query %}
-    <a href="/admin/content/" class="admin-btn-secondary">Сбросить</a>
-    {% endif %}
-  </div>
-</form>
+<div class="admin-core">
+  <form method="get" class="search-form">
+    <div class="slug-row search-row">
+      <input type="text" name="q" value="{{ search_query or '' }}" placeholder="Поиск по названию, пути или URL..."
+             class="input slug-input">
+      <button type="submit" class="btn btn-primary">Найти</button>
+      {% if search_query %}
+      <a href="/admin/content/" class="btn btn-outline">Сбросить</a>
+      {% endif %}
+    </div>
+  </form>
+</div>
 
 <!-- Content List by Categories -->
 {% for category, files in categories.items() %}

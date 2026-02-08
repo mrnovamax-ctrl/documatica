@@ -3,7 +3,7 @@
 """
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, Float, ForeignKey, Numeric, JSON
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, Float, ForeignKey, Numeric, JSON, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import JSONB
@@ -31,7 +31,8 @@ class User(Base):
     
     # OAuth провайдеры
     yandex_id = Column(String(100), unique=True, nullable=True, index=True)
-    auth_provider = Column(String(50), default="email")  # email, yandex
+    google_id = Column(String(100), unique=True, nullable=True, index=True)
+    auth_provider = Column(String(50), default="email")  # email, yandex, google
     
     # Метаданные
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -356,8 +357,123 @@ class ArticleCategory(Base):
         order_by="CategorySection.position",
     )
 
+    articles = relationship("Article", back_populates="category", cascade="all, delete-orphan", order_by="Article.updated_at")
     def __repr__(self):
         return f"<ArticleCategory {self.full_slug}>"
+
+
+class Article(Base):
+    """Статья блога/новостей. Хранится в БД."""
+    __tablename__ = "articles"
+
+    id = Column(Integer, primary_key=True, index=True)
+    category_id = Column(Integer, ForeignKey("article_categories.id"), nullable=True, index=True)
+
+    slug = Column(String(255), unique=True, nullable=False, index=True)
+    title = Column(String(500), nullable=False)
+    excerpt = Column(Text, nullable=True)
+    content = Column(Text, nullable=True)
+    image = Column(String(500), nullable=True)
+
+    meta_title = Column(String(255), nullable=True)
+    meta_description = Column(Text, nullable=True)
+    meta_keywords = Column(String(500), nullable=True)
+
+    is_published = Column(Boolean, default=False)
+    views = Column(Integer, default=0)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    category = relationship("ArticleCategory", back_populates="articles")
+    hub_section_links = relationship(
+        "HubSectionArticle",
+        back_populates="article",
+        foreign_keys="HubSectionArticle.article_id",
+    )
+
+    def __repr__(self):
+        return f"<Article {self.slug}>"
+
+
+class ContentHub(Base):
+    """Контентный хаб: тема + контент главной страницы хаба."""
+    __tablename__ = "content_hubs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    slug = Column(String(255), unique=True, nullable=False, index=True)
+    title = Column(String(500), nullable=False)
+    content = Column(Text, nullable=True)
+
+    meta_title = Column(String(255), nullable=True)
+    meta_description = Column(Text, nullable=True)
+    meta_keywords = Column(String(500), nullable=True)
+
+    position = Column(Integer, default=0)
+    is_published = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    sections = relationship(
+        "ContentHubSection",
+        back_populates="hub",
+        cascade="all, delete-orphan",
+        order_by="ContentHubSection.position",
+    )
+
+    def __repr__(self):
+        return f"<ContentHub {self.slug}>"
+
+
+class ContentHubSection(Base):
+    """Раздел хаба: свой текст + привязка статей."""
+    __tablename__ = "content_hub_sections"
+
+    id = Column(Integer, primary_key=True, index=True)
+    hub_id = Column(Integer, ForeignKey("content_hubs.id"), nullable=False, index=True)
+
+    slug = Column(String(255), nullable=False)
+    title = Column(String(500), nullable=False)
+    content = Column(Text, nullable=True)
+
+    meta_title = Column(String(255), nullable=True)
+    meta_description = Column(Text, nullable=True)
+    meta_keywords = Column(String(500), nullable=True)
+
+    position = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    hub = relationship("ContentHub", back_populates="sections")
+    article_links = relationship(
+        "HubSectionArticle",
+        back_populates="section",
+        cascade="all, delete-orphan",
+        order_by="HubSectionArticle.position",
+    )
+
+    __table_args__ = (UniqueConstraint("hub_id", "slug", name="uq_content_hub_section_hub_slug"),)
+
+    def __repr__(self):
+        return f"<ContentHubSection {self.hub_id}/{self.slug}>"
+
+
+class HubSectionArticle(Base):
+    """Связь раздела хаба с существующей статьёй (с порядком)."""
+    __tablename__ = "hub_section_articles"
+
+    id = Column(Integer, primary_key=True, index=True)
+    section_id = Column(Integer, ForeignKey("content_hub_sections.id"), nullable=False, index=True)
+    article_id = Column(Integer, ForeignKey("articles.id"), nullable=False, index=True)
+    position = Column(Integer, default=0)
+
+    section = relationship("ContentHubSection", back_populates="article_links")
+    article = relationship("Article", back_populates="hub_section_links", foreign_keys=[article_id])
+
+    __table_args__ = (UniqueConstraint("section_id", "article_id", name="uq_hub_section_article_section_article"),)
+
+    def __repr__(self):
+        return f"<HubSectionArticle section={self.section_id} article={self.article_id}>"
 
 
 class CategorySection(Base):

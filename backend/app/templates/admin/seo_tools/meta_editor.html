@@ -1,0 +1,73 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Редактор meta{% endblock %}
+{% block page_title %}Редактор meta{% endblock %}
+{% block header_actions %}
+<a href="/admin/seo-tools/" class="btn btn-ghost btn-sm">Назад</a>
+<form action="/admin/seo-tools/meta-editor/" method="get" class="meta-editor-search admin-core">
+  <div class="form-group form-group--inline">
+    <input type="text" name="q" value="{{ search_query or '' }}" placeholder="Поиск по названию" class="input input--sm" maxlength="255">
+  </div>
+  <label class="meta-editor-filter">
+    <input type="checkbox" name="filter_empty" value="1" {% if filter_empty %}checked{% endif %}>
+    <span>Без meta</span>
+  </label>
+  <button type="submit" class="btn btn-ghost btn-sm">Найти</button>
+</form>
+{% endblock %}
+{% block content %}
+{% if request.query_params.get('saved') %}
+<div class="admin-alert admin-alert-success meta-editor-alert admin-core">Сохранено.</div>
+{% endif %}
+<form method="post" action="/admin/seo-tools/meta-editor/" class="admin-core">
+  <div class="table-wrapper">
+    <table class="table table--striped table--meta-editor">
+      <thead>
+        <tr>
+          <th>Статья</th>
+          <th>Meta title</th>
+          <th>Meta description</th>
+          <th>SERP превью</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in articles %}
+        <tr>
+          <td>
+            <div class="table-file">
+              <a href="/admin/articles/{{ a.id }}/" class="table-file__link">{{ a.title }}</a>
+              <span class="table__muted table-file__slug">/news/{{ a.slug }}/</span>
+            </div>
+          </td>
+          <td>
+            <div class="form-group form-group--compact">
+              <input type="text" name="meta_title_{{ a.id }}" class="input input--sm" value="{{ a.meta_title or '' }}" placeholder="до 60 симв" maxlength="255">
+            </div>
+          </td>
+          <td>
+            <div class="form-group form-group--compact">
+              <textarea name="meta_desc_{{ a.id }}" rows="2" class="input input--sm" placeholder="до 155 симв" maxlength="500">{{ a.meta_description or '' }}</textarea>
+            </div>
+          </td>
+          <td>
+            <div class="serp-preview">
+              <div class="serp-preview__title">{{ (a.meta_title or a.title)[:60] }}</div>
+              <div class="serp-preview__url">oplatanalogov.ru</div>
+              <div class="serp-preview__desc">{{ (a.meta_description or a.excerpt or '')[:155] }}</div>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4" class="admin-empty-cell">Статьи не найдены</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if articles %}
+  <div class="meta-editor-actions">
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+  </div>
+  {% endif %}
+</form>
+{% endblock %}

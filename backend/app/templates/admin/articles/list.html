@@ -4,18 +4,18 @@
 {% block page_title %}Статьи{% endblock %}
 
 {% block header_actions %}
-<div style="display: flex; gap: 12px; align-items: center;">
-  <form method="get" style="margin: 0;">
-    <div style="display: flex; gap: 8px; align-items: center;">
+<div class="admin-core header-actions-row">
+  <form method="get" class="search-form">
+    <div class="slug-row search-row">
       <input type="text" name="q" value="{{ search_query or '' }}" placeholder="Поиск статей..."
-             class="admin-input" style="max-width: 260px;">
-      <button type="submit" class="admin-btn-secondary">Найти</button>
+             class="input slug-input">
+      <button type="submit" class="btn btn-outline">Найти</button>
       {% if search_query %}
-      <a href="/admin/articles/" class="admin-btn-secondary">Сбросить</a>
+      <a href="/admin/articles/" class="btn btn-outline">Сбросить</a>
       {% endif %}
     </div>
   </form>
-  <a href="/admin/articles/create/" class="admin-btn-primary">
+  <a href="/admin/articles/create/" class="btn btn-primary">
     <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
     Новая статья
   </a>
@@ -61,11 +61,7 @@
     
     <!-- Category -->
     <div>
-      {% set cat_name = article.category | upper %}
-      {% for cat in categories if cat.slug == article.category %}
-        {% set cat_name = cat.name %}
-      {% endfor %}
-      <span class="admin-badge admin-badge-muted">{{ cat_name }}</span>
+      <span class="admin-badge admin-badge-muted">{{ article.category.name if article.category else '' }}</span>
     </div>
     
     <!-- Views -->
@@ -75,7 +71,7 @@
     
     <!-- Date -->
     <div style="font-size: 13px; color: #64748b;">
-      {{ article.created_at[:10] if article.created_at else 'N/A' }}
+      {{ article.created_at.strftime('%Y-%m-%d') if article.created_at else 'N/A' }}
     </div>
     
     <!-- Status -->
@@ -98,7 +94,7 @@
     <iconify-icon icon="ri:article-line" width="64"></iconify-icon>
     <div class="admin-empty-state-title">Статьи не найдены</div>
     <div class="admin-empty-state-text">Создайте первую статью</div>
-    <a href="/admin/articles/create/" class="admin-btn-primary" style="margin-top: 24px;">
+    <a href="/admin/articles/create/" class="btn btn-primary" style="margin-top: 24px;">
       <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
       Создать статью
     </a>
@@ -110,19 +106,19 @@
 {% if total_pages > 1 %}
 <div class="admin-pagination">
   {% if page > 1 %}
-  <a href="?page={{ page - 1 }}" class="admin-pagination-btn">
+  <a href="?page={{ page - 1 }}" class="btn btn-ghost btn-sm">
     <iconify-icon icon="ri:arrow-left-s-line" width="20"></iconify-icon>
   </a>
   {% endif %}
   
   {% for p in range(1, total_pages + 1) %}
-  <a href="?page={{ p }}" class="admin-pagination-btn {% if p == page %}active{% endif %}">
+  <a href="?page={{ p }}" class="btn btn-ghost btn-sm {% if p == page %}active{% endif %}">
     {{ p }}
   </a>
   {% endfor %}
   
   {% if page < total_pages %}
-  <a href="?page={{ page + 1 }}" class="admin-pagination-btn">
+  <a href="?page={{ page + 1 }}" class="btn btn-ghost btn-sm">
     <iconify-icon icon="ri:arrow-right-s-line" width="20"></iconify-icon>
   </a>
   {% endif %}

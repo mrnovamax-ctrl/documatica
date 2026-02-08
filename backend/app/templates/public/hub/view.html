@@ -1,0 +1,54 @@
+{% extends "base_public.html" %}
+
+{% block extra_css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/hub.css">
+{% endblock %}
+{% block title %}{{ title }} - Documatica{% endblock %}
+{% block meta_description %}{{ description }}{% endblock %}
+
+{% block content %}
+<section class="knowledge-hub-section pattern-light hub-page-section">
+  <div class="container">
+    <nav class="news-breadcrumbs hub-breadcrumbs" aria-label="Хлебные крошки">
+      <ol class="news-breadcrumbs__list">
+        {% for crumb in breadcrumbs if crumb %}
+        <li class="news-breadcrumbs__item">
+          {% if not loop.first %}
+          <span class="news-breadcrumbs__separator">/</span>
+          {% endif %}
+          {% if crumb.url %}
+          <a href="{{ crumb.url }}" class="news-breadcrumbs__link">{{ crumb.title }}</a>
+          {% else %}
+          <span class="news-breadcrumbs__current">{{ crumb.title }}</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+    </nav>
+    <h1 class="hub-page-title">{{ hub.title }}</h1>
+    {% if hub.content %}
+    <div class="hub-page-content content-body">
+      {{ hub.content | safe }}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if sections %}
+<section class="knowledge-hub-section hub-sections-list">
+  <div class="container">
+    <h2 class="hub-sections__head">Разделы</h2>
+    <ul class="hub-sections-list__ul">
+      {% for s in sections %}
+      <li>
+        <a href="/hub/{{ hub.slug }}/{{ s.slug }}/" class="hub-section-link">
+          <span class="hub-section-link__title">{{ s.title }}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

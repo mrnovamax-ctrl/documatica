@@ -1,0 +1,66 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Перелинковщик{% endblock %}
+{% block page_title %}Автоматический перелинковщик{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/seo-tools/" class="btn btn-ghost btn-sm">
+  <iconify-icon icon="ri:arrow-left-line" width="16"></iconify-icon>
+  Назад к SEO-инструментам
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="admin-core">
+  <div class="form-card form-card--standalone form-card--narrow" style="max-width: 560px;">
+    {% if errors %}
+    <div class="admin-alert admin-alert-error" style="margin-bottom: 1.5rem;">
+      {% for err in errors %}<div>{{ err }}</div>{% endfor %}
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div class="admin-alert admin-alert-success" style="margin-bottom: 1.5rem;">
+      Готово. Обновлено статей: {{ articles_updated }}. Добавлено ссылок: {{ total_added }}.
+    </div>
+    {% if results %}
+    <div style="margin-bottom: 1.5rem;">
+      <div style="font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 0.5rem;">Обновлённые статьи</div>
+      <ul style="font-size: 0.875rem; padding-left: 1.25rem;">
+        {% for r in results %}
+        <li><a href="/admin/articles/{{ r.id }}/" style="color: #3b82f6;">{{ r.title }}</a> — добавлено {{ r.added }} ссылок</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <form method="POST" action="/admin/seo-tools/interlinker/">
+      <div class="form-group">
+        <label class="label" for="phrase">Ключевая фраза</label>
+        <input type="text" name="phrase" id="phrase" class="input" value="{{ phrase | default('') }}" placeholder="УПД для ИП" required>
+        <p class="form-hint">Точное вхождение. Поиск только в теле статьи (content), не в заголовках и excerpt.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="label" for="target_url">URL страницы для ссылки</label>
+        <input type="text" name="target_url" id="target_url" class="input" value="{{ target_url | default('') }}" placeholder="/upd/ip/ или https://example.com/page" required>
+        <p class="form-hint">Внутренняя ссылка (/upd/ip/) или внешняя (https://...)</p>
+      </div>
+
+      <div class="form-group">
+        <label class="label" for="max_per_article">Максимум ссылок на одну статью</label>
+        <input type="number" name="max_per_article" id="max_per_article" class="input" value="{{ max_per_article | default(1) }}" min="1" max="5" style="width: 80px;">
+        <p class="form-hint">Не более указанного числа ссылок на одну страницу в каждой статье (1–5)</p>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+          <iconify-icon icon="ri:link-m" width="18"></iconify-icon>
+          Выполнить перелинковку
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

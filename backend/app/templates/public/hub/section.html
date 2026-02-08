@@ -1,0 +1,57 @@
+{% extends "base_public.html" %}
+
+{% block extra_css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/hub.css">
+{% endblock %}
+{% block title %}{{ title }} - Documatica{% endblock %}
+{% block meta_description %}{{ description }}{% endblock %}
+
+{% block content %}
+<section class="knowledge-hub-section pattern-light hub-page-section">
+  <div class="container">
+    <nav class="news-breadcrumbs hub-breadcrumbs" aria-label="Хлебные крошки">
+      <ol class="news-breadcrumbs__list">
+        {% for crumb in breadcrumbs if crumb %}
+        <li class="news-breadcrumbs__item">
+          {% if not loop.first %}
+          <span class="news-breadcrumbs__separator">/</span>
+          {% endif %}
+          {% if crumb.url %}
+          <a href="{{ crumb.url }}" class="news-breadcrumbs__link">{{ crumb.title }}</a>
+          {% else %}
+          <span class="news-breadcrumbs__current">{{ crumb.title }}</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+    </nav>
+    <h1 class="hub-page-title">{{ section.title }}</h1>
+    {% if section.content %}
+    <div class="hub-page-content content-body">
+      {{ section.content | safe }}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if linked_articles %}
+<section class="knowledge-hub-section hub-articles-list">
+  <div class="container">
+    <h2 class="hub-articles__head">Статьи раздела</h2>
+    <ul class="hub-articles-list__ul">
+      {% for article in linked_articles %}
+      <li class="hub-article-item">
+        <a href="/news/{{ article.slug }}/" class="hub-article-link">
+          <span class="hub-article-link__title">{{ article.title }}</span>
+          {% if article.excerpt %}
+          <span class="hub-article-link__excerpt">{{ article.excerpt[:120] }}{% if article.excerpt|length > 120 %}...{% endif %}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

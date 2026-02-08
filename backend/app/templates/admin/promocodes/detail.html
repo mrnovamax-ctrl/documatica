@@ -5,12 +5,12 @@
 
 {% block header_actions %}
 <div style="display: flex; gap: 12px; align-items: center;">
-  <a href="/admin/promocodes/{{ promocode.id }}/edit" class="admin-btn admin-btn-outline">
+  <a href="/admin/promocodes/{{ promocode.id }}/edit" class="btn btn-outline">
     <iconify-icon icon="ri:edit-line" width="16"></iconify-icon>
     Редактировать
   </a>
   <form action="/admin/promocodes/{{ promocode.id }}/toggle" method="POST" style="display: inline;">
-    <button type="submit" class="admin-btn {% if promocode.is_active %}admin-btn-warning{% else %}admin-btn-success{% endif %}">
+    <button type="submit" class="btn {% if promocode.is_active %}btn-gold{% else %}btn-success{% endif %}">
       {% if promocode.is_active %}
       <iconify-icon icon="ri:toggle-fill" width="16"></iconify-icon>
       Выключить
@@ -20,7 +20,7 @@
       {% endif %}
     </button>
   </form>
-  <a href="/admin/promocodes/" class="admin-btn admin-btn-outline">
+  <a href="/admin/promocodes/" class="btn btn-outline">
     <iconify-icon icon="ri:arrow-left-line" width="16"></iconify-icon>
     Назад
   </a>
@@ -242,26 +242,5 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-.admin-btn-danger {
-  background: #ef4444;
-  color: white;
-  border: none;
-}
-
-.admin-btn-danger:hover {
-  background: #dc2626;
-}
-
-.admin-btn-warning {
-  background: #f59e0b;
-  color: white;
-  border: none;
-}
-
-.admin-btn-success {
-  background: #10b981;
-  color: white;
-  border: none;
-}
 </style>
 {% endblock %}

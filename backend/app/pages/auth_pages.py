@@ -4,6 +4,8 @@
 
 import os
 import jwt
+
+RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "")
 from datetime import datetime
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -55,6 +57,7 @@ async def login_page(request: Request):
         name="auth/login.html",
         context={
             "title": "Вход — Documatica",
+            "recaptcha_site_key": RECAPTCHA_SITE_KEY,
         }
     )
     

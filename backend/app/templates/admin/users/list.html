@@ -10,130 +10,126 @@
 {% endblock %}
 
 {% block content %}
-<!-- Users Table -->
-<div class="admin-table-container">
-  <!-- Table Header -->
-  <div class="admin-table-header admin-table-row-7col">
-    <div class="admin-table-th">Пользователь</div>
-    <div class="admin-table-th">Тариф</div>
-    <div class="admin-table-th">Документов</div>
-    <div class="admin-table-th">Дата регистрации</div>
-    <div class="admin-table-th">Последний вход</div>
-    <div class="admin-table-th">Телефон</div>
-    <div class="admin-table-th">Статус</div>
-  </div>
-  
-  <!-- Table Body -->
-  {% for user in users %}
-  <div class="admin-table-row admin-table-row-7col">
-    <!-- Email -->
-    <div class="admin-table-cell">
-      <div class="admin-user-email">
-        <a href="/admin/users/{{ user.id }}/" style="color: inherit; text-decoration: none;">
-          {{ user.email }}
-        </a>
-        {% if user.auth_provider == 'yandex' %}
-        <span class="admin-badge admin-badge-yandex" style="display: inline-flex; align-items: center; gap: 3px; margin-left: 6px; padding: 2px 6px; font-size: 9px; background: #FC3F1D; color: white; border-radius: 4px;">
-          <span style="font-weight: 700;">Y</span>
-        </span>
-        {% endif %}
-      </div>
-      <div class="admin-user-id">ID: {{ user.id }}{% if user.name %} / {{ user.name }}{% endif %}</div>
-    </div>
-    
-    <!-- Tariff -->
-    <div class="admin-table-cell">
-      {% set tariff = user.tariff or 'free' %}
-      {% if tariff == 'subscription' %}
-      <span class="admin-badge admin-badge-gold">
-        <iconify-icon icon="ri:vip-crown-line" width="14"></iconify-icon>
-        Подписка
-      </span>
-      {% if user.subscription_expires %}
-      <div style="font-size: 10px; color: #64748b; margin-top: 2px;">до {{ user.subscription_expires[:10] }}</div>
-      {% endif %}
-      {% elif tariff == 'pay_per_doc' %}
-      <span class="admin-badge admin-badge-purple">
-        <iconify-icon icon="ri:file-list-3-line" width="14"></iconify-icon>
-        Пакет
-      </span>
-      {% if user.purchased_docs_remaining %}
-      <div style="font-size: 10px; color: #64748b; margin-top: 2px;">{{ user.purchased_docs_remaining }} док.</div>
-      {% endif %}
-      {% else %}
-      <span class="admin-badge admin-badge-muted">
-        Free
-      </span>
-      <div style="font-size: 10px; color: #64748b; margin-top: 2px;">{{ user.free_generations_used or 0 }}/5</div>
-      {% endif %}
-    </div>
-    
-    <!-- Documents -->
-    <div class="admin-table-cell">
-      <span class="admin-docs-count">{{ user.documents_count }}</span>
-      <span class="admin-docs-label">шт</span>
-    </div>
-    
-    <!-- Created At -->
-    <div class="admin-table-cell admin-text-muted">
-      {{ user.created_at[:10] if user.created_at else 'N/A' }}
-    </div>
-
-    <!-- Last Login -->
-    <div class="admin-table-cell admin-text-muted">
-      {% if user.last_login %}
-      {{ user.last_login[:16].replace('T', ' ') }}
-      {% else %}
-      —
-      {% endif %}
-    </div>
-
-    <!-- Phone -->
-    <div class="admin-table-cell admin-text-muted">
-      {{ user.phone if user.phone else '—' }}
-    </div>
-    
-    <!-- Status -->
-    <div class="admin-table-cell">
-      {% if user.is_verified %}
-      <span class="admin-badge admin-badge-success">
-        <iconify-icon icon="ri:checkbox-circle-fill" width="14"></iconify-icon>
-        Подтверждён
-      </span>
-      {% else %}
-      <span class="admin-badge admin-badge-warning">
-        <iconify-icon icon="ri:time-line" width="14"></iconify-icon>
-        Не подтверждён
-      </span>
-      {% endif %}
-    </div>
+{% if deleted %}
+<div class="admin-alert admin-alert-success" role="alert">
+  Пользователь удалён.
+</div>
+{% endif %}
+<div class="admin-core">
+  {% if users %}
+  <div class="table-wrapper">
+    <table class="table table--striped table--users">
+      <thead>
+        <tr>
+          <th>Пользователь</th>
+          <th>Тариф</th>
+          <th>Документов</th>
+          <th>Дата регистрации</th>
+          <th>Последний вход</th>
+          <th>Телефон</th>
+          <th>Статус</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>
+            <a href="/admin/users/{{ user.id }}/" class="table-user-link">
+              {{ user.email }}
+              {% if user.auth_provider == 'yandex' %}
+              <span class="badge badge--yandex">Y</span>
+              {% elif user.auth_provider == 'google' %}
+              <span class="badge badge--google">G</span>
+              {% endif %}
+            </a>
+            <div class="table__muted table-user-meta">ID: {{ user.id }}{% if user.name %} / {{ user.name }}{% endif %}</div>
+          </td>
+          <td>
+            {% set tariff = user.tariff or 'free' %}
+            {% if tariff == 'subscription' %}
+            <span class="badge badge--gold">
+              <iconify-icon icon="ri:vip-crown-line" width="14"></iconify-icon>
+              Подписка
+            </span>
+            {% if user.subscription_expires %}
+            <div class="table__muted table-tariff-meta">до {{ user.subscription_expires[:10] }}</div>
+            {% endif %}
+            {% elif tariff == 'pay_per_doc' %}
+            <span class="badge badge--purple">
+              <iconify-icon icon="ri:file-list-3-line" width="14"></iconify-icon>
+              Пакет
+            </span>
+            {% if user.purchased_docs_remaining is not none %}
+            <div class="table__muted table-tariff-meta">{{ user.purchased_docs_remaining }} док.</div>
+            {% endif %}
+            {% else %}
+            <span class="badge badge--neutral">Free</span>
+            <div class="table__muted table-tariff-meta">{{ user.free_generations_used or 0 }}/5</div>
+            {% endif %}
+          </td>
+          <td>
+            <span class="table-docs-count">{{ user.documents_count }}</span>
+            <span class="table__muted">шт</span>
+          </td>
+          <td class="table__muted">
+            {{ user.created_at[:10] if user.created_at else '—' }}
+          </td>
+          <td class="table__muted">
+            {% if user.last_login %}
+            {{ user.last_login[:16].replace('T', ' ') }}
+            {% else %}
+            —
+            {% endif %}
+          </td>
+          <td class="table__muted">
+            {{ user.phone if user.phone else '—' }}
+          </td>
+          <td>
+            {% if user.is_verified %}
+            <span class="badge badge--success">
+              <iconify-icon icon="ri:checkbox-circle-fill" width="14"></iconify-icon>
+              Подтверждён
+            </span>
+            {% else %}
+            <span class="badge badge--warning">
+              <iconify-icon icon="ri:time-line" width="14"></iconify-icon>
+              Не подтверждён
+            </span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="/admin/users/delete/{{ user.id }}/" class="btn btn-danger btn-sm" title="Удалить" onclick="return confirm('Удалить пользователя {{ user.email }}? Связанные платежи и использования будут удалены.');">
+                <iconify-icon icon="ri:delete-bin-line" width="16"></iconify-icon>
+              Удалить
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
   {% else %}
-  <div class="admin-empty-state">
-    <iconify-icon icon="ri:user-unfollow-line" width="64"></iconify-icon>
-    <div class="admin-empty-state-title">Пользователи не найдены</div>
-    <div class="admin-empty-state-text">Зарегистрированные пользователи появятся здесь</div>
+  <div class="admin-empty">
+    <iconify-icon icon="ri:user-unfollow-line" width="64" class="admin-empty__icon"></iconify-icon>
+    <h3 class="admin-empty__title">Пользователи не найдены</h3>
+    <p class="admin-empty__text">Зарегистрированные пользователи появятся здесь</p>
   </div>
-  {% endfor %}
+  {% endif %}
 </div>
 
-<!-- Pagination -->
 {% if total_pages > 1 %}
 <div class="admin-pagination">
   {% if page > 1 %}
-  <a href="?page={{ page - 1 }}" class="admin-pagination-btn">
+  <a href="?page={{ page - 1 }}" class="btn btn-ghost btn-sm">
     <iconify-icon icon="ri:arrow-left-s-line" width="20"></iconify-icon>
   </a>
   {% endif %}
-  
   {% for p in range(1, total_pages + 1) %}
-  <a href="?page={{ p }}" class="admin-pagination-btn {% if p == page %}active{% endif %}">
-    {{ p }}
-  </a>
+  <a href="?page={{ p }}" class="btn btn-ghost btn-sm {% if p == page %}active{% endif %}">{{ p }}</a>
   {% endfor %}
-  
   {% if page < total_pages %}
-  <a href="?page={{ page + 1 }}" class="admin-pagination-btn">
+  <a href="?page={{ page + 1 }}" class="btn btn-ghost btn-sm">
     <iconify-icon icon="ri:arrow-right-s-line" width="20"></iconify-icon>
   </a>
   {% endif %}

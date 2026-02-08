@@ -284,6 +284,43 @@ async def page_edit(request: Request, page_id: int, db: Session = Depends(get_db
             )
         raise
 
+    # Structure for JS: save only on "Save" button (deferred save)
+    page_structure = {
+        "page_meta": {
+            "title": page.title,
+            "meta_title": getattr(page, "meta_title", None),
+            "meta_description": getattr(page, "meta_description", None),
+            "meta_keywords": getattr(page, "meta_keywords", None),
+            "page_type": getattr(page, "page_type", None),
+        },
+        "sections": [
+            {
+                "id": s.id,
+                "section_type": s.section_type,
+                "position": s.position,
+                "background_style": getattr(s, "background_style", None) or "light",
+                "container_width": getattr(s, "container_width", None) or "default",
+                "padding_y": getattr(s, "padding_y", None) or "default",
+                "grid_columns": getattr(s, "grid_columns", 2),
+                "grid_gap": getattr(s, "grid_gap", None) or "medium",
+                "grid_style": getattr(s, "grid_style", None) or "grid",
+                "settings": (s.settings if isinstance(s.settings, dict) else None) or {},
+                "blocks": [
+                    {
+                        "id": b.id,
+                        "block_type": b.block_type,
+                        "position": b.position,
+                        "content": b.content if isinstance(b.content, dict) else {},
+                        "css_classes": getattr(b, "css_classes", None),
+                    }
+                    for b in sorted(s.blocks, key=lambda x: x.position)
+                ],
+            }
+            for s in sorted(page.sections, key=lambda x: x.position)
+        ],
+    }
+    page_structure_json = json.dumps(page_structure, ensure_ascii=False)
+
     response = templates.TemplateResponse(
         request=request,
         name="admin/pages/builder.html",
@@ -293,6 +330,7 @@ async def page_edit(request: Request, page_id: int, db: Session = Depends(get_db
             active_menu="pages",
             page=page,
             sections=sections_for_template,
+            page_structure_json=page_structure_json,
         )
     )
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"

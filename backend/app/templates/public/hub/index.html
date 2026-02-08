@@ -1,0 +1,57 @@
+{% extends "base_public.html" %}
+
+{% block extra_css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/hub.css">
+{% endblock %}
+{% block title %}{{ title }} - Documatica{% endblock %}
+{% block meta_description %}{{ description }}{% endblock %}
+
+{% block content %}
+<section class="knowledge-hub-section pattern-light hub-page-section">
+  <div class="container">
+    <nav class="news-breadcrumbs hub-breadcrumbs" aria-label="Хлебные крошки">
+      <ol class="news-breadcrumbs__list">
+        {% for crumb in breadcrumbs if crumb %}
+        <li class="news-breadcrumbs__item">
+          {% if not loop.first %}
+          <span class="news-breadcrumbs__separator">/</span>
+          {% endif %}
+          {% if crumb.url %}
+          <a href="{{ crumb.url }}" class="news-breadcrumbs__link">{{ crumb.title }}</a>
+          {% else %}
+          <span class="news-breadcrumbs__current">{{ crumb.title }}</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+    </nav>
+    <div class="knowledge-hub-header">
+      <h1 class="knowledge-hub-title">{{ title }}</h1>
+      {% if description %}
+      <p class="hub-page-lead">{{ description }}</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="knowledge-hub-section hub-hubs-list">
+  <div class="container">
+    {% if hubs %}
+    <div class="hub-grid">
+      {% for h in hubs %}
+      <a href="/hub/{{ h.slug }}/" class="hub-card">
+        <h3 class="hub-card__title">{{ h.title }}</h3>
+        {% if h.meta_description %}
+        <p class="hub-card__excerpt">{{ h.meta_description[:160] }}{% if h.meta_description|length > 160 %}...{% endif %}</p>
+        {% endif %}
+        <span class="hub-card__link">Открыть хаб</span>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="hub-empty">Пока нет опубликованных хабов.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

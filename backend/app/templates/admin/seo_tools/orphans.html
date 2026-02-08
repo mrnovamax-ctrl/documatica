@@ -1,0 +1,52 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Страницы-сироты{% endblock %}
+{% block page_title %}Страницы без входящих ссылок{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/seo-tools/" class="btn btn-ghost btn-sm">Назад</a>
+{% endblock %}
+
+{% block content %}
+<p style="margin-bottom: 1.5rem; color: #64748b; font-size: 0.875rem;">Страницы, на которые нет ни одной внутренней ссылки с других страниц или статей.</p>
+
+{% if orphans_articles or orphans_pages %}
+{% if orphans_articles %}
+<h4 style="margin-bottom: 0.75rem; font-size: 0.875rem;">Статьи ({{ orphans_articles|length }})</h4>
+<div class="admin-table-container" style="margin-bottom: 1.5rem;">
+  <div class="admin-table-header admin-table-row-3col">
+    <div class="admin-table-th">Заголовок</div>
+    <div class="admin-table-th">URL</div>
+    <div class="admin-table-th"></div>
+  </div>
+  {% for o in orphans_articles %}
+  <div class="admin-table-row admin-table-row-3col">
+    <div class="admin-table-cell">{{ o.title[:60] }}{% if o.title|length > 60 %}...{% endif %}</div>
+    <div class="admin-table-cell" style="font-family: monospace; font-size: 0.8125rem;">{{ o.url }}</div>
+    <div class="admin-table-cell"><a href="/admin/articles/" class="btn btn-ghost btn-sm">К статьям</a></div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if orphans_pages %}
+<h4 style="margin-bottom: 0.75rem; font-size: 0.875rem;">Страницы CMS ({{ orphans_pages|length }})</h4>
+<div class="admin-table-container">
+  <div class="admin-table-header admin-table-row-3col">
+    <div class="admin-table-th">Заголовок</div>
+    <div class="admin-table-th">URL</div>
+    <div class="admin-table-th"></div>
+  </div>
+  {% for o in orphans_pages %}
+  <div class="admin-table-row admin-table-row-3col">
+    <div class="admin-table-cell">{{ o.title[:60] }}{% if o.title|length > 60 %}...{% endif %}</div>
+    <div class="admin-table-cell" style="font-family: monospace; font-size: 0.8125rem;">{{ o.url }}</div>
+    <div class="admin-table-cell"><a href="/admin/pages/" class="btn btn-ghost btn-sm">К страницам</a></div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% else %}
+<div class="admin-alert admin-alert-success">Страниц-сирот не найдено.</div>
+{% endif %}
+{% endblock %}

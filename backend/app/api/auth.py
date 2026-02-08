@@ -20,7 +20,7 @@ from app.schemas.auth import (
     VerifyEmail, ForgotPassword, ResetPassword, MessageResponse
 )
 from app.services.email import send_verification_email, send_password_reset_email, send_welcome_email
-from app.services.smartcaptcha import check_captcha as verify_smartcaptcha
+from app.services.recaptcha import verify_recaptcha
 
 router = APIRouter()
 
@@ -142,10 +142,10 @@ async def login(
     data: UserLogin, request: Request, response: Response, db: Session = Depends(get_db)
 ):
     """Вход в систему"""
-    # Проверка Yandex SmartCaptcha (если включена)
-    if not verify_smartcaptcha(data.smart_token or "", _get_client_ip(request)):
+    # Проверка Google reCAPTCHA (если включена)
+    if not verify_recaptcha(data.recaptcha_token or "", _get_client_ip(request)):
         raise HTTPException(
-            status_code=400, detail="Пройдите проверку «Я не робот»"
+            status_code=400, detail="Пройдите проверку безопасности"
         )
 
     user = db.query(User).filter(User.email == data.email.lower()).first()
@@ -153,8 +153,8 @@ async def login(
     # Проверка для OAuth пользователей
     if user and not user.password_hash:
         raise HTTPException(
-            status_code=401, 
-            detail="Этот аккаунт создан через Яндекс. Используйте кнопку 'Войти через Яндекс'."
+            status_code=401,
+            detail="Этот аккаунт создан через Яндекс или Google. Используйте соответствующую кнопку входа."
         )
     
     if not user or not verify_password(data.password, user.password_hash):

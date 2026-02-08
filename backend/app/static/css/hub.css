@@ -1,0 +1,150 @@
+/* Контент-хабы: список хабов, страница хаба, страница раздела */
+
+.hub-page-section {
+  padding-bottom: 2.5rem;
+}
+
+.hub-breadcrumbs {
+  margin-bottom: 1.5rem;
+}
+
+.hub-page-title {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 800;
+  color: var(--docu-base, #0f172a);
+  margin: 0 0 1rem;
+  line-height: 1.3;
+}
+
+.hub-page-lead {
+  color: #64748b;
+  font-size: 1.125rem;
+  margin: 0;
+  max-width: 640px;
+}
+
+.hub-page-content.content-body {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #334155;
+}
+
+.hub-page-content.content-body p {
+  margin-bottom: 1rem;
+}
+
+.hub-page-content.content-body a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.hub-page-content.content-body a:hover {
+  text-decoration: underline;
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.hub-card {
+  display: block;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.hub-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.hub-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+}
+
+.hub-card__excerpt {
+  font-size: 0.9375rem;
+  color: #64748b;
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.hub-card__link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.hub-empty {
+  color: #64748b;
+  margin: 0;
+}
+
+.hub-hubs-list,
+.hub-sections-list,
+.hub-articles-list {
+  padding-top: 2rem;
+  background: #f8fafc;
+}
+
+.hub-sections__head,
+.hub-articles__head {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 1rem;
+}
+
+.hub-sections-list__ul,
+.hub-articles-list__ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hub-sections-list__ul li,
+.hub-articles-list__ul li {
+  margin-bottom: 0.5rem;
+}
+
+.hub-section-link,
+.hub-article-link {
+  display: block;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.hub-section-link:hover,
+.hub-article-link:hover {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.04);
+}
+
+.hub-section-link__title,
+.hub-article-link__title {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.hub-article-link__excerpt {
+  display: block;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}

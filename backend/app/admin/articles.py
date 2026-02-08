@@ -2,19 +2,18 @@
 Admin Articles - управление статьями
 """
 
-import json
 import uuid
 import shutil
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any, List, Optional
+from typing import Optional
 from fastapi import APIRouter, Request, Form, UploadFile, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.core.templates import templates
 from app.database import get_db
-from app.models import ArticleCategory, Redirect
+from app.models import ArticleCategory, Article, Redirect
 from app.admin.context import require_admin, get_admin_context
 
 router = APIRouter()
@@ -41,33 +40,14 @@ except Exception:
     pass
 
 
-def load_articles() -> Dict[str, Any]:
-    """Загрузка статей из JSON"""
-    filepath = DATA_DIR / "articles.json"
-    if filepath.exists():
-        with open(filepath, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        # Поддержка старого формата (массив статей)
-        if isinstance(data, list):
-            return {"articles": data, "categories": []}
-        return data
-    return {"articles": [], "categories": []}
-
-
-def save_articles(data: Dict[str, Any]):
-    """Сохранение статей в JSON"""
-    filepath = DATA_DIR / "articles.json"
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-
-def get_article_by_id(article_id: str) -> Optional[Dict]:
-    """Получение статьи по ID"""
-    data = load_articles()
-    for article in data.get("articles", []):
-        if article.get("id") == article_id:
-            return article
-    return None
+def _category_slug_to_id(db: Session, category_slug: str) -> Optional[int]:
+    """Возвращает id категории по slug/full_slug."""
+    if not category_slug:
+        return None
+    cat = db.query(ArticleCategory).filter(
+        (ArticleCategory.full_slug == category_slug) | (ArticleCategory.slug == category_slug)
+    ).first()
+    return cat.id if cat else None
 
 
 def generate_slug(title: str) -> str:
@@ -92,37 +72,32 @@ def generate_slug(title: str) -> str:
 
 
 @router.get("/", response_class=HTMLResponse)
-async def articles_list(request: Request, page: int = 1, q: str = ""):
+async def articles_list(
+    request: Request,
+    db: Session = Depends(get_db),
+    page: int = 1,
+    q: str = "",
+):
     """Список статей"""
     auth_check = require_admin(request)
     if auth_check:
         return auth_check
-    
-    data = load_articles()
-    articles = data.get("articles", [])
-    categories = data.get("categories", [])
 
     query = (q or "").strip().lower()
+    qry = db.query(Article).options(joinedload(Article.category)).order_by(Article.updated_at.desc(), Article.id.desc())
     if query:
-        articles = [
-            a for a in articles
-            if query in (a.get("title", "").lower())
-            or query in (a.get("slug", "").lower())
-            or query in (a.get("excerpt", "").lower())
-            or query in (a.get("content", "").lower())
-        ]
-    
-    # Сортировка по дате (новые сначала)
-    articles.sort(key=lambda x: x.get("created_at", ""), reverse=True)
-    
-    # Пагинация
+        qry = qry.filter(
+            Article.title.ilike(f"%{query}%")
+            | Article.slug.ilike(f"%{query}%")
+            | (Article.excerpt.isnot(None) & Article.excerpt.ilike(f"%{query}%"))
+            | (Article.content.isnot(None) & Article.content.ilike(f"%{query}%"))
+        )
+    total = qry.count()
     per_page = 20
-    total = len(articles)
-    total_pages = (total + per_page - 1) // per_page
-    start = (page - 1) * per_page
-    end = start + per_page
-    articles_page = articles[start:end]
-    
+    total_pages = max(1, (total + per_page - 1) // per_page)
+    articles_page = qry.offset((page - 1) * per_page).limit(per_page).all()
+    categories = db.query(ArticleCategory).order_by(ArticleCategory.name).all()
+
     return templates.TemplateResponse(
         request=request,
         name="admin/articles/list.html",
@@ -159,6 +134,7 @@ async def article_create(request: Request, db: Session = Depends(get_db)):
             article=None,
             categories=categories,
             is_new=True,
+            saved=False,
         )
     )
 
@@ -166,6 +142,7 @@ async def article_create(request: Request, db: Session = Depends(get_db)):
 @router.post("/create/", response_class=HTMLResponse)
 async def article_create_post(
     request: Request,
+    db: Session = Depends(get_db),
     title: str = Form(...),
     slug: str = Form(""),
     excerpt: str = Form(""),
@@ -181,195 +158,35 @@ async def article_create_post(
     auth_check = require_admin(request)
     if auth_check:
         return auth_check
-    
-    data = load_articles()
-    
-    # Генерируем slug если не указан
-    if not slug:
-        slug = generate_slug(title)
-    
-    # Проверяем уникальность slug
-    existing_slugs = [a.get("slug") for a in data.get("articles", [])]
-    if slug in existing_slugs:
-        slug = f"{slug}-{str(uuid.uuid4())[:8]}"
-    
-    new_article = {
-        "id": str(uuid.uuid4()),
-        "slug": slug,
-        "title": title,
-        "excerpt": excerpt,
-        "content": content,
-        "category": category,
-        "image": image,
-        "meta_title": meta_title or title,
-        "meta_description": meta_description or (excerpt or "")[:160],
-        "meta_keywords": meta_keywords,
-        "is_published": is_published,
-        "views": 0,
-        "created_at": datetime.now().isoformat(),
-        "updated_at": datetime.now().isoformat(),
-    }
-    
-    data["articles"].append(new_article)
-    save_articles(data)
-    return RedirectResponse(url=f"/admin/articles/{new_article['id']}/", status_code=303)
 
+    slug = (slug or generate_slug(title)).strip()
+    if db.query(Article).filter(Article.slug == slug).first():
+        slug = f"{slug}-{uuid.uuid4().hex[:8]}"
 
-@router.get("/{article_id}/", response_class=HTMLResponse)
-async def article_edit(request: Request, article_id: str, db: Session = Depends(get_db)):
-    """Форма редактирования статьи"""
-    auth_check = require_admin(request)
-    if auth_check:
-        return auth_check
-    
-    article = get_article_by_id(article_id)
-    if not article:
-        return RedirectResponse(url="/admin/articles/", status_code=303)
-    
-    categories = db.query(ArticleCategory).order_by(ArticleCategory.name).all()
-    
-    return templates.TemplateResponse(
-        request=request,
-        name="admin/articles/edit.html",
-        context=get_admin_context(
-            request=request,
-            title=f"Редактировать: {article['title'][:50]} — Админ-панель",
-            active_menu="articles",
-            article=article,
-            categories=categories,
-            is_new=False,
-        )
+    now = datetime.utcnow()
+    new_article = Article(
+        category_id=_category_slug_to_id(db, category),
+        slug=slug,
+        title=title,
+        excerpt=excerpt or None,
+        content=content or None,
+        image=image or None,
+        meta_title=meta_title or title,
+        meta_description=meta_description or ((excerpt or "")[:160] if excerpt else None),
+        meta_keywords=meta_keywords or None,
+        is_published=is_published,
+        views=0,
+        created_at=now,
+        updated_at=now,
     )
-
-
-@router.post("/{article_id}/", response_class=HTMLResponse)
-async def article_edit_post(
-    request: Request,
-    article_id: str,
-    db: Session = Depends(get_db),
-    title: str = Form(...),
-    slug: str = Form(""),
-    excerpt: str = Form(""),
-    content: str = Form(""),
-    category: str = Form(""),
-    image: str = Form(""),
-    meta_title: str = Form(""),
-    meta_description: str = Form(""),
-    meta_keywords: str = Form(""),
-    is_published: bool = Form(False),
-):
-    """Сохранение статьи. При смене slug создаётся 301 редирект со старого URL на новый."""
-    auth_check = require_admin(request)
-    if auth_check:
-        return auth_check
-
-    data = load_articles()
-    new_slug = (slug or generate_slug(title)).strip()
-
-    for i, article in enumerate(data.get("articles", [])):
-        if article.get("id") == article_id:
-            old_slug = (article.get("slug") or "").strip()
-            data["articles"][i].update({
-                "title": title,
-                "slug": new_slug,
-                "excerpt": excerpt,
-                "content": content,
-                "category": category,
-                "image": image,
-                "meta_title": meta_title or title,
-                "meta_description": meta_description or (excerpt or "")[:160],
-                "meta_keywords": meta_keywords,
-                "is_published": is_published,
-                "updated_at": datetime.now().isoformat(),
-            })
-            if old_slug and old_slug != new_slug:
-                from_url = f"/news/{old_slug}/"
-                to_url = f"/news/{new_slug}/"
-                existing = db.query(Redirect).filter(
-                    Redirect.from_url == from_url,
-                    Redirect.is_active.is_(True),
-                ).first()
-                if not existing:
-                    db.add(Redirect(from_url=from_url, to_url=to_url, status_code=301))
-                    db.commit()
-            break
-
-    save_articles(data)
-    return RedirectResponse(url=f"/admin/articles/{article_id}/?saved=1", status_code=303)
-
-
-@router.post("/{article_id}/delete/")
-async def article_delete(request: Request, article_id: str):
-    """Удаление статьи"""
-    auth_check = require_admin(request)
-    if auth_check:
-        return JSONResponse({"error": "Unauthorized"}, status_code=401)
-    
-    data = load_articles()
-    data["articles"] = [a for a in data.get("articles", []) if a.get("id") != article_id]
-    save_articles(data)
-    return RedirectResponse(url="/admin/articles/", status_code=303)
-
-
-@router.post("/{article_id}/toggle-publish/")
-async def article_toggle_publish(request: Request, article_id: str):
-    """Переключение публикации"""
-    auth_check = require_admin(request)
-    if auth_check:
-        return JSONResponse({"error": "Unauthorized"}, status_code=401)
-    
-    data = load_articles()
-    
-    for article in data.get("articles", []):
-        if article.get("id") == article_id:
-            article["is_published"] = not article.get("is_published", False)
-            article["updated_at"] = datetime.now().isoformat()
-            break
-    
-    save_articles(data)
-    return JSONResponse({"success": True})
-
-
-@router.post("/upload-image/")
-async def upload_image(request: Request):
-    """Загрузка изображения статьи. Тело запроса — multipart/form-data, поле «file» (разбор вручную, без FastAPI File())."""
-    auth_check = require_admin(request)
-    if auth_check:
-        return JSONResponse({"error": "Unauthorized"}, status_code=401)
-
-    if request.headers.get("content-type", "").split(";")[0].strip().lower() != "multipart/form-data":
-        return JSONResponse(
-            {"error": "Ожидается multipart/form-data"},
-            status_code=422,
-        )
-
-    form = await request.form()
-    file = _get_upload_file_from_form(form)
-    if not file:
-        return JSONResponse({"error": "Файл не передан. Убедитесь, что поле формы называется «file»."}, status_code=422)
-
-    allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
-    allowed_ext = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
-    ext = Path(getattr(file, "filename", "") or "").suffix.lower()
-    if getattr(file, "content_type", None) and file.content_type not in allowed_types and ext not in allowed_ext:
-        return JSONResponse({"error": "Недопустимый формат файла"}, status_code=400)
-    if ext not in allowed_ext:
-        ext = ".jpg"
-
-    unique_filename = f"{uuid.uuid4()}{ext}"
-    file_path = UPLOAD_DIR / unique_filename
-    try:
-        content = await file.read()
-        file_path.write_bytes(content)
-    except Exception as e:
-        return JSONResponse({"error": f"Ошибка сохранения: {str(e)}"}, status_code=500)
-
-    image_url = f"/static/uploads/articles/{unique_filename}"
-    return JSONResponse({"success": True, "url": image_url})
+    db.add(new_article)
+    db.commit()
+    db.refresh(new_article)
+    return RedirectResponse(url=f"/admin/articles/{new_article.id}/", status_code=303)
 
 
 def _is_upload_file(obj) -> bool:
-    """Проверка: объект похож на Starlette UploadFile (есть асинхронный или синхронный read)."""
+    """Проверка: объект похож на Starlette UploadFile (есть read)."""
     if obj is None:
         return False
     return callable(getattr(obj, "read", None))
@@ -385,8 +202,7 @@ def _take_first_file(val) -> Optional[UploadFile]:
 
 
 def _get_upload_file_from_form(form) -> Optional[UploadFile]:
-    """Извлекает первый загруженный файл из multipart form. Работает с Starlette FormData/ImmutableMultiDict."""
-    # Явно по имени поля (кнопка «Загрузить» шлёт поле "file")
+    """Извлекает первый загруженный файл из multipart form."""
     for field_name in ("file", "blobid0", "imagetools0", "blobid1", "imagetools1"):
         try:
             if hasattr(form, "getlist"):
@@ -397,7 +213,6 @@ def _get_upload_file_from_form(form) -> Optional[UploadFile]:
                 return v
         except (KeyError, TypeError, IndexError):
             continue
-    # Перебор всех полей формы (на случай другого имени)
     try:
         keys = list(form.keys()) if hasattr(form, "keys") else [k for k in form]
         for key in keys:
@@ -423,26 +238,29 @@ def _get_upload_file_from_form(form) -> Optional[UploadFile]:
     return None
 
 
-@router.post("/tinymce-upload/")
-async def tinymce_upload_image(request: Request):
-    """Загрузка изображения через TinyMCE (поля blobid0, imagetools0 или file)."""
+@router.post("/upload-image/")
+async def upload_image(request: Request):
+    """Загрузка изображения статьи. multipart/form-data, поле «file»."""
     auth_check = require_admin(request)
     if auth_check:
         return JSONResponse({"error": "Unauthorized"}, status_code=401)
-
-    form = await request.form()
+    try:
+        form = await request.form()
+    except Exception as e:
+        return JSONResponse({"error": "Не удалось прочитать форму: %s" % str(e)}, status_code=422)
     file = _get_upload_file_from_form(form)
     if not file:
-        return JSONResponse({"error": "Файл не передан"}, status_code=422)
-
+        ct = (request.headers.get("content-type") or "").split(";")[0].strip().lower()
+        return JSONResponse({
+            "error": "Файл не передан. Поле «file», запрос multipart/form-data (Content-Type: %s)." % (ct or "(пусто)")
+        }, status_code=422)
     allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
     allowed_ext = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
-    ext = Path(file.filename or "").suffix.lower()
-    if file.content_type and file.content_type not in allowed_types and ext not in allowed_ext:
+    ext = Path(getattr(file, "filename", "") or "").suffix.lower()
+    if getattr(file, "content_type", None) and file.content_type not in allowed_types and ext not in allowed_ext:
         return JSONResponse({"error": "Недопустимый формат файла"}, status_code=400)
     if ext not in allowed_ext:
         ext = ".jpg"
-
     unique_filename = f"{uuid.uuid4()}{ext}"
     file_path = UPLOAD_DIR / unique_filename
     try:
@@ -450,6 +268,161 @@ async def tinymce_upload_image(request: Request):
         file_path.write_bytes(content)
     except Exception as e:
         return JSONResponse({"error": f"Ошибка сохранения: {str(e)}"}, status_code=500)
-
     image_url = f"/static/uploads/articles/{unique_filename}"
-    return JSONResponse({"location": image_url})
+    return JSONResponse({"success": True, "url": image_url})
+
+
+@router.post("/tinymce-upload/")
+async def tinymce_upload_image(request: Request):
+    """Загрузка изображения через TinyMCE (поля blobid0, imagetools0 или file)."""
+    auth_check = require_admin(request)
+    if auth_check:
+        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+    try:
+        form = await request.form()
+    except Exception as e:
+        return JSONResponse({"error": "Не удалось прочитать форму"}, status_code=422)
+    file = _get_upload_file_from_form(form)
+    if not file:
+        return JSONResponse({"error": "Файл не передан"}, status_code=422)
+    allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+    allowed_ext = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+    ext = Path(getattr(file, "filename", "") or "").suffix.lower()
+    if getattr(file, "content_type", None) and file.content_type not in allowed_types and ext not in allowed_ext:
+        return JSONResponse({"error": "Недопустимый формат файла"}, status_code=400)
+    if ext not in allowed_ext:
+        ext = ".jpg"
+    unique_filename = f"{uuid.uuid4()}{ext}"
+    file_path = UPLOAD_DIR / unique_filename
+    try:
+        content = await file.read()
+        file_path.write_bytes(content)
+    except Exception as e:
+        return JSONResponse({"error": f"Ошибка сохранения: {str(e)}"}, status_code=500)
+    return JSONResponse({"location": f"/static/uploads/articles/{unique_filename}"})
+
+
+@router.get("/{article_id}/", response_class=HTMLResponse)
+async def article_edit(request: Request, article_id: str, db: Session = Depends(get_db)):
+    """Форма редактирования статьи"""
+    auth_check = require_admin(request)
+    if auth_check:
+        return auth_check
+
+    try:
+        aid = int(article_id)
+    except ValueError:
+        return RedirectResponse(url="/admin/articles/", status_code=303)
+    article = db.query(Article).filter(Article.id == aid).options(joinedload(Article.category)).first()
+    if not article:
+        return RedirectResponse(url="/admin/articles/", status_code=303)
+
+    categories = db.query(ArticleCategory).order_by(ArticleCategory.name).all()
+    saved = bool(request.query_params.get("saved"))
+    return templates.TemplateResponse(
+        request=request,
+        name="admin/articles/edit.html",
+        context=get_admin_context(
+            request=request,
+            title=f"Редактировать: {(article.title or '')[:50]} — Админ-панель",
+            active_menu="articles",
+            article=article,
+            categories=categories,
+            is_new=False,
+            saved=saved,
+        )
+    )
+
+
+@router.post("/{article_id}/", response_class=HTMLResponse)
+async def article_edit_post(
+    request: Request,
+    article_id: str,
+    db: Session = Depends(get_db),
+    title: str = Form(...),
+    slug: str = Form(""),
+    excerpt: str = Form(""),
+    content: str = Form(""),
+    category: str = Form(""),
+    image: str = Form(""),
+    meta_title: str = Form(""),
+    meta_description: str = Form(""),
+    meta_keywords: str = Form(""),
+    is_published: bool = Form(False),
+):
+    """Сохранение статьи. При смене slug создаётся 301 редирект со старого URL на новый."""
+    auth_check = require_admin(request)
+    if auth_check:
+        return auth_check
+
+    try:
+        aid = int(article_id)
+    except ValueError:
+        return RedirectResponse(url="/admin/articles/", status_code=303)
+    article = db.query(Article).filter(Article.id == aid).first()
+    if not article:
+        return RedirectResponse(url="/admin/articles/", status_code=303)
+
+    new_slug = (slug or generate_slug(title)).strip()
+    old_slug = (article.slug or "").strip()
+    article.title = title
+    article.slug = new_slug
+    article.excerpt = excerpt or None
+    article.content = content or None
+    article.category_id = _category_slug_to_id(db, category)
+    article.image = image or None
+    article.meta_title = meta_title or title
+    article.meta_description = meta_description or ((excerpt or "")[:160] if excerpt else None)
+    article.meta_keywords = meta_keywords or None
+    article.is_published = is_published
+    article.updated_at = datetime.utcnow()
+
+    if old_slug and old_slug != new_slug:
+        from_url = f"/news/{old_slug}/"
+        to_url = f"/news/{new_slug}/"
+        existing = db.query(Redirect).filter(
+            Redirect.from_url == from_url,
+            Redirect.is_active.is_(True),
+        ).first()
+        if not existing:
+            db.add(Redirect(from_url=from_url, to_url=to_url, status_code=301))
+    db.commit()
+    return RedirectResponse(url=f"/admin/articles/{article_id}/?saved=1", status_code=303)
+
+
+@router.post("/{article_id}/delete/")
+async def article_delete(request: Request, article_id: str, db: Session = Depends(get_db)):
+    """Удаление статьи"""
+    auth_check = require_admin(request)
+    if auth_check:
+        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+
+    try:
+        aid = int(article_id)
+    except ValueError:
+        return RedirectResponse(url="/admin/articles/", status_code=303)
+    article = db.query(Article).filter(Article.id == aid).first()
+    if article:
+        db.delete(article)
+        db.commit()
+    return RedirectResponse(url="/admin/articles/", status_code=303)
+
+
+@router.post("/{article_id}/toggle-publish/")
+async def article_toggle_publish(request: Request, article_id: str, db: Session = Depends(get_db)):
+    """Переключение публикации"""
+    auth_check = require_admin(request)
+    if auth_check:
+        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+
+    try:
+        aid = int(article_id)
+    except ValueError:
+        return JSONResponse({"error": "Invalid id"}, status_code=400)
+    article = db.query(Article).filter(Article.id == aid).first()
+    if not article:
+        return JSONResponse({"error": "Not found"}, status_code=404)
+    article.is_published = not article.is_published
+    article.updated_at = datetime.utcnow()
+    db.commit()
+    return JSONResponse({"success": True})

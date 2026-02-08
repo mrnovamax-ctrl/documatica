@@ -69,15 +69,17 @@ async def cms_page_by_path(
     if not page:
         raise HTTPException(status_code=404, detail="Страница не найдена")
 
-    sections_for_template = _build_sections_for_template(page)
+    base_url = str(request.base_url).rstrip("/")
+    canonical_stored = getattr(page, "canonical_url", None)
+    canonical_url = canonical_stored if canonical_stored and (canonical_stored.startswith("http") or canonical_stored.startswith("//")) else f"{base_url}/{slug}/"
     page_view = type("PageView", (), {
         "id": page.id,
         "title": page.title,
         "meta_title": getattr(page, "meta_title", None),
         "meta_description": getattr(page, "meta_description", None),
         "meta_keywords": getattr(page, "meta_keywords", None),
-        "canonical_url": getattr(page, "canonical_url", None),
-        "sections": sections_for_template,
+        "canonical_url": canonical_url,
+        "sections": _build_sections_for_template(page),
     })()
     return templates.TemplateResponse(
         request=request,
@@ -89,5 +91,9 @@ async def cms_page_by_path(
             "description": page.meta_description or "",
             "is_home_page": False,
             "heroicon_paths": get_icon_paths_html(),
+            "canonical_url": canonical_url,
+            "og_title": page.meta_title or page.title,
+            "og_description": page.meta_description or "",
+            "base_url": base_url,
         },
     )

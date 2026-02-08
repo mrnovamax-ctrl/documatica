@@ -2110,13 +2110,13 @@ body {
   border-color: #3b82f6;
 }
 
-/* Auth Captcha - Yandex SmartCaptcha */
-.auth-captcha-v12 {
-  margin: 0;
-}
-
-.smart-captcha-container {
-  min-height: 100px;
+/* Auth Captcha - Google reCAPTCHA v2 Invisible (контейнер скрыт) */
+.auth-recaptcha-invisible {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .auth-checkbox-v12 input[type="checkbox"]:checked::after {
@@ -2255,6 +2255,40 @@ body {
 }
 
 .auth-oauth-btn.yandex-btn:active {
+  transform: translateY(0);
+}
+
+.auth-oauth-row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.auth-oauth-row .auth-oauth-btn {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .auth-oauth-row {
+    flex-direction: column;
+  }
+}
+
+.auth-oauth-btn.google-btn {
+  background: #4285F4;
+  color: white;
+  border-color: #4285F4;
+}
+
+.auth-oauth-btn.google-btn:hover {
+  background: #3367D6;
+  border-color: #3367D6;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(66, 133, 244, 0.35);
+}
+
+.auth-oauth-btn.google-btn:active {
   transform: translateY(0);
 }
 

@@ -1,0 +1,63 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Менеджер редиректов{% endblock %}
+{% block page_title %}Менеджер редиректов{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/seo-tools/" class="btn btn-ghost btn-sm">Назад</a>
+{% endblock %}
+
+{% block content %}
+{% if request.query_params.get('added') %}
+<div class="admin-alert admin-alert-success" style="margin-bottom: 1.5rem;">Редирект добавлен.</div>
+{% endif %}
+{% if request.query_params.get('deleted') %}
+<div class="admin-alert admin-alert-success" style="margin-bottom: 1.5rem;">Редирект удалён.</div>
+{% endif %}
+{% if request.query_params.get('error') == 'empty' %}
+<div class="admin-alert admin-alert-error" style="margin-bottom: 1.5rem;">Укажите from_url и to_url.</div>
+{% endif %}
+
+<div style="margin-bottom: 1.5rem; padding: 1rem; background: #f8fafc; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+  <h4 style="margin: 0 0 0.75rem; font-size: 0.875rem;">Добавить редирект</h4>
+  <form action="/admin/seo-tools/redirects/add/" method="post" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+    <div>
+      <label class="label" style="font-size: 0.75rem;">От (старый URL)</label>
+      <input type="text" name="from_url" class="input" placeholder="/old-page/" required style="width: 220px;">
+    </div>
+    <div>
+      <label class="label" style="font-size: 0.75rem;">Куда (новый URL)</label>
+      <input type="text" name="to_url" class="input" placeholder="/new-page/ или https://..." required style="width: 220px;">
+    </div>
+    <div>
+      <label class="label" style="font-size: 0.75rem;">Код</label>
+      <select name="status_code" class="input" style="width: 80px;">
+        <option value="301">301</option>
+        <option value="302">302</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Добавить</button>
+  </form>
+</div>
+
+<div class="admin-table-container">
+  <div class="admin-table-header admin-table-row-4col">
+    <div class="admin-table-th">От</div>
+    <div class="admin-table-th">Куда</div>
+    <div class="admin-table-th">Код</div>
+    <div class="admin-table-th"></div>
+  </div>
+  {% for r in redirects %}
+  <div class="admin-table-row admin-table-row-4col">
+    <div class="admin-table-cell" style="font-family: monospace; font-size: 0.8125rem;">{{ r.from_url }}</div>
+    <div class="admin-table-cell" style="font-family: monospace; font-size: 0.8125rem;">{{ r.to_url }}</div>
+    <div class="admin-table-cell">{{ r.status_code or 301 }}</div>
+    <div class="admin-table-cell">
+      <a href="/admin/seo-tools/redirects/delete/{{ r.id }}/" class="btn btn-ghost btn-sm" onclick="return confirm('Удалить?');" style="color: #ef4444;">Удалить</a>
+    </div>
+  </div>
+  {% else %}
+  <div class="admin-empty-state">Нет редиректов в БД. Статические редиректы в redirects.py</div>
+  {% endfor %}
+</div>
+{% endblock %}

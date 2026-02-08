@@ -1,38 +1,64 @@
 {% extends "base_public.html" %}
 
+{% block body_class %}public-page article-page{% endblock %}
 {% block title %}{{ title }} - Documatica{% endblock %}
 {% block meta_description %}{{ description }}{% endblock %}
 
 {% block extra_head %}
-<!-- Article Schema.org -->
+<link rel="canonical" href="{{ canonical_url }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta name="canonical-url" content="{{ canonical_url }}">
+<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<!-- Open Graph (дополняем base.html) -->
+<meta property="og:type" content="article">
+<meta property="og:image" content="{{ base_url }}{{ article.image or '/static/images/og-default.jpg' }}">
+<meta property="article:published_time" content="{{ article.created_at.isoformat() if article.created_at else '' }}">
+<meta property="article:modified_time" content="{{ (article.updated_at or article.created_at).isoformat() if (article.updated_at or article.created_at) else '' }}">
+<meta property="article:author" content="Documatica">
+<!-- Schema.org: WebPage + Article (для поисковиков и AI) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "{{ article.title }}",
-  "description": "{{ article.excerpt }}",
-  "image": "{{ article.image or '/static/images/og-default.jpg' }}",
-  "datePublished": "{{ article.created_at }}",
-  "dateModified": "{{ article.updated_at or article.created_at }}",
-  "author": {
-    "@type": "Organization",
-    "name": "Documatica"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Documatica",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "/static/images/logo.png"
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "{{ canonical_url }}#webpage",
+      "url": "{{ canonical_url }}",
+      "name": "{{ (article.meta_title or article.title) | e }}",
+      "description": "{{ (article.meta_description or article.excerpt) | e }}",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "{{ base_url }}{{ article.image or '/static/images/og-default.jpg' }}"
+      },
+      "datePublished": "{{ article.created_at.isoformat() if article.created_at else '' }}",
+      "dateModified": "{{ (article.updated_at or article.created_at).isoformat() if (article.updated_at or article.created_at) else '' }}"
+    },
+    {
+      "@type": "Article",
+      "@id": "{{ canonical_url }}#article",
+      "mainEntityOfPage": {"@id": "{{ canonical_url }}#webpage"},
+      "headline": "{{ article.title | e }}",
+      "description": "{{ (article.meta_description or article.excerpt) | e }}",
+      "image": "{{ base_url }}{{ article.image or '/static/images/og-default.jpg' }}",
+      "datePublished": "{{ article.created_at.isoformat() if article.created_at else '' }}",
+      "dateModified": "{{ (article.updated_at or article.created_at).isoformat() if (article.updated_at or article.created_at) else '' }}",
+      "author": {"@type": "Organization", "name": "Documatica", "url": "{{ base_url }}/"},
+      "publisher": {
+        "@type": "Organization",
+        "name": "Documatica",
+        "url": "{{ base_url }}/",
+        "logo": {"@type": "ImageObject", "url": "{{ base_url }}/static/images/logo.png"}
+      }
     }
-  }
+  ]
 }
 </script>
 {% endblock %}
 
 {% block content %}
+<div class="article-page__wrap">
 <!-- Article Header -->
-<section style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 120px 0 60px;">
+<section class="article-header">
   <div class="container">
     <!-- Breadcrumbs + Schema.org BreadcrumbList -->
     <script type="application/ld+json">
@@ -73,105 +99,252 @@
     </nav>
     
     <!-- Category & Meta -->
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 24px;">
+    <div class="article-header__meta">
       {% if category %}
-      <a href="/news/?category={{ category.slug }}" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; text-decoration: none;">
-        {{ category.name }}
-      </a>
+      <a href="/news/?category={{ category.slug if category else '' }}" class="article-header__category">{{ category.name if category else '' }}</a>
       {% endif %}
-      <span style="color: #64748b; font-size: 14px;">
-        {{ article.created_at[:10] }}
-      </span>
-      <span style="color: #64748b; font-size: 14px;">
-        {{ article.views }} просмотров
-      </span>
+      <span class="article-header__meta-item">{{ article.created_at.strftime('%Y-%m-%d') if article.created_at else '' }}</span>
+      <span class="article-header__meta-item">{{ article.views }} просмотров</span>
     </div>
     
     <!-- Title -->
-    <h1 style="font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 900; color: white; margin: 0; line-height: 1.3; max-width: 900px;">
-      {{ article.title }}
-    </h1>
+    <h1 class="article-header__title">{{ article.title }}</h1>
   </div>
 </section>
 
-<!-- Article Content -->
-<section style="padding: 60px 0; background: #f8fafc;">
+<!-- Article Content: только этот блок 1400px -->
+<div class="article-page__wrap">
+<section class="article-body">
   <div class="container">
-    <div class="article-layout" style="display: grid; {% if sidebar_blocks %}grid-template-columns: 1fr 340px; gap: 48px;{% endif %} align-items: start;">
+    <div class="article-layout">
+      <!-- TOC (Google Docs style: left, expand/collapse) -->
+      <aside class="article-toc" id="articleToc" aria-label="Оглавление">
+        <button type="button" class="article-toc__trigger" id="tocTrigger" aria-expanded="false" aria-controls="tocPanel" aria-label="Открыть оглавление">
+          <svg class="article-toc__trigger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <div class="article-toc__panel" id="tocPanel" role="navigation" aria-label="Оглавление статьи">
+          <div class="article-toc__header">
+            <span class="article-toc__title">Оглавление</span>
+            <button type="button" class="article-toc__close" id="tocClose" aria-label="Закрыть оглавление">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <nav class="article-toc__nav">
+            <ul class="article-toc__list">
+              {% for item in toc_items %}
+              <li class="article-toc__item article-toc__item--level-{{ item.level }}">
+                <a href="#{{ item.id }}" class="article-toc__link">{{ item.text }}{% if item.text|length >= 45 %}...{% endif %}</a>
+              </li>
+              {% endfor %}
+            </ul>
+            {% if not toc_items %}
+            <p class="article-toc__empty">В статье нет заголовков</p>
+            {% endif %}
+          </nav>
+        </div>
+      </aside>
       <!-- Main Content -->
-      <article style="background: white; border-radius: 2rem; padding: 48px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
-        <!-- Featured Image -->
+      <article class="article-card">
         {% if article.image %}
-        <div style="margin: -48px -48px 40px; border-radius: 2rem 2rem 0 0; overflow: hidden;">
-          <img src="{{ article.image }}" alt="{{ article.title }}" style="width: 100%; height: auto; display: block;" onerror="this.onerror=null; this.src='/static/images/og-image.png';">
+        <div class="article-card__image-wrap">
+          <img class="article-card__image" src="{{ article.image }}" alt="{{ article.title }}" onerror="this.onerror=null; this.src='/static/images/og-image.png';">
         </div>
         {% endif %}
         
-        <!-- Excerpt -->
-        <p style="font-size: 1.25rem; color: #64748b; line-height: 1.7; margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid #f1f5f9;">
-          {{ article.excerpt }}
-        </p>
+        <p class="article-card__excerpt">{{ article.excerpt }}</p>
         
-        <!-- Content (с подстановкой шорткодов [имя]) -->
-        <div class="article-content" style="font-size: 16px; line-height: 1.8; color: #334155;">
+        <div class="article-content">
           {{ article_content | safe }}
         </div>
         
-        <!-- Share -->
-        <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #f1f5f9;">
-          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 16px;">
-            Поделиться статьей
-          </div>
-          <div style="display: flex; gap: 12px;">
-            <a href="https://t.me/share/url?url={{ request.url }}&text={{ article.title }}" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #f1f5f9; border-radius: 12px; color: #64748b; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#3b82f6'; this.style.color='white';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b';">
+        <div class="article-share">
+          <div class="article-share__label">Поделиться статьей</div>
+          <div class="article-share__buttons">
+            <a href="https://t.me/share/url?url={{ canonical_url | urlencode }}&text={{ article.title | urlencode }}" target="_blank" rel="noopener" class="article-share__btn" aria-label="Telegram">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
             </a>
-            <a href="https://vk.com/share.php?url={{ request.url }}" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #f1f5f9; border-radius: 12px; color: #64748b; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#3b82f6'; this.style.color='white';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b';">
+            <a href="https://vk.com/share.php?url={{ canonical_url | urlencode }}" target="_blank" rel="noopener" class="article-share__btn" aria-label="VK">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.08 14.27h-1.46c-.55 0-.72-.44-1.71-1.45-1-1-1.44-1.14-1.69-1.14-.35 0-.45.1-.45.58v1.34c0 .41-.13.67-1.24.67-1.83 0-3.87-1.11-5.3-3.17-2.15-3.02-2.74-5.29-2.74-5.75 0-.25.1-.48.58-.48h1.46c.43 0 .6.2.77.67.84 2.43 2.26 4.56 2.85 4.56.22 0 .32-.1.32-.65V8.86c-.07-1.16-.67-1.26-.67-1.67 0-.2.16-.41.43-.41h2.3c.37 0 .5.2.5.63v3.39c0 .36.16.49.26.49.22 0 .4-.13.8-.53 1.24-1.38 2.13-3.52 2.13-3.52.12-.25.32-.48.75-.48h1.46c.44 0 .54.23.44.54-.18.85-1.93 3.31-1.93 3.31-.15.25-.21.36 0 .63.15.21.64.63 1.02 1.02.7.72 1.22 1.32 1.36 1.74.15.41-.05.63-.49.63z"/></svg>
             </a>
-            <button onclick="navigator.clipboard.writeText(window.location.href); this.innerHTML='<svg width=20 height=20 viewBox=&quot;0 0 24 24&quot; fill=none stroke=currentColor stroke-width=2><path d=&quot;M20 6L9 17l-5-5&quot;/></svg>'; setTimeout(() => this.innerHTML='<svg width=20 height=20 viewBox=&quot;0 0 24 24&quot; fill=none stroke=currentColor stroke-width=2><path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/><path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/></svg>', 2000)" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #f1f5f9; border: none; border-radius: 12px; color: #64748b; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#3b82f6'; this.style.color='white';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b';">
+            <button type="button" class="article-share__btn article-share__btn--copy" data-copy-url="{{ canonical_url }}" aria-label="Копировать ссылку">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
             </button>
           </div>
         </div>
       </article>
       
-      <!-- Sidebar (настраивается в админке: Сайдбар новостей) -->
-      {% if sidebar_blocks %}
-      <aside class="article-sidebar" style="position: sticky; top: 100px;">
+      <!-- Sidebar (единый layout для всех статей: контейнер и колонка сайдбара одинаковые) -->
+      <aside class="article-sidebar">
         {% for block in sidebar_blocks %}
         {% if block.type == 'cta_card' %}
-        <div class="article-sidebar-cta" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 2rem; padding: 32px; margin-bottom: 24px; color: white;">
-          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.8; margin-bottom: 12px;">Documatica</div>
-          <h3 style="font-size: 20px; font-weight: 800; margin: 0 0 12px; line-height: 1.3;">Создайте УПД за 2 минуты</h3>
-          <p style="font-size: 14px; opacity: 0.9; margin-bottom: 20px; line-height: 1.5;">Автозаполнение по ИНН, актуальная форма 2026 года</p>
-          <a href="/dashboard/upd/create/" style="display: block; text-align: center; background: white; color: #3b82f6; padding: 14px 24px; border-radius: 1rem; font-weight: 700; font-size: 13px; text-decoration: none;">Попробовать бесплатно</a>
+        <div class="article-sidebar-cta">
+          <div class="article-sidebar-cta__brand">Documatica</div>
+          <h3 class="article-sidebar-cta__title">Создайте УПД за 2 минуты</h3>
+          <p class="article-sidebar-cta__text">Автозаполнение по ИНН, актуальная форма 2026 года</p>
+          <a href="/dashboard/upd/create/" class="article-sidebar-cta__btn">Попробовать бесплатно</a>
         </div>
         {% elif block.type == 'related_articles' and related %}
-        <div class="article-sidebar-related" style="background: white; border-radius: 2rem; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 24px;">
-          <h3 style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 0 0 20px;">Похожие статьи</h3>
-          <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="article-sidebar-related">
+          <h3 class="article-sidebar-related__title">Похожие статьи</h3>
+          <div class="article-sidebar-related__list">
             {% for item in related %}
-            <a href="/news/{{ item.slug }}/" style="display: block; text-decoration: none;">
-              <h4 style="font-size: 15px; font-weight: 600; color: #0f172a; margin: 0 0 6px; line-height: 1.4;">{{ item.title }}</h4>
-              <span style="font-size: 12px; color: #94a3b8;">{{ item.created_at[:10] }}</span>
+            <a href="/news/{{ item.slug }}/" class="article-sidebar-related__item">
+              <h4 class="article-sidebar-related__item-title">{{ item.title }}</h4>
+              <span class="article-sidebar-related__item-date">{{ item.created_at.strftime('%Y-%m-%d') if item.created_at else '' }}</span>
             </a>
             {% endfor %}
           </div>
         </div>
         {% elif block.type == 'shortcode' and block.html %}
-        <div class="article-sidebar-shortcode" style="margin-bottom: 24px;">{{ block.html | safe }}</div>
+        <div class="article-sidebar-shortcode">{{ block.html | safe }}</div>
         {% endif %}
         {% endfor %}
+        {% if not sidebar_blocks %}
+        <div class="article-sidebar-cta">
+          <div class="article-sidebar-cta__brand">Documatica</div>
+          <h3 class="article-sidebar-cta__title">Создайте УПД за 2 минуты</h3>
+          <p class="article-sidebar-cta__text">Автозаполнение по ИНН, актуальная форма 2026 года</p>
+          <a href="/dashboard/upd/create/" class="article-sidebar-cta__btn">Попробовать бесплатно</a>
+        </div>
+        {% endif %}
       </aside>
-      {% endif %}
     </div>
   </div>
 </section>
+</div>
 
 {% endblock %}
 
 {% block extra_css %}
 {{ super() }}
-<link rel="stylesheet" href="/static/css/article.css?v=1.1">
+<link rel="stylesheet" href="/static/css/article.css?v=2.0">
+{% endblock %}
+
+{% block extra_js %}
+{{ super() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+(function() {
+  var tocEl = document.getElementById('articleToc');
+  if (tocEl && window.innerWidth <= 1024) {
+    document.body.appendChild(tocEl);
+  }
+  var m = document.querySelector('meta[name="canonical-url"]');
+  var canonicalUrl = m ? m.getAttribute('content') : null;
+  if (canonicalUrl) {
+    try {
+      var parsed = new URL(canonicalUrl);
+      parsed.protocol = window.location.protocol;
+      parsed.host = window.location.host;
+      var normalized = parsed.toString();
+      if (window.location.href !== normalized) {
+        window.history.replaceState({}, document.title, normalized);
+      }
+    } catch (e) { /* ignore */ }
+  }
+  var btn = document.querySelector('.article-share__btn--copy');
+  if (btn) {
+    btn.addEventListener('click', function() {
+      var url = btn.getAttribute('data-copy-url') || window.location.href;
+      navigator.clipboard.writeText(url);
+      btn.classList.add('article-share__btn--copied');
+      setTimeout(function() { btn.classList.remove('article-share__btn--copied'); }, 2000);
+    });
+  }
+  var toc = document.getElementById('articleToc');
+  var trigger = document.getElementById('tocTrigger');
+  var panel = document.getElementById('tocPanel');
+  var closeBtn = document.getElementById('tocClose');
+  var nav = panel ? panel.querySelector('.article-toc__nav') : null;
+  var list = panel ? panel.querySelector('.article-toc__list') : null;
+
+  function slugify(s) {
+    return s.toString().toLowerCase().trim()
+      .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-')
+      .replace(/^-+/, '').replace(/-+$/, '').substring(0, 50) || 'section';
+  }
+
+  function buildTocFromDom() {
+    if (!nav || !list) return;
+    var content = document.querySelector('.article-content');
+    if (!content) return;
+    var headings = content.querySelectorAll('h1, h2, h3, h4');
+    if (headings.length === 0) return;
+    var emptyEl = nav.querySelector('.article-toc__empty');
+    if (emptyEl) emptyEl.remove();
+    var used = {};
+    headings.forEach(function(h) {
+      var text = h.textContent.trim();
+      var level = parseInt(h.tagName.charAt(1), 10);
+      var base = slugify(text);
+      var id = base;
+      var n = 1;
+      while (used[id]) { id = base + '-' + n; n++; }
+      used[id] = true;
+      if (!h.id) h.id = id;
+      var li = document.createElement('li');
+      li.className = 'article-toc__item article-toc__item--level-' + level;
+      var a = document.createElement('a');
+      a.href = '#' + id;
+      a.className = 'article-toc__link';
+      a.textContent = text.length >= 45 ? text.substring(0, 45) + '...' : text;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+  }
+
+  if (list && list.children.length === 0 && nav && nav.querySelector('.article-toc__empty')) {
+    buildTocFromDom();
+  }
+
+  if (toc && trigger && panel) {
+    var panelWidth = 292;
+    var margin = 24;
+    function fitLeft() {
+      if (window.innerWidth < 1400) return false;
+      var r = trigger.getBoundingClientRect();
+      return r.left >= panelWidth + margin;
+    }
+    function openToc() {
+      toc.classList.toggle('article-toc--open-right', !fitLeft());
+      toc.classList.add('article-toc--expanded');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+    function closeToc() {
+      toc.classList.remove('article-toc--expanded');
+      toc.classList.remove('article-toc--open-right');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+    function toggleToc() {
+      if (toc.classList.contains('article-toc--expanded')) {
+        toc.classList.remove('article-toc--expanded', 'article-toc--open-right');
+        trigger.setAttribute('aria-expanded', 'false');
+      } else {
+        toc.classList.toggle('article-toc--open-right', !fitLeft());
+        toc.classList.add('article-toc--expanded');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    }
+    var lastTocTap = 0;
+    function handleTocTap(e) {
+      if (e.type === 'touchend') {
+        e.preventDefault();
+      }
+      var now = Date.now();
+      if (now - lastTocTap < 400) return;
+      lastTocTap = now;
+      toggleToc();
+    }
+    trigger.addEventListener('click', handleTocTap);
+    trigger.addEventListener('touchend', handleTocTap, { passive: false });
+    if (closeBtn) closeBtn.addEventListener('click', closeToc);
+    panel.querySelectorAll('.article-toc__link').forEach(function(a) {
+      a.addEventListener('click', function() { closeToc(); });
+    });
+  }
+})();
+});
+</script>
 {% endblock %}

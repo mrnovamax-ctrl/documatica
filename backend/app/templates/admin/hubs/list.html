@@ -1,0 +1,71 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Хабы{% endblock %}
+{% block page_title %}Хабы{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/hubs/create/" class="btn btn-primary">
+  <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+  Создать хаб
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="admin-core">
+  {% if hubs %}
+  <div class="table-wrapper">
+    <table class="table table--striped table--pages">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>URL</th>
+          <th>Разделов</th>
+          <th>Обновлено</th>
+          <th>Статус</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for hub in hubs %}
+        <tr>
+          <td>{{ hub.title }}</td>
+          <td class="table__muted">/hub/{{ hub.slug }}/</td>
+          <td>{{ hub.sections | length }}</td>
+          <td class="table__muted">{{ hub.updated_at.strftime('%d.%m.%Y %H:%M') if hub.updated_at else '—' }}</td>
+          <td>
+            <span class="badge badge--{{ 'success' if hub.is_published else 'neutral' }}">
+              {{ 'Опубликован' if hub.is_published else 'Черновик' }}
+            </span>
+          </td>
+          <td>
+            <div class="table-actions">
+              <a href="/admin/hubs/{{ hub.id }}/" class="table-action table-action--primary">
+                <iconify-icon icon="ri:edit-line" width="18"></iconify-icon>
+                Редактировать
+              </a>
+              {% if hub.is_published %}
+              <a href="/hub/{{ hub.slug }}/" target="_blank" class="table-action" rel="noopener">
+                <iconify-icon icon="ri:external-link-line" width="18"></iconify-icon>
+                Открыть
+              </a>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="admin-empty">
+    <iconify-icon icon="ri:bookmark-line" width="64" class="admin-empty__icon"></iconify-icon>
+    <h3 class="admin-empty__title">Хабов пока нет</h3>
+    <p class="admin-empty__text">Создайте первый контентный хаб</p>
+    <a href="/admin/hubs/create/" class="btn btn-primary">
+      <iconify-icon icon="ri:add-line" width="18"></iconify-icon>
+      Создать хаб
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
